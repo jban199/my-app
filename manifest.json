@@ -2,7 +2,7 @@
   "name": "Tretagnikalaya",
   "short_name": "Tretagni",
   "description": "An example of a detailed PWA manifest file for your app",
-  "start_url": "/my-app/index.html", 
+  "start_url": "https://jban199.github.io/my-app/", 
   "display": "standalone", 
   "background_color": "#1A1A1A", 
   "theme_color": "#0044cc", 
