@@ -1,3 +1,17 @@
+* {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+button, a, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+button:focus, a:focus, input:focus, select:focus, textarea:focus {
+  outline: none;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #1a1a1a;
@@ -11,4 +25,17 @@ h1 {
 
 p {
     color: #555;
+}
+
+.startbutton {
+	padding: 20px;
+	width: auto;
+	display: grid;
+	text-align: middle;
+	border-radius: 15px;
+	border-bottom: 3px solid #FD7E14;
+	justify-content: center;
+	background-color: #2A2A2A;
+	color: #FD7E14;
+	font-size: 18px;
 }
