@@ -1,21 +1,127 @@
 {
-  "short_name": "PWA",
-  "name": "Progressive Web App Example",
+  "name": "My Progressive Web App",
+  "short_name": "MyPWA",
+  "description": "An example of a detailed PWA manifest file for your app",
+  "start_url": "/index.html", 
+  "display": "standalone", 
+  "background_color": "#ffffff", 
+  "theme_color": "#0044cc", 
+  "orientation": "portrait", 
   "icons": [
     {
-      "src": "images/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "/images/icons/icon-72x72.png", 
+      "sizes": "72x72", 
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "images/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "/images/icons/icon-96x96.png", 
+      "sizes": "96x96", 
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icons/icon-128x128.png", 
+      "sizes": "128x128", 
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icons/icon-144x144.png", 
+      "sizes": "144x144", 
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icons/icon-192x192.png", 
+      "sizes": "192x192", 
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icons/icon-512x512.png", 
+      "sizes": "512x512", 
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
-  "start_url": "/my-app/index.html",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
-  "scope": "/"
+  "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.example.app",
+      "id": "com.example.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/us/app/myapp/id1234567890",
+      "id": "com.example.app"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshots/screenshot1-wide.png",
+      "sizes": "1200x800",
+      "type": "image/png",
+      "label": "Home Page (Desktop)",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/images/screenshots/screenshot2-portrait.png",
+      "sizes": "600x800",
+      "type": "image/png",
+      "label": "Profile Page (Mobile)"
+    }
+  ],
+  "lang": "en-US",
+  "dir": "ltr",
+  "scope": "/",
+  "categories": ["tools", "productivity", "utilities"],
+  "public": true,
+  "icons": [
+    {
+      "src": "/images/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "apple": {
+    "startup_image": "/images/apple-startup-image.png",
+    "apple-touch-icon": "/images/apple-touch-icon.png"
+  },
+  "serviceworker": {
+    "url": "/service-worker.js",
+    "scope": "/"
+  }
 }
