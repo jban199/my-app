@@ -12,6 +12,14 @@ button:focus, a:focus, input:focus, select:focus, textarea:focus {
   outline: none;
 }
 
+.noselection {
+  user-select: none; /* Prevents text selection */
+  -webkit-user-select: none; /* For Safari */
+  -moz-user-select: none; /* For Firefox */
+  -ms-user-select: none; /* For older versions of Internet Explorer */
+}
+
+
 body {
     font-family: Arial, sans-serif;
     background-color: #1a1a1a;
@@ -38,4 +46,105 @@ p {
 	background-color: #2A2A2A;
 	color: #FD7E14;
 	font-size: 18px;
+	font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.bingbutton {
+	border-radius: 16px;
+    width: 220px;
+    padding: 11px 14px 11px 10px;
+	height: 36px;
+    opacity: .8;
+    box-sizing: border-box;
+    background: linear-gradient(269.66deg, #000 10.23%, rgba(0, 0, 0, .55) 79.49%);
+    backdrop-filter: blur(22px);
+    display: flex;
+    justify-content: space-between;
+    margin-right: 8px;
+}
+
+
+
+.card-section {
+  display: flex;
+  overflow-x: auto; /* Enables horizontal scroll */
+  padding: 10px;
+  gap: 20px;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling for mobile */
+}
+
+.card {
+  flex: 0 0 auto; /* Prevents cards from shrinking or growing */
+  width: 200px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.card-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 10px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.view-button {
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.view-button:hover {
+  background-color: #0056b3;
+}
+
+/* Mobile specific styles */
+@media screen and (max-width: 768px) {
+  .card-section {
+    gap: 15px;
+  }
+
+  .card {
+    width: 170px; /* Adjust the width of the card for better fitting */
+  }
+
+  .card-title {
+    font-size: 16px; /* Adjust title size */
+  }
+
+  .card-description {
+    font-size: 12px; /* Adjust description size */
+  }
+
+  .view-button {
+    font-size: 12px; /* Adjust button font size */
+  }
 }
