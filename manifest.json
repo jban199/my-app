@@ -9,37 +9,37 @@
   "orientation": "portrait", 
   "icons": [
     {
-      "src": "/images/icons/icon-72x72.png", 
+      "src": "https://jban199.github.io/my-app/images/icons/icon-72x72.png", 
       "sizes": "72x72", 
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icons/icon-96x96.png", 
+      "src": "https://jban199.github.io/my-app/images/icons/icon-96x96.png", 
       "sizes": "96x96", 
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icons/icon-128x128.png", 
+      "src": "https://jban199.github.io/my-app/images/icons/icon-128x128.png", 
       "sizes": "128x128", 
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icons/icon-144x144.png", 
+      "src": "https://jban199.github.io/my-app/images/icons/icon-144x144.png", 
       "sizes": "144x144", 
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icons/icon-192x192.png", 
+      "src": "https://jban199.github.io/my-app/images/icons/icon-192x192.png", 
       "sizes": "192x192", 
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icons/icon-512x512.png", 
+      "src": "https://jban199.github.io/my-app/images/icons/icon-512x512.png", 
       "sizes": "512x512", 
       "type": "image/png",
       "purpose": "any"
@@ -60,14 +60,14 @@
   ],
   "screenshots": [
     {
-      "src": "/images/screenshots/screenshot1-wide.png",
+      "src": "https://jban199.github.io/my-app/images/screenshots/screenshot1-wide.png",
       "sizes": "1200x800",
       "type": "image/png",
       "label": "Home Page (Desktop)",
       "form_factor": "wide"
     },
     {
-      "src": "/images/screenshots/screenshot2-portrait.png",
+      "src": "https://jban199.github.io/my-app/images/screenshots/screenshot2-portrait.png",
       "sizes": "600x800",
       "type": "image/png",
       "label": "Profile Page (Mobile)"
@@ -80,37 +80,37 @@
   "public": true,
   "icons": [
     {
-      "src": "/images/icons/icon-72x72.png",
+      "src": "https://jban199.github.io/my-app/images/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icons/icon-96x96.png",
+      "src": "https://jban199.github.io/my-app/images/icons/icon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icons/icon-128x128.png",
+      "src": "https://jban199.github.io/my-app/images/icons/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icons/icon-144x144.png",
+      "src": "https://jban199.github.io/my-app/images/icons/icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icons/icon-192x192.png",
+      "src": "https://jban199.github.io/my-app/images/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/images/icons/icon-512x512.png",
+      "src": "https://jban199.github.io/my-app/images/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
@@ -121,7 +121,7 @@
     "apple-touch-icon": "/images/apple-touch-icon.png"
   },
   "serviceworker": {
-    "url": "my-app/service-worker.js",
-    "scope": "/"
+    "url": "https://jban199.github.io/my-app/service-worker.js",
+    "scope": "https://jban199.github.io/my-app/"
   }
 }
