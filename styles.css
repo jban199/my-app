@@ -81,11 +81,12 @@ p {
   align-items: center;
   width: 200px;
   background-color: #3a3a3a;
+  border: 1px solid #000;
   border-radius: 10px;
   overflow: hidden;
   transition: transform 0.3s ease-in-out;
   position: relative;
-  padding-bottom: 20px;
+  padding: 10px 0px 20px 0px;
 }
 
 .card2 {
@@ -102,13 +103,15 @@ p {
   overflow: hidden;
   position: relative;
   padding-bottom: 20px;
+  position: sticky;
+  left: 0px;
 }
 
 
 .card-image {
-  width: 100%;
+  width: 200px;
   height: 200px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .card-content {
@@ -144,31 +147,4 @@ p {
   box-sizing: border-box;
   position: absolute;
   bottom: 10px;
-}
-
-.view-button:hover {
-  background-color: #0056b3;
-}
-
-/* Mobile specific styles */
-@media screen and (max-width: 768px) {
-  .card-section {
-    gap: 15px;
-  }
-
-  .card {
-    width: 170px; /* Adjust the width of the card for better fitting */
-  }
-
-  .card-title {
-    font-size: 16px; /* Adjust title size */
-  }
-
-  .card-description {
-    font-size: 12px; /* Adjust description size */
-  }
-
-  .view-button {
-    font-size: 12px; /* Adjust button font size */
-  }
 }
