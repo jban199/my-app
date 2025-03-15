@@ -76,19 +76,34 @@ p {
 
 .card {
   flex: 0 0 auto; /* Prevents cards from shrinking or growing */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 200px;
-  background-color: #1a1a1a;
+  background-color: #3a3a3a;
   border-radius: 10px;
-  box-shadow: 0 4px 8px #FD7E1480;
   overflow: hidden;
   transition: transform 0.3s ease-in-out;
   position: relative;
   padding-bottom: 20px;
 }
 
-.card:hover {
-  transform: scale(1.05); /* Slight zoom on hover */
+.card2 {
+  flex: 0 0 auto; /* Prevents cards from shrinking or growing */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  font-size: 24px;
+  color: #FD7E14;
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 20px;
 }
+
 
 .card-image {
   width: 100%;
@@ -109,23 +124,26 @@ p {
 
 .card-description {
   font-size: 14px;
-  color: #666;
+  color: #888;
   margin-bottom: 15px;
 }
 
 .view-button {
-  width: 100%;
+  width: 80%;
   display: inline-block;
+  border-radius: 20px;
   padding: 8px 15px;
+  background-image: linear-gradient(180deg, #2a2a2a, #4a4a4a);
   background-color: #2a2a2a;
   color: #FD7E14;
+  font-weight: bold;
   text-decoration: none;
   text-align: center;
   font-size: 14px;
   transition: background-color 0.3s;
   box-sizing: border-box;
   position: absolute;
-  bottom: 0px;
+  bottom: 10px;
 }
 
 .view-button:hover {
