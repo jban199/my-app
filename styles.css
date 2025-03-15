@@ -48,6 +48,25 @@ p {
     color: #555;
 }
 
+.rotating-image {
+  width: 50px; /* You can adjust the size as needed */
+  height: 50px;
+  position: absolute;
+  top: 5px;
+  left: 20px;
+  animation: rotate 5s linear infinite; /* Apply animation */
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg); /* Start from 0 degrees */
+  }
+  100% {
+    transform: rotate(360deg); /* Rotate to 360 degrees */
+  }
+}
+
+
 .startbutton {
 	padding: 20px;
 	width: auto;
@@ -61,6 +80,7 @@ p {
 	font-size: 18px;
 	font-weight: bold;
     letter-spacing: 2px;
+	position: relative;
 }
 
 .bingbutton {
