@@ -1,13 +1,4 @@
-:root {
-  /* Colors */
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --background-color: #f4f4f4;
-  --accent1: #FD7E14;
-  --bg1: #1A1A1A;
-  --bg2: #2a2a2a;
-  --bg3: #3a3a3a;
-}
+
 
 * {
   -webkit-tap-highlight-color: transparent;
@@ -25,6 +16,9 @@ button, a, input, select, textarea {
   outline: none;
 }
 
+
+
+
 button:focus, a:focus, input:focus, select:focus, textarea:focus {
   outline: none;
 }
@@ -36,6 +30,27 @@ button:focus, a:focus, input:focus, select:focus, textarea:focus {
   -ms-user-select: none; /* For older versions of Internet Explorer */
 }
 
+#theme-toggle {
+    background: white;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+	color: var(--accent1);
+}
+
+#theme-toggle svg {
+	fill: var(--accent1);
+}
 
 body {
     font-family: Arial, sans-serif;
@@ -191,6 +206,7 @@ p {
   position: absolute;
   bottom: 10px;
 }
+
 
 .view-button:hover {
   border: 1px solid #000000;
