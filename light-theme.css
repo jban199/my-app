@@ -3,12 +3,18 @@
   --primary-color: #007bff;
   --secondary-color: #6c757d;
   --background-color: #f4f4f4;
-  --accent1: dodgerblue;
-  --bg1: #FAFAFA;
-  --bg2: #EAEAEA;
-  --bg3: #DADADA;
-  --bgInv: #1A1A1A;
+  --accent1: #FD7E14;
+  --bg1: #eaeaea;
+  --bg2: #ffffff;
+  --bg3: #fafafa;
+  --bg4: #dadada;
+  --bgInv: #1a1a1a;
+  --bgTrans1: #fafafa80;
+  --bgTrans2: #eaeaeaa0;
   --font1: #000;
   --font2: #888;
   --font3: #ddd;
+  --shadow1: #00000030;
+  --gradient1: #eaeaea;
+  --gradient2: #fafafa;
 }
