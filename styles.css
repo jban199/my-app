@@ -31,7 +31,7 @@ button:focus, a:focus, input:focus, select:focus, textarea:focus {
 }
 
 #theme-toggle {
-    background: white;
+    background: var(--bgInv);
     border-radius: 30px;
     border: none;
     cursor: pointer;
@@ -39,17 +39,17 @@ button:focus, a:focus, input:focus, select:focus, textarea:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 30px;
-    width: 30px;
-    position: absolute;
+    height: 35px;
+    width: 35px;
+    position: fixed;
+	box-shadow: 0px 0px 5px #000000;
     top: 10px;
     right: 10px;
     z-index: 1000;
-	color: var(--accent1);
 }
 
 #theme-toggle svg {
-	fill: var(--accent1);
+	fill: var(--bg1);
 }
 
 body {
@@ -212,6 +212,23 @@ p {
 
 .view-button:hover {
   border: 1px solid #000000;
+}
+
+.beejmantra {
+	border-top: 1px solid #888888;
+	border-bottom: 1px solid #888888;
+	font-size: 14px;
+	color: var(--font1);
+	padding: 10px 0px;
+}
+.audio-button {
+    background-color: var(--accent1);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+	float: right;
 }
 
 /* Footer Menu Styles */
