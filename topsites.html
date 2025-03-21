@@ -13,7 +13,32 @@
 
     <!-- Link to the stylesheet -->
     <link rel="stylesheet" href="styles.css">
-	<link id="theme-link" rel="stylesheet" href="">
+	
+	
+	<!-- Set Theme based on Local Storage -->
+	<script>
+	  // Wait for the DOM to be fully loaded before running the script
+	  document.addEventListener("DOMContentLoaded", function() {
+		const themeLink = document.createElement("link");
+		themeLink.rel = "stylesheet";
+		themeLink.id = "theme-link";
+
+		// Check if a theme preference is saved in localStorage
+		const savedTheme = localStorage.getItem("theme");
+
+		if (savedTheme === "dark") {
+		  themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
+		} else if (savedTheme === "light") {
+		  themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
+		} else {
+		  themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
+		}
+
+		// Append the theme <link> tag to the <head> of the document
+		document.head.appendChild(themeLink);
+	  });
+	</script>
+
 </head>
 <body>
 
