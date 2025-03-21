@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo: Sidebar Injection</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+
+    <!-- Main Content Area -->
+    <div id="main-content">
+        <h1>Welcome to the Main Page</h1>
+        <p>This is the main content of the page. The sidebar is injected from a different HTML file.</p>
+    </div>
+
+    <!-- Sidebar will be injected here -->
+    <div id="sidebar-container"></div>
+
+    <script>
+        // Function to inject sidebar from an external HTML file
+        fetch('sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar-container').innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error loading sidebar: ", error);
+            });
+    </script>
+
+</body>
+</html>
