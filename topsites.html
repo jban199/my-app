@@ -60,6 +60,12 @@ window.onload = function() {
             if (closeButton) {
                 closeButton.addEventListener("click", closeSidebar);
             }
+			
+			// Function to close the sidebar
+			function closeSidebar() {
+				const fullscreenSidebar = document.getElementById("fullscreenSidebar");
+				fullscreenSidebar.style.transform = "translateX(-100%)";
+			}
         })
         .catch(error => {
             console.error("Error loading sidebar:", error);
