@@ -117,6 +117,7 @@ window.onload = function() {
 		  themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
 		} else {
 		  themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
+		  localStorage.setItem('theme', 'dark');  // Save preference
 		}
 
 		// Append the theme <link> tag to the <head> of the document
