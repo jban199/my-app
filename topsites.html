@@ -89,7 +89,18 @@ function loadSidebar() {
             const sidebarContainer = document.getElementById('sidebar-container');
             sidebarContainer.innerHTML = data;
 
-            
+            // After the sidebar is injected, attach the event listener for the close button
+            const closeButton = document.getElementById("closeSidebarButton");
+            if (closeButton) {
+                closeButton.addEventListener("click", closeSidebar);
+            }
+
+            // Now you can access the fullscreenSidebar after it has been loaded
+            const fullscreenSidebar = document.getElementById("fullscreenSidebar");
+            if (fullscreenSidebar) {
+                // The sidebar will be hidden initially, we'll manage the transform property through JavaScript
+                fullscreenSidebar.style.transition = "transform 0.3s ease";
+            }
         })
         .catch(error => {
             console.error("Error loading sidebar:", error);
