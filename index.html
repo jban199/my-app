@@ -372,6 +372,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const audioButtons = document.querySelectorAll('.audio-button');
   
   // Ensure audio buttons exist on the page
+  if (audioButtons.length > 0) {
+    audioButtons.forEach(button => {
+      button.addEventListener('click', (event) => {
         const audioFile = button.getAttribute('data-audio');
         if (audioFile) {
           const audio = new Audio(audioFile);
@@ -383,10 +386,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-
-  if (audioButtons.length > 0) {
-    audioButtons.forEach(button => {
-      button.addEventListener('click', (event) => {
 <!-- ///////////////// -->
 <!-- Fullscreen Toggle -->
 <!-- ///////////////// -->
