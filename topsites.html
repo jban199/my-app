@@ -79,7 +79,72 @@ window.onload = function() {
 </script>
 
 
+<script>
+// Get references to the icon that triggers the sidebar opening
+const sidebarIcon = document.getElementById("sidebarIcon");
 
+// Function to open the sidebar
+function openSidebar() {
+    const fullscreenSidebar = document.getElementById("fullscreenSidebar");
+    fullscreenSidebar.style.transform = "translateX(0)";
+}
+
+// Function to close the sidebar
+function closeSidebar() {
+    const fullscreenSidebar = document.getElementById("fullscreenSidebar");
+    fullscreenSidebar.style.transform = "translateX(-100%)";
+}
+
+// Event listener for opening the sidebar when the icon is clicked
+sidebarIcon.addEventListener("click", openSidebar);
+
+// Function to load the sidebar HTML dynamically
+function loadSidebar() {
+    fetch('sidebar.html')
+        .then(response => response.text())
+        .then(data => {
+            // Inject the sidebar content into the page
+            const sidebarContainer = document.getElementById('sidebar-container');
+            sidebarContainer.innerHTML = data;
+
+            // After the sidebar is injected, attach the event listener for the close button
+            const closeButton = document.getElementById("closeSidebarButton");
+            if (closeButton) {
+                closeButton.addEventListener("click", closeSidebar);
+            }
+
+            // Now you can access the fullscreenSidebar after it has been loaded
+            const fullscreenSidebar = document.getElementById("fullscreenSidebar");
+            if (fullscreenSidebar) {
+                // The sidebar will be hidden initially, we'll manage the transform property through JavaScript
+                fullscreenSidebar.style.transition = "transform 0.3s ease";
+            }
+        })
+        .catch(error => {
+            console.error("Error loading sidebar:", error);
+        });
+}
+
+</script>
+
+
+
+<script>
+// Function to load and inject the footer HTML dynamically
+function loadFooterMenu() {
+    fetch('footermenu.html')
+        .then(response => response.text())
+        .then(data => {
+            // Inject the footer content into the page
+            const footerContainer = document.getElementById('footermenu-container');
+            footerContainer.innerHTML = data;
+        })
+        .catch(error => {
+            console.error("Error loading footer menu:", error);
+        });
+}
+
+</script>
 
 
 </body>
