@@ -61,6 +61,12 @@ window.onload = function() {
                 closeButton.addEventListener("click", closeSidebar);
             }
 			
+			// Function to open the sidebar
+			function openSidebar() {
+				const fullscreenSidebar = document.getElementById("fullscreenSidebar");
+				fullscreenSidebar.style.transform = "translateX(0)";
+			}
+			
 			// Function to close the sidebar
 			function closeSidebar() {
 				const fullscreenSidebar = document.getElementById("fullscreenSidebar");
