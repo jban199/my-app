@@ -61,17 +61,23 @@ window.onload = function() {
                 closeButton.addEventListener("click", closeSidebar);
             }
 			
+			// Get references to the icon that triggers the sidebar opening
+			const sidebarIcon = document.getElementById("sidebarIcon");
+
 			// Function to open the sidebar
 			function openSidebar() {
 				const fullscreenSidebar = document.getElementById("fullscreenSidebar");
 				fullscreenSidebar.style.transform = "translateX(0)";
 			}
-			
+
 			// Function to close the sidebar
 			function closeSidebar() {
 				const fullscreenSidebar = document.getElementById("fullscreenSidebar");
 				fullscreenSidebar.style.transform = "translateX(-100%)";
 			}
+
+			// Event listener for opening the sidebar when the icon is clicked
+			sidebarIcon.addEventListener("click", openSidebar);
         })
         .catch(error => {
             console.error("Error loading sidebar:", error);
