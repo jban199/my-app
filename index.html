@@ -45,37 +45,48 @@
     </svg>
 </button>
 <script>
-    const themeToggleButton = document.getElementById('theme-toggle');
+// Ensure theme is applied when the page loads (before any interaction)
+window.addEventListener('DOMContentLoaded', () => {
     const themeLink = document.getElementById('theme-link');
     const darkIcon = document.getElementById('dark-icon');
     const lightIcon = document.getElementById('light-icon');
 
     // Check if the theme preference is saved in localStorage
-    if (localStorage.getItem('theme') === 'dark') {
-      themeLink.href = 'dark-theme.css';  // Apply dark theme
-      lightIcon.style.display = 'none';   // Hide light icon
-      darkIcon.style.display = 'block';   // Show dark icon
-    } else {
-      themeLink.href = 'light-theme.css'; // Apply light theme
-      lightIcon.style.display = 'block';  // Show light icon
-      darkIcon.style.display = 'none';    // Hide dark icon
-    }
+    const savedTheme = localStorage.getItem('theme');
 
-    // Toggle theme when button is clicked
-    themeToggleButton.addEventListener('click', () => {
-      const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
-      if (currentTheme === 'dark') {
+    if (savedTheme === 'dark') {
+        themeLink.href = 'dark-theme.css';  // Apply dark theme
+        lightIcon.style.display = 'none';   // Hide light icon
+        darkIcon.style.display = 'block';   // Show dark icon
+    } else {
+        themeLink.href = 'light-theme.css'; // Apply light theme
+        lightIcon.style.display = 'block';  // Show light icon
+        darkIcon.style.display = 'none';    // Hide dark icon
+    }
+});
+
+// Theme toggle functionality
+const themeToggleButton = document.getElementById('theme-toggle');
+const themeLink = document.getElementById('theme-link');
+const darkIcon = document.getElementById('dark-icon');
+const lightIcon = document.getElementById('light-icon');
+
+// Toggle theme when button is clicked
+themeToggleButton.addEventListener('click', () => {
+    const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
+    
+    if (currentTheme === 'dark') {
         themeLink.href = 'light-theme.css';  // Switch to light theme
         localStorage.setItem('theme', 'light');  // Save preference
         lightIcon.style.display = 'block';  // Show light icon
         darkIcon.style.display = 'none';   // Hide dark icon
-      } else {
+    } else {
         themeLink.href = 'dark-theme.css';   // Switch to dark theme
         localStorage.setItem('theme', 'dark');  // Save preference
         lightIcon.style.display = 'none';   // Hide light icon
         darkIcon.style.display = 'block';   // Show dark icon
-      }
-    });
+    }
+});
 </script>
 </section>
 
