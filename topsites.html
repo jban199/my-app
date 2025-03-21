@@ -129,22 +129,7 @@ function loadSidebar() {
 
 
 
-<script>
-// Function to load and inject the footer HTML dynamically
-function loadFooterMenu() {
-    fetch('footermenu.html')
-        .then(response => response.text())
-        .then(data => {
-            // Inject the footer content into the page
-            const footerContainer = document.getElementById('footermenu-container');
-            footerContainer.innerHTML = data;
-        })
-        .catch(error => {
-            console.error("Error loading footer menu:", error);
-        });
-}
 
-</script>
 
 
 </body>
