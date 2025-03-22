@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IndexedDB Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f9;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .data-list {
+      margin-top: 20px;
+    }
+    .data-item {
+      background-color: #f9f9f9;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Save Your Data</h1>
+  <div class="container">
+    <input type="text" id="userInput" placeholder="Enter some data..." />
+    <button onclick="saveData()">Save Data</button>
+    
+    <div class="data-list" id="dataList">
+      <!-- Saved data will appear here -->
+    </div>
+  </div>
+
+  <script>
+    // Open IndexedDB
+    let db;
+    const dbName = "UserDataDB";
+    const storeName = "dataStore";
+
+    const openRequest = indexedDB.open(dbName, 1);
+
+    // Initialize the database
+    openRequest.onupgradeneeded = (e) => {
+      db = e.target.result;
+      const objectStore = db.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+      objectStore.createIndex("data", "data", { unique: false });
+    };
+
+    openRequest.onsuccess = (e) => {
+      db = e.target.result;
+      loadData();
+    };
+
+    openRequest.onerror = (e) => {
+      console.error("Error opening IndexedDB", e);
+    };
+
+    // Save data to IndexedDB
+    function saveData() {
+      const userInput = document.getElementById("userInput").value;
+
+      if (userInput.trim() === "") {
+        alert("Please enter some data.");
+        return;
+      }
+
+      const transaction = db.transaction([storeName], "readwrite");
+      const store = transaction.objectStore(storeName);
+
+      const data = { data: userInput };
+      store.add(data);
+
+      transaction.oncomplete = () => {
+        console.log("Data saved!");
+        loadData(); // Reload the data after saving
+        document.getElementById("userInput").value = ""; // Clear the input field
+      };
+
+      transaction.onerror = (e) => {
+        console.error("Error saving data", e);
+      };
+    }
+
+    // Load data from IndexedDB
+    function loadData() {
+      const transaction = db.transaction([storeName], "readonly");
+      const store = transaction.objectStore(storeName);
+      const request = store.getAll();
+
+      request.onsuccess = (e) => {
+        const dataList = e.target.result;
+        const dataListContainer = document.getElementById("dataList");
+
+        dataListContainer.innerHTML = ""; // Clear the list before reloading
+
+        dataList.forEach(item => {
+          const div = document.createElement("div");
+          div.classList.add("data-item");
+          div.textContent = item.data;
+          dataListContainer.appendChild(div);
+        });
+      };
+
+      request.onerror = (e) => {
+        console.error("Error loading data", e);
+      };
+    }
+  </script>
+</body>
+</html>
