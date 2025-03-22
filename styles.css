@@ -526,7 +526,7 @@ p {
   box-sizing: border-box;
 }
 
-.dropdown {
+.search-engine-dropdown {
   position: absolute;
   top: 35px;
   left: 0;
@@ -540,14 +540,14 @@ p {
   z-index: 10;
 }
 
-.dropdown-item {
+.search-engine-dropdown-item {
   padding: 10px;
   display: flex;
   align-items: center;
   cursor: pointer;
 }
 
-.dropdown-item img {
+.search-engine-dropdown-item img {
   width: 24px;
   height: 24px;
   margin-right: 10px;
@@ -556,7 +556,7 @@ p {
   border-radius: 30px;
 }
 
-.dropdown.show {
+.search-engine-dropdown.show {
   display: block;
 }
 
