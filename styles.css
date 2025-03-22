@@ -466,7 +466,7 @@ p {
   text-align: center;
   padding: 10px;
   box-sizing: border-box;
-  
+  margin-top: 100px;
 }
 
 #search-bar {
@@ -478,13 +478,13 @@ p {
 
 #search-input {
   width: 100%;
-  padding: 10px;
-  padding-left: 50px;
+  padding: 10px 40px;
   font-size: 16px;
   background: var(--bg3);
   color: var(--font1);
   border: none;
   border-radius: 25px;
+  text-overflow: ellipsis;
 }
 
 #search-btn {
@@ -507,8 +507,8 @@ p {
 
 #engine-select {
   position: absolute;
-  left: 13px;
-  top: 14px;
+  left: 4px;
+  top: 4px;
 }
 
 #selected-engine {
