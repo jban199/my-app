@@ -161,41 +161,56 @@ document.getElementById('search-btn').addEventListener('click', () => {
     </ul>
 </div>
 <script>
-// Prevent the context menu from appearing on right-click
-document.addEventListener('contextmenu', function(event) {
-  event.preventDefault(); // Prevent the context menu from appearing
-});
-
-// Show dropdown menu on long press
+// Handle long press with touch and mouse events
 let longPressTimer;
-function showDropdown(event, element) {
+let activeElement = null; // Store the active element for the long press
+
+// Function to detect a long press
+function startLongPress(event, element) {
   event.preventDefault();
   event.stopPropagation();
 
-  // Set long press timer (500ms)
+  activeElement = element;
+
+  // Set a timer for long press (500ms)
   longPressTimer = setTimeout(() => {
-    element.classList.add('active'); // Show dropdown
+    if (activeElement) {
+      activeElement.classList.add('active'); // Show dropdown on long press
+    }
   }, 500);
 }
 
-// Close the dropdown when user clicks anywhere
+// Function to cancel the long press if the press is short
+function cancelLongPress() {
+  clearTimeout(longPressTimer);
+  activeElement = null; // Reset the active element
+}
+
+// Show dropdown menu on long press (only if long press timer completes)
+function showDropdown(event, element) {
+  startLongPress(event, element); // Start long press
+}
+
+// Handle click event to remove active dropdown
 document.addEventListener('click', () => {
   const activeLink = document.querySelector('.toplink.active');
   if (activeLink) {
     activeLink.classList.remove('active');
   }
+  cancelLongPress(); // Reset long press timer
 });
 
-// Cancel long press if click happens before timeout
-document.querySelectorAll('.toplink').forEach(link => {
-  link.addEventListener('click', () => {
-    clearTimeout(longPressTimer); // Cancel long press timer
-  });
-});
+// Function to handle click on a link (opens the link in a new tab)
+function handleClick(element) {
+  const link = element.dataset.link;
+  window.open(link, '_blank'); // Open the link in a new tab
+  cancelLongPress(); // Reset long press timer on click
+}
 
 // Function to edit a link (for now, it just logs the action)
 function editLink() {
   alert('Edit this link!');
+  cancelLongPress(); // Reset long press timer
 }
 
 // Function to delete a link (removes the element)
@@ -204,7 +219,7 @@ function deleteLink() {
   if (activeLink) {
     activeLink.remove(); // Remove the clicked link
   }
-  clearTimeout(longPressTimer); // Reset the long press timer
+  cancelLongPress(); // Reset long press timer
 }
 
 // Open modal for adding a new bookmark (for now, just an alert)
@@ -212,7 +227,14 @@ function openModal() {
   alert('Open modal to add a bookmark');
 }
 
-// Optionally, you can store the top links in localStorage and persist the data
+// Attach events to each toplink element
+document.querySelectorAll('.toplink').forEach(link => {
+  link.addEventListener('click', () => handleClick(link)); // Normal click event
+  link.addEventListener('touchstart', (event) => startLongPress(event, link)); // Touch start (long press)
+  link.addEventListener('touchend', cancelLongPress); // Touch end (reset long press)
+  link.addEventListener('mousedown', (event) => startLongPress(event, link)); // Mouse down (long press)
+  link.addEventListener('mouseup', cancelLongPress); // Mouse up (reset long press)
+});
 
 </script>
 
