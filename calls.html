@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phonebook App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f9;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+      cursor: grab;
+    }
+    .card button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .card button:hover {
+      background-color: #45a049;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      width: 300px;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header button {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .modal input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .modal footer {
+      display: flex;
+      justify-content: space-between;
+    }
+    .save-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .save-btn:hover {
+      background-color: #45a049;
+    }
+    .cancel-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .cancel-btn:hover {
+      background-color: #e53935;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Phonebook App</h1>
+
+  <div class="container">
+    <button id="addBtn">Add Contact</button>
+
+    <div id="phoneList"></div>
+
+    <button id="saveChangesBtn" style="display:none; margin-top: 20px;">Save Changes</button>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button id="closeModalBtn">✕</button>
+        <h3>Add Contact</h3>
+      </div>
+      <input type="text" id="nameInput" placeholder="Enter Name" />
+      <input type="tel" id="numberInput" placeholder="Enter Phone Number" />
+      <footer>
+        <button id="saveBtn" class="save-btn">Save</button>
+        <button id="cancelBtn" class="cancel-btn">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    let db;
+    const dbName = "takDB";
+    const storeName = "CustomCalls";
+    let contacts = [];
+
+    // Open IndexedDB
+    const openRequest = indexedDB.open(dbName, 1);
+    openRequest.onupgradeneeded = (e) => {
+      db = e.target.result;
+      const store = db.createObjectStore(storeName, { keyPath: "Number" });
+      store.createIndex("Name", "Name", { unique: false });
+      store.createIndex("Order", "Order", { unique: false });
+    };
+
+    openRequest.onsuccess = () => {
+      db = openRequest.result;
+      loadContacts();
+    };
+
+    openRequest.onerror = (e) => {
+      console.error("Error opening IndexedDB", e);
+    };
+
+    function loadContacts() {
+      const transaction = db.transaction([storeName], "readonly");
+      const store = transaction.objectStore(storeName);
+      const request = store.getAll();
+
+      request.onsuccess = (e) => {
+        contacts = e.target.result;
+        displayContacts();
+      };
+    }
+
+    function displayContacts() {
+      const phoneList = document.getElementById("phoneList");
+      phoneList.innerHTML = "";
+
+      contacts.forEach((contact, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.setAttribute("draggable", true);
+        card.dataset.index = index;
+
+        card.innerHTML = `
+          <span>${contact.Name} - ${contact.Number}</span>
+          <button onclick="callContact('${contact.Number}')">Call</button>
+        `;
+
+        card.addEventListener("dragstart", (e) => dragStart(e, index));
+        card.addEventListener("dragover", dragOver);
+        card.addEventListener("drop", (e) => drop(e, index));
+        card.addEventListener("dragend", dragEnd);
+
+        phoneList.appendChild(card);
+      });
+    }
+
+    // Open Modal
+    document.getElementById("addBtn").addEventListener("click", () => {
+      document.getElementById("modal").style.display = "flex";
+    });
+
+    // Close Modal
+    document.getElementById("closeModalBtn").addEventListener("click", closeModal);
+    document.getElementById("cancelBtn").addEventListener("click", closeModal);
+
+    // Save Contact
+    document.getElementById("saveBtn").addEventListener("click", () => {
+      const name = document.getElementById("nameInput").value.trim();
+      const number = document.getElementById("numberInput").value.trim();
+
+      if (!name || !number) {
+        alert("Both fields are required!");
+        return;
+      }
+
+      const transaction = db.transaction([storeName], "readwrite");
+      const store = transaction.objectStore(storeName);
+
+      const order = contacts.length + 1;
+      const newContact = { Name: name, Number: number, Order: order };
+
+      store.add(newContact);
+      transaction.oncomplete = () => {
+        contacts.push(newContact);
+        displayContacts();
+        closeModal();
+      };
+    });
+
+    // Close Modal
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
+      document.getElementById("nameInput").value = "";
+      document.getElementById("numberInput").value = "";
+    }
+
+    // Call Contact
+    function callContact(number) {
+      window.location.href = `tel:${number}`;
+    }
+
+    // Drag-and-Drop
+    let draggedIndex;
+
+    function dragStart(e, index) {
+      draggedIndex = index;
+      setTimeout(() => {
+        e.target.style.display = "none";
+      }, 0);
+    }
+
+    function dragOver(e) {
+      e.preventDefault();
+    }
+
+    function drop(e, index) {
+      e.preventDefault();
+      if (draggedIndex !== index) {
+        const temp = contacts[draggedIndex];
+        contacts[draggedIndex] = contacts[index];
+        contacts[index] = temp;
+        updateOrderInDB();
+      }
+      displayContacts();
+    }
+
+    function dragEnd(e) {
+      e.target.style.display = "block";
+    }
+
+    function updateOrderInDB() {
+      const transaction = db.transaction([storeName], "readwrite");
+      const store = transaction.objectStore(storeName);
+      
+      contacts.forEach((contact, index) => {
+        const updatedContact = { ...contact, Order: index + 1 };
+        store.put(updatedContact);
+      });
+
+      transaction.oncomplete = () => {
+        document.getElementById("saveChangesBtn").style.display = "none";
+      };
+    }
+
+    // Save Changes button (visible when dragging)
+    document.getElementById("saveChangesBtn").addEventListener("click", updateOrderInDB);
+
+    // Initialize the app
+    loadContacts();
+  </script>
+</body>
+</html>
