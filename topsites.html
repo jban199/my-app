@@ -129,114 +129,51 @@ document.getElementById('search-btn').addEventListener('click', () => {
 <!-- ///////////////// -->
 <!-- Top Sites -->
 <!-- ///////////////// -->
-<div id="toplinks-container">
-    <!-- Toplinks with default icons and names -->
-    <div class="toplink" data-link="https://www.amazon.com" oncontextmenu="showDropdown(event, this)">
-      <div class="icon"><img src="images/icons/amazon.svg" alt="Amazon"></div>
-      <div class="name">Amazon</div>
-    </div>
-    <div class="toplink" data-link="https://www.google.com" oncontextmenu="showDropdown(event, this)">
-      <div class="icon"><img src="images/icons/google.svg" alt="Google"></div>
-      <div class="name">Google</div>
-    </div>
-    <div class="toplink" data-link="https://www.youtube.com" oncontextmenu="showDropdown(event, this)">
-      <div class="icon"><img src="images/icons/youtube.svg" alt="YouTube"></div>
-      <div class="name">YouTube</div>
-    </div>
-    <div class="toplink" data-link="https://www.facebook.com" oncontextmenu="showDropdown(event, this)">
-      <div class="icon"><img src="images/icons/facebook.svg" alt="Facebook"></div>
-      <div class="name">Facebook</div>
-    </div>
-    <div class="toplink plus-button" onclick="openModal()">
-      <div class="icon"><img src="images/icons/addmore.svg" alt="Add Bookmark"></div>
-      <div class="name">Add</div>
-    </div>
+<section class="options-container">
+  <div class="option">
+    <a href="https://www.amazon.in/" target="_blank">
+      <img src="images/icons/amazon.svg">
+      <h3>Amazon</h3>
+    </a>
   </div>
+  <div class="option">
+    <a href="https://www.google.com/" target="_blank">
+      <img src="images/icons/google.svg">
+      <h3>Google</h3>
+    </a>
+  </div>
+  <div class="option">
+    <a href="https://www.youtube.com/" target="_blank">
+      <img src="images/icons/youtube.svg">
+      <h3>YouTube</h3>
+    </a>
+  </div>
+  <div class="option">
+    <a href="https://www.wikipedia.org/" target="_blank">
+      <img src="images/icons/wikipedia.svg">
+      <h3>Wikipedia - The free encyclopedia</h3>
+    </a>
+  </div>
+  <div class="option">
+    <a href="https://www.bing.com/" target="_blank">
+      <img src="images/icons/bing.svg">
+      <h3>Bing</h3>
+    </a>
+  </div>
+  <div class="option">
+    <a href="https://in.search.yahoo.com/" target="_blank">
+      <img src="images/icons/yahoo.svg">
+      <h3>Yahoo</h3>
+    </a>
+  </div>
+  <div class="option">
+    <a href="https://duckduckgo.com/" target="_blank">
+      <img src="images/icons/duckduckgo.svg">
+      <h3>DuckDuckGo</h3>
+    </a>
+  </div>
+</section>
 
-  <!-- Dropdown for Edit/Delete -->
-  <div id="dropdown-menu" class="dropdown-menu">
-    <ul>
-      <li onclick="editLink()">Edit</li>
-      <li onclick="deleteLink()">Delete</li>
-    </ul>
-</div>
-<script>
-// Handle long press with touch and mouse events
-let longPressTimer;
-let activeElement = null; // Store the active element for the long press
-
-// Function to detect a long press
-function startLongPress(event, element) {
-  event.preventDefault();
-  event.stopPropagation();
-
-  activeElement = element;
-
-  // Set a timer for long press (500ms)
-  longPressTimer = setTimeout(() => {
-    if (activeElement) {
-      activeElement.classList.add('active'); // Show dropdown on long press
-    }
-  }, 500);
-}
-
-// Function to cancel the long press if the press is short
-function cancelLongPress() {
-  clearTimeout(longPressTimer);
-  activeElement = null; // Reset the active element
-}
-
-// Show dropdown menu on long press (only if long press timer completes)
-function showDropdown(event, element) {
-  startLongPress(event, element); // Start long press
-}
-
-// Handle click event to remove active dropdown
-document.addEventListener('click', () => {
-  const activeLink = document.querySelector('.toplink.active');
-  if (activeLink) {
-    activeLink.classList.remove('active');
-  }
-  cancelLongPress(); // Reset long press timer
-});
-
-// Function to handle click on a link (opens the link in a new tab)
-function handleClick(element) {
-  const link = element.dataset.link;
-  window.open(link, '_blank'); // Open the link in a new tab
-  cancelLongPress(); // Reset long press timer on click
-}
-
-// Function to edit a link (for now, it just logs the action)
-function editLink() {
-  alert('Edit this link!');
-  cancelLongPress(); // Reset long press timer
-}
-
-// Function to delete a link (removes the element)
-function deleteLink() {
-  const activeLink = document.querySelector('.toplink.active');
-  if (activeLink) {
-    activeLink.remove(); // Remove the clicked link
-  }
-  cancelLongPress(); // Reset long press timer
-}
-
-// Open modal for adding a new bookmark (for now, just an alert)
-function openModal() {
-  alert('Open modal to add a bookmark');
-}
-
-// Attach events to each toplink element
-document.querySelectorAll('.toplink').forEach(link => {
-  link.addEventListener('click', () => handleClick(link)); // Normal click event
-  link.addEventListener('touchstart', (event) => startLongPress(event, link)); // Touch start (long press)
-  link.addEventListener('touchend', cancelLongPress); // Touch end (reset long press)
-  link.addEventListener('mousedown', (event) => startLongPress(event, link)); // Mouse down (long press)
-  link.addEventListener('mouseup', cancelLongPress); // Mouse up (reset long press)
-});
-
-</script>
 
 
 
