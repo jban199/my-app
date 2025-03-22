@@ -55,7 +55,7 @@
 	</div>
 </div>
   
-  <script>
+<script>
 // Function to toggle dropdown visibility
 function toggleDropdown() {
   const dropdown = document.getElementById('dropdown');
@@ -123,8 +123,98 @@ document.getElementById('search-btn').addEventListener('click', () => {
   }
 });
 
-  </script>
+</script>
 
+
+<!-- ///////////////// -->
+<!-- Top Sites -->
+<!-- ///////////////// -->
+<div id="toplinks-container">
+    <!-- Toplinks with default icons and names -->
+    <div class="toplink" data-link="https://www.amazon.com" oncontextmenu="showDropdown(event, this)">
+      <div class="icon"><img src="images/icons/amazon.svg" alt="Amazon"></div>
+      <div class="name">Amazon</div>
+    </div>
+    <div class="toplink" data-link="https://www.google.com" oncontextmenu="showDropdown(event, this)">
+      <div class="icon"><img src="images/icons/google.svg" alt="Google"></div>
+      <div class="name">Google</div>
+    </div>
+    <div class="toplink" data-link="https://www.youtube.com" oncontextmenu="showDropdown(event, this)">
+      <div class="icon"><img src="images/icons/youtube.svg" alt="YouTube"></div>
+      <div class="name">YouTube</div>
+    </div>
+    <div class="toplink" data-link="https://www.facebook.com" oncontextmenu="showDropdown(event, this)">
+      <div class="icon"><img src="images/icons/facebook.svg" alt="Facebook"></div>
+      <div class="name">Facebook</div>
+    </div>
+    <div class="toplink plus-button" onclick="openModal()">
+      <div class="icon"><img src="images/icons/addmore.svg" alt="Add Bookmark"></div>
+      <div class="name">Add</div>
+    </div>
+  </div>
+
+  <!-- Dropdown for Edit/Delete -->
+  <div id="dropdown-menu" class="dropdown-menu">
+    <ul>
+      <li onclick="editLink()">Edit</li>
+      <li onclick="deleteLink()">Delete</li>
+    </ul>
+</div>
+<script>
+// Prevent the context menu from appearing on right-click
+document.addEventListener('contextmenu', function(event) {
+  event.preventDefault(); // Prevent the context menu from appearing
+});
+
+// Show dropdown menu on long press
+let longPressTimer;
+function showDropdown(event, element) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  // Set long press timer (500ms)
+  longPressTimer = setTimeout(() => {
+    element.classList.add('active'); // Show dropdown
+  }, 500);
+}
+
+// Close the dropdown when user clicks anywhere
+document.addEventListener('click', () => {
+  const activeLink = document.querySelector('.toplink.active');
+  if (activeLink) {
+    activeLink.classList.remove('active');
+  }
+});
+
+// Cancel long press if click happens before timeout
+document.querySelectorAll('.toplink').forEach(link => {
+  link.addEventListener('click', () => {
+    clearTimeout(longPressTimer); // Cancel long press timer
+  });
+});
+
+// Function to edit a link (for now, it just logs the action)
+function editLink() {
+  alert('Edit this link!');
+}
+
+// Function to delete a link (removes the element)
+function deleteLink() {
+  const activeLink = document.querySelector('.toplink.active');
+  if (activeLink) {
+    activeLink.remove(); // Remove the clicked link
+  }
+  clearTimeout(longPressTimer); // Reset the long press timer
+}
+
+// Open modal for adding a new bookmark (for now, just an alert)
+function openModal() {
+  alert('Open modal to add a bookmark');
+}
+
+// Optionally, you can store the top links in localStorage and persist the data
+
+</script>
 
 
 
