@@ -455,3 +455,106 @@ p {
 	fill: var(--accent1);
 }
 
+
+
+
+/* ///////////////// */
+/* Search bar & Search Engine */
+/* ///////////////// */
+#search-container {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+  
+}
+
+#search-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+#search-input {
+  width: 100%;
+  padding: 10px;
+  padding-left: 50px;
+  font-size: 16px;
+  background: var(--bg3);
+  color: var(--font1);
+  border: none;
+  border-radius: 25px;
+}
+
+#search-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  border: none;
+  border-radius: 25px;
+  background: var(--bg2);
+  position: absolute;
+  right: 3px;
+  top: 4px;
+}
+
+#search-btn svg {
+  fill: var(--accent1);
+}
+
+#engine-select {
+  position: absolute;
+  left: 13px;
+  top: 14px;
+}
+
+#selected-engine {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.search-engine-icon img {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  background: whitesmoke;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+.dropdown {
+  position: absolute;
+  top: 35px;
+  left: 0;
+  background-color: var(--bg3);
+  color: var(--font1);
+  box-shadow: 0px 2px 5px var(--shadow1);
+  width: fit-content;
+  border-radius: 10px;
+  padding: 10px;
+  display: none;
+  z-index: 10;
+}
+
+.dropdown-item {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dropdown-item img {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  background: white;
+  padding: 2px;
+  border-radius: 30px;
+}
+
+.dropdown.show {
+  display: block;
+}
