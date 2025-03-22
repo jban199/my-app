@@ -33,6 +33,18 @@
       padding: 15px;
       margin: 10px 0;
       cursor: grab;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .card-content span {
+      margin: 5px 0;
+      font-weight: bold;
     }
     .card button {
       background-color: #4CAF50;
@@ -44,6 +56,14 @@
     }
     .card button:hover {
       background-color: #45a049;
+    }
+    .button-group {
+      display: flex;
+      align-items: center;
+    }
+    .button-group svg {
+      margin: 0 5px;
+      cursor: pointer;
     }
     .modal {
       display: none;
@@ -181,9 +201,34 @@
         card.dataset.index = index;
 
         card.innerHTML = `
-          <span>${contact.Name} - ${contact.Number}</span>
-          <button onclick="callContact('${contact.Number}')">Call</button>
+          <div class="button-group">
+            <svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1F1f1F" class="drag-btn">
+              <path d="M360-160q-33 0-56.5-23.5T280-240q0-33 23.5-56.5T360-320q33 0 56.5 23.5T440-240q0 33-23.5 56.5T360-160Zm240 0q-33 0-56.5-23.5T520-240q0-33 23.5-56.5T600-320q33 0 56.5 23.5T680-240q0 33-23.5 56.5T600-160ZM360-400q-33 0-56.5-23.5T280-480q0-33 23.5-56.5T360-560q33 0 56.5 23.5T440-480q0 33-23.5 56.5T360-400Zm240 0q-33 0-56.5-23.5T520-480q0-33 23.5-56.5T600-560q33 0 56.5 23.5T680-480q0 33-23.5 56.5T600-400ZM360-640q-33 0-56.5-23.5T280-720q0-33 23.5-56.5T360-800q33 0 56.5 23.5T440-720q0 33-23.5 56.5T360-640Zm240 0q-33 0-56.5-23.5T520-720q0-33 23.5-56.5T600-800q33 0 56.5 23.5T680-720q0 33-23.5 56.5T600-640Z"/>
+            </svg>
+            <div class="card-content">
+              <span>${contact.Name}</span>
+              <span>${contact.Number}</span>
+            </div>
+            <div class="button-group">
+              <svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1F1f1F" class="edit-btn">
+                <path d="M160-120q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm544-528 56-56-56-56-56 56 56 56Z"/>
+              </svg>
+              <svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1F1f1F" class="delete-btn">
+                <path d="M280-120q-33 0-56.5-23.5T200-200v-520q-17 0-28.5-11.5T160-760q0-17 11.5-28.5T200-800h160q0-17 11.5-28.5T400-840h160q17 0 28.5 11.5T600-800h160q17 0 28.5 11.5T800-760q0 17-11.5 28.5T760-720v520q0 33-23.5 56.5T680-120H280Zm200-284 76 76q11 11 28 11t28-11q11-11 11-28t-11-28l-76-76 76-76q11-11 11-28t-11-28q-11-11-28-11t-28 11l-76 76-76-76q-11-11-28-11t-28 11q-11 11-11 28t11 28l76 76-76 76q-11 11-11 28t11 28q11 11 28 11t28-11l76-76Z"/>
+              </svg>
+              <svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1F1f1F" class="call-btn">
+                <path d="M798-120q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12Z"/>
+              </svg>
+            </div>
+          </div>
         `;
+
+        // Call button action
+        card.querySelector('.call-btn').addEventListener('click', () => callContact(contact.Number));
+        // Edit button action
+        card.querySelector('.edit-btn').addEventListener('click', () => editContact(contact));
+        // Delete button action
+        card.querySelector('.delete-btn').addEventListener('click', () => deleteContact(contact));
 
         card.addEventListener("dragstart", (e) => dragStart(e, index));
         card.addEventListener("dragover", dragOver);
@@ -194,52 +239,7 @@
       });
     }
 
-    // Open Modal
-    document.getElementById("addBtn").addEventListener("click", () => {
-      document.getElementById("modal").style.display = "flex";
-    });
-
-    // Close Modal
-    document.getElementById("closeModalBtn").addEventListener("click", closeModal);
-    document.getElementById("cancelBtn").addEventListener("click", closeModal);
-
-    // Save Contact
-    document.getElementById("saveBtn").addEventListener("click", () => {
-      const name = document.getElementById("nameInput").value.trim();
-      const number = document.getElementById("numberInput").value.trim();
-
-      if (!name || !number) {
-        alert("Both fields are required!");
-        return;
-      }
-
-      const transaction = db.transaction([storeName], "readwrite");
-      const store = transaction.objectStore(storeName);
-
-      const order = contacts.length + 1;
-      const newContact = { Name: name, Number: number, Order: order };
-
-      store.add(newContact);
-      transaction.oncomplete = () => {
-        contacts.push(newContact);
-        displayContacts();
-        closeModal();
-      };
-    });
-
-    // Close Modal
-    function closeModal() {
-      document.getElementById("modal").style.display = "none";
-      document.getElementById("nameInput").value = "";
-      document.getElementById("numberInput").value = "";
-    }
-
-    // Call Contact
-    function callContact(number) {
-      window.location.href = `tel:${number}`;
-    }
-
-    // Drag-and-Drop
+    // Drag-and-Drop Implementation
     let draggedIndex;
 
     function dragStart(e, index) {
@@ -271,22 +271,70 @@
     function updateOrderInDB() {
       const transaction = db.transaction([storeName], "readwrite");
       const store = transaction.objectStore(storeName);
-      
       contacts.forEach((contact, index) => {
-        const updatedContact = { ...contact, Order: index + 1 };
-        store.put(updatedContact);
+        contact.Order = index;
+        store.put(contact);
       });
-
-      transaction.oncomplete = () => {
-        document.getElementById("saveChangesBtn").style.display = "none";
-      };
+      displayContacts();
     }
 
-    // Save Changes button (visible when dragging)
-    document.getElementById("saveChangesBtn").addEventListener("click", updateOrderInDB);
+    function callContact(number) {
+      window.location.href = `tel:${number}`;
+    }
 
-    // Initialize the app
-    loadContacts();
+    function editContact(contact) {
+      document.getElementById("nameInput").value = contact.Name;
+      document.getElementById("numberInput").value = contact.Number;
+      showModal("Edit Contact", contact);
+    }
+
+    function deleteContact(contact) {
+      const transaction = db.transaction([storeName], "readwrite");
+      const store = transaction.objectStore(storeName);
+      store.delete(contact.Number);
+      loadContacts();
+    }
+
+    function showModal(title, contact = null) {
+      document.querySelector(".modal-content h3").textContent = title;
+      document.getElementById("saveBtn").onclick = () => saveContact(contact);
+      document.getElementById("modal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+
+    function saveContact(contact = null) {
+      const name = document.getElementById("nameInput").value;
+      const number = document.getElementById("numberInput").value;
+
+      if (!name || !number) return;
+
+      const transaction = db.transaction([storeName], "readwrite");
+      const store = transaction.objectStore(storeName);
+
+      if (contact) {
+        contact.Name = name;
+        contact.Number = number;
+        store.put(contact);
+      } else {
+        const newContact = {
+          Name: name,
+          Number: number,
+          Order: contacts.length
+        };
+        store.add(newContact);
+      }
+      loadContacts();
+      closeModal();
+    }
+
+    document.getElementById("addBtn").addEventListener("click", () => showModal("Add Contact"));
+    document.getElementById("closeModalBtn").addEventListener("click", closeModal);
+    document.getElementById("cancelBtn").addEventListener("click", closeModal);
+
   </script>
+
 </body>
 </html>
