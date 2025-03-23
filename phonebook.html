@@ -17,9 +17,60 @@
 </head>
 <body>
 
-<section class="pb-container">
+<section class="pb-header">
 	<h1> Emergency Calls </h1>
 	
+	<!-- Search bar -->
+    <div class="pb-search-bar">
+        <input type="text" id="pb-searchInput" placeholder="Search by name or phone" />
+        <button id="pb-clearButton">
+			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/>
+			</svg>
+		</button>
+    </div>
+	
+<script>	
+// Get references to the input field, clear button, and the card container
+const searchInput = document.getElementById('pb-searchInput');
+const clearButton = document.getElementById('pb-clearButton');
+const pbCardContainer = document.querySelector('.pb-card-container');
+
+// Function to filter cards based on the search input
+function filterCards() {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    // Get all the cards
+    const cards = document.querySelectorAll('.pb-card');
+
+    cards.forEach(card => {
+        const name = card.querySelector('.pb-card-name').textContent.toLowerCase();
+        const phone = card.querySelector('.pb-card-phone').textContent.toLowerCase();
+
+        // Check if the name or phone matches the search term
+        if (name.includes(searchTerm) || phone.includes(searchTerm)) {
+            card.style.display = 'flex'; // Show the card
+        } else {
+            card.style.display = 'none'; // Hide the card
+        }
+    });
+}
+
+// Event listener for the search input to filter cards
+searchInput.addEventListener('input', filterCards);
+
+// Event listener for the clear button to reset the search
+clearButton.addEventListener('click', () => {
+    searchInput.value = ''; // Clear the input
+    filterCards(); // Reset the cards to be visible
+});
+</script>
+</section>
+
+
+<section class="pb-container">
+
+	<!-- Card Section -->
 	<div class="pb-card">
         <img class="pb-card-photo" src="images/icons/emergency.svg">
 		<div class="pb-card-info">
