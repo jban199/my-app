@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TKA - NearMe</title>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <meta name="theme-color" content="#1A1A1A">
+
+    <!-- Link to the stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+
+<section class="nm-header">
+	<h1 class="nm-pagename"> Things Near You </h1>
+	
+	<!-- Search bar -->
+    <div class="nm-search-bar">
+        <input type="text" id="nm-searchInput" placeholder="Search here" />
+        <button id="nm-clearButton">
+			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/>
+			</svg>
+		</button>
+    </div>
+	
+<script>	
+// Get references to the input field, clear button, and the card container
+const searchInput = document.getElementById('nm-searchInput');
+const clearButton = document.getElementById('nm-clearButton');
+const pbCardContainer = document.querySelector('.nm-container');
+
+// Function to filter cards based on the search input
+function filterCards() {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    // Get all the cards
+    const cards = document.querySelectorAll('.nm-option');
+
+    cards.forEach(card => {
+        const name = card.querySelector('.nm-option-name').textContent.toLowerCase();
+
+        // Check if the name or phone matches the search term
+        if (name.includes(searchTerm)) {
+            card.style.display = 'flex'; // Show the card
+        } else {
+            card.style.display = 'none'; // Hide the card
+        }
+    });
+}
+
+// Event listener for the search input to filter cards
+searchInput.addEventListener('input', filterCards);
+
+// Event listener for the clear button to reset the search
+clearButton.addEventListener('click', () => {
+    searchInput.value = ''; // Clear the input
+    filterCards(); // Reset the cards to be visible
+});
+</script>
+</section>
+
+<!-- ///////////////// -->
+<!-- Nearme Cards -->
+<!-- ///////////////// -->
+
+<h2 class="nm-option-category"> Search engines	 </h2>
+<section class="nm-container">
+    <div id="no-results" class="no-results" style="display:none;">No result found</div>
+
+    <div class="nm-option">
+        <a href="https://www.amazon.in/" target="_blank">
+            <img src="images/icons/amazon.svg">
+            <h3 class="nm-option-name">Amazon</h3>
+        </a>
+    </div>
+    <div class="nm-option">
+        <a href="https://www.google.com/" target="_blank">
+            <img src="images/icons/google.svg">
+            <h3 class="nm-option-name">Google</h3>
+        </a>
+    </div>
+    <div class="nm-option">
+        <a href="https://www.youtube.com/" target="_blank">
+            <img src="images/icons/youtube.svg">
+            <h3 class="nm-option-name">YouTube</h3>
+        </a>
+    </div>
+    <div class="nm-option">
+        <a href="https://www.wikipedia.org/" target="_blank">
+            <img src="images/icons/wikipedia.svg">
+            <h3 class="nm-option-name">Wikipedia - The free encyclopedia</h3>
+        </a>
+    </div>
+    <div class="nm-option">
+        <a href="https://www.bing.com/" target="_blank">
+            <img src="images/icons/bing.svg">
+            <h3 class="nm-option-name">Bing</h3>
+        </a>
+    </div>
+    <div class="nm-option">
+        <a href="https://in.search.yahoo.com/" target="_blank">
+            <img src="images/icons/yahoo.svg">
+            <h3 class="nm-option-name">Yahoo</h3>
+        </a>
+    </div>
+</section>
+
+
+
+<h2 class="nm-option-category"> Shopping </h2>
+<section class="nm-container">
+  
+  <div class="nm-option">
+    <a href="https://www.amazon.in/" target="_blank">
+      <img src="images/icons/amazon.svg">
+      <h3 class="nm-option-name">Amazon</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="https://www.google.com/" target="_blank">
+      <img src="images/icons/google.svg">
+      <h3 class="nm-option-name">Google</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="https://www.youtube.com/" target="_blank">
+      <img src="images/icons/youtube.svg">
+      <h3 class="nm-option-name">YouTube</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="https://www.wikipedia.org/" target="_blank">
+      <img src="images/icons/wikipedia.svg">
+      <h3 class="nm-option-name">Wikipedia - The free encyclopedia</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="https://www.bing.com/" target="_blank">
+      <img src="images/icons/bing.svg">
+      <h3 class="nm-option-name">Bing</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="https://in.search.yahoo.com/" target="_blank">
+      <img src="images/icons/yahoo.svg">
+      <h3 class="nm-option-name">Yahoo</h3>
+    </a>
+  </div>
+
+</section>
+
+
+
+<!-- ///////////////// -->
+<!-- Footer Spacer -->
+<!-- ///////////////// -->
+<div class="footerSpacer">
+</div>
+
+
+
+<!-- ///////////////// -->
+<!-- Fixed Footer Menu -->
+<!-- ///////////////// -->
+<section>
+<!-- FooterMenu container (empty, the content is injected here) -->
+<div id="footermenu-container"></div>
+</section>
+
+
+
+
+
+<!-- ///////////////// -->
+<!-- Sidebar -->
+<!-- ///////////////// -->
+<section>
+<!-- Fullscreen Sidebar Trigger -->
+<svg id="sidebarIcon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+    <path d="M86-191v-126h788v126H86Zm0-226v-126h788v126H86Zm0-226v-126h788v126H86Z"/>
+</svg>
+
+<!-- Sidebar container (empty, the content is injected here) -->
+<div id="sidebar-container"></div>
+</section>
+
+
+<script>
+window.onload = function() {
+    // Load Sidebar
+    fetch('sidebar.html')
+        .then(response => response.text())
+        .then(data => {
+            const sidebarContainer = document.getElementById('sidebar-container');
+            sidebarContainer.innerHTML = data;
+            
+            // Reattach event listeners after the sidebar is loaded
+            const closeButton = document.getElementById("closeSidebarButton");
+            if (closeButton) {
+                closeButton.addEventListener("click", closeSidebar);
+            }
+			
+			// Get references to the icon that triggers the sidebar opening
+			const sidebarIcon = document.getElementById("sidebarIcon");
+
+			// Function to open the sidebar
+			function openSidebar() {
+				const fullscreenSidebar = document.getElementById("fullscreenSidebar");
+				fullscreenSidebar.style.transform = "translateX(0)";
+			}
+
+			// Function to close the sidebar
+			function closeSidebar() {
+				const fullscreenSidebar = document.getElementById("fullscreenSidebar");
+				fullscreenSidebar.style.transform = "translateX(-100%)";
+			}
+
+			// Event listener for opening the sidebar when the icon is clicked
+			sidebarIcon.addEventListener("click", openSidebar);
+        })
+        .catch(error => {
+            console.error("Error loading sidebar:", error);
+        });
+
+    // Load Footer Menu
+    fetch('footermenu.html')
+        .then(response => response.text())
+        .then(data => {
+            const footerContainer = document.getElementById('footermenu-container');
+            footerContainer.innerHTML = data;
+        })
+        .catch(error => {
+            console.error("Error loading footer menu:", error);
+        });
+};
+</script>
+
+
+
+<!-- ///////////////// -->
+<!-- Theme Toggle -->
+<!-- ///////////////// -->
+<section>
+<button id="theme-toggle">
+    <!-- Default dark icon (SVG) -->
+    <svg id="dark-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+      <path d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/>
+    </svg>
+
+    <!-- Light Icon (hidden by default) -->
+    <svg id="light-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="display: none;">
+      <path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/>
+    </svg>
+</button>
+</section>
+
+<!-- ///////////////// -->
+<!-- Set Theme - Based on Local Storage -->
+<!-- ///////////////// -->
+<script>
+  // Wait for the DOM to be fully loaded before running the script
+  document.addEventListener("DOMContentLoaded", function() {
+    const themeLink = document.createElement("link");
+    themeLink.rel = "stylesheet";
+    themeLink.id = "theme-link";
+    
+    // Check if a theme preference is saved in localStorage
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
+    } else if (savedTheme === "light") {
+      themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
+    } else {
+      themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
+      localStorage.setItem('theme', 'dark');  // Save preference
+    }
+
+    // Append the theme <link> tag to the <head> of the document
+    document.head.appendChild(themeLink);
+
+    // Initialize icons based on saved theme preference
+    const darkIcon = document.getElementById('dark-icon');
+    const lightIcon = document.getElementById('light-icon');
+
+    if (savedTheme === "dark") {
+      lightIcon.style.display = 'none';
+      darkIcon.style.display = 'block';
+    } else {
+      lightIcon.style.display = 'block';
+      darkIcon.style.display = 'none';
+    }
+
+    // Toggle theme when button is clicked
+    const themeToggleButton = document.getElementById('theme-toggle');
+
+    themeToggleButton.addEventListener('click', () => {
+      const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
+      if (currentTheme === 'dark') {
+        themeLink.href = 'light-theme.css';  // Switch to light theme
+        localStorage.setItem('theme', 'light');  // Save preference
+        lightIcon.style.display = 'block';  // Show light icon
+        darkIcon.style.display = 'none';   // Hide dark icon
+      } else {
+        themeLink.href = 'dark-theme.css';   // Switch to dark theme
+        localStorage.setItem('theme', 'dark');  // Save preference
+        lightIcon.style.display = 'none';   // Hide light icon
+        darkIcon.style.display = 'block';   // Show dark icon
+      }
+    });
+  });
+</script>
+
+
+<!-- ///////////////// -->
+<!-- Prevent Right Click Context Menu -->
+<!-- ///////////////// -->
+<script>
+  // Prevent the context menu from appearing on right-click
+  document.addEventListener('contextmenu', function(event) {
+	event.preventDefault(); // Prevent the context menu from appearing
+  });
+</script>
+
+
+</body>
+</html>
