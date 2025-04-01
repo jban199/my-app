@@ -499,7 +499,7 @@ p {
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
-	width: 100%;
+	width: 95%;
 	background-color: var(--bg1);
 	border-radius: 20px;
 	-webkit-backdrop-filter: blur(20px);
