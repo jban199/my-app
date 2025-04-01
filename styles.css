@@ -455,7 +455,41 @@ p {
 	fill: var(--accent1);
 }
 
+/* ///////////////// */
+/* Bottom menu */
+/* ///////////////// */
 
+#SBM-Icon {
+	fill: var(--accent1);
+    background-image: linear-gradient(0deg, var(--gradient1), var(--gradient2));
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    width: 35px;
+    position: fixed;
+	box-shadow: 0px 0px 5px var(--shadow1);
+	box-sizing: border-box;
+    bottom: 100px;
+    z-index: 1000;
+}
+
+#closeSBM {
+    background-color: var(--bg3);
+	border: none;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
 
 
 /* ///////////////// */
