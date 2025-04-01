@@ -1,115 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBM Menu</title>
-	<link rel="stylesheet" href="styles.css">
-	<link rel="stylesheet" id="theme-link" href="dark-theme.css">
-    <style>
-        body {
-            background-color: #000;
-            font-family: Arial, sans-serif;
-        }
 
-        .SBM-container {
-            position: fixed;
-			bottom: 100px;
-			left: 10px;
-			right: 10px;
-			background-color: var(--bg1);
-			border-radius: 20px;
-			-webkit-backdrop-filter: blur(20px);
-			backdrop-filter: blur(20px);
-			box-shadow: 0px -2px 25px var(--shadow1);
-			font-weight: normal;
-			padding: 10px;
-			z-index: 1000;
-        }
-		
-		.SBM-options {
-			display: grid;
-			grid-template-columns: repeat(2, 1fr);
-			gap: 10px;
-			padding: 10px 0px;
-		}
-		
-		.SBM-toggle {
-			display: grid;
-			grid-template-columns: repeat(4, 1fr);
-			gap: 10px;
-			padding: 10px 0px;
-		}
-		
-		.SBM-pages {
-			display: grid;
-			grid-template-columns: repeat(5, 1fr);
-			gap: 10px;
-			padding: 10px 0px;
-		}
-
-
-        .SBM-icon {
-            width: 24px;
-            height: 24px;
-            fill: var(--accent1);
-            margin: 5px;
-        }
-		
-		.SBM-OPT-button {
-			display: flex;
-			flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-            text-decoration: none;
-            color: var(--font1);
-            font-size: 12px;
-            background: var(--bg2);
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 5px;
-		}
-		
-		.SBM-TGG-button {
-			display: flex;
-			flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: var(--font1);
-            font-size: 10px;
-            background: var(--bg2);
-            padding: 10px 0px;
-            border-radius: 5px;
-            margin-bottom: 5px;
-		}
-		
-		.SBM-PGS-button {
-			display: flex;
-			flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: var(--font1);
-            font-size: 10px;
-            background: var(--bg2);
-            padding: 5px 0px;
-            border-radius: 5px;
-            margin-bottom: 5px;
-		}
-		
-		.divider {
-			width: 100%;
-			height: 1px;
-			background: #ffffff80;
-		}
-
-
-    </style>
-</head>
-<body>
-
-    <section class="SBM-container">
+<!-- SBM Menu -->
+    <section id="SBM-section">
         <div class="SBM-options">
             <a class="SBM-OPT-button" href="#">
 				<svg class="SBM-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
@@ -170,7 +61,7 @@
 				</svg>
 				Bhakti
 			</a>
-            <a class="SBM-PGS-button" href="calls.html">
+            <a class="SBM-PGS-button" href="phonebook.html">
 				<svg class="SBM-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="fill:olive;">
 					<path d="M798-120q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12Z"/>
 				</svg>
@@ -207,7 +98,11 @@
 				Videos
 			</a>
         </div>
+		
+		
+		<button id="closeSBM">
+			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/>
+			</svg>
+		</button>
     </section>
-
-</body>
-</html>
