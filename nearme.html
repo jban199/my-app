@@ -167,31 +167,6 @@ clearButton.addEventListener('click', () => {
 
 
 
-<!-- ///////////////// -->
-<!-- Fixed Footer Menu -->
-<!-- ///////////////// -->
-<section>
-<!-- FooterMenu container (empty, the content is injected here) -->
-<div id="footermenu-container"></div>
-</section>
-
-
-
-
-
-<!-- ///////////////// -->
-<!-- Sidebar -->
-<!-- ///////////////// -->
-<section>
-<!-- Fullscreen Sidebar Trigger -->
-<svg id="sidebarIcon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-    <path d="M86-191v-126h788v126H86Zm0-226v-126h788v126H86Zm0-226v-126h788v126H86Z"/>
-</svg>
-
-<!-- Sidebar container (empty, the content is injected here) -->
-<div id="sidebar-container"></div>
-</section>
-
 
 <!-- ///////////////// -->
 <!-- Bottom Menu -->
@@ -208,54 +183,7 @@ clearButton.addEventListener('click', () => {
 
 
 <script>
-window.onload = function() {
-    // Load Sidebar
-    fetch('sidebar.html')
-        .then(response => response.text())
-        .then(data => {
-            const sidebarContainer = document.getElementById('sidebar-container');
-            sidebarContainer.innerHTML = data;
-            
-            // Reattach event listeners after the sidebar is loaded
-            const closeButton = document.getElementById("closeSidebarButton");
-            if (closeButton) {
-                closeButton.addEventListener("click", closeSidebar);
-            }
-			
-			// Get references to the icon that triggers the sidebar opening
-			const sidebarIcon = document.getElementById("sidebarIcon");
-
-			// Function to open the sidebar
-			function openSidebar() {
-				const fullscreenSidebar = document.getElementById("fullscreenSidebar");
-				fullscreenSidebar.style.transform = "translateX(0)";
-			}
-
-			// Function to close the sidebar
-			function closeSidebar() {
-				const fullscreenSidebar = document.getElementById("fullscreenSidebar");
-				fullscreenSidebar.style.transform = "translateX(-100%)";
-			}
-
-			// Event listener for opening the sidebar when the icon is clicked
-			sidebarIcon.addEventListener("click", openSidebar);
-        })
-        .catch(error => {
-            console.error("Error loading sidebar:", error);
-        });
-
-    // Load Footer Menu
-    fetch('footermenu.html')
-        .then(response => response.text())
-        .then(data => {
-            const footerContainer = document.getElementById('footermenu-container');
-            footerContainer.innerHTML = data;
-        })
-        .catch(error => {
-            console.error("Error loading footer menu:", error);
-        });
-		
-		
+window.onload = function() {		
 	// Load SBM
     fetch('sbm.html')
         .then(response => response.text())
