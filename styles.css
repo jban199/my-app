@@ -475,6 +475,8 @@ p {
 	box-shadow: 0px 0px 5px var(--shadow1);
 	box-sizing: border-box;
     bottom: 100px;
+	left: 50%;
+    transform: translateX(-50%);
     z-index: 1000;
 }
 
@@ -528,7 +530,7 @@ p {
 }
 
 
-.SBM-icon {
+.SBM-icons {
 	width: 24px;
 	height: 24px;
 	fill: var(--accent1);
