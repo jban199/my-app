@@ -128,57 +128,62 @@
 <!-- Set Theme - Based on Local Storage -->
 <!-- ///////////////// -->
 <script>
-  // Wait for the DOM to be fully loaded before running the script
-  document.addEventListener("DOMContentLoaded", function() {
-    const themeLink = document.createElement("link");
-    themeLink.rel = "stylesheet";
-    themeLink.id = "theme-link";
-    
-    // Check if a theme preference is saved in localStorage
-    const savedTheme = localStorage.getItem("theme");
+document.addEventListener("DOMContentLoaded", function() {
+    // Fullscreen Toggle Function
+    function toggleFullscreen() {
+        const fullscreenBtn = document.getElementById("fullscreen-toggle");
 
-    if (savedTheme === "dark") {
-      themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
-    } else if (savedTheme === "light") {
-      themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
-    } else {
-      themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
-      localStorage.setItem('theme', 'dark');  // Save preference
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().then(() => {
+                fullscreenBtn.setAttribute("data-state", "on"); // Update attribute if used
+            }).catch(err => console.error("Fullscreen error:", err));
+        } else {
+            document.exitFullscreen().then(() => {
+                fullscreenBtn.setAttribute("data-state", "off");
+            }).catch(err => console.error("Exit fullscreen error:", err));
+        }
     }
 
-    // Append the theme <link> tag to the <head> of the document
-    document.head.appendChild(themeLink);
+    // Theme Toggle Function
+    function toggleTheme() {
+        const body = document.body;
+        const themeToggleBtn = document.getElementById("theme-toggle");
+        const currentTheme = localStorage.getItem("theme") || "light";
 
-    // Initialize icons based on saved theme preference
-    const darkIcon = document.getElementById('dark-icon');
-    const lightIcon = document.getElementById('light-icon');
-
-    if (savedTheme === "dark") {
-      lightIcon.style.display = 'none';
-      darkIcon.style.display = 'block';
-    } else {
-      lightIcon.style.display = 'block';
-      darkIcon.style.display = 'none';
+        if (currentTheme === "light") {
+            body.classList.add("dark-theme");
+            localStorage.setItem("theme", "dark");
+            themeToggleBtn.setAttribute("data-theme", "dark"); // Update attribute if used
+        } else {
+            body.classList.remove("dark-theme");
+            localStorage.setItem("theme", "light");
+            themeToggleBtn.setAttribute("data-theme", "light");
+        }
     }
 
-    // Toggle theme when button is clicked
-    const themeToggleButton = document.getElementById('theme-toggle');
+    // Apply saved theme on page load
+    function applySavedTheme() {
+        const savedTheme = localStorage.getItem("theme") || "light";
+        const body = document.body;
+        const themeToggleBtn = document.getElementById("theme-toggle");
 
-    themeToggleButton.addEventListener('click', () => {
-      const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
-      if (currentTheme === 'dark') {
-        themeLink.href = 'light-theme.css';  // Switch to light theme
-        localStorage.setItem('theme', 'light');  // Save preference
-        lightIcon.style.display = 'block';  // Show light icon
-        darkIcon.style.display = 'none';   // Hide dark icon
-      } else {
-        themeLink.href = 'dark-theme.css';   // Switch to dark theme
-        localStorage.setItem('theme', 'dark');  // Save preference
-        lightIcon.style.display = 'none';   // Hide light icon
-        darkIcon.style.display = 'block';   // Show dark icon
-      }
-    });
-  });
+        if (savedTheme === "dark") {
+            body.classList.add("dark-theme");
+            themeToggleBtn.setAttribute("data-theme", "dark");
+        } else {
+            body.classList.remove("dark-theme");
+            themeToggleBtn.setAttribute("data-theme", "light");
+        }
+    }
+
+    // Initialize functions
+    applySavedTheme();
+
+    // Add event listeners
+    document.getElementById("fullscreen-toggle").addEventListener("click", toggleFullscreen);
+    document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
+});
+
 </script>
 
 
@@ -200,21 +205,6 @@
 </button>
 </section>
 <script>
-  // Fullscreen Toggle Logic
-const fullscreenButton = document.getElementById('fullscreen-toggle');
-fullscreenButton.addEventListener('click', () => {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-    document.getElementById('fullscreen-enter-icon').style.display = 'none';
-    document.getElementById('fullscreen-exit-icon').style.display = 'block';
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-      document.getElementById('fullscreen-enter-icon').style.display = 'block';
-      document.getElementById('fullscreen-exit-icon').style.display = 'none';
-    }
-  }
-});
 
 </script>
 
