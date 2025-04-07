@@ -1,0 +1,6 @@
+<svg width="100%" height="100%" viewBox="0 0 360 640" xmlns="http://www.w3.org/2000/svg">
+  <rect id="neonSiren" width="100%" height="100%" fill="#FF0000">
+    <animate attributeName="opacity" values="1;0.8;1" dur="0.5s" repeatCount="indefinite" />
+  </rect>
+</svg>
+

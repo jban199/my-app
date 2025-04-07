@@ -1,0 +1,5 @@
+<svg width="100%" height="100%" viewBox="0 0 360 640" xmlns="http://www.w3.org/2000/svg">
+  <rect id="siren" width="100%" height="100%">
+    <animate attributeName="fill" values="blue;white;blue;white;red;white;red;white;black" dur="1s" repeatCount="indefinite" />
+  </rect>
+</svg>
