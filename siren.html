@@ -48,25 +48,25 @@
 </button>
 
 
-<button id="srn-sound-taser">
+<button id="srn-sound-taser" data-audio="media/srn-sounds/scary-wolf-growling-224086.mp3">
     <img src="images/icons/srn-electric.svg">
 	Sound: Taser
 </button>
 
 
-<button id="srn-sound-balloon">
+<button id="srn-sound-balloon" data-audio="media/srn-sounds/balloon-rubbing-foley-5-184049.mp3">
     <img src="images/icons/srn-balloon.svg">
 	Sound: Balloon
 </button>
 
 
-<button id="srn-sound-dog">
+<button id="srn-sound-dog" data-audio="media/srn-sounds/big-dog-barking-300504.mp3">
     <img src="images/icons/srn-dog.svg">
 	Dog Bark
 </button>
 
 
-<button id="srn-sound-fox">
+<button id="srn-sound-fox" data-audio="media/srn-sounds/fox-calling-243999.mp3">
     <img src="images/icons/srn-fox.svg">
 	Fox Cry
 </button>
@@ -80,6 +80,37 @@
     button.addEventListener('click', () => {
       const imageUrl = button.getAttribute('data-bg');
       document.body.style.backgroundImage = `url('${imageUrl}')`;
+    });
+  });
+  
+  
+  // Get all buttons with a data-audio attribute
+  const buttons = document.querySelectorAll('button[data-audio]');
+  const audioMap = new Map(); // To store audio elements
+
+  buttons.forEach(button => {
+    const src = button.getAttribute('data-audio');
+    const audio = new Audio(src);
+    audioMap.set(button, audio);
+
+    button.addEventListener('click', () => {
+      if (audio.paused) {
+        // Pause all other audios
+        audioMap.forEach((a, btn) => {
+          if (a !== audio) {
+            a.pause();
+            a.currentTime = 0;
+            btn.textContent = btn.getAttribute('data-audio-name') || btn.textContent.replace("Pause", "Play");
+          }
+        });
+
+        audio.play();
+        button.textContent = "Pause";
+      } else {
+        audio.pause();
+        audio.currentTime = 0;
+        button.textContent = "Play";
+      }
     });
   });
 </script>
