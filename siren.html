@@ -25,91 +25,109 @@
 <section class="srn-container">
 
 
-<button id="srn-flash-police" data-bg="images/icons/srn-siren-blink.svg">
+<button id="srn-flash-police" class="srn-bg-button" data-bg="images/icons/srn-siren-blink.svg">
     <img src="images/icons/srn-siren.svg">
-	Flash: Police
+	<span class="label">Flash: Police</span>
+	
 </button>
 
-<button id="srn-flash-red" data-bg="images/icons/srn-red-blink.svg">
+<button id="srn-flash-red" class="srn-bg-button" data-bg="images/icons/srn-red-blink.svg">
     <img src="images/icons/srn-red.svg">
-	Flash: Red
+	<span class="label">Flash: Red</span>
 </button>
 
 
-<button id="srn-flash-safety" data-bg="images/icons/srn-neon-blink.svg">
+<button id="srn-flash-safety" class="srn-bg-button" data-bg="images/icons/srn-neon-blink.svg">
     <img src="images/icons/srn-life.svg">
-	Flash: Safety
+	<span class="label">Flash: Safety</span>
 </button>
 
 
-<button id="srn-flash-reset" data-bg="">
+<button id="srn-flash-reset" class="srn-bg-button" data-bg="">
     <img src="images/icons/srn-flash-off.svg">
-	Flash: Reset
+	<span class="label">Flash: Reset</span>
 </button>
 
 
-<button id="srn-sound-taser" data-audio="media/srn-sounds/scary-wolf-growling-224086.mp3">
+<button id="srn-sound-taser" class="srn-audio-button" data-audio="media/srn-sounds/scary-wolf-growling-224086.mp3">
     <img src="images/icons/srn-electric.svg">
-	Sound: Taser
+	<span class="label">Sound: Taser</span>
+	<span class="pulse-indicator"></span>
 </button>
 
 
-<button id="srn-sound-balloon" data-audio="media/srn-sounds/balloon-rubbing-foley-5-184049.mp3">
+<button id="srn-sound-balloon" class="srn-audio-button" data-audio="media/srn-sounds/balloon-rubbing-foley-5-184049.mp3">
     <img src="images/icons/srn-balloon.svg">
-	Sound: Balloon
+	<span class="label">Sound: Balloon</span>
+	<span class="pulse-indicator"></span>
 </button>
 
 
-<button id="srn-sound-dog" data-audio="media/srn-sounds/big-dog-barking-300504.mp3">
+<button id="srn-sound-dog" class="srn-audio-button" data-audio="media/srn-sounds/big-dog-barking-300504.mp3">
     <img src="images/icons/srn-dog.svg">
-	Dog Bark
+	<span class="label">Dog Bark</span>
+	<span class="pulse-indicator"></span>
 </button>
 
 
-<button id="srn-sound-fox" data-audio="media/srn-sounds/fox-calling-243999.mp3">
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/fox-calling-243999.mp3">
     <img src="images/icons/srn-fox.svg">
-	Fox Cry
+	<span class="label">Fox Cry</span>
+	<span class="pulse-indicator"></span>
 </button>
 
 
 <script>
-  // Get all buttons with a data-bg attribute
-  const buttons = document.querySelectorAll('button[data-bg]');
+  // --- Background Image Toggle Script ---
+  let currentBg = null;
 
-  buttons.forEach(button => {
+  const bgButtons = document.querySelectorAll('.srn-bg-button');
+
+  bgButtons.forEach(button => {
+    const imageUrl = button.getAttribute('data-bg');
+
     button.addEventListener('click', () => {
-      const imageUrl = button.getAttribute('data-bg');
-      document.body.style.backgroundImage = `url('${imageUrl}')`;
+      if (currentBg === imageUrl) {
+        document.body.style.backgroundImage = '';
+        currentBg = null;
+        button.classList.remove('no-shadow');
+      } else {
+        document.body.style.backgroundImage = `url('${imageUrl}')`;
+        currentBg = imageUrl;
+
+        // Reset shadows on all bg buttons
+        bgButtons.forEach(btn => btn.classList.remove('no-shadow'));
+
+        // Disable shadow on this one
+        button.classList.add('no-shadow');
+      }
     });
   });
-  
-  
-  // Get all buttons with a data-audio attribute
-  const buttons = document.querySelectorAll('button[data-audio]');
-  const audioMap = new Map(); // To store audio elements
 
-  buttons.forEach(button => {
-    const src = button.getAttribute('data-audio');
-    const audio = new Audio(src);
+// --- Audio Toggle Script ---
+const audioButtons = document.querySelectorAll('.srn-audio-button');
+  const audioMap = new Map();
+
+  audioButtons.forEach(button => {
+    const audioSrc = button.getAttribute('data-audio');
+    const audio = new Audio(audioSrc);
+    audio.loop = true;
     audioMap.set(button, audio);
 
     button.addEventListener('click', () => {
-      if (audio.paused) {
-        // Pause all other audios
-        audioMap.forEach((a, btn) => {
-          if (a !== audio) {
-            a.pause();
-            a.currentTime = 0;
-            btn.textContent = btn.getAttribute('data-audio-name') || btn.textContent.replace("Pause", "Play");
-          }
-        });
+      const isPlaying = button.classList.contains('playing');
 
+      // Stop all audios and reset buttons
+      audioMap.forEach((a, btn) => {
+        a.pause();
+        a.currentTime = 0;
+        btn.classList.remove('playing', 'no-shadow');
+      });
+
+      // If it wasn't already playing, play and activate
+      if (!isPlaying) {
         audio.play();
-        button.textContent = "Pause";
-      } else {
-        audio.pause();
-        audio.currentTime = 0;
-        button.textContent = "Play";
+        button.classList.add('playing', 'no-shadow');
       }
     });
   });
@@ -130,22 +148,54 @@
 	justify-content: start;
 	align-items: center;
 	border-radius: 10px;
-	background: none;
+	background: var(--bg1);
 	border: none;
-	color: #ffffff;
+	color: var(--font1);
+	box-shadow: 0px 2px 5px var(--shadow1);
 }
 
+.srn-container button.no-shadow {
+      box-shadow: none !important;
+    }
 
 .srn-container img{
-	background: #ffffff10;
+<!--	background: #ffffff10; -->
 	height: 24px;
 	width: 24px;
 	padding: 10px;
 	border-radius: 30px;
 }
 
-.srn-active {
-	background: #327cff;
+
+.srn-audio-button .pulse-indicator {
+width: 10px;
+height: 10px;
+background-color: green;
+border-radius: 50%;
+margin-left: auto;
+opacity: 0;
+transition: opacity 0.3s ease-in-out;
+}
+
+
+.srn-audio-button.playing .pulse-indicator {
+opacity: 1;
+animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+0% {
+  transform: scale(1);
+  box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.5);
+}
+70% {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+}
+100% {
+  transform: scale(1);
+  box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+}
 }
 
 </style>
