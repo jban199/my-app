@@ -28,30 +28,40 @@
 <button id="srn-flash-police" class="srn-bg-button" data-bg="images/icons/srn-siren-blink.svg">
     <img src="images/icons/srn-siren.svg">
 	<span class="label">Flash: Police</span>
+	<span class="pulse-indicator"></span>
 	
 </button>
 
 <button id="srn-flash-red" class="srn-bg-button" data-bg="images/icons/srn-red-blink.svg">
     <img src="images/icons/srn-red.svg">
 	<span class="label">Flash: Red</span>
+	<span class="pulse-indicator"></span>
 </button>
 
 
 <button id="srn-flash-safety" class="srn-bg-button" data-bg="images/icons/srn-neon-blink.svg">
     <img src="images/icons/srn-life.svg">
 	<span class="label">Flash: Safety</span>
+	<span class="pulse-indicator"></span>
 </button>
 
 
 <button id="srn-flash-reset" class="srn-bg-button" data-bg="">
     <img src="images/icons/srn-flash-off.svg">
 	<span class="label">Flash: Reset</span>
+	<span class="pulse-indicator"></span>
 </button>
 
 
-<button id="srn-sound-taser" class="srn-audio-button" data-audio="media/srn-sounds/scary-wolf-growling-224086.mp3">
+<button id="srn-sound-taser" class="srn-audio-button" data-audio="media/srn-sounds/warfare_taser_gun_005.mp3">
     <img src="images/icons/srn-electric.svg">
-	<span class="label">Sound: Taser</span>
+	<span class="label">Sound: Taser 1</span>
+	<span class="pulse-indicator"></span>
+</button>
+
+<button id="srn-sound-taser" class="srn-audio-button" data-audio="media/srn-sounds/warfare_taser_gun_002.mp3">
+    <img src="images/icons/srn-electric.svg">
+	<span class="label">Sound: Taser 2</span>
 	<span class="pulse-indicator"></span>
 </button>
 
@@ -77,6 +87,78 @@
 </button>
 
 
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/scary-wolf-growling-224086.mp3">
+    <img src="images/icons/srn-siren.svg">
+	<span class="label">Wolf Growl</span>
+	<span class="pulse-indicator"></span>
+</button>
+
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/hooded-crow-cawing-217457.mp3">
+    <img src="images/icons/srn-siren.svg">
+	<span class="label">Crow 1</span>
+	<span class="pulse-indicator"></span>
+</button>
+
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/crow-bird-calling-bird-crow-sound-8908.mp3">
+    <img src="images/icons/srn-siren.svg">
+	<span class="label">Crow 2</span>
+	<span class="pulse-indicator"></span>
+</button>
+
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/crow-67929.mp3">
+    <img src="images/icons/srn-siren.svg">
+	<span class="label">Crow 3</span>
+	<span class="pulse-indicator"></span>
+</button>
+
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/civil-defense-siren-128262.mp3">
+    <img src="images/icons/srn-siren.svg">
+	<span class="label">Siren: Civil Defense</span>
+	<span class="pulse-indicator"></span>
+</button>
+
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/siren-38642.mp3">
+    <img src="images/icons/srn-siren.svg">
+	<span class="label">Siren: 1</span>
+	<span class="pulse-indicator"></span>
+</button>
+
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/delta-7-evacuation-siren-22510.mp3">
+    <img src="images/icons/srn-siren.svg">
+	<span class="label">Siren: Evacuation</span>
+	<span class="pulse-indicator"></span>
+</button>
+
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/siren-a-248662.mp3">
+    <img src="images/icons/srn-siren.svg">
+	<span class="label">Siren: 2</span>
+	<span class="pulse-indicator"></span>
+</button>
+
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/siren-police-63597.mp3">
+    <img src="images/icons/srn-siren.svg">
+	<span class="label">Siren: Police</span>
+	<span class="pulse-indicator"></span>
+</button>
+
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/fox-calling-243999.mp3">
+    <img src="images/icons/srn-siren.svg">
+	<span class="label">Siren: 1</span>
+	<span class="pulse-indicator"></span>
+</button>
+
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/police-operation-siren-144229.mp3">
+    <img src="images/icons/srn-siren.svg">
+	<span class="label">Siren: Police Operation</span>
+	<span class="pulse-indicator"></span>
+</button>
+
+<button id="srn-sound-fox" class="srn-audio-button" data-audio="media/srn-sounds/fire-truck-siren-29900.mp3">
+    <img src="images/icons/srn-siren.svg">
+	<span class="label">Siren: Fire Truck</span>
+	<span class="pulse-indicator"></span>
+</button>
+
 <script>
   // --- Background Image Toggle Script ---
   let currentBg = null;
@@ -87,19 +169,22 @@
     const imageUrl = button.getAttribute('data-bg');
 
     button.addEventListener('click', () => {
-      if (currentBg === imageUrl) {
+      const isActive = button.classList.contains('active-bg');
+
+      // Reset all buttons
+      bgButtons.forEach(btn => {
+        btn.classList.remove('active-bg', 'no-shadow');
+      });
+
+      if (isActive) {
+        // If clicking again, reset background
         document.body.style.backgroundImage = '';
         currentBg = null;
-        button.classList.remove('no-shadow');
       } else {
+        // Set background
         document.body.style.backgroundImage = `url('${imageUrl}')`;
         currentBg = imageUrl;
-
-        // Reset shadows on all bg buttons
-        bgButtons.forEach(btn => btn.classList.remove('no-shadow'));
-
-        // Disable shadow on this one
-        button.classList.add('no-shadow');
+        button.classList.add('active-bg', 'no-shadow');
       }
     });
   });
@@ -135,52 +220,69 @@ const audioButtons = document.querySelectorAll('.srn-audio-button');
 
 <style>
 .srn-container {
-	padding: 100px 10px;
+	padding: 20px 10px;
+	border-radius: 10px;
 	display: grid;
 	grid-template-columns: repeat(5, auto);
 	gap: 20px 5px;
+	background: transparent;
+	position: fixed;
+	bottom: 50px;
 }
 
 .srn-container button {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 5px;
 	justify-content: start;
 	align-items: center;
 	border-radius: 10px;
-	background: var(--bg1);
+	background: #ffffff10;
 	border: none;
+	padding: 5px;
+	font-size: 10px;
 	color: var(--font1);
-	box-shadow: 0px 2px 5px var(--shadow1);
+	box-shadow: 0px 5px 0px -2px var(--shadow1);
+	position: relative;
 }
 
 .srn-container button.no-shadow {
-      box-shadow: none !important;
+      box-shadow: 0px 1px 0px var(--shadow1); !important;
+	  transform: translateY(3px);
     }
 
 .srn-container img{
 <!--	background: #ffffff10; -->
-	height: 24px;
-	width: 24px;
-	padding: 10px;
+	height: 32px;
+	width: 32px;
+	padding: 5px;
 	border-radius: 30px;
 }
 
 
-.srn-audio-button .pulse-indicator {
-width: 10px;
-height: 10px;
-background-color: green;
-border-radius: 50%;
-margin-left: auto;
-opacity: 0;
-transition: opacity 0.3s ease-in-out;
+.pulse-indicator {
+	width: 7px;
+	height: 7px;
+	background-color: green;
+	border-radius: 50%;
+	margin-left: auto;
+	opacity: 0;
+	position: absolute;
+	right: 3px;
+	top: 3px;
+	transition: opacity 0.3s ease-in-out;
 }
 
 
-.srn-audio-button.playing .pulse-indicator {
-opacity: 1;
-animation: pulse 1s infinite;
+.playing .pulse-indicator {
+	opacity: 1;
+	animation: pulse 1s infinite;
+}
+
+
+.active-bg .pulse-indicator {
+  opacity: 1;
+  animation: pulse 1s infinite;
 }
 
 @keyframes pulse {
