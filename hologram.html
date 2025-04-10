@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hologram Video Generator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      overflow: hidden;
+    }
+    
+    .hlm-header {
+      text-align: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #333;
+      margin-bottom: 10px;
+    }
+    
+    .hlm-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .hlm-preview-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      margin: 0 auto;
+      background-color: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .hlm-center-box {
+      width: 80px;
+      height: 80px;
+      background-color: transparent;
+	  border: 2px solid #00ff00;
+      position: absolute;
+      z-index: 10;
+    }
+    
+    .hlm-preview-item {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      background-color: rgba(0,0,0,0.7);
+    }
+    
+    /* Top (0°) */
+    #hlm-preview-1, #hlm-preview-img-1 { 
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%) rotate(0deg);
+    }
+    
+    /* Right (90°) */
+    #hlm-preview-2, #hlm-preview-img-2 { 
+      top: 50%;
+      right: 50px;
+      transform: translateY(-50%) rotate(90deg);
+    }
+    
+    /* Bottom (180°) */
+    #hlm-preview-3, #hlm-preview-img-3 { 
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%) rotate(180deg);
+    }
+    
+    /* Left (270°) */
+    #hlm-preview-4, #hlm-preview-img-4 { 
+      top: 50%;
+      left: 50px;
+      transform: translateY(-50%) rotate(270deg);
+    }
+	
+	
+    
+    .hlm-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+	  height: 270px;
+	  overflow: scroll;
+    }
+	
+    
+    .hlm-option-section {
+      background-color: #252525;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    
+    .hlm-option-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .hlm-option-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .hlm-sample-btn {
+      background-color: #333;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      flex: 1 1 calc(50% - 4px);
+      min-width: 0;
+    }
+    
+    .hlm-sample-btn:hover {
+      background-color: #444;
+    }
+    
+    .hlm-file-input {
+      display: none;
+    }
+    
+    .hlm-file-label {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      border-radius: 4px;
+      text-align: center;
+      cursor: pointer;
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    .hlm-file-label:hover {
+      background-color: #45a049;
+    }
+    
+    .hlm-action-buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .hlm-action-btn {
+      background-color: #555;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .hlm-action-btn:hover {
+      background-color: #666;
+    }
+    
+    .hlm-footer {
+      text-align: center;
+      padding: 10px 0;
+      font-size: 12px;
+      color: #777;
+    }
+    
+    .hlm-status {
+      color: #ff5555;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 5px;
+      min-height: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="hlm-header">
+    <h1>Hologram Generator</h1>
+  </div>
+  
+  <div class="hlm-main">
+    <div class="hlm-preview-container">
+      <div class="hlm-center-box"></div>
+      <video id="hlm-preview-1" class="hlm-preview-item" muted loop playsinline></video>
+      <video id="hlm-preview-2" class="hlm-preview-item" muted loop playsinline></video>
+      <video id="hlm-preview-3" class="hlm-preview-item" muted loop playsinline></video>
+      <video id="hlm-preview-4" class="hlm-preview-item" muted loop playsinline></video>
+      <img id="hlm-preview-img-1" class="hlm-preview-item" style="display: none;">
+      <img id="hlm-preview-img-2" class="hlm-preview-item" style="display: none;">
+      <img id="hlm-preview-img-3" class="hlm-preview-item" style="display: none;">
+      <img id="hlm-preview-img-4" class="hlm-preview-item" style="display: none;">
+    </div>
+    
+    <div class="hlm-controls">
+      <div class="hlm-option-section">
+        <div class="hlm-option-title">
+          <span>Sample Media</span>
+        </div>
+        <div class="hlm-option-content">
+          <button class="hlm-sample-btn" data-src="images/hlm/spark-blast.mp4" data-type="video">Spark Blast</button>
+          <button class="hlm-sample-btn" data-src="images/hlm/cactus.gif" data-type="image">Cactus GIF</button>
+          <button class="hlm-sample-btn" data-src="images/hlm/girlpng1.png" data-type="image">Girl PNG</button>
+          <button class="hlm-sample-btn" data-src="images/hlm/ghost-neon.gif" data-type="image">Ghost Neon GIF</button>
+		  <button class="hlm-sample-btn" data-src="images/hlm/moon-phases.gif" data-type="image">Moon Phases GIF</button>
+		  <button class="hlm-sample-btn" data-src="images/hlm/girl-walking.gif" data-type="image">Walking Girl GIF</button>
+		  <button class="hlm-sample-btn" data-src="images/hlm/butterfly.gif" data-type="image">Butterfly GIF</button>
+		  <button class="hlm-sample-btn" data-src="images/hlm/blob-dino.gif" data-type="image">Blob Dino GIF</button>
+		  <button class="hlm-sample-btn" data-src="images/hlm/love-tab.gif" data-type="image">Love Tab GIF</button>
+		  <button class="hlm-sample-btn" data-src="images/hlm/sample.mp4" data-type="video">Sample MP4</button>
+		  <button class="hlm-sample-btn" data-src="images/hlm/radiating-red-ball.gif" data-type="image">Radiating Ball GIF</button>
+		  <button class="hlm-sample-btn" data-src="images/hlm/golden-bubbles.mp4" data-type="image">Golden Bubbles MP4</button>
+		  <button class="hlm-sample-btn" data-src="images/hlm/spinning-color.gif" data-type="image">Spinning Color GIF</button>
+        </div>
+        <div class="hlm-status" id="hlm-sample-status"></div>
+      </div>
+      
+      <div class="hlm-option-section">
+        <div class="hlm-option-title">
+          <span>Custom Media</span>
+        </div>
+        <input type="file" id="hlm-file-input" class="hlm-file-input" accept="video/*,image/*">
+        <label for="hlm-file-input" class="hlm-file-label">Choose Video/Image</label>
+        <div class="hlm-status" id="hlm-upload-status"></div>
+      </div>
+      
+      <div class="hlm-option-section">
+        <div class="hlm-action-buttons">
+		
+			<button id="hlm-play-btn" class="hlm-action-btn" title="Play">
+			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
+			</svg>
+			</button>
+		  
+			<button id="hlm-pause-btn" class="hlm-action-btn" title="Pause">
+				<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M640-200q-33 0-56.5-23.5T560-280v-400q0-33 23.5-56.5T640-760q33 0 56.5 23.5T720-680v400q0 33-23.5 56.5T640-200Zm-320 0q-33 0-56.5-23.5T240-280v-400q0-33 23.5-56.5T320-760q33 0 56.5 23.5T400-680v400q0 33-23.5 56.5T320-200Z"/>
+				</svg>
+			</button>
+			
+			<button id="hlm-stop-btn" class="hlm-action-btn" title="Stop">
+				<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M240-320v-320q0-33 23.5-56.5T320-720h320q33 0 56.5 23.5T720-640v320q0 33-23.5 56.5T640-240H320q-33 0-56.5-23.5T240-320Z"/>
+				</svg>
+			</button>
+			
+			<button id="hlm-rotate-left" class="hlm-action-btn" title="Rotate Left">
+				<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M170-478q-21 0-33.5-15t-7.5-35q6-25 16-48t23-45q10-17 29.5-19t34.5 12q9 9 11 22.5t-5 24.5q-10 17-17.5 35.5T208-508q-3 13-14.5 21.5T170-478Zm268 348q0 22-15 34t-35 7q-24-7-47-16.5T295-128q-17-10-19-29.5t12-34.5q9-9 22.5-11t24.5 5q17 10 35.5 17.5T408-168q13 3 21.5 14.5T438-130ZM232-248q-15 14-34.5 12T168-255q-13-23-22.5-46T129-348q-5-20 7-35t34-15q13 0 24 8.5t14 21.5q5 19 12.5 37.5T238-295q7 11 5 25t-11 22ZM567-90q-20 5-34.5-7T518-130q0-13 8.5-24t21.5-14q92-24 151-98.5T758-438q0-117-81.5-198.5T478-718h-8l36 36q11 11 11 28t-11 28q-11 11-28 11t-28-11L346-730q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l103-104q12-11 29-11t28 11q12 12 12 29t-11 28l-35 35h6q150 0 255 105t105 255q0 124-76 220T567-90Z"/>
+				</svg>
+			</button>
+			
+			<button id="hlm-rotate-right" class="hlm-action-btn" title="Rotate Right">
+				<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M790-478q-12 0-23.5-8.5T752-508q-5-19-12.5-37.5T722-581q-7-11-5-24.5t11-22.5q15-14 34.5-12t29.5 19q13 22 23 45t16 48q5 20-7.5 35T790-478ZM522-130q0-12 8.5-23.5T552-168q19-5 37.5-12.5T625-198q11-7 24.5-5t22.5 11q14 15 12 34.5T665-128q-23 13-46 22.5T572-89q-20 5-35-7t-15-34Zm206-118q-9-8-11-22t5-25q10-17 17.5-35.5T752-368q3-13 14-21.5t24-8.5q22 0 34 15t7 35q-7 24-16.5 47T792-255q-10 17-29.5 19T728-248ZM393-90q-119-32-195-128t-76-220q0-150 105-255t255-105h6l-35-35q-11-11-11-28t12-29q11-11 28-11t29 11l103 104q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L510-626q-11 11-28 11t-28-11q-11-11-11-28t11-28l36-36h-8q-117 0-198.5 81.5T202-438q0 97 59 171.5T412-168q13 3 21.5 14t8.5 24q0 21-14.5 33T393-90Z"/>
+				</svg>
+			</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="hlm-footer">
+    <p>Place a pyramid projector over your screen to see the hologram effect</p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const videoPreviews = [
+        document.getElementById('hlm-preview-1'),
+        document.getElementById('hlm-preview-2'),
+        document.getElementById('hlm-preview-3'),
+        document.getElementById('hlm-preview-4')
+      ];
+      
+      const imagePreviews = [
+        document.getElementById('hlm-preview-img-1'),
+        document.getElementById('hlm-preview-img-2'),
+        document.getElementById('hlm-preview-img-3'),
+        document.getElementById('hlm-preview-img-4')
+      ];
+      
+      let currentMedia = null;
+      let currentRotation = 0;
+      
+      // Status displays
+      const sampleStatus = document.getElementById('hlm-sample-status');
+      const uploadStatus = document.getElementById('hlm-upload-status');
+      
+      // Sample buttons
+      document.querySelectorAll('.hlm-sample-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const src = this.getAttribute('data-src');
+          const type = this.getAttribute('data-type');
+          sampleStatus.textContent = "Loading sample...";
+          
+          loadMedia(src, type)
+            .then(() => {
+              sampleStatus.textContent = "";
+              if (type === 'video') {
+                videoPreviews.forEach(v => v.play().catch(e => console.log(e)));
+              }
+            })
+            .catch(error => {
+              sampleStatus.textContent = "Error loading sample: " + error;
+              console.error(error);
+            });
+        });
+      });
+      
+      // File upload
+      document.getElementById('hlm-file-input').addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+          const file = e.target.files[0];
+          const fileUrl = URL.createObjectURL(file);
+          uploadStatus.textContent = "Processing file...";
+          
+          const type = file.type.startsWith('video/') ? 'video' : 'image';
+          
+          loadMedia(fileUrl, type)
+            .then(() => {
+              uploadStatus.textContent = "";
+              if (type === 'video') {
+                videoPreviews.forEach(v => v.play().catch(e => console.log(e)));
+              }
+            })
+            .catch(error => {
+              uploadStatus.textContent = "Error: " + error;
+              console.error(error);
+            });
+        }
+      });
+      
+      // Rotation controls
+      document.getElementById('hlm-rotate-left').addEventListener('click', function() {
+        currentRotation = (currentRotation - 15) % 360;
+        applyRotation();
+      });
+      
+      document.getElementById('hlm-rotate-right').addEventListener('click', function() {
+        currentRotation = (currentRotation + 15) % 360;
+        applyRotation();
+      });
+      
+      function applyRotation() {
+        const baseRotation = currentRotation;
+        
+        if (currentMedia === 'image') {
+          imagePreviews.forEach((img, index) => {
+            img.style.transform = getFinalTransform(index, baseRotation);
+          });
+        } else if (currentMedia === 'video') {
+          videoPreviews.forEach((vid, index) => {
+            vid.style.transform = getFinalTransform(index, baseRotation);
+          });
+        }
+      }
+      
+      function getFinalTransform(index, baseRotation) {
+        // Base positions
+        const positions = [
+          'translateX(-50%) rotate(' + baseRotation + 'deg)',      // Top (0°)
+          'translateY(-50%) rotate(' + (baseRotation + 90) + 'deg)',  // Right (90°)
+          'translateX(-50%) rotate(' + (baseRotation + 180) + 'deg)', // Bottom (180°)
+          'translateY(-50%) rotate(' + (baseRotation + 270) + 'deg)'  // Left (270°)
+        ];
+        return positions[index];
+      }
+      
+      // Playback controls
+      document.getElementById('hlm-play-btn').addEventListener('click', function() {
+        if (currentMedia === 'video') {
+          videoPreviews.forEach(v => {
+            v.play().catch(e => console.log("Play error:", e));
+          });
+        }
+      });
+      
+      document.getElementById('hlm-pause-btn').addEventListener('click', function() {
+        if (currentMedia === 'video') {
+          videoPreviews.forEach(v => v.pause());
+        }
+      });
+      
+      document.getElementById('hlm-stop-btn').addEventListener('click', function() {
+        if (currentMedia === 'video') {
+          videoPreviews.forEach(v => {
+            v.pause();
+            v.currentTime = 0;
+          });
+        }
+      });
+      
+      function loadMedia(url, type) {
+        return new Promise((resolve, reject) => {
+          // Hide all previews first
+          videoPreviews.forEach(v => {
+            v.style.display = 'none';
+            v.src = '';
+          });
+          imagePreviews.forEach(img => {
+            img.style.display = 'none';
+            img.src = '';
+          });
+          
+          if (type === 'video') {
+            const testVideo = document.createElement('video');
+            testVideo.src = url;
+            testVideo.onerror = () => reject('Failed to load video');
+            testVideo.oncanplay = () => {
+              videoPreviews.forEach((v, index) => {
+                v.style.display = 'block';
+                v.src = url;
+                v.load();
+                v.style.transform = getFinalTransform(index, 0);
+              });
+              currentMedia = 'video';
+              currentRotation = 0;
+              resolve();
+            };
+          } else if (type === 'image') {
+            const img = new Image();
+            img.onload = () => {
+              imagePreviews.forEach((imgEl, index) => {
+                imgEl.style.display = 'block';
+                imgEl.src = url;
+                imgEl.style.transform = getFinalTransform(index, 0);
+              });
+              currentMedia = 'image';
+              currentRotation = 0;
+              resolve();
+            };
+            img.onerror = () => reject('Failed to load image');
+            img.src = url;
+          } else {
+            reject('Unsupported media type');
+          }
+        });
+      }
+      
+      // Load default sample
+      loadMedia('https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png', 'image')
+        .catch(error => {
+          sampleStatus.textContent = "Default sample error: " + error;
+        });
+    });
+  </script>
+</body>
+</html>
