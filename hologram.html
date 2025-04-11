@@ -50,8 +50,8 @@
     }
     
     .hlm-center-box {
-      width: 80px;
-      height: 80px;
+      width: 110px;
+      height: 110px;
       background-color: transparent;
 	  border: 2px solid #00ff00;
       position: absolute;
@@ -60,15 +60,16 @@
     
     .hlm-preview-item {
       position: absolute;
-      width: 80px;
-      height: 80px;
+      width: 110px;
+      height: 110px;
       object-fit: contain;
+	  object-position: bottom;
       background-color: rgba(0,0,0,0.7);
     }
     
     /* Top (0°) */
     #hlm-preview-1, #hlm-preview-img-1 { 
-      top: 50px;
+      top: 0px;
       left: 50%;
       transform: translateX(-50%) rotate(0deg);
     }
@@ -76,13 +77,13 @@
     /* Right (90°) */
     #hlm-preview-2, #hlm-preview-img-2 { 
       top: 50%;
-      right: 50px;
+      right: 0px;
       transform: translateY(-50%) rotate(90deg);
     }
     
     /* Bottom (180°) */
     #hlm-preview-3, #hlm-preview-img-3 { 
-      bottom: 50px;
+      bottom: 0px;
       left: 50%;
       transform: translateX(-50%) rotate(180deg);
     }
@@ -90,7 +91,7 @@
     /* Left (270°) */
     #hlm-preview-4, #hlm-preview-img-4 { 
       top: 50%;
-      left: 50px;
+      left: 0px;
       transform: translateY(-50%) rotate(270deg);
     }
 	
