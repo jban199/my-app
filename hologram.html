@@ -305,7 +305,7 @@
   
   
 
-  <script>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
       const videoPreviews = [
         document.getElementById('hlm-preview-1'),
@@ -339,7 +339,10 @@
             .then(() => {
               sampleStatus.textContent = "";
               if (type === 'video') {
-                videoPreviews.forEach(v => v.play().catch(e => console.log(e)));
+                videoPreviews.forEach(v => {
+                  v.muted = false; // Enable audio
+                  v.play().catch(e => console.log("Play error:", e));
+                });
               }
             })
             .catch(error => {
@@ -362,7 +365,10 @@
             .then(() => {
               uploadStatus.textContent = "";
               if (type === 'video') {
-                videoPreviews.forEach(v => v.play().catch(e => console.log(e)));
+                videoPreviews.forEach(v => {
+                  v.muted = false; // Enable audio
+                  v.play().catch(e => console.log("Play error:", e));
+                });
               }
             })
             .catch(error => {
@@ -399,7 +405,7 @@
       
       function getFinalTransform(index, baseRotation) {
         // Base positions
-        const positions = [
+		const positions = [
           'translateX(-50%) rotate(' + baseRotation + 'deg)',      // Top (0°)
           'translateY(-50%) rotate(' + (baseRotation + 90) + 'deg)',  // Right (90°)
           'translateX(-50%) rotate(' + (baseRotation + 180) + 'deg)', // Bottom (180°)
@@ -412,6 +418,7 @@
       document.getElementById('hlm-play-btn').addEventListener('click', function() {
         if (currentMedia === 'video') {
           videoPreviews.forEach(v => {
+            v.muted = false; // Enable audio
             v.play().catch(e => console.log("Play error:", e));
           });
         }
@@ -434,10 +441,11 @@
       
       function loadMedia(url, type) {
         return new Promise((resolve, reject) => {
-          // Hide all previews first
+		  // Hide all previews first
           videoPreviews.forEach(v => {
             v.style.display = 'none';
             v.src = '';
+            v.muted = false; // Ensure audio is enabled for new loads
           });
           imagePreviews.forEach(img => {
             img.style.display = 'none';
@@ -452,6 +460,7 @@
               videoPreviews.forEach((v, index) => {
                 v.style.display = 'block';
                 v.src = url;
+                v.muted = false; // Explicitly enable audio
                 v.load();
                 v.style.transform = getFinalTransform(index, 0);
               });
