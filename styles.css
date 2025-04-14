@@ -232,22 +232,26 @@ p {
 /* ///////////////// */
 /* Fullscreen Button */
 /* ///////////////// */
-.fullscreen-button {
+#fullscreen-toggle {
 	background-image: linear-gradient(0deg, var(--gradient1), var(--gradient2));
+    border-radius: 30px;
     border: none;
+    cursor: pointer;
+    padding: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50px;
-	padding: 5px;
-	box-shadow: 0px 2px 5px var(--shadow1);
-	float: right;
-	position: relative;
-	top: -10px;
+    height: 35px;
+    width: 35px;
+    position: fixed;
+	box-shadow: 0px 0px 5px var(--shadow1);
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
 }
 
-.fullscreen-button svg {
-	fill: var(--accent1);
+#fullscreen-toggle svg {
+	fill: var(--bgInv);
 }
 
 
@@ -328,30 +332,6 @@ p {
 	background: transparent;
 }
 
-
-
-
-#fullscreen-toggle {
-	background-image: linear-gradient(0deg, var(--gradient1), var(--gradient2));
-    border-radius: 30px;
-    border: none;
-    cursor: pointer;
-    padding: 0px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 35px;
-    width: 35px;
-    position: fixed;
-	box-shadow: 0px 0px 5px var(--shadow1);
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-#fullscreen-toggle svg {
-	fill: var(--bgInv);
-}
 
 
 /* ///////////////// */
