@@ -46,7 +46,7 @@ button:focus, a:focus, input:focus, select:focus, textarea:focus {
     position: fixed;
 	box-shadow: 0px 0px 5px var(--shadow1);
     bottom: 20px;
-    right: 100px;
+    right: 90px;
     z-index: 1000;
 }
 
