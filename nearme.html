@@ -184,40 +184,36 @@ clearButton.addEventListener('click', () => {
 
 <script>
 window.onload = function() {		
-    // Load SBM
+	// Load SBM
     fetch('sbm.html')
         .then(response => response.text())
         .then(data => {
             const sidebarContainer = document.getElementById('SBM-container');
             sidebarContainer.innerHTML = data;
             
-            // Immediately hide the menu after loading (prevents flash)
-            const overlaySBM = document.getElementById("SBM-section");
-            overlaySBM.style.transform = "translateY(100%)";
-            overlaySBM.style.transition = "transform 0.3s ease-in-out";
-            
-            // Get references to the icon that triggers the sidebar opening
-            const SBMIcon = document.getElementById("SBM-Icon");
+            // Reattach event listeners after the SBM is loaded
             const closeButton = document.getElementById("closeSBM");
-
-            // Function to open the sidebar
-            function openSBM() {
-                overlaySBM.style.transform = "translateY(0)";
-            }
-
-            // Function to close the sidebar
-            function closeSBM() {
-                overlaySBM.style.transform = "translateY(100%)";
-            }
-
-            // Event listeners
-            if (SBMIcon) {
-                SBMIcon.addEventListener("click", openSBM);
-            }
-            
             if (closeButton) {
                 closeButton.addEventListener("click", closeSBM);
             }
+			
+			// Get references to the icon that triggers the sidebar opening
+			const SBMIcon = document.getElementById("SBM-Icon");
+
+			// Function to open the sidebar
+			function openSBM() {
+				const overlaySBM = document.getElementById("SBM-section");
+				overlaySBM.style.transform = "translateY(0)";
+			}
+
+			// Function to close the sidebar
+			function closeSBM() {
+				const overlaySBM = document.getElementById("SBM-section");
+				overlaySBM.style.transform = "translateY(100%)";
+			}
+
+			// Event listener for opening the SBM when the icon is clicked
+			SBMIcon.addEventListener("click", openSBM);
         })
         .catch(error => {
             console.error("Error loading SBM:", error);
