@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TKA - Topsites</title>
+    <title>TKA - NearMe</title>
 
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
@@ -17,165 +17,144 @@
 </head>
 <body>
 
-<section class="ts-header">
-	<h1 class="ts-pagename"> Topsites </h1>
 
-<div id="ts-search-container">
-    <div id="ts-search-bar">
-      <input type="text" id="ts-search-input" placeholder="Search...">
-      <button id="ts-search-btn">
-		<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-			<path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
-		</svg>
-	  </button>
-    
-		<div id="ts-engine-select">
-		  <div id="ts-selected-engine" class="ts-search-engine-icon" onclick="toggleDropdown()">
-			<img id="ts-selected-icon" src="images/icons/google.svg" alt="Google Icon">
-		  </div>
+<section class="nm-header">
+	<h1 class="nm-pagename"> Things Near You </h1>
+	
+	<!-- Search bar -->
+    <div class="nm-search-bar">
+        <input type="text" id="nm-searchInput" placeholder="Search here" />
+        <button id="nm-clearButton">
+			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/>
+			</svg>
+		</button>
+    </div>
+	
+<script>	
+// Get references to the input field, clear button, and the card container
+const searchInput = document.getElementById('nm-searchInput');
+const clearButton = document.getElementById('nm-clearButton');
+const pbCardContainer = document.querySelector('.nm-container');
 
-		  <div id="ts-search-engine-dropdown" class="ts-search-engine-dropdown">
-			<div class="ts-search-engine-dropdown-item" onclick="selectEngine('google', 'images/icons/google.svg')">
-			  <img src="images/icons/google.svg" alt="Google Icon"> Google
-			</div>
-			<div class="ts-search-engine-dropdown-item" onclick="selectEngine('bing', 'images/icons/bing.svg')">
-			  <img src="images/icons/bing.svg" alt="Bing Icon"> Bing
-			</div>
-			<div class="ts-search-engine-dropdown-item" onclick="selectEngine('yahoo', 'images/icons/yahoo.svg')">
-			  <img src="images/icons/yahoo.svg" alt="Yahoo Icon"> Yahoo
-			</div>
-			<div class="ts-search-engine-dropdown-item" onclick="selectEngine('duckduckgo', 'images/icons/duckduckgo.svg')">
-			  <img src="images/icons/duckduckgo.svg" alt="DuckDuckGo Icon"> DuckDuckGo
-			</div>
-			<div class="ts-search-engine-dropdown-item" onclick="selectEngine('youtube', 'images/icons/youtube.svg')">
-			  <img src="images/icons/youtube.svg" alt="YouTube Icon"> YouTube
-			</div>
-			<div class="ts-search-engine-dropdown-item" onclick="selectEngine('wikipedia', 'images/icons/wikipedia.svg')">
-			  <img src="images/icons/wikipedia.svg" alt="Wikipedia Icon"> Wikipedia
-			</div>
-		  </div>
-		</div>
-	</div>
-</div>
-  
-<script>
-// Function to toggle dropdown visibility
-function toggleDropdown() {
-  const searchEngineDropdown = document.getElementById('ts-search-engine-dropdown');
-  searchEngineDropdown.classList.toggle('show');
+// Function to filter cards based on the search input
+function filterCards() {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    // Get all the cards
+    const cards = document.querySelectorAll('.nm-option');
+
+    cards.forEach(card => {
+        const name = card.querySelector('.nm-option-name').textContent.toLowerCase();
+
+        // Check if the name or phone matches the search term
+        if (name.includes(searchTerm)) {
+            card.style.display = 'flex'; // Show the card
+        } else {
+            card.style.display = 'none'; // Hide the card
+        }
+    });
 }
 
-// Function to select a search engine
-function selectEngine(engine, icon) {
-  // Update the selected icon
-  document.getElementById('ts-selected-icon').src = icon;
+// Event listener for the search input to filter cards
+searchInput.addEventListener('input', filterCards);
 
-  // Save the selected engine to localStorage
-  localStorage.setItem('preferredEngine', engine);
-
-  // Close the dropdown
-  toggleDropdown();
-}
-
-// Initialize the search engine preference on page load
-document.addEventListener('DOMContentLoaded', () => {
-  // Get the saved preference from localStorage
-  let preferredEngine = localStorage.getItem('preferredEngine') || 'google';
-  const engineIconMap = {
-    google: 'images/icons/google.svg',
-    bing: 'images/icons/bing.svg',
-    yahoo: 'images/icons/yahoo.svg',
-    duckduckgo: 'images/icons/duckduckgo.svg',
-    youtube: 'images/icons/youtube.svg',
-    wikipedia: 'images/icons/wikipedia.svg'
-  };
-
-  // Set the default icon based on the stored preference
-  const selectedIcon = engineIconMap[preferredEngine] || 'google-icon.png';
-  document.getElementById('ts-selected-icon').src = selectedIcon;
+// Event listener for the clear button to reset the search
+clearButton.addEventListener('click', () => {
+    searchInput.value = ''; // Clear the input
+    filterCards(); // Reset the cards to be visible
 });
-
-// Function to handle search based on selected engine
-document.getElementById('ts-search-btn').addEventListener('click', () => {
-  const query = document.getElementById('ts-search-input').value.trim();
-  let searchUrl = '';
-  const selectedEngine = localStorage.getItem('preferredEngine') || 'google';
-
-  if (query) {
-    switch (selectedEngine) {
-      case 'google':
-        searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-        break;
-      case 'bing':
-        searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
-        break;
-      case 'yahoo':
-        searchUrl = `https://search.yahoo.com/search?p=${encodeURIComponent(query)}`;
-        break;
-      case 'duckduckgo':
-        searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
-        break;
-      case 'youtube':
-        searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
-        break;
-      case 'wikipedia':
-        searchUrl = `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(query)}`;
-        break;
-    }
-    window.open(searchUrl, '_blank'); // Open search in a new tab
-  }
-});
-
 </script>
 </section>
 
+<!-- ///////////////// -->
+<!-- Nearme Cards -->
+<!-- ///////////////// -->
 
-<!-- ///////////////// -->
-<!-- Top Sites -->
-<!-- ///////////////// -->
-<section class="ts-options-container">
-  <div class="ts-option">
+<h2 class="nm-option-category"> Search engines	 </h2>
+<section class="nm-container">
+    <div id="no-results" class="no-results" style="display:none;">No result found</div>
+
+    <div class="nm-option">
+        <a href="https://www.amazon.in/" target="_blank">
+            <img src="images/icons/amazon.svg">
+            <h3 class="nm-option-name">Amazon</h3>
+        </a>
+    </div>
+    <div class="nm-option">
+        <a href="https://www.google.com/" target="_blank">
+            <img src="images/icons/google.svg">
+            <h3 class="nm-option-name">Google</h3>
+        </a>
+    </div>
+    <div class="nm-option">
+        <a href="https://www.youtube.com/" target="_blank">
+            <img src="images/icons/youtube.svg">
+            <h3 class="nm-option-name">YouTube</h3>
+        </a>
+    </div>
+    <div class="nm-option">
+        <a href="https://www.wikipedia.org/" target="_blank">
+            <img src="images/icons/wikipedia.svg">
+            <h3 class="nm-option-name">Wikipedia - The free encyclopedia</h3>
+        </a>
+    </div>
+    <div class="nm-option">
+        <a href="https://www.bing.com/" target="_blank">
+            <img src="images/icons/bing.svg">
+            <h3 class="nm-option-name">Bing</h3>
+        </a>
+    </div>
+    <div class="nm-option">
+        <a href="https://in.search.yahoo.com/" target="_blank">
+            <img src="images/icons/yahoo.svg">
+            <h3 class="nm-option-name">Yahoo</h3>
+        </a>
+    </div>
+</section>
+
+
+
+<h2 class="nm-option-category"> Shopping </h2>
+<section class="nm-container">
+  
+  <div class="nm-option">
     <a href="https://www.amazon.in/" target="_blank">
       <img src="images/icons/amazon.svg">
-      <h3>Amazon</h3>
+      <h3 class="nm-option-name">Amazon</h3>
     </a>
   </div>
-  <div class="ts-option">
+  <div class="nm-option">
     <a href="https://www.google.com/" target="_blank">
       <img src="images/icons/google.svg">
-      <h3>Google</h3>
+      <h3 class="nm-option-name">Google</h3>
     </a>
   </div>
-  <div class="ts-option">
+  <div class="nm-option">
     <a href="https://www.youtube.com/" target="_blank">
       <img src="images/icons/youtube.svg">
-      <h3>YouTube</h3>
+      <h3 class="nm-option-name">YouTube</h3>
     </a>
   </div>
-  <div class="ts-option">
+  <div class="nm-option">
     <a href="https://www.wikipedia.org/" target="_blank">
       <img src="images/icons/wikipedia.svg">
-      <h3>Wikipedia - The free encyclopedia</h3>
+      <h3 class="nm-option-name">Wikipedia - The free encyclopedia</h3>
     </a>
   </div>
-  <div class="ts-option">
+  <div class="nm-option">
     <a href="https://www.bing.com/" target="_blank">
       <img src="images/icons/bing.svg">
-      <h3>Bing</h3>
+      <h3 class="nm-option-name">Bing</h3>
     </a>
   </div>
-  <div class="ts-option">
+  <div class="nm-option">
     <a href="https://in.search.yahoo.com/" target="_blank">
       <img src="images/icons/yahoo.svg">
-      <h3>Yahoo</h3>
+      <h3 class="nm-option-name">Yahoo</h3>
     </a>
   </div>
-  <div class="ts-option">
-    <a href="https://duckduckgo.com/" target="_blank">
-      <img src="images/icons/duckduckgo.svg">
-      <h3>DuckDuckGo</h3>
-    </a>
-  </div>
+
 </section>
 
 
@@ -185,6 +164,7 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
 <!-- ///////////////// -->
 <div class="footerSpacer">
 </div>
+
 
 
 
@@ -250,6 +230,7 @@ window.onload = function() {
         });
 };
 </script>
+
 
 
 
@@ -326,8 +307,6 @@ window.onload = function() {
     });
   });
 </script>
-
-
 
 <!-- ///////////////// -->
 <!-- Fullscreen Toggle -->
