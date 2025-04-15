@@ -17,37 +17,40 @@
 </head>
 <body>
 
-<div id="search-container">
-    <div id="search-bar">
-      <input type="text" id="search-input" placeholder="Search...">
-      <button id="search-btn">
+<section class="ts-header">
+	<h1 class="ts-pagename"> Topsites </h1>
+
+<div id="ts-search-container">
+    <div id="ts-search-bar">
+      <input type="text" id="ts-search-input" placeholder="Search...">
+      <button id="ts-search-btn">
 		<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 			<path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
 		</svg>
 	  </button>
     
-		<div id="engine-select">
-		  <div id="selected-engine" class="search-engine-icon" onclick="toggleDropdown()">
-			<img id="selected-icon" src="images/icons/google.svg" alt="Google Icon">
+		<div id="ts-engine-select">
+		  <div id="ts-selected-engine" class="ts-search-engine-icon" onclick="toggleDropdown()">
+			<img id="ts-selected-icon" src="images/icons/google.svg" alt="Google Icon">
 		  </div>
 
-		  <div id="search-engine-dropdown" class="search-engine-dropdown">
-			<div class="search-engine-dropdown-item" onclick="selectEngine('google', 'images/icons/google.svg')">
+		  <div id="ts-search-engine-dropdown" class="ts-search-engine-dropdown">
+			<div class="ts-search-engine-dropdown-item" onclick="selectEngine('google', 'images/icons/google.svg')">
 			  <img src="images/icons/google.svg" alt="Google Icon"> Google
 			</div>
-			<div class="search-engine-dropdown-item" onclick="selectEngine('bing', 'images/icons/bing.svg')">
+			<div class="ts-search-engine-dropdown-item" onclick="selectEngine('bing', 'images/icons/bing.svg')">
 			  <img src="images/icons/bing.svg" alt="Bing Icon"> Bing
 			</div>
-			<div class="search-engine-dropdown-item" onclick="selectEngine('yahoo', 'images/icons/yahoo.svg')">
+			<div class="ts-search-engine-dropdown-item" onclick="selectEngine('yahoo', 'images/icons/yahoo.svg')">
 			  <img src="images/icons/yahoo.svg" alt="Yahoo Icon"> Yahoo
 			</div>
-			<div class="search-engine-dropdown-item" onclick="selectEngine('duckduckgo', 'images/icons/duckduckgo.svg')">
+			<div class="ts-search-engine-dropdown-item" onclick="selectEngine('duckduckgo', 'images/icons/duckduckgo.svg')">
 			  <img src="images/icons/duckduckgo.svg" alt="DuckDuckGo Icon"> DuckDuckGo
 			</div>
-			<div class="search-engine-dropdown-item" onclick="selectEngine('youtube', 'images/icons/youtube.svg')">
+			<div class="ts-search-engine-dropdown-item" onclick="selectEngine('youtube', 'images/icons/youtube.svg')">
 			  <img src="images/icons/youtube.svg" alt="YouTube Icon"> YouTube
 			</div>
-			<div class="search-engine-dropdown-item" onclick="selectEngine('wikipedia', 'images/icons/wikipedia.svg')">
+			<div class="ts-search-engine-dropdown-item" onclick="selectEngine('wikipedia', 'images/icons/wikipedia.svg')">
 			  <img src="images/icons/wikipedia.svg" alt="Wikipedia Icon"> Wikipedia
 			</div>
 		  </div>
@@ -58,14 +61,14 @@
 <script>
 // Function to toggle dropdown visibility
 function toggleDropdown() {
-  const searchEngineDropdown = document.getElementById('search-engine-dropdown');
+  const searchEngineDropdown = document.getElementById('ts-search-engine-dropdown');
   searchEngineDropdown.classList.toggle('show');
 }
 
 // Function to select a search engine
 function selectEngine(engine, icon) {
   // Update the selected icon
-  document.getElementById('selected-icon').src = icon;
+  document.getElementById('ts-selected-icon').src = icon;
 
   // Save the selected engine to localStorage
   localStorage.setItem('preferredEngine', engine);
@@ -89,12 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Set the default icon based on the stored preference
   const selectedIcon = engineIconMap[preferredEngine] || 'google-icon.png';
-  document.getElementById('selected-icon').src = selectedIcon;
+  document.getElementById('ts-selected-icon').src = selectedIcon;
 });
 
 // Function to handle search based on selected engine
-document.getElementById('search-btn').addEventListener('click', () => {
-  const query = document.getElementById('search-input').value.trim();
+document.getElementById('ts-search-btn').addEventListener('click', () => {
+  const query = document.getElementById('ts-search-input').value.trim();
   let searchUrl = '';
   const selectedEngine = localStorage.getItem('preferredEngine') || 'google';
 
@@ -124,49 +127,50 @@ document.getElementById('search-btn').addEventListener('click', () => {
 });
 
 </script>
+</section>
 
 
 <!-- ///////////////// -->
 <!-- Top Sites -->
 <!-- ///////////////// -->
-<section class="options-container">
-  <div class="option">
+<section class="ts-options-container">
+  <div class="ts-option">
     <a href="https://www.amazon.in/" target="_blank">
       <img src="images/icons/amazon.svg">
       <h3>Amazon</h3>
     </a>
   </div>
-  <div class="option">
+  <div class="ts-option">
     <a href="https://www.google.com/" target="_blank">
       <img src="images/icons/google.svg">
       <h3>Google</h3>
     </a>
   </div>
-  <div class="option">
+  <div class="ts-option">
     <a href="https://www.youtube.com/" target="_blank">
       <img src="images/icons/youtube.svg">
       <h3>YouTube</h3>
     </a>
   </div>
-  <div class="option">
+  <div class="ts-option">
     <a href="https://www.wikipedia.org/" target="_blank">
       <img src="images/icons/wikipedia.svg">
       <h3>Wikipedia - The free encyclopedia</h3>
     </a>
   </div>
-  <div class="option">
+  <div class="ts-option">
     <a href="https://www.bing.com/" target="_blank">
       <img src="images/icons/bing.svg">
       <h3>Bing</h3>
     </a>
   </div>
-  <div class="option">
+  <div class="ts-option">
     <a href="https://in.search.yahoo.com/" target="_blank">
       <img src="images/icons/yahoo.svg">
       <h3>Yahoo</h3>
     </a>
   </div>
-  <div class="option">
+  <div class="ts-option">
     <a href="https://duckduckgo.com/" target="_blank">
       <img src="images/icons/duckduckgo.svg">
       <h3>DuckDuckGo</h3>
