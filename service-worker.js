@@ -19,6 +19,10 @@ const PRECACHE_ASSETS = [
   '/indexeddb.html',
   '/phonebook.html',
   '/topsites.html',
+
+  '/favicon.ico',
+  '/images/icon-192x192.png',
+  '/images/icon-512x512.png',
   '/images/icons/srn-balloon.svg',
   '/images/icons/srn-crow.svg',
   '/images/icons/srn-dog.svg',
@@ -33,9 +37,24 @@ const PRECACHE_ASSETS = [
   '/images/icons/srn-siren.svg',
   '/images/icons/srn-siren-blink.svg',
   '/images/icons/srn-wolf.svg',
-  '/favicon.ico',
-  '/images/icon-192x192.png',
-  '/images/icon-512x512.png',
+  '/media/srn-sounds/warfare_taser_gun_005.mp3',
+  '/media/srn-sounds/warfare_taser_gun_002.mp3',
+  '/media/srn-sounds/balloon-rubbing-foley-5-184049.mp3',
+  '/media/srn-sounds/big-dog-barking-300504.mp3',
+  '/media/srn-sounds/fox-calling-243999.mp3',
+  '/media/srn-sounds/scary-wolf-growling-224086.mp3',
+  '/media/srn-sounds/hooded-crow-cawing-217457.mp3',
+  '/media/srn-sounds/crow-bird-calling-bird-crow-sound-8908.mp3',
+  '/media/srn-sounds/crow-67929.mp3',
+  '/media/srn-sounds/civil-defense-siren-128262.mp3',
+  '/media/srn-sounds/siren-38642.mp3',
+  '/media/srn-sounds/delta-7-evacuation-siren-22510.mp3',
+  '/media/srn-sounds/siren-a-248662.mp3',
+  '/media/srn-sounds/siren-police-63597.mp3',
+  '/media/srn-sounds/fox-calling-243999.mp3',
+  '/media/srn-sounds/police-operation-siren-144229.mp3',
+  '/media/srn-sounds/fire-truck-siren-29900.mp3',
+
 ];
 
 // ===== INSTALL EVENT =====
