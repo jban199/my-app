@@ -18,7 +18,7 @@ function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const registration = await navigator.serviceWorker.register('/service-worker.js');
+        const registration = await navigator.serviceWorker.register('https://jban199.github.io/my-app/service-worker.js');
         console.log(`${APP_NAME}: ServiceWorker registration successful`);
 
         // Check for updates periodically
