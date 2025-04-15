@@ -19,7 +19,6 @@ const PRECACHE_ASSETS = [
   '/indexeddb.html',
   '/phonebook.html',
   '/topsites.html',
-
   '/favicon.ico',
   '/images/icon-192x192.png',
   '/images/icon-512x512.png',
@@ -53,7 +52,7 @@ const PRECACHE_ASSETS = [
   '/media/srn-sounds/siren-police-63597.mp3',
   '/media/srn-sounds/fox-calling-243999.mp3',
   '/media/srn-sounds/police-operation-siren-144229.mp3',
-  '/media/srn-sounds/fire-truck-siren-29900.mp3',
+  '/media/srn-sounds/fire-truck-siren-29900.mp3'
 
 ];
 
