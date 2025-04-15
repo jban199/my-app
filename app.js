@@ -18,7 +18,7 @@ function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const registration = await navigator.serviceWorker.register('/sw.js');
+        const registration = await navigator.serviceWorker.register('/service-worker.js');
         console.log(`${APP_NAME}: ServiceWorker registration successful`);
 
         // Check for updates periodically
