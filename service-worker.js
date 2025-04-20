@@ -60,7 +60,7 @@ const PRECACHE_ASSETS = [
 // ===== INSTALL EVENT =====
 self.addEventListener('install', (event) => {
   console.log('[Service Worker] Installing version', SW_VERSION);
-  
+
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
@@ -74,7 +74,7 @@ self.addEventListener('install', (event) => {
 // ===== ACTIVATE EVENT =====
 self.addEventListener('activate', (event) => {
   console.log('[Service Worker] Activating version', SW_VERSION);
-  
+
   // Clean up old caches
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -86,42 +86,36 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    }).then(() => {
-      // Take control of all clients immediately
-      return self.clients.claim();
-    })
+    }).then(() => self.clients.claim())
   );
 });
 
 // ===== FETCH EVENT (Stale-While-Revalidate) =====
 self.addEventListener('fetch', (event) => {
-  // Skip non-GET requests
   if (event.request.method !== 'GET') return;
 
-  // Handle navigation requests (HTML pages) with offline fallback
+  // Handle navigation requests with offline fallback
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request)
-        .catch(() => caches.match(OFFLINE_URL))
+      fetch(event.request).catch(() => caches.match(OFFLINE_URL))
     );
     return;
   }
 
-  // For all other assets, use Stale-While-Revalidate
+  // For other assets - Stale-While-Revalidate
   event.respondWith(
     caches.match(event.request)
       .then((cachedResponse) => {
-        // Always try to update from network in background
         const fetchPromise = fetch(event.request)
           .then((networkResponse) => {
-            // Update cache with fresh response
-            caches.open(CACHE_NAME)
-              .then((cache) => cache.put(event.request, networkResponse.clone()));
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseClone);
+            });
             return networkResponse;
           })
-          .catch(() => {}); // Silently fail if network fails
+          .catch(() => cachedResponse); // fallback to cache on fail
 
-        // Return cached response immediately, then update
         return cachedResponse || fetchPromise;
       })
   );
@@ -134,7 +128,7 @@ self.addEventListener('message', (event) => {
   }
 });
 
-// ===== PERIODIC UPDATE CHECK =====
+// ===== OPTIONAL: Periodic Update Check =====
 function checkForUpdates() {
   caches.open(CACHE_NAME).then((cache) => {
     cache.match('/version.json').then((response) => {
@@ -160,7 +154,6 @@ function notifyClientsUpdateAvailable() {
   });
 }
 
-// Check for updates every 6 hours
 self.addEventListener('periodicsync', (event) => {
   if (event.tag === 'update-check') {
     event.waitUntil(checkForUpdates());
