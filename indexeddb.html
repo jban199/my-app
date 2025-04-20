@@ -17,14 +17,14 @@
 </head>
 <body>
 
-<section class="note_header">
-	<h1 class="note_pagename"> Notes </h1>
+<section class="note-header">
+	<h1 class="note-pagename"> Notes </h1>
 </section>
-	<div class="note_container">
-    <input type="text" id="note_userInput" placeholder="Enter some data..." />
-    <button id="note_saveBtn" onclick="note_saveData()">Save Data</button>   
+	<div class="note-container">
+    <input type="text" id="note-userInput" placeholder="Enter some data..." />
+    <button id="note-saveBtn" onclick="note_saveData()">Save Data</button>   
 
-    <div class="note_data-list" id="note_dataList">
+    <div class="note-data-list" id="note-dataList">
       <!-- Saved data will appear here -->
     </div>
   </div>
@@ -54,8 +54,8 @@
     };
 
     // Save data to IndexedDB
-    function saveData() {
-      const userInput = document.getElementById("note_userInput").value;
+    function note_saveData() {
+      const userInput = document.getElementById("note-userInput").value;
 
       if (userInput.trim() === "") {
         alert("Please enter some data.");
@@ -71,7 +71,7 @@
       transaction.oncomplete = () => {
         console.log("Data saved!");
         loadData(); // Reload the data after saving
-        document.getElementById("note_userInput").value = ""; // Clear the input field
+        document.getElementById("note-userInput").value = ""; // Clear the input field
       };
 
       transaction.onerror = (e) => {
@@ -87,7 +87,7 @@
 
       request.onsuccess = (e) => {
         const dataList = e.target.result;
-        const dataListContainer = document.getElementById("note_dataList");
+        const dataListContainer = document.getElementById("note-dataList");
 
         dataListContainer.innerHTML = ""; // Clear the list before reloading
 
