@@ -535,9 +535,9 @@ p {
 	text-decoration: none;
 	color: var(--font1);
 	font-size: 12px;
-	background: var(--bg2);
+	background: #bababa;
 	padding: 10px;
-	border-radius: 5px;
+	border-radius: 20px;
 	margin-bottom: 5px;
 }
 
