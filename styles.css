@@ -497,6 +497,18 @@ p {
 	z-index: 9999;
 }
 
+#SBM-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  z-index: -1; /* Places it below the .target-div content */
+
+
+
 .SBM-options {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
