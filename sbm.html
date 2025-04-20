@@ -20,11 +20,38 @@
 			</svg>
 			Rate Us
 		</a>
-		<a class="SBM-OPT-button" href="#">
+		<a class="SBM-OPT-button" id="SBM-installBtn" href="">
 			<svg class="SBM-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 				<path d="M335-9q-51.98 0-88.99-37.01Q209-83.03 209-135v-145h126v25h370v-450H335v25H209v-145q0-51.97 37.01-88.99Q283.02-951 335-951h370q51.97 0 88.99 37.01Q831-876.97 831-825v690q0 51.97-37.01 88.99Q756.97-9 705-9H335ZM176-295l-56-56 209-209H185v-80h280v280h-80v-144L176-295Z"/>
 			</svg>
 			Install this App
+			
+			<script>
+				let deferredPrompt;
+
+				window.addEventListener('beforeinstallprompt', (e) => {
+				  // Don't prevent the default mini-infobar
+				  deferredPrompt = e;
+
+				  const installBtn = document.getElementById('SBM-installBtn');
+				  installBtn.style.display = 'block';
+
+				  installBtn.addEventListener('click', async () => {
+					// Hide the button once clicked
+					installBtn.style.display = 'none';
+
+					// Show the prompt
+					deferredPrompt.prompt();
+
+					// Wait for user response
+					const { outcome } = await deferredPrompt.userChoice;
+					console.log(`User response to the install prompt: ${outcome}`);
+
+					deferredPrompt = null;
+				  });
+				});
+
+			</script>
 		</a>
 		<a class="SBM-OPT-button" href="#">
 			<svg class="SBM-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
