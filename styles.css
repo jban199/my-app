@@ -486,7 +486,7 @@ p {
 	right: 0px;
 	width: 95%;
 	background-color: #bababa;
-	border-radius: 20px;
+	border-radius: 20px 20 px 0px 0px;
 	-webkit-backdrop-filter: blur(20px);
 	backdrop-filter: blur(20px);
 	box-shadow: 0px -2px 25px var(--shadow1);
