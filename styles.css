@@ -474,6 +474,11 @@ p {
     transform: translateX(-50%);
 }
 
+#closeSBM svg {
+	fill: var(--accent1);
+}
+
+
 #SBM-section {
 	position: fixed;
 	bottom: 0px;
