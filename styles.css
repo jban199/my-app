@@ -478,16 +478,6 @@ p {
 	fill: var(--accent1);
 }
 
-#SBM-container {
-	height: 100%;
-    width: 100%;
-    background-color: #00000000;
-    position: fixed;
-    backdrop-filter: blur(10px);
-    top: 0;
-    z-index: 9990;
-}
-
 
 #SBM-section {
 	position: fixed;
