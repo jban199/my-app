@@ -506,6 +506,7 @@ p {
   height: 100%;
   background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
   z-index: -1; /* Places it below the .target-div content */
+}
 
 
 
