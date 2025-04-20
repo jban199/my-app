@@ -17,6 +17,7 @@ const PRECACHE_ASSETS = [
   'https://jban199.github.io/my-app/calls.html',
   'https://jban199.github.io/my-app/hologram.html',
   'https://jban199.github.io/my-app/nearme.html',
+  'https://jban199.github.io/my-app/siren.html',
   'https://jban199.github.io/my-app/indexeddb.html',
   'https://jban199.github.io/my-app/phonebook.html',
   'https://jban199.github.io/my-app/topsites.html',
@@ -51,7 +52,6 @@ const PRECACHE_ASSETS = [
   'https://jban199.github.io/my-app/media/srn-sounds/delta-7-evacuation-siren-22510.mp3',
   'https://jban199.github.io/my-app/media/srn-sounds/siren-a-248662.mp3',
   'https://jban199.github.io/my-app/media/srn-sounds/siren-police-63597.mp3',
-  'https://jban199.github.io/my-app/media/srn-sounds/fox-calling-243999.mp3',
   'https://jban199.github.io/my-app/media/srn-sounds/police-operation-siren-144229.mp3',
   'https://jban199.github.io/my-app/media/srn-sounds/fire-truck-siren-29900.mp3'
 
