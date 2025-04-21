@@ -927,7 +927,7 @@ p {
   width: 45px;
   height: 45px;
   margin-bottom: 4px;
-  background: #ffffff;
+  background: transparent;
   padding: 5px;
   border-radius: 10px;
 }
