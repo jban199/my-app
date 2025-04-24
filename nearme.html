@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>TKA - NearMe</title>
 
@@ -283,7 +283,73 @@ clearButton.addEventListener('click', () => {
   <div class="nm-option">
     <a href="#" target="_blank">
       <img src="images/nm/#.svg">
-      <h3 class="nm-option-name">#</h3>
+      <h3 class="nm-option-name">ATMs</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Banks</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Post Offices</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Police Stations</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Fire Stations</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Dry Cleaners</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Salons & Barbers</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Tailors</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Carpenter</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Plumber</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Electrician</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Gas Service</h3>
     </a>
   </div>
   <div class="nm-option">
@@ -335,13 +401,31 @@ clearButton.addEventListener('click', () => {
   <div class="nm-option">
     <a href="#" target="_blank">
       <img src="images/nm/#.svg">
-      <h3 class="nm-option-name">#</h3>
+      <h3 class="nm-option-name">Temples</h3>
     </a>
   </div>
   <div class="nm-option">
     <a href="#" target="_blank">
       <img src="images/nm/#.svg">
-      <h3 class="nm-option-name">#</h3>
+      <h3 class="nm-option-name">Churches</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Mosques</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Gurudwaras</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Synagogues</h3>
     </a>
   </div>
 
@@ -352,16 +436,47 @@ clearButton.addEventListener('click', () => {
   <div class="nm-option">
     <a href="#" target="_blank">
       <img src="images/nm/#.svg">
-      <h3 class="nm-option-name">#</h3>
+      <h3 class="nm-option-name">Parks</h3>
     </a>
   </div>
   <div class="nm-option">
     <a href="#" target="_blank">
       <img src="images/nm/#.svg">
-      <h3 class="nm-option-name">#</h3>
+      <h3 class="nm-option-name">Gardens</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Zoos</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Picnic spots</h3>
+    </a>
+  </div>
+  <div class="nm-option">
+    <a href="#" target="_blank">
+      <img src="images/nm/#.svg">
+      <h3 class="nm-option-name">Beaches</h3>
     </a>
   </div>
 
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const images = document.querySelectorAll("img");
+
+    images.forEach(img => {
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = "images/nm/nm-placeholder.svg";
+      };
+    });
+  });
+</script>
 </section>
 
 
