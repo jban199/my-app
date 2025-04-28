@@ -157,7 +157,7 @@
 		<!-- Widget: Date & Time -->
 		<div id="home-widget-datetime" class="">
 			<div class="home-greeting" id="home-greeting">
-			  <img src="images/day/morning.svg" alt="Greeting Icon">
+			  <img src="images/dashboard/day/morning.svg" alt="Greeting Icon">
 			  <span>Good Morning</span>
 			</div>
 			<div class="home-time" id="home-time">--:-- --</div>
@@ -190,14 +190,14 @@
 		<!-- Widget: Sun Moon Duration -->
 		<div id="home-widget-sunmoonduration" class="home-widget-card">
 			<div class="home-card-row">
-			<img class="home-sunduration-img" src="images/day/sun-duration.png" alt="Sun">
+			<img class="home-sunduration-img" src="images/dashboard/day/sun-duration.png" alt="Sun">
 			<div class="times">
 				<div><span id="sunrise">--:-- am</span></div>
 				<div><span id="sunset">--:-- pm</span></div>
 			</div>
 			</div>
 			<div class="home-card-row">
-			<img class="home-moonduration-img" src="images/day/moon-duration.png" alt="Moon">
+			<img class="home-moonduration-img" src="images/dashboard/day/moon-duration.png" alt="Moon">
 			<div class="times">
 				<div><span id="moonrise">--:-- pm</span></div>
 				<div><span id="moonset">--:-- am</span></div>
@@ -232,7 +232,7 @@
 		<div id="home-widget-network" class="home-widget-card">
 			<h4>Network</h4>
 			<div id="home-network-display">
-				<img id="home-network-icon" src="images/network/wifi.svg" alt="Network Icon">
+				<img id="home-network-icon" src="images/dashboard/network/wifi.svg" alt="Network Icon">
 				<p id="home-network-label">Loading...</p>
 			</div>
 		</div>
@@ -272,7 +272,7 @@
       else if (now.getHours() >= 12 && now.getHours() < 17) { label = 'Good Afternoon'; imgSrc = 'afternoon.svg'; }
       else if (now.getHours() >= 17 && now.getHours() < 20) { label = 'Good Evening'; imgSrc = 'evening.svg'; }
 
-      img.src = `images/day/${imgSrc}`;
+      img.src = `images/dashboard/day/${imgSrc}`;
       text.textContent = label;
     } catch (err) {
       console.warn("homeUpdateTimeGreeting error:", err);
@@ -368,7 +368,7 @@ if ('geolocation' in navigator) {
       else if (dayNum < 15) { paksha = "Shukla"; tithi = tithis[dayNum - 1]; }
       else { paksha = "Krishna"; tithi = tithis[dayNum - 16]; }
 
-      const imgName = `images/moon/${paksha.toLowerCase()}-${tithi.toLowerCase()}.webp`;
+      const imgName = `images/dashboard/moon/${paksha.toLowerCase()}-${tithi.toLowerCase()}.webp`;
 
       if (document.getElementById('home-moonphases-img')) document.getElementById('home-moonphases-img').src = imgName;
       if (document.getElementById('home-moon-phase')) document.getElementById('home-moon-phase').textContent = paksha;
@@ -468,13 +468,13 @@ function homeUpdateNetworkStatus() {
         const label = document.getElementById('home-network-label');
 
         if (type === 'wifi') {
-          icon.src = 'images/network/wifi.svg';
+          icon.src = 'images/dashboard/network/wifi.svg';
           label.textContent = 'Wi-Fi';
         } else if (type === 'cellular') {
-          icon.src = 'images/network/cellular.svg';
+          icon.src = 'images/dashboard/network/cellular.svg';
           label.textContent = 'Cellular';
         } else {
-          icon.src = 'images/network/cellular.svg'; // fallback default
+          icon.src = 'images/dashboard/network/cellular.svg'; // fallback default
           label.textContent = 'Unknown';
         }
       }
@@ -485,7 +485,7 @@ function homeUpdateNetworkStatus() {
     } else {
       // Fallback if API not supported
       document.getElementById('home-network-label').textContent = "Unknown";
-      document.getElementById('home-network-icon').src = "images/network/cellular.svg";
+      document.getElementById('home-network-icon').src = "images/dashboard/network/cellular.svg";
     }
   } catch (err) {
     console.warn("homeUpdateNetworkStatus error:", err);
