@@ -83,7 +83,14 @@ const PRECACHE_ASSETS = [
   'https://jban199.github.io/my-app/images/moon/shukla-saptami.webp',
   'https://jban199.github.io/my-app/images/moon/shukla-shashthi.webp',
   'https://jban199.github.io/my-app/images/moon/shukla-trayodashi.webp',
-  'https://jban199.github.io/my-app/images/moon/shukla-tritiya.webp'
+  'https://jban199.github.io/my-app/images/moon/shukla-tritiya.webp',
+  'https://jban199.github.io/my-app/images/dashboard/day/sun-duration.png',
+  'https://jban199.github.io/my-app/images/dashboard/day/moon-duration.png',
+  'https://jban199.github.io/my-app/images/dashboard/day/morning.svg',
+  'https://jban199.github.io/my-app/images/dashboard/day/afternoon.svg',
+  'https://jban199.github.io/my-app/images/dashboard/day/evening.svg',
+  'https://jban199.github.io/my-app/images/dashboard/day/night.svg',
+  'https://jban199.github.io/my-app/images/nm/nm-placeholder.svg'
 
 ];
 
