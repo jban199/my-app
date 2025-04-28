@@ -147,7 +147,25 @@
 		font-style: italic;
 		font-size: 18px;
 		color: #e0f2fe;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
     }
+
+	.home-quote-nav-buttons {
+		display: flex;
+		justify-content: end;
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+	
+	#home-quote-next {
+		margin-top: 1rem;
+		background: #00000080;
+		border: none;
+		border-radius: 30px;
+		padding: 5px 15px;
+	}
 	
 	#home-battery-status {
 		font-size: 1rem;
@@ -183,6 +201,11 @@
 	}
 	
 	
+	#home-widget-events {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
 	#home-event-display button {
 		background: #00000080;
 		border: none;
@@ -347,6 +370,15 @@
 		<div id="home-widget-quote" class="home-quote home-widget-card">
 			<h4>Quote for you:</h4>
 			<span id="home-widget-quote-message">"Where there is a will, there is a way."</span>
+			
+			<div class="home-quote-nav-buttons">
+				<button id="home-quote-next" onclick="homeUpdateQuote()">
+					<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#5985E1">
+						<path d="M420-308q-8 0-14-5.5t-6-14.5v-304q0-9 6-14.5t14-5.5q2 0 14 6l145 145q5 5 7 10t2 11q0 6-2 11t-7 10L434-314q-3 3-6.5 4.5T420-308Z"/>
+					</svg>
+				</button>
+			</div>
+			
 		</div>
 		
 		<!-- Widget: Events -->
