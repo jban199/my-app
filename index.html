@@ -23,7 +23,6 @@
 	  flex-direction: column;
 	  gap: 5px;
       align-items: center;
-      height: 100vh;
       overflow: scroll;
       margin: 10px;
     }
@@ -39,6 +38,7 @@
     #home-widget-datetime {
       text-align: center;
       margin-bottom: 1rem;
+	  margin-top: 1rem;
     }
     .home-greeting {
       display: flex;
@@ -253,14 +253,16 @@
 		</div>
 	</div>
 	<div class="home-widget-row">
-	  <!-- Widget: Moon Phases -->
+		<!-- Widget: Moon Phases -->
 		<div id="home-widget-moonphases" class="home-widget-card">
 		  <img id="home-moonphases-img" src="" alt="Moon Phase">
 		  <div>
+			<div id="home-moon-month"><strong>--</strong></div>
 			<div id="home-moon-phase"><strong>--</strong></div>
 			<div id="home-moon-tithi" style="color: #cbd5e1;">--</div>
 		  </div>
 		</div>
+		
 		
 		<!-- Widget: Sun Moon Duration -->
 		<div id="home-widget-sunmoonduration" class="home-widget-card">
@@ -535,6 +537,61 @@ if ('geolocation' in navigator) {
     }
   }
   homeUpdateMoonPhase();
+  
+
+// Function to get the current Hindu lunar month
+function getHinduLunarMonth(date = new Date()) {
+  // Hindu lunar months (Amanta system - starts after Amavasya)
+  const hinduMonths = [
+    "Chaitra", "Vaishakha", "Jyeshtha", "Ashadha",
+    "Shravana", "Bhadrapada", "Ashwin", "Kartika",
+    "Margashirsha", "Pausha", "Magha", "Phalguna"
+  ];
+
+  // Approximate Gregorian start dates for Hindu months (2024-2025)
+  // Note: These vary slightly each year due to lunar cycles.
+  const monthStartDates = [
+    new Date(date.getFullYear(), 2, 22),   // Chaitra ~ March 22
+    new Date(date.getFullYear(), 3, 21),   // Vaishakha ~ April 21
+    new Date(date.getFullYear(), 4, 22),   // Jyeshtha ~ May 22
+    new Date(date.getFullYear(), 5, 21),   // Ashadha ~ June 21
+    new Date(date.getFullYear(), 6, 22),   // Shravana ~ July 22
+    new Date(date.getFullYear(), 7, 22),   // Bhadrapada ~ August 22
+    new Date(date.getFullYear(), 8, 23),   // Ashwin ~ September 23
+    new Date(date.getFullYear(), 9, 23),   // Kartika ~ October 23
+    new Date(date.getFullYear(), 10, 22),  // Margashirsha ~ November 22
+    new Date(date.getFullYear(), 11, 22),  // Pausha ~ December 22
+    new Date(date.getFullYear(), 0, 21),   // Magha ~ January 21
+    new Date(date.getFullYear(), 1, 20)    // Phalguna ~ February 20
+  ];
+
+  // Find the current Hindu month
+  for (let i = 0; i < monthStartDates.length; i++) {
+    if (date < monthStartDates[i]) {
+      return hinduMonths[(i - 1 + 12) % 12]; // Handle year wrap (Phalguna → Chaitra)
+    }
+  }
+  return hinduMonths[11]; // Default to Phalguna (Feb-March)
+}
+
+// Update the HTML with the Hindu month
+function updateHinduMonth() {
+  try {
+    const today = new Date();
+    const hinduMonth = getHinduLunarMonth(today);
+    
+    // Set the month in your HTML widget
+    const monthElement = document.getElementById('home-moon-month');
+    if (monthElement) {
+      monthElement.innerHTML = `<strong>${hinduMonth}</strong>`;
+    }
+  } catch (err) {
+    console.warn("updateHinduMonth error:", err);
+  }
+}
+
+// Call the function to update the month
+updateHinduMonth();
 </script>	
 	
 	
