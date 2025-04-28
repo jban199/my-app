@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Home</title>
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TKA - Dashboard</title>
+  
+	<!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <meta name="theme-color" content="#1A1A1A">
+
+    <!-- Link to the stylesheet -->
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+	
+<style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
@@ -14,7 +24,7 @@
 	  gap: 5px;
       align-items: center;
       height: 100vh;
-      overflow: auto;
+      overflow: scroll;
       margin: 1rem;
     }
 	
@@ -57,7 +67,7 @@
       min-width: 140px;
 	  width: 100%;
       background: rgba(255,255,255,0.1);
-      border-radius: 1rem;
+      border-radius: 8px;
       padding: 10px;
       text-align: left;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -139,18 +149,71 @@
 	}
 
 	#home-network-display img {
-		width: 40px;
-		height: 40px;
+		width: 30px;
+		height: 30px;
 	}
 
 	#home-network-label {
 		font-size: 0.9rem;
 		margin-top: 5px;
 	}
+	
+	#home-widget-storage {
+		text-align: center;
+	}
+
+	#home-storage-bar-container {
+		width: 100%;
+		background: rgba(255, 255, 255, 0.2);
+		height: 10px;
+		border-radius: 5px;
+		margin-top: 8px;
+		overflow: hidden;
+	}
+
+	#home-storage-bar {
+		background: #34d399; /* A nice green */
+		height: 100%;
+		width: 0%;
+		border-radius: 5px;
+		transition: width 1s ease;
+	}
+
+	#home-storage-total, #home-storage-used, #home-storage-free {
+		font-size: 0.9rem;
+		margin: 3px 0;
+	}
 
 
+    .home-buttons {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 10px;
+		padding: 10px 0px;
+    }
 
-  </style>
+    .home-pages {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		color: var(--font1);
+		font-size: 10px;
+		background: rgba(0,0,0,0.5);
+		box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+		padding: 8px;
+		border-radius: 8px;
+		margin-bottom: 5px;
+    }
+	.home-pages-icons {
+		width: 24px;
+		height: 24px;
+		fill: var(--accent1);
+		margin: 5px;
+	}
+
+</style>
 </head>
 <body>
 	<div class="home-widget-row">
@@ -205,13 +268,6 @@
 			</div>
 		</div>
 	</div>
-	<div class="home-widget-row">
-		<!-- Widget: Quote of the Day -->
-		<div id="home-widget-quote" class="home-quote home-widget-card">
-			<h4>Quote for you:</h4>
-			<span id="home-widget-quote-message">"Where there is a will, there is a way."</span>
-		</div>
-	</div>
 	
 	<div class="home-widget-row">
 		<!-- Widget: Battery Status -->
@@ -237,14 +293,85 @@
 			</div>
 		</div>
 
-		<!-- Widget: Battery Status -->
-		<div id="home-widget-battery" class="home-widget-card">
-			<h4>Battery</h4>
-			<p id="home-battery-status">Loading...</p>
+		<!-- Widget: Storage Status -->
+		<div id="home-widget-storage" class="home-widget-card">
+			<h4>Storage</h4>
+			<p id="home-storage-total">Total: -- GB</p>
+			<p id="home-storage-used">Used: -- GB</p>
+			<p id="home-storage-free">Free: -- GB</p>
+			<div id="home-storage-bar-container">
+				<div id="home-storage-bar"></div>
+			</div>
 		</div>
 
 	</div>
-
+	<div class="home-widget-row">
+		<!-- Widget: Quote of the Day -->
+		<div id="home-widget-quote" class="home-quote home-widget-card">
+			<h4>Quote for you:</h4>
+			<span id="home-widget-quote-message">"Where there is a will, there is a way."</span>
+		</div>
+	</div>
+	
+	
+	
+	  <!-- 🧭 Navigation Buttons -->
+  <div class="home-buttons">
+    <a class="home-pages" href="ved.html">
+		<svg class="home-pages-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="fill:DodgerBlue;">
+				<path d="M520-278q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 97q-14 0-26.5-3.5T430-194q-39-23-82-34.5T260-240q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q47-23 96.5-35.5T260-800q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 101.5 12.5T898-752q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-45 0-88 11.5T530-194q-11 6-23.5 9.5T480-181Zm80-428q0-9 6.5-18.5T581-640q29-10 58-15t61-5q20 0 39.5 2.5T778-651q9 2 15.5 10t6.5 18q0 17-11 25t-28 4q-14-3-29.5-4.5T700-600q-26 0-51 5t-48 13q-18 7-29.5-1T560-609Zm0 220q0-9 6.5-18.5T581-420q29-10 58-15t61-5q20 0 39.5 2.5T778-431q9 2 15.5 10t6.5 18q0 17-11 25t-28 4q-14-3-29.5-4.5T700-380q-26 0-51 4.5T601-363q-18 7-29.5-.5T560-389Zm0-110q0-9 6.5-18.5T581-530q29-10 58-15t61-5q20 0 39.5 2.5T778-541q9 2 15.5 10t6.5 18q0 17-11 25t-28 4q-14-3-29.5-4.5T700-490q-26 0-51 5t-48 13q-18 7-29.5-1T560-499Z"/>
+		</svg>
+		Ved
+	</a>
+    <a class="home-pages" href="phonebook.html">
+		<svg class="home-pages-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="fill:olive;">
+			<path d="M798-120q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12Z"/>
+		</svg>
+		Calls
+	</a>
+    <a class="home-pages" href="indexeddb.html">
+		<svg class="home-pages-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="fill:cyan;">
+			<path d="M160-240q-17 0-28.5-11.5T120-280q0-17 11.5-28.5T160-320h400q17 0 28.5 11.5T600-280q0 17-11.5 28.5T560-240H160Zm0-200q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h640q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H160Zm0-200q-17 0-28.5-11.5T120-680q0-17 11.5-28.5T160-720h640q17 0 28.5 11.5T840-680q0 17-11.5 28.5T800-640H160Z"/>
+		</svg>
+		Notes
+	</a>
+	<a class="home-pages" href="nearme.html">
+		<svg class="home-pages-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="fill:magenta;">
+			<path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 400Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Z"/>
+		</svg>
+		Near Me
+	</a>
+	<a class="home-pages" href="topsites.html">
+		<svg class="home-pages-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="fill:orange;">
+			<path d="M480-118 120-398l66-50 294 228 294-228 66 50-360 280Zm0-202L120-600l360-280 360 280-360 280Z"/>
+		</svg>
+		Topsites
+	</a>
+	<a class="home-pages" href="siren.html">
+		<svg class="home-pages-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="fill:Crimson;">
+			<path d="M240-160q-17 0-28.5-11.5T200-200q0-17 11.5-28.5T240-240h24l79-263q8-26 29.5-41.5T420-560h120q26 0 47.5 15.5T617-503l79 263h24q17 0 28.5 11.5T760-200q0 17-11.5 28.5T720-160H240Zm200-520v-120q0-17 11.5-28.5T480-840q17 0 28.5 11.5T520-800v120q0 17-11.5 28.5T480-640q-17 0-28.5-11.5T440-680Zm210 54 85-85q11-11 27.5-11.5T791-711q11 11 11 28t-11 28l-85 86q-12 12-28 12t-28-12q-12-12-12-28.5t12-28.5Zm110 186h120q17 0 28.5 11.5T920-400q0 17-11.5 28.5T880-360H760q-17 0-28.5-11.5T720-400q0-17 11.5-28.5T760-440ZM254-570l-85-85q-11-11-11.5-27.5T169-711q11-11 28-11t28 11l86 85q12 12 12 28t-12 28q-12 12-28.5 12T254-570ZM80-360q-17 0-28.5-11.5T40-400q0-17 11.5-28.5T80-440h120q17 0 28.5 11.5T240-400q0 17-11.5 28.5T200-360H80Z"/>
+		</svg>
+		Emergency
+	</a>
+	<a class="home-pages" href="#">
+		<svg class="home-pages-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="fill:GoldenRod;">
+			<path d="M374-288q-128-17-211-70T80-480q0-83 115.5-141.5T480-680q169 0 284.5 58.5T880-480q0 56-54.5 101.5T681-307q-16 5-28.5-4.5T640-337q0-18 10.5-32t27.5-20q60-20 91-45.5t31-45.5q0-32-85.5-76T480-600q-149 0-234.5 44T160-480q0 24 51 57.5T356-372l-24-24q-11-11-11-28t11-28q11-11 28-11t28 11l104 104q12 12 12 28t-12 28L388-188q-11 11-27.5 11.5T332-188q-11-11-11.5-27.5T331-244l43-44Z"/>
+		</svg>
+		360
+	</a>
+	<a class="home-pages" href="hologram.html">
+		<svg class="home-pages-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="fill:blueviolet;">
+			<path d="M480-40q-149 0-254.5-42.5T120-200q0-32 20-57.5t56-45.5l65 58q-24 8-42.5 20.5T200-200q0 26 81 53t199 27q118 0 199-27t81-53q0-12-18.5-24.5T699-245l65-58q36 20 56 45.5t20 57.5q0 75-105.5 117.5T480-40Zm0-160q-22 0-42.5-7.5T400-230L148-453q-13-11-20.5-27t-7.5-33v-80q0-17 6.5-33t19.5-27l252-235q17-16 38-24t44-8q23 0 44 8t38 24l252 235q13 11 19.5 27t6.5 33v80q0 17-7.5 33T812-453L560-230q-17 15-37.5 22.5T480-200ZM360-550q21 0 35.5-14.5T410-600q0-21-14.5-35.5T360-650q-21 0-35.5 14.5T310-600q0 21 14.5 35.5T360-550Zm50 54q43 21 90.5 13.5T584-522q34-29 44.5-73T618-678L410-496Zm70-174q21 0 35.5-14.5T530-720q0-21-14.5-35.5T480-770q-21 0-35.5 14.5T430-720q0 21 14.5 35.5T480-670Z"/>
+		</svg>
+		Hologram
+	</a>
+	<a class="home-pages" href="#">
+		<svg class="home-pages-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="fill:HotPink;">
+			<path d="m426-330 195-125q14-9 14-25t-14-25L426-630q-15-10-30.5-1.5T380-605v250q0 18 15.5 26.5T426-330Zm54 250q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/>
+		</svg>
+		Videos
+	</a>
+  </div>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
@@ -495,6 +622,241 @@ homeUpdateNetworkStatus();
 </script>
 
 
+<script>
+// Widget: Storage Status
+function homeUpdateStorageStatus() {
+  try {
+    if ('storage' in navigator && 'estimate' in navigator.storage) {
+      navigator.storage.estimate().then(estimate => {
+        const totalBytes = estimate.quota || 0;
+        const usedBytes = estimate.usage || 0;
+        const freeBytes = totalBytes - usedBytes;
+
+        const totalGB = (totalBytes / (1024 * 1024 * 1024)).toFixed(2);
+        const usedGB = (usedBytes / (1024 * 1024 * 1024)).toFixed(2);
+        const freeGB = (freeBytes / (1024 * 1024 * 1024)).toFixed(2);
+
+        const usedPercent = totalBytes ? Math.round((usedBytes / totalBytes) * 100) : 0;
+
+        if (document.getElementById('home-storage-total'))
+          document.getElementById('home-storage-total').textContent = `Total: ${totalGB} GB`;
+
+        if (document.getElementById('home-storage-used'))
+          document.getElementById('home-storage-used').textContent = `Used: ${usedGB} GB`;
+
+        if (document.getElementById('home-storage-free'))
+          document.getElementById('home-storage-free').textContent = `Free: ${freeGB} GB`;
+
+        if (document.getElementById('home-storage-bar'))
+          document.getElementById('home-storage-bar').style.width = `${usedPercent}%`;
+      });
+    } else {
+      document.getElementById('home-widget-storage').textContent = "Storage Info not available.";
+    }
+  } catch (err) {
+    console.warn("homeUpdateStorageStatus error:", err);
+  }
+}
+homeUpdateStorageStatus();
+</script>
+
+
+
+<!-- ///////////////// -->
+<!-- Bottom Menu -->
+<!-- ///////////////// -->
+<section>
+<!-- SBM Trigger -->
+<svg id="SBM-Icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+    <path d="M86-191v-126h788v126H86Zm0-226v-126h788v126H86Zm0-226v-126h788v126H86Z"/>
+</svg>
+
+<!-- SBM container (empty, the content is injected here) -->
+<div id="SBM-container"></div>
+</section>
+
+
+<script>
+window.onload = function() {		
+    // Load SBM
+    fetch('sbm.html')
+        .then(response => response.text())
+        .then(data => {
+            const sidebarContainer = document.getElementById('SBM-container');
+            sidebarContainer.innerHTML = data;
+
+            // Make sure sidebar is hidden after load
+            const overlaySBM = document.getElementById("SBM-section");
+            if (overlaySBM) {
+                overlaySBM.style.transform = "translateY(100%)";
+            }
+
+            // Reattach event listeners after the SBM is loaded
+            const closeButton = document.getElementById("closeSBM");
+            if (closeButton) {
+                closeButton.addEventListener("click", closeSBM);
+            }
+
+            // Get reference to the icon that triggers the sidebar opening
+            const SBMIcon = document.getElementById("SBM-Icon");
+
+            // Function to open the sidebar
+            function openSBM() {
+                if (overlaySBM) {
+                    overlaySBM.style.transform = "translateY(0)";
+                }
+            }
+
+            // Function to close the sidebar
+            function closeSBM() {
+                if (overlaySBM) {
+                    overlaySBM.style.transform = "translateY(100%)";
+                }
+            }
+
+            // Event listener for opening the SBM when the icon is clicked
+            if (SBMIcon) {
+                SBMIcon.addEventListener("click", openSBM);
+            }
+        })
+        .catch(error => {
+            console.error("Error loading SBM:", error);
+        });
+};
+</script>
+
+
+
+
+<!-- ///////////////// -->
+<!-- Theme Toggle -->
+<!-- ///////////////// -->
+<section>
+<button id="theme-toggle">
+    <!-- Default dark icon (SVG) -->
+    <svg id="dark-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+      <path d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/>
+    </svg>
+
+    <!-- Light Icon (hidden by default) -->
+    <svg id="light-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="display: none;">
+      <path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/>
+    </svg>
+</button>
+</section>
+
+<!-- ///////////////// -->
+<!-- Set Theme - Based on Local Storage -->
+<!-- ///////////////// -->
+<script>
+  // Wait for the DOM to be fully loaded before running the script
+  document.addEventListener("DOMContentLoaded", function() {
+    const themeLink = document.createElement("link");
+    themeLink.rel = "stylesheet";
+    themeLink.id = "theme-link";
+    
+    // Check if a theme preference is saved in localStorage
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
+    } else if (savedTheme === "light") {
+      themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
+    } else {
+      themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
+      localStorage.setItem('theme', 'dark');  // Save preference
+    }
+
+    // Append the theme <link> tag to the <head> of the document
+    document.head.appendChild(themeLink);
+
+    // Initialize icons based on saved theme preference
+    const darkIcon = document.getElementById('dark-icon');
+    const lightIcon = document.getElementById('light-icon');
+
+    if (savedTheme === "dark") {
+      lightIcon.style.display = 'none';
+      darkIcon.style.display = 'block';
+    } else {
+      lightIcon.style.display = 'block';
+      darkIcon.style.display = 'none';
+    }
+
+    // Toggle theme when button is clicked
+    const themeToggleButton = document.getElementById('theme-toggle');
+
+    themeToggleButton.addEventListener('click', () => {
+      const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
+      if (currentTheme === 'dark') {
+        themeLink.href = 'light-theme.css';  // Switch to light theme
+        localStorage.setItem('theme', 'light');  // Save preference
+        lightIcon.style.display = 'block';  // Show light icon
+        darkIcon.style.display = 'none';   // Hide dark icon
+      } else {
+        themeLink.href = 'dark-theme.css';   // Switch to dark theme
+        localStorage.setItem('theme', 'dark');  // Save preference
+        lightIcon.style.display = 'none';   // Hide light icon
+        darkIcon.style.display = 'block';   // Show dark icon
+      }
+    });
+  });
+</script>
+
+
+
+
+<!-- ///////////////// -->
+<!-- Footer Spacer -->
+<!-- ///////////////// -->
+<div class="footerSpacer">
+</div>
+
+
+<!-- ///////////////// -->
+<!-- Fullscreen Toggle -->
+<!-- ///////////////// -->
+<section>
+  <button id="fullscreen-toggle" class="fullscreen-button">
+  <!-- Icon for entering fullscreen (initially displayed) -->
+  <svg id="fullscreen-enter-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+    <path d="M86-86v-260h126v134h134v126H86Zm529 0v-126h133v-134h126v260H615ZM86-615v-259h260v126H212v133H86Zm662 0v-133H615v-126h259v259H748Z"/>
+  </svg>
+
+  <!-- Icon for exiting fullscreen (hidden initially) -->
+  <svg id="fullscreen-exit-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="display: none;">
+    <path d="M220-86v-134H86v-126h260v260H220Zm395 0v-260h259v126H741v134H615ZM86-615v-126h134v-133h126v259H86Zm529 0v-259h126v133h133v126H615Z"/>
+  </svg>
+</button>
+</section>
+<script>
+  // Fullscreen Toggle Logic
+const fullscreenButton = document.getElementById('fullscreen-toggle');
+fullscreenButton.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+    document.getElementById('fullscreen-enter-icon').style.display = 'none';
+    document.getElementById('fullscreen-exit-icon').style.display = 'block';
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+      document.getElementById('fullscreen-enter-icon').style.display = 'block';
+      document.getElementById('fullscreen-exit-icon').style.display = 'none';
+    }
+  }
+});
+
+</script>
+
+
+<!-- ///////////////// -->
+<!-- Prevent Right Click Context Menu -->
+<!-- ///////////////// -->
+<script>
+  // Prevent the context menu from appearing on right-click
+  document.addEventListener('contextmenu', function(event) {
+	event.preventDefault(); // Prevent the context menu from appearing
+  });
+</script>
 
 
 </body>
