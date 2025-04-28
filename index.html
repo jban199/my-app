@@ -248,8 +248,10 @@
 		
 		<!-- Widget: Location -->
 		<div id="home-widget-location" class="home-widget-card">
-		  <h4>Location</h4>
-		  <p id="home-location" class="home-paragraph">Loading...</p>
+			<h4>Location</h4>
+			<p id="home-location" class="home-paragraph">Loading...</p>
+			<button id="request-location-btn">Enable Location</button>
+			<div id="location-status"></div>
 		</div>
 	</div>
 	<div class="home-widget-row">
@@ -405,6 +407,57 @@
 	</a>
   </div>
 
+<script>
+// Get Geo Location Permission
+document.getElementById('request-location-btn').addEventListener('click', () => {
+  const statusElement = document.getElementById('location-status');
+  
+  // Check if geolocation is supported
+  if (!navigator.geolocation) {
+    statusElement.textContent = "Geolocation is not supported by your browser";
+    statusElement.style.color = 'red';
+    return;
+  }
+
+  // Request permission
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      // Success callback
+      statusElement.textContent = "Location permission granted!";
+      statusElement.style.color = 'green';
+      
+      // You can now use position.coords.latitude/longitude elsewhere
+      console.log("Latitude:", position.coords.latitude);
+      console.log("Longitude:", position.coords.longitude);
+    },
+    (error) => {
+      // Error callback
+      let errorMessage;
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          errorMessage = "Location permission denied";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          errorMessage = "Location information unavailable";
+          break;
+        case error.TIMEOUT:
+          errorMessage = "Location request timed out";
+          break;
+        default:
+          errorMessage = "Unknown error occurred";
+      }
+      statusElement.textContent = errorMessage;
+      statusElement.style.color = 'red';
+    },
+    {
+      // Options
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    }
+  );
+});
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
 <script>
