@@ -62,7 +62,25 @@
       color: #cbd5e1;
     }
 
-
+	.home-location-permission-btn {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		background: #00000080;
+		color: white;
+		border: none;
+		padding: 6px 10px;
+		border-radius: 30px;
+		position: absolute;
+		top: 5px;
+		right: 5px;
+	}
+	
+	#home-location-permission-icon {
+		height: 20px;
+		width: 20px;
+	}
+	
     .home-widget-card {
       min-width: 140px;
 	  width: 100%;
@@ -71,6 +89,7 @@
       padding: 10px;
       text-align: left;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+	  position: relative;
 	  
     }
 
@@ -250,8 +269,13 @@
 		<div id="home-widget-location" class="home-widget-card">
 			<h4>Location</h4>
 			<p id="home-location" class="home-paragraph">Loading...</p>
-			<button id="request-location-btn">Enable Location</button>
-			<div id="location-status"></div>
+			<button id="home-location-permission-btn" class="home-location-permission-btn">
+				<svg id="home-location-permission-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+					<path d="M480-107q-14 0-28-5t-25-15q-65-60-115-117t-83.5-110.5q-33.5-53.5-51-103T160-552q0-32 5-61t14-55L55-792q-12-12-12-28.5T55-849q12-12 28.5-12t28.5 12l736 736q12 12 12 28.5T848-56q-12 12-28.5 12T791-56L627-220q-25 26-50 51.5T533-127q-11 10-25 15t-28 5Zm0-773q127 0 223.5 89T800-552q0 35-10 72.5T760-402q-11 22-35.5 24.5T683-392L551-524q5-8 7-17t2-19q0-17-6-31.5T537-617q-11-11-25.5-17t-31.5-6q-10 0-19 2t-17 7L315-760q-18-18-15.5-42.5T323-840q35-20 75-30t82-10Z"/>
+				</svg>
+				<span id="home-location-permission-status">off</span>
+			</button>
+
 		</div>
 	</div>
 	<div class="home-widget-row">
@@ -259,7 +283,7 @@
 		<div id="home-widget-moonphases" class="home-widget-card">
 		  <img id="home-moonphases-img" src="" alt="Moon Phase">
 		  <div>
-			<div id="home-moon-month"><strong>--</strong></div>
+			<div id="home-moon-month">--</div>
 			<div id="home-moon-phase"><strong>--</strong></div>
 			<div id="home-moon-tithi" style="color: #cbd5e1;">--</div>
 		  </div>
@@ -408,54 +432,44 @@
   </div>
 
 <script>
-// Get Geo Location Permission
-document.getElementById('request-location-btn').addEventListener('click', () => {
-  const statusElement = document.getElementById('location-status');
-  
-  // Check if geolocation is supported
-  if (!navigator.geolocation) {
-    statusElement.textContent = "Geolocation is not supported by your browser";
-    statusElement.style.color = 'red';
-    return;
-  }
+const locationBtn = document.getElementById('home-location-permission-btn');
+const locationIcon = document.getElementById('home-location-permission-icon');
+const locationStatus = document.getElementById('home-location-permission-status');
 
-  // Request permission
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      // Success callback
-      statusElement.textContent = "Location permission granted!";
-      statusElement.style.color = 'green';
-      
-      // You can now use position.coords.latitude/longitude elsewhere
-      console.log("Latitude:", position.coords.latitude);
-      console.log("Longitude:", position.coords.longitude);
-    },
-    (error) => {
-      // Error callback
-      let errorMessage;
-      switch(error.code) {
-        case error.PERMISSION_DENIED:
-          errorMessage = "Location permission denied";
-          break;
-        case error.POSITION_UNAVAILABLE:
-          errorMessage = "Location information unavailable";
-          break;
-        case error.TIMEOUT:
-          errorMessage = "Location request timed out";
-          break;
-        default:
-          errorMessage = "Unknown error occurred";
+// Check initial permission state
+navigator.permissions?.query({name: 'geolocation'}).then(permissionStatus => {
+  updateButtonState(permissionStatus.state);
+  permissionStatus.onchange = () => updateButtonState(permissionStatus.state);
+});
+
+function updateButtonState(state) {
+  if (state === 'granted') {
+    locationIcon.setAttribute('fill', '#75FB4C');
+    locationIcon.innerHTML = '<path d="M480-107q-14 0-28-5t-25-15q-65-60-115-117t-83.5-110.5q-33.5-53.5-51-103T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 45-17.5 94.5t-51 103Q698-301 648-244T533-127q-11 10-25 15t-28 5Zm0-373q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Z"/>';
+    locationStatus.textContent = ' On';
+    locationBtn.classList.add('active');
+	homeUpdateLocation();
+  } else {
+    locationIcon.setAttribute('fill', '#ffffff');
+    locationIcon.innerHTML = '<path d="M480-107q-14 0-28-5t-25-15q-65-60-115-117t-83.5-110.5q-33.5-53.5-51-103T160-552q0-32 5-61t14-55L55-792q-12-12-12-28.5T55-849q12-12 28.5-12t28.5 12l736 736q12 12 12 28.5T848-56q-12 12-28.5 12T791-56L627-220q-25 26-50 51.5T533-127q-11 10-25 15t-28 5Zm0-773q127 0 223.5 89T800-552q0 35-10 72.5T760-402q-11 22-35.5 24.5T683-392L551-524q5-8 7-17t2-19q0-17-6-31.5T537-617q-11-11-25.5-17t-31.5-6q-10 0-19 2t-17 7L315-760q-18-18-15.5-42.5T323-840q35-20 75-30t82-10Z"/>';
+    locationStatus.textContent = ' Off';
+    locationBtn.classList.remove('active');
+  }
+}
+
+locationBtn.addEventListener('click', () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      () => updateButtonState('granted'),
+      (error) => {
+        if (error.code === error.PERMISSION_DENIED) {
+          updateButtonState('denied');
+        }
       }
-      statusElement.textContent = errorMessage;
-      statusElement.style.color = 'red';
-    },
-    {
-      // Options
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
-    }
-  );
+    );
+  } else {
+    locationStatus.textContent = 'Geolocation not supported';
+  }
 });
 </script>
 
@@ -636,7 +650,7 @@ function updateHinduMonth() {
     // Set the month in your HTML widget
     const monthElement = document.getElementById('home-moon-month');
     if (monthElement) {
-      monthElement.innerHTML = `<strong>${hinduMonth}</strong>`;
+      monthElement.innerHTML = `${hinduMonth}`;
     }
   } catch (err) {
     console.warn("updateHinduMonth error:", err);
