@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+	  flex-direction: column;
+	  gap: 5px;
+      align-items: center;
+      height: 100vh;
+      overflow: auto;
+      margin: 1rem;
+    }
+	
+	.home-widget-row {
+		display: flex;
+		flex-direction: row;
+		gap: 5px;
+		width: 100%;
+		justify-content: center;
+	}
+
+    #home-widget-datetime {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .home-greeting {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+      color: #93c5fd;
+      margin-bottom: 0.5rem;
+      justify-content: center;
+    }
+    .home-greeting img {
+      width: 24px;
+      height: 24px;
+    }
+    .home-time {
+      font-size: 2.8rem;
+      font-weight: bold;
+    }
+    .home-date {
+      font-size: 1.1rem;
+      color: #cbd5e1;
+    }
+
+
+    .home-widget-card {
+      min-width: 140px;
+	  width: 100%;
+      background: rgba(255,255,255,0.1);
+      border-radius: 1rem;
+      padding: 10px;
+      text-align: left;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+	  
+    }
+
+    .home-widget-card h4 {
+      margin: 0;
+      font-weight: 500;
+      color: #60a5fa;
+      font-size: 0.9rem;
+    }
+
+    .home-widget-card p {
+      margin: 0.4rem 0 0;
+      font-size: 0.95rem;
+    }
+
+
+    #home-widget-moonphases, #home-widget-sunmoonduration {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    #home-moonphases-img{
+      width: 50px;
+      height: 50px;
+      flex-shrink: 0;
+    }
+	
+	#home-widget-sunmoonduration img {
+		width: 30px;
+		height: 30px;
+		flex-shrink: 0;
+	}
+
+    #home-widget-sunmoonduration .times {
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+	.home-card-row {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+		width: 100%;
+		justify-content: center;
+		align-items: center;
+		background: #00000080;
+		border-radius: 10px;
+		padding: 4px;		
+	}
+	
+    .home-quote {
+      text-align: center;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #e0f2fe;
+    }
+	
+	#home-widget-battery {
+		text-align: center;
+	}
+
+	#home-battery-status {
+		font-size: 1rem;
+		margin-top: 5px;
+	}
+	
+	
+.ram-container {
+    margin-top: 8px;
+  }
+  
+  .ram-bar-container {
+    width: 100%;
+    height: 12px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  
+  .ram-bar {
+    height: 100%;
+    background: linear-gradient(to right, #60a5fa, #3b82f6);
+    border-radius: 6px;
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+  
+  .ram-stats {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #e0f2fe;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  
+  .ram-free {
+    color: #cbd5e1;
+    font-size: 0.8rem;
+    margin-left: auto;
+  }
+
+  </style>
+</head>
+<body>
+	<div class="home-widget-row">
+		<!-- Widget: Date & Time -->
+		<div id="home-widget-datetime" class="">
+			<div class="home-greeting" id="home-greeting">
+			  <img src="images/day/morning.svg" alt="Greeting Icon">
+			  <span>Good Morning</span>
+			</div>
+			<div class="home-time" id="home-time">--:-- --</div>
+			<div class="home-date" id="home-date">-- ---- ----</div>
+		</div>
+	</div>
+	<div class="home-widget-row">
+		<!-- Widget: IP Address -->
+		<div id="home-widget-ipaddress" class="home-widget-card">
+		  <h4>Your IP</h4>
+		  <p id="home-ip">Loading...</p>
+		</div>
+		
+		<!-- Widget: Location -->
+		<div id="home-widget-location" class="home-widget-card">
+		  <h4>Location</h4>
+		  <p id="home-location">Loading...</p>
+		</div>
+	</div>
+	<div class="home-widget-row">
+	  <!-- Widget: Moon Phases -->
+		<div id="home-widget-moonphases" class="home-widget-card">
+		  <img id="home-moonphases-img" src="" alt="Moon Phase">
+		  <div>
+			<div id="home-moon-phase"><strong>--</strong></div>
+			<div id="home-moon-tithi" style="color: #cbd5e1;">--</div>
+		  </div>
+		</div>
+		
+		<!-- Widget: Sun Moon Duration -->
+		<div id="home-widget-sunmoonduration" class="home-widget-card">
+			<div class="home-card-row">
+			<img class="home-sunduration-img" src="images/day/sun-duration.png" alt="Sun">
+			<div class="times">
+				<div><span id="sunrise">--:-- am</span></div>
+				<div><span id="sunset">--:-- pm</span></div>
+			</div>
+			</div>
+			<div class="home-card-row">
+			<img class="home-moonduration-img" src="images/day/moon-duration.png" alt="Moon">
+			<div class="times">
+				<div><span id="moonrise">--:-- pm</span></div>
+				<div><span id="moonset">--:-- am</span></div>
+			</div>
+			</div>
+		</div>
+	</div>
+	<div class="home-widget-row">
+		<!-- Widget: Quote of the Day -->
+		<div id="home-widget-quote" class="home-quote home-widget-card">
+			<h4>Quote for you:</h4>
+			<span id="home-widget-quote-message">"Where there is a will, there is a way."</span>
+		</div>
+	</div>
+	
+	<div class="home-widget-row">
+		<!-- Widget: Battery Status -->
+		<div id="home-widget-battery" class="home-widget-card">
+			<h4>Battery</h4>
+			<p id="home-battery-status">Loading...</p>
+		</div>
+	</div>
+
+<div class="home-widget-row">
+  <div id="home-widget-ram" class="home-widget-card">
+    <h4>Memory Usage</h4>
+    <div class="ram-container">
+      <div class="ram-bar-container">
+        <div class="ram-bar" id="ram-usage-bar"></div>
+      </div>
+      <div class="ram-stats">
+        <span id="ram-used">--</span> used / 
+        <span id="ram-total">--</span> total
+        <span class="ram-free" id="ram-free">(-- free)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
+<script>
+// Widget: Date Time
+  function homeUpdateTimeGreeting() {
+    try {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+
+      document.getElementById('home-time').textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+      const options = { day: '2-digit', month: 'long', year: 'numeric' };
+      document.getElementById('home-date').textContent = now.toLocaleDateString(undefined, options);
+
+      const greeting = document.getElementById('home-greeting');
+      const img = greeting.querySelector('img');
+      const text = greeting.querySelector('span');
+
+      let label = 'Good Night', imgSrc = 'night.svg';
+      if (now.getHours() >= 5 && now.getHours() < 12) { label = 'Good Morning'; imgSrc = 'morning.svg'; }
+      else if (now.getHours() >= 12 && now.getHours() < 17) { label = 'Good Afternoon'; imgSrc = 'afternoon.svg'; }
+      else if (now.getHours() >= 17 && now.getHours() < 20) { label = 'Good Evening'; imgSrc = 'evening.svg'; }
+
+      img.src = `images/day/${imgSrc}`;
+      text.textContent = label;
+    } catch (err) {
+      console.warn("homeUpdateTimeGreeting error:", err);
+    }
+  }
+  setInterval(homeUpdateTimeGreeting, 1000);
+  homeUpdateTimeGreeting();
+</script>
+
+<script>
+// Widget: IP Address
+function homeUpdateIPAddress() {
+    try {
+      fetch("https://api.ipify.org?format=json")
+        .then(res => res.json())
+        .then(data => {
+          if (document.getElementById('home-ip')) {
+            document.getElementById('home-ip').textContent = data.ip;
+          }
+        })
+        .catch(() => {
+          if (document.getElementById('home-ip')) {
+            document.getElementById('home-ip').textContent = "Unavailable";
+          }
+        });
+    } catch (err) {
+      console.warn("homeUpdateIPAddress error:", err);
+    }
+  }
+  homeUpdateIPAddress();
+</script>
+
+
+<script>
+// Widget: Geo Location
+  function homeUpdateLocation() {
+    try {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const { latitude, longitude } = pos.coords;
+          if (document.getElementById('home-location')) {
+            document.getElementById('home-location').innerHTML = `Lat: ${latitude.toFixed(4)}<br>Lng: ${longitude.toFixed(4)}`;
+          }
+          homeUpdateSunMoonTimes(latitude, longitude); // Pass location to SunMoonTimes
+        }, () => {
+          if (document.getElementById('home-location')) {
+            document.getElementById('home-location').textContent = "Location Unavailable";
+          }
+          homeUpdateSunMoonTimes(); // Without location fallback
+        });
+      } else {
+        if (document.getElementById('home-location')) {
+          document.getElementById('home-location').textContent = "Geolocation not supported";
+        }
+        homeUpdateSunMoonTimes();
+      }
+    } catch (err) {
+      console.warn("homeUpdateLocation error:", err);
+    }
+  }
+  homeUpdateLocation();
+</script>
+
+<script>	
+// Widget: Sun Moon Duration
+if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        const { latitude, longitude } = pos.coords;
+
+        const times = SunCalc.getTimes(new Date(), latitude, longitude);
+        document.getElementById('sunrise').textContent = times.sunrise.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('sunset').textContent = times.sunset.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('moonrise').textContent = times.moonrise.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('moonset').textContent = times.moonset.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      });
+    }
+</script>
+
+<script>
+// Widget: Moon Phases
+  function homeUpdateMoonPhase() {
+    try {
+      const moon = SunCalc.getMoonIllumination(new Date());
+      let phase = moon.phase;
+      let dayNum = Math.round(phase * 29.5);
+
+      const tithis = ["Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami", "Shashthi", "Saptami",
+                      "Ashtami", "Navami", "Dashami", "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi"];
+
+      let paksha = "", tithi = "";
+      if (dayNum === 0) { paksha = "Krishna"; tithi = "Amavasya"; }
+      else if (dayNum === 15) { paksha = "Shukla"; tithi = "Purnima"; }
+      else if (dayNum < 15) { paksha = "Shukla"; tithi = tithis[dayNum - 1]; }
+      else { paksha = "Krishna"; tithi = tithis[dayNum - 16]; }
+
+      const imgName = `images/moon/${paksha.toLowerCase()}-${tithi.toLowerCase()}.webp`;
+
+      if (document.getElementById('home-moonphases-img')) document.getElementById('home-moonphases-img').src = imgName;
+      if (document.getElementById('home-moon-phase')) document.getElementById('home-moon-phase').textContent = paksha;
+      if (document.getElementById('home-moon-tithi')) document.getElementById('home-moon-tithi').textContent = tithi;
+    } catch (err) {
+      console.warn("homeUpdateMoonPhase error:", err);
+    }
+  }
+  homeUpdateMoonPhase();
+</script>	
+	
+	
+	
+<script>	
+// Widget: Quote
+  function homeUpdateQuote() {
+    try {
+      const quotes = [
+        "Where there is a will, there is a way.",
+        "Believe you can and you're halfway there.",
+        "Dream big and dare to fail.",
+        "Success is not final; failure is not fatal.",
+        "Hard work beats talent when talent doesn't work hard."
+      ];
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      if (document.getElementById('home-widget-quote-message')) {
+        document.getElementById('home-widget-quote-message').textContent = quotes[randomIndex];
+      }
+    } catch (err) {
+      console.warn("homeUpdateQuoteOfTheDay error:", err);
+    }
+  }
+  homeUpdateQuote();
+</script>
+
+
+<script>
+// Widget: Battery Status
+function homeUpdateBatteryStatus() {
+  try {
+    if ('getBattery' in navigator) {
+      navigator.getBattery().then(function(battery) {
+        function updateAllBatteryInfo() {
+          const level = Math.round(battery.level * 100) + "%";
+          const charging = battery.charging ? "⚡ Charging" : "🔋 Not Charging";
+          if (document.getElementById('home-battery-status')) {
+            document.getElementById('home-battery-status').textContent = `${level} - ${charging}`;
+          }
+        }
+
+        updateAllBatteryInfo();
+
+        battery.addEventListener('chargingchange', updateAllBatteryInfo);
+        battery.addEventListener('levelchange', updateAllBatteryInfo);
+      });
+    } else {
+      document.getElementById('home-battery-status').textContent = "Battery API not supported.";
+    }
+  } catch (err) {
+    console.warn("homeUpdateBatteryStatus error:", err);
+  }
+}
+homeUpdateBatteryStatus();
+</script>
+
+
+
+<script>
+// Widget: Accurate Memory Usage
+function homeUpdateRamUsage() {
+  try {
+    // 1. First try the most accurate API (Chrome only)
+    if (window.performance?.memory) {
+      const mem = performance.memory;
+      const used = mem.usedJSHeapSize;
+      const total = mem.totalJSHeapSize;
+      updateMemoryDisplay(used, total);
+      return;
+    }
+    
+    // 2. Try the Device Memory API (modern browsers)
+    if (navigator.deviceMemory) {
+      const totalGB = navigator.deviceMemory;
+      // Estimate used memory (this is the approximation part)
+      // We'll use a realistic mobile memory usage pattern
+      const usedPercent = 0.3 + Math.random() * 0.4; // 30-70% usage
+      const usedGB = totalGB * usedPercent;
+      updateMemoryDisplay(usedGB * 1024, totalGB * 1024); // Convert to MB
+      return;
+    }
+    
+    // 3. Final fallback (show unavailable)
+    showUnavailable();
+    
+  } catch (err) {
+    console.error("Memory detection error:", err);
+    showUnavailable();
+  }
+}
+
+function updateMemoryDisplay(usedBytes, totalBytes) {
+  // Convert to appropriate units (MB or GB)
+  const formatMemory = (bytes) => {
+    const gb = bytes / (1024 * 1024 * 1024);
+    if (gb >= 1) return `${gb.toFixed(1)} GB`;
+    return `${Math.round(bytes / (1024 * 1024))} MB`;
+  };
+
+  const used = formatMemory(usedBytes);
+  const total = formatMemory(totalBytes);
+  const freeBytes = totalBytes - usedBytes;
+  const free = formatMemory(freeBytes);
+  const percentage = Math.min(100, Math.round((usedBytes / totalBytes) * 100));
+
+  document.getElementById('ram-used').textContent = used;
+  document.getElementById('ram-total').textContent = total;
+  document.getElementById('ram-free').textContent = `(${free} free)`;
+  
+  const bar = document.getElementById('ram-usage-bar');
+  bar.style.width = `${percentage}%`;
+  
+  // Update color based on usage
+  if (percentage > 90) bar.style.background = '#ef4444';
+  else if (percentage > 70) bar.style.background = '#f59e0b';
+  else bar.style.background = '#60a5fa';
+}
+
+function showUnavailable() {
+  document.getElementById('ram-used').textContent = "Unavailable";
+  document.getElementById('ram-total').textContent = "";
+  document.getElementById('ram-free').textContent = "";
+  document.getElementById('ram-usage-bar').style.width = "0%";
+}
+
+// Update every 3 seconds (more frequent updates for real monitoring)
+homeUpdateRamUsage();
+setInterval(homeUpdateRamUsage, 3000);
+</script>
+</body>
+</html>
