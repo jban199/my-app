@@ -163,7 +163,13 @@
 	#home-network-display {
 		display: flex;
 		flex-direction: row;
+		gap: 5px;
 		align-items: center;
+	}
+	
+	#home-network-icon {
+		height: 24px;
+		width: 24px;
 	}
 
 	#home-network-display img {
@@ -328,7 +334,9 @@
 		<div id="home-widget-network" class="home-widget-card">
 			<h4>Network</h4>
 			<div id="home-network-display">
-				<img id="home-network-icon" src="images/dashboard/network/wifi.svg" alt="Network Icon">
+				<svg id="home-network-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5985E1">
+					<path d="M480-120q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29Zm0-440q75 0 142.5 24T745-470q20 15 20.5 39.5T748-388q-17 17-42 17.5T661-384q-38-26-84-41t-97-15q-51 0-97 15t-84 41q-20 14-45 13t-42-18q-17-18-17-42.5t20-39.5q55-42 122.5-65.5T480-560Zm0-240q125 0 235.5 41T914-643q20 17 21 42t-17 43q-17 17-42 17.5T831-556q-72-59-161.5-91.5T480-680q-100 0-189.5 32.5T129-556q-20 16-45 15.5T42-558q-18-18-17-43t21-42q88-75 198.5-116T480-800Z"/>
+				</svg>
 				<p id="home-network-label" class="home-paragraph">Loading...</p>
 			</div>
 		</div>
@@ -761,13 +769,13 @@ function homeUpdateNetworkStatus() {
         const label = document.getElementById('home-network-label');
 
         if (type === 'wifi') {
-          icon.src = 'images/dashboard/network/wifi.svg';
+          icon.innerHTML = '<path d="M480-120q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29Zm0-440q75 0 142.5 24T745-470q20 15 20.5 39.5T748-388q-17 17-42 17.5T661-384q-38-26-84-41t-97-15q-51 0-97 15t-84 41q-20 14-45 13t-42-18q-17-18-17-42.5t20-39.5q55-42 122.5-65.5T480-560Zm0-240q125 0 235.5 41T914-643q20 17 21 42t-17 43q-17 17-42 17.5T831-556q-72-59-161.5-91.5T480-680q-100 0-189.5 32.5T129-556q-20 16-45 15.5T42-558q-18-18-17-43t21-42q88-75 198.5-116T480-800Z"/>';
           label.textContent = 'Wi-Fi';
         } else if (type === 'cellular') {
-          icon.src = 'images/dashboard/network/cellular.svg';
+          icon.innerHTML = '<path d="M260-160q-25 0-42.5-17.5T200-220v-120q0-25 17.5-42.5T260-400q25 0 42.5 17.5T320-340v120q0 25-17.5 42.5T260-160Zm240 0q-25 0-42.5-17.5T440-220v-320q0-25 17.5-42.5T500-600q25 0 42.5 17.5T560-540v320q0 25-17.5 42.5T500-160Zm240 0q-25 0-42.5-17.5T680-220v-520q0-25 17.5-42.5T740-800q25 0 42.5 17.5T800-740v520q0 25-17.5 42.5T740-160Z"/>';
           label.textContent = 'Cellular';
         } else {
-          icon.src = 'images/dashboard/network/cellular.svg'; // fallback default
+          icon.innerHTML = '<path d="M260-160q-25 0-42.5-17.5T200-220v-120q0-25 17.5-42.5T260-400q25 0 42.5 17.5T320-340v120q0 25-17.5 42.5T260-160Zm240 0q-25 0-42.5-17.5T440-220v-320q0-25 17.5-42.5T500-600q25 0 42.5 17.5T560-540v320q0 25-17.5 42.5T500-160Zm240 0q-25 0-42.5-17.5T680-220v-520q0-25 17.5-42.5T740-800q25 0 42.5 17.5T800-740v520q0 25-17.5 42.5T740-160Z"/>'; // fallback default
           label.textContent = 'Unknown';
         }
       }
