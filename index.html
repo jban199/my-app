@@ -12,10 +12,10 @@
     <meta name="theme-color" content="#1A1A1A">
 
     <!-- Link to the stylesheet -->
-    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="stylesheet" href="styles.css">
 	
 <style>
-    body {
+    .home-body-container {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
       color: white;
@@ -158,30 +158,19 @@
 		margin-top: 5px;
 	}
 	
-	#home-widget-storage {
+	
+	#home-widget-compass {
 		text-align: center;
 	}
 
-	#home-storage-bar-container {
-		width: 100%;
-		background: rgba(255, 255, 255, 0.2);
-		height: 10px;
-		border-radius: 5px;
-		margin-top: 8px;
-		overflow: hidden;
+	#home-compass-display img {
+		width: 60px;
+		height: 60px;
+		transition: transform 0.5s ease;
 	}
 
-	#home-storage-bar {
-		background: #34d399; /* A nice green */
-		height: 100%;
-		width: 0%;
-		border-radius: 5px;
-		transition: width 1s ease;
-	}
-
-	#home-storage-total, #home-storage-used, #home-storage-free {
+	#home-compass-heading, #home-compass-direction {
 		font-size: 0.9rem;
-		margin: 3px 0;
 	}
 
 
@@ -212,10 +201,14 @@
 		fill: var(--accent1);
 		margin: 5px;
 	}
+	
+	.home-paragraph {
+		color: white;
+	}
 
 </style>
 </head>
-<body>
+<body class="home-body-container">
 	<div class="home-widget-row">
 		<!-- Widget: Date & Time -->
 		<div id="home-widget-datetime" class="">
@@ -231,13 +224,13 @@
 		<!-- Widget: IP Address -->
 		<div id="home-widget-ipaddress" class="home-widget-card">
 		  <h4>Your IP</h4>
-		  <p id="home-ip">Loading...</p>
+		  <p id="home-ip" class="home-paragraph">Loading...</p>
 		</div>
 		
 		<!-- Widget: Location -->
 		<div id="home-widget-location" class="home-widget-card">
 		  <h4>Location</h4>
-		  <p id="home-location">Loading...</p>
+		  <p id="home-location" class="home-paragraph">Loading...</p>
 		</div>
 	</div>
 	<div class="home-widget-row">
@@ -273,13 +266,13 @@
 		<!-- Widget: Battery Status -->
 		<div id="home-widget-battery" class="home-widget-card">
 			<h4>Battery</h4>
-			<p id="home-battery-status">Loading...</p>
+			<p id="home-battery-status" class="home-paragraph">Loading...</p>
 		</div>
 
 		<!-- Widget: RAM Status -->
 		<div id="home-widget-ram" class="home-widget-card">
 		  <h4>Device Memory</h4>
-		  <p id="home-ram-status">Loading...</p>
+		  <p id="home-ram-status" class="home-paragraph">Loading...</p>
 		</div>
 	</div>
 	
@@ -289,20 +282,10 @@
 			<h4>Network</h4>
 			<div id="home-network-display">
 				<img id="home-network-icon" src="images/dashboard/network/wifi.svg" alt="Network Icon">
-				<p id="home-network-label">Loading...</p>
+				<p id="home-network-label" class="home-paragraph">Loading...</p>
 			</div>
 		</div>
 
-		<!-- Widget: Storage Status -->
-		<div id="home-widget-storage" class="home-widget-card">
-			<h4>Storage</h4>
-			<p id="home-storage-total">Total: -- GB</p>
-			<p id="home-storage-used">Used: -- GB</p>
-			<p id="home-storage-free">Free: -- GB</p>
-			<div id="home-storage-bar-container">
-				<div id="home-storage-bar"></div>
-			</div>
-		</div>
 
 	</div>
 	<div class="home-widget-row">
@@ -314,6 +297,18 @@
 	</div>
 	
 	
+<div class="home-widget-row">
+	<!-- Widget: Compass -->
+<div id="home-widget-compass" class="home-widget-card">
+  <h4>Compass</h4>
+  <div id="home-compass-display" style="display: flex; flex-direction: column; align-items: center;">
+    <img id="home-compass-arrow" src="images/dashboard/compass/arrow.svg" alt="Compass Arrow" style="width:60px; height:60px; transition: transform 0.5s ease;">
+    <p id="home-compass-heading" style="margin-top: 8px; font-size: 1rem;">--°</p>
+    <p id="home-compass-direction" style="margin-top: 2px; font-size: 0.9rem; color: #cbd5e1;">--</p>
+  </div>
+</div>
+</div>
+
 	
 	  <!-- 🧭 Navigation Buttons -->
   <div class="home-buttons">
@@ -621,109 +616,49 @@ function homeUpdateNetworkStatus() {
 homeUpdateNetworkStatus();
 </script>
 
-
 <script>
-// Widget: Storage Status
-function homeUpdateStorageStatus() {
+// Widget: Compass Status
+function homeUpdateCompass() {
   try {
-    if ('storage' in navigator && 'estimate' in navigator.storage) {
-      navigator.storage.estimate().then(estimate => {
-        const totalBytes = estimate.quota || 0;
-        const usedBytes = estimate.usage || 0;
-        const freeBytes = totalBytes - usedBytes;
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientationabsolute', function(event) {
+        let heading = event.alpha;
 
-        const totalGB = (totalBytes / (1024 * 1024 * 1024)).toFixed(2);
-        const usedGB = (usedBytes / (1024 * 1024 * 1024)).toFixed(2);
-        const freeGB = (freeBytes / (1024 * 1024 * 1024)).toFixed(2);
+        if (typeof heading !== 'number') {
+          heading = event.webkitCompassHeading || event.alpha || 0; // fallback for iOS
+        }
 
-        const usedPercent = totalBytes ? Math.round((usedBytes / totalBytes) * 100) : 0;
+        if (document.getElementById('home-compass-arrow')) {
+          document.getElementById('home-compass-arrow').style.transform = `rotate(${heading}deg)`;
+        }
 
-        if (document.getElementById('home-storage-total'))
-          document.getElementById('home-storage-total').textContent = `Total: ${totalGB} GB`;
+        if (document.getElementById('home-compass-heading')) {
+          document.getElementById('home-compass-heading').textContent = `${Math.round(heading)}°`;
+        }
 
-        if (document.getElementById('home-storage-used'))
-          document.getElementById('home-storage-used').textContent = `Used: ${usedGB} GB`;
+        if (document.getElementById('home-compass-direction')) {
+          document.getElementById('home-compass-direction').textContent = getCompassDirection(heading);
+        }
 
-        if (document.getElementById('home-storage-free'))
-          document.getElementById('home-storage-free').textContent = `Free: ${freeGB} GB`;
-
-        if (document.getElementById('home-storage-bar'))
-          document.getElementById('home-storage-bar').style.width = `${usedPercent}%`;
-      });
+      }, true);
     } else {
-      document.getElementById('home-widget-storage').textContent = "Storage Info not available.";
+      document.getElementById('home-compass-heading').textContent = "Compass not supported";
     }
   } catch (err) {
-    console.warn("homeUpdateStorageStatus error:", err);
+    console.warn("homeUpdateCompass error:", err);
   }
 }
-homeUpdateStorageStatus();
+
+// Helper: Convert degrees to compass direction
+function getCompassDirection(degree) {
+  const directions = ['North', 'North-East', 'East', 'South-East', 'South', 'South-West', 'West', 'North-West'];
+  const index = Math.round(degree / 45) % 8;
+  return directions[index];
+}
+
+homeUpdateCompass();
 </script>
 
-
-
-<!-- ///////////////// -->
-<!-- Bottom Menu -->
-<!-- ///////////////// -->
-<section>
-<!-- SBM Trigger -->
-<svg id="SBM-Icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-    <path d="M86-191v-126h788v126H86Zm0-226v-126h788v126H86Zm0-226v-126h788v126H86Z"/>
-</svg>
-
-<!-- SBM container (empty, the content is injected here) -->
-<div id="SBM-container"></div>
-</section>
-
-
-<script>
-window.onload = function() {		
-    // Load SBM
-    fetch('sbm.html')
-        .then(response => response.text())
-        .then(data => {
-            const sidebarContainer = document.getElementById('SBM-container');
-            sidebarContainer.innerHTML = data;
-
-            // Make sure sidebar is hidden after load
-            const overlaySBM = document.getElementById("SBM-section");
-            if (overlaySBM) {
-                overlaySBM.style.transform = "translateY(100%)";
-            }
-
-            // Reattach event listeners after the SBM is loaded
-            const closeButton = document.getElementById("closeSBM");
-            if (closeButton) {
-                closeButton.addEventListener("click", closeSBM);
-            }
-
-            // Get reference to the icon that triggers the sidebar opening
-            const SBMIcon = document.getElementById("SBM-Icon");
-
-            // Function to open the sidebar
-            function openSBM() {
-                if (overlaySBM) {
-                    overlaySBM.style.transform = "translateY(0)";
-                }
-            }
-
-            // Function to close the sidebar
-            function closeSBM() {
-                if (overlaySBM) {
-                    overlaySBM.style.transform = "translateY(100%)";
-                }
-            }
-
-            // Event listener for opening the SBM when the icon is clicked
-            if (SBMIcon) {
-                SBMIcon.addEventListener("click", openSBM);
-            }
-        })
-        .catch(error => {
-            console.error("Error loading SBM:", error);
-        });
-};
-</script>
 
 
 
@@ -857,7 +792,6 @@ fullscreenButton.addEventListener('click', () => {
 	event.preventDefault(); // Prevent the context menu from appearing
   });
 </script>
-
 
 </body>
 </html>
