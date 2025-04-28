@@ -297,16 +297,16 @@
 	</div>
 	
 	
-<div class="home-widget-row">
-	<!-- Widget: Compass -->
+<!-- Widget: Compass -->
 <div id="home-widget-compass" class="home-widget-card">
   <h4>Compass</h4>
+
   <div id="home-compass-display" style="display: flex; flex-direction: column; align-items: center;">
     <img id="home-compass-arrow" src="images/dashboard/compass/arrow.svg" alt="Compass Arrow" style="width:60px; height:60px; transition: transform 0.5s ease;">
     <p id="home-compass-heading" style="margin-top: 8px; font-size: 1rem;">--°</p>
     <p id="home-compass-direction" style="margin-top: 2px; font-size: 0.9rem; color: #cbd5e1;">--</p>
+    <button id="home-enable-compass" style="margin-top: 10px; padding: 5px 10px; font-size: 0.9rem;">Enable Compass</button>
   </div>
-</div>
 </div>
 
 	
@@ -618,35 +618,51 @@ homeUpdateNetworkStatus();
 
 <script>
 // Widget: Compass Status
-function homeUpdateCompass() {
+function homeSetupCompass() {
   try {
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener('deviceorientationabsolute', function(event) {
-        let heading = event.alpha;
-
-        if (typeof heading !== 'number') {
-          heading = event.webkitCompassHeading || event.alpha || 0; // fallback for iOS
-        }
-
-        if (document.getElementById('home-compass-arrow')) {
-          document.getElementById('home-compass-arrow').style.transform = `rotate(${heading}deg)`;
-        }
-
-        if (document.getElementById('home-compass-heading')) {
-          document.getElementById('home-compass-heading').textContent = `${Math.round(heading)}°`;
-        }
-
-        if (document.getElementById('home-compass-direction')) {
-          document.getElementById('home-compass-direction').textContent = getCompassDirection(heading);
-        }
-
-      }, true);
-    } else {
-      document.getElementById('home-compass-heading').textContent = "Compass not supported";
-    }
+    const compassButton = document.getElementById('home-enable-compass');
+    compassButton.addEventListener('click', function() {
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS 13+ needs permission
+        DeviceOrientationEvent.requestPermission().then(permissionState => {
+          if (permissionState === 'granted') {
+            startCompassTracking();
+            compassButton.style.display = 'none'; // hide button
+          } else {
+            alert('Permission denied.');
+          }
+        }).catch(console.error);
+      } else {
+        // Non-iOS devices
+        startCompassTracking();
+        compassButton.style.display = 'none'; // hide button
+      }
+    });
   } catch (err) {
-    console.warn("homeUpdateCompass error:", err);
+    console.warn("homeSetupCompass error:", err);
   }
+}
+
+function startCompassTracking() {
+  window.addEventListener('deviceorientation', function(event) {
+    let heading = event.alpha;
+
+    if (typeof heading !== 'number') {
+      heading = event.webkitCompassHeading || event.alpha || 0; // fallback
+    }
+
+    if (document.getElementById('home-compass-arrow')) {
+      document.getElementById('home-compass-arrow').style.transform = `rotate(${heading}deg)`;
+    }
+
+    if (document.getElementById('home-compass-heading')) {
+      document.getElementById('home-compass-heading').textContent = `${Math.round(heading)}°`;
+    }
+
+    if (document.getElementById('home-compass-direction')) {
+      document.getElementById('home-compass-direction').textContent = getCompassDirection(heading);
+    }
+  }, true);
 }
 
 // Helper: Convert degrees to compass direction
@@ -656,8 +672,10 @@ function getCompassDirection(degree) {
   return directions[index];
 }
 
-homeUpdateCompass();
+// Initialize
+homeSetupCompass();
 </script>
+
 
 
 
