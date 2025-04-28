@@ -25,7 +25,7 @@
       align-items: center;
       height: 100vh;
       overflow: scroll;
-      margin: 1rem;
+      margin: 10px;
     }
 	
 	.home-widget-row {
@@ -125,10 +125,9 @@
 	}
 	
     .home-quote {
-      text-align: center;
-      font-style: italic;
-      font-size: 0.95rem;
-      color: #e0f2fe;
+		font-style: italic;
+		font-size: 18px;
+		color: #e0f2fe;
     }
 	
 	#home-battery-status {
@@ -159,21 +158,41 @@
 	}
 	
 	
-	#home-widget-compass {
-		text-align: center;
+	#home-event-display button {
+		background: #00000080;
+		border: none;
+		border-radius: 30px;
+		padding: 5px 15px;
+	}
+	
+	#home-event-display button svg{
+		fill: #60a5fa;
 	}
 
-	#home-compass-display img {
-		width: 60px;
-		height: 60px;
-		transition: transform 0.5s ease;
+	
+	#home-event-date {
+		font-size: 1.2rem;
+		font-weight: bold;
+	}
+	
+	#home-event-name {
+		margin-top: 0.5rem;
+		font-size: 1rem;
+	}
+	
+	#home-event-desc {
+		margin-top: 0.3rem;
+		font-size: 0.85rem;
+		color: #cbd5e1;
 	}
 
-	#home-compass-heading, #home-compass-direction {
-		font-size: 0.9rem;
+	.home-event-nav-buttons {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-top: 1rem;
 	}
-
-
+	
     .home-buttons {
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
@@ -285,8 +304,7 @@
 				<p id="home-network-label" class="home-paragraph">Loading...</p>
 			</div>
 		</div>
-
-
+		
 	</div>
 	<div class="home-widget-row">
 		<!-- Widget: Quote of the Day -->
@@ -294,23 +312,40 @@
 			<h4>Quote for you:</h4>
 			<span id="home-widget-quote-message">"Where there is a will, there is a way."</span>
 		</div>
+		
+		<!-- Widget: Events -->
+		<div id="home-widget-events" class="home-widget-card">
+			<h4>Events</h4>
+
+			<div id="home-event-display">
+				<div id="home-event-date">--</div>
+				<div id="home-event-name">--</div>
+				<div id="home-event-desc">--</div>
+
+				<div class="home-event-nav-buttons">
+					<button id="home-event-prev">
+						<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#5985E1">
+							<path d="M526-314 381-459q-5-5-7-10t-2-11q0-6 2-11t7-10l145-145q3-3 6.5-4.5t7.5-1.5q8 0 14 5.5t6 14.5v304q0 9-6 14.5t-14 5.5q-2 0-14-6Z"/>
+						</svg>
+					</button>
+					<button id="home-event-next">
+						<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#5985E1">
+							<path d="M420-308q-8 0-14-5.5t-6-14.5v-304q0-9 6-14.5t14-5.5q2 0 14 6l145 145q5 5 7 10t2 11q0 6-2 11t-7 10L434-314q-3 3-6.5 4.5T420-308Z"/>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	
-	
-<!-- Widget: Compass -->
-<div id="home-widget-compass" class="home-widget-card">
-  <h4>Compass</h4>
 
-  <div id="home-compass-display" style="display: flex; flex-direction: column; align-items: center;">
-    <img id="home-compass-arrow" src="images/dashboard/compass/arrow.svg" alt="Compass Arrow" style="width:60px; height:60px; transition: transform 0.5s ease;">
-    <p id="home-compass-heading" style="margin-top: 8px; font-size: 1rem;">--°</p>
-    <p id="home-compass-direction" style="margin-top: 2px; font-size: 0.9rem; color: #cbd5e1;">--</p>
-    <button id="home-enable-compass" style="margin-top: 10px; padding: 5px 10px; font-size: 0.9rem;">Enable Compass</button>
-  </div>
-</div>
+
 
 	
-	  <!-- 🧭 Navigation Buttons -->
+	
+
+	
+	<!-- 🧭 Navigation Buttons -->
   <div class="home-buttons">
     <a class="home-pages" href="ved.html">
 		<svg class="home-pages-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="fill:DodgerBlue;">
@@ -616,65 +651,71 @@ function homeUpdateNetworkStatus() {
 homeUpdateNetworkStatus();
 </script>
 
+
 <script>
-// Widget: Compass Status
-function homeSetupCompass() {
+// Widget: Events (Upcoming Dates)
+function homeUpdateEventsWidget() {
   try {
-    const compassButton = document.getElementById('home-enable-compass');
-    compassButton.addEventListener('click', function() {
-      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS 13+ needs permission
-        DeviceOrientationEvent.requestPermission().then(permissionState => {
-          if (permissionState === 'granted') {
-            startCompassTracking();
-            compassButton.style.display = 'none'; // hide button
-          } else {
-            alert('Permission denied.');
-          }
-        }).catch(console.error);
-      } else {
-        // Non-iOS devices
-        startCompassTracking();
-        compassButton.style.display = 'none'; // hide button
-      }
+    const events = [
+      { date: "January 4", name: "Perihelion", desc: "Closest to the Sun" },
+      { date: "March 20", name: "March Equinox", desc: "Equal Day and Night" },
+      { date: "June 5", name: "World Environment Day", desc: "Environmental Awareness" },
+      { date: "June 21", name: "June Solstice", desc: "Longest Day (Northern Hemisphere)" },
+      { date: "July 4", name: "Earth Aphelion", desc: "Farthest from the Sun" },
+      { date: "September 22", name: "September Equinox", desc: "Equal Day and Night" },
+      { date: "December 21", name: "December Solstice", desc: "Shortest Day (Northern Hemisphere)" },
+      { date: "June 21", name: "International Day of Yoga", desc: "Global Yoga Celebration" }
+    ];
+
+    // Helper: Convert MM-DD to comparable number
+    function getComparable(dateString) {
+      const parts = dateString.split(' ');
+      const month = new Date(parts[0] + " 1, 2000").getMonth() + 1; // e.g., June => 6
+      const day = parseInt(parts[1]);
+      return month * 100 + day;
+    }
+
+    const today = new Date();
+    const todayComparable = (today.getMonth() + 1) * 100 + today.getDate();
+
+    // Find next event (or today)
+    let startIndex = events.findIndex(event => getComparable(event.date) >= todayComparable);
+    if (startIndex === -1) startIndex = 0; // If all passed, start from first
+
+    let currentIndex = startIndex;
+
+    const dateEl = document.getElementById('home-event-date');
+    const nameEl = document.getElementById('home-event-name');
+    const descEl = document.getElementById('home-event-desc');
+
+    function showEvent(index) {
+      const e = events[index];
+      dateEl.textContent = e.date;
+      nameEl.textContent = e.name;
+      descEl.textContent = e.desc;
+    }
+
+    document.getElementById('home-event-prev').addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + events.length) % events.length;
+      showEvent(currentIndex);
     });
+
+    document.getElementById('home-event-next').addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % events.length;
+      showEvent(currentIndex);
+    });
+
+    // Initialize display
+    showEvent(currentIndex);
+
   } catch (err) {
-    console.warn("homeSetupCompass error:", err);
+    console.warn("homeUpdateEventsWidget error:", err);
   }
 }
-
-function startCompassTracking() {
-  window.addEventListener('deviceorientation', function(event) {
-    let heading = event.alpha;
-
-    if (typeof heading !== 'number') {
-      heading = event.webkitCompassHeading || event.alpha || 0; // fallback
-    }
-
-    if (document.getElementById('home-compass-arrow')) {
-      document.getElementById('home-compass-arrow').style.transform = `rotate(${heading}deg)`;
-    }
-
-    if (document.getElementById('home-compass-heading')) {
-      document.getElementById('home-compass-heading').textContent = `${Math.round(heading)}°`;
-    }
-
-    if (document.getElementById('home-compass-direction')) {
-      document.getElementById('home-compass-direction').textContent = getCompassDirection(heading);
-    }
-  }, true);
-}
-
-// Helper: Convert degrees to compass direction
-function getCompassDirection(degree) {
-  const directions = ['North', 'North-East', 'East', 'South-East', 'South', 'South-West', 'West', 'North-West'];
-  const index = Math.round(degree / 45) % 8;
-  return directions[index];
-}
-
-// Initialize
-homeSetupCompass();
+homeUpdateEventsWidget();
 </script>
+
+
 
 
 
