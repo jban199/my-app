@@ -18,92 +18,274 @@
 <body>
 
 <section class="note-header">
-	<h1 class="note-pagename"> Notes </h1>
+  <h1 class="note-pagename"> Notes </h1>
 </section>
 	<div class="note-container">
-    <textarea id="note-userInput" placeholder="Enter some data..." ></textarea>
-    <button id="note-saveBtn" onclick="note_saveData()">Save Data</button>   
+		<textarea id="note-userInput" placeholder="Enter some data..."></textarea>
+		<button id="note-saveBtn" onclick="note_saveData()">Save Data</button>   
 
-    <div class="note-data-list" id="note-dataList">
-      <!-- Saved data will appear here -->
-    </div>
-  </div>
+		<div class="note-data-list" id="note-dataList">
+		<!-- Saved data will appear here -->
+		</div>
+	</div>
 
-  <script>
-    // Open IndexedDB
-    let db;
-    const dbName = "UserDataDB";
-    const storeName = "dataStore";
+	<!-- Snackbar (hidden initially) -->
+	<div id="note-snackbar" class="note-snackbar">Copied!</div>
 
-    const openRequest = indexedDB.open(dbName, 1);
+	<!-- Confirm Delete Dialog (hidden initially) -->
+	<div id="note-confirm-dialog" class="note-dialog" style="display: none;">
+		<div class="note-dialog-box">
+			<p>Are you sure you want to delete this note?</p>
+			<div class="note-dialog-actions">
+				<button id="note-dialog-skip">Skip</button>
+				<button id="note-dialog-continue">Continue</button>
+			</div>
+		</div>
+	</div>
 
-    // Initialize the database
-    openRequest.onupgradeneeded = (e) => {
-      db = e.target.result;
-      const objectStore = db.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
-      objectStore.createIndex("data", "data", { unique: false });
-    };
 
-    openRequest.onsuccess = (e) => {
-      db = e.target.result;
-      loadData();
-    };
 
-    openRequest.onerror = (e) => {
-      console.error("Error opening IndexedDB", e);
-    };
+<script>
+let db;
+const dbName = "UserDataDB";
+const storeName = "dataStore";
+let currentEditingId = null;
+let notePendingDeleteId = null;
+let currentOpenMenu = null;
 
-    // Save data to IndexedDB
-    function note_saveData() {
-      const userInput = document.getElementById("note-userInput").value;
+const openRequest = indexedDB.open(dbName, 1);
 
-      if (userInput.trim() === "") {
-        alert("Please enter some data.");
-        return;
-      }
+openRequest.onupgradeneeded = (e) => {
+  db = e.target.result;
+  const objectStore = db.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+  objectStore.createIndex("data", "data", { unique: false });
+};
 
-      const transaction = db.transaction([storeName], "readwrite");
-      const store = transaction.objectStore(storeName);
+openRequest.onsuccess = (e) => {
+  db = e.target.result;
+  loadData();
+};
 
-      const data = { data: userInput };
-      store.add(data);
+openRequest.onerror = (e) => {
+  console.error("Error opening IndexedDB", e);
+  showNoteSnackbar("Error opening database");
+};
 
-      transaction.oncomplete = () => {
-        console.log("Data saved!");
-        loadData(); // Reload the data after saving
-        document.getElementById("note-userInput").value = ""; // Clear the input field
-      };
+function note_saveData() {
+  const userInput = document.getElementById("note-userInput").value;
 
-      transaction.onerror = (e) => {
-        console.error("Error saving data", e);
-      };
+  if (userInput.trim() === "") {
+    showNoteSnackbar("Please enter some data");
+    return;
+  }
+
+  const transaction = db.transaction([storeName], "readwrite");
+  const store = transaction.objectStore(storeName);
+
+  const data = { data: userInput };
+  if (currentEditingId !== null) {
+    store.put({ id: currentEditingId, data: userInput });
+    currentEditingId = null;
+    showNoteSnackbar("Note updated");
+  } else {
+    store.add(data);
+    showNoteSnackbar("Note saved");
+  }
+
+  transaction.oncomplete = () => {
+    loadData();
+    document.getElementById("note-userInput").value = "";
+  };
+
+  transaction.onerror = (e) => {
+    console.error("Error saving data", e);
+    showNoteSnackbar("Error saving note");
+  };
+}
+
+function deleteNote(id) {
+  const transaction = db.transaction([storeName], "readwrite");
+  const store = transaction.objectStore(storeName);
+  store.delete(id);
+
+  transaction.oncomplete = () => {
+    loadData();
+    showNoteSnackbar("Note deleted");
+  };
+  transaction.onerror = (e) => {
+    console.error("Error deleting", e);
+    showNoteSnackbar("Error deleting note");
+  };
+}
+
+function editNote(item) {
+  document.getElementById("note-userInput").value = item.data;
+  currentEditingId = item.id;
+  document.getElementById("note-userInput").focus();
+  showNoteSnackbar("Editing note");
+  closeCurrentMenu();
+}
+
+function shareNote(text) {
+  if (navigator.share) {
+    navigator.share({ title: "Shared Note", text: text })
+      .then(() => showNoteSnackbar("Note shared"))
+      .catch(err => {
+        console.error("Error sharing", err);
+        showNoteSnackbar("Sharing cancelled");
+      });
+  } else {
+    copyNote(text);
+  }
+  closeCurrentMenu();
+}
+
+function copyNote(text) {
+  navigator.clipboard.writeText(text)
+    .then(() => showNoteSnackbar("Copied to clipboard"))
+    .catch(err => {
+      console.error("Failed to copy", err);
+      showNoteSnackbar("Failed to copy");
+    });
+  closeCurrentMenu();
+}
+
+function closeCurrentMenu() {
+  if (currentOpenMenu) {
+    currentOpenMenu.style.display = "none";
+    currentOpenMenu = null;
+  }
+}
+
+
+function createNoteElement(item) {
+  const div = document.createElement("div");
+  div.classList.add("note-data-item");
+
+  const textContent = document.createElement("div");
+  textContent.classList.add("note-data-text");
+  textContent.textContent = item.data;
+
+  const optionsBtn = document.createElement("button");
+  optionsBtn.classList.add("note-options-btn");
+  optionsBtn.innerHTML = `<svg class="note-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+    <path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/>
+  </svg>`;
+
+  const optionsMenu = document.createElement("div");
+  optionsMenu.classList.add("note-options-menu");
+  optionsMenu.style.display = "none";
+
+  const editBtn = document.createElement("button");
+  editBtn.classList.add("note-edit-btn");
+  editBtn.innerHTML = `<svg class="note-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-200h57l391-391-57-57-391 391v57Zm-40 80q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm600-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg> Edit`;
+  editBtn.onclick = () => editNote(item);
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.classList.add("note-delete-btn");
+  deleteBtn.innerHTML = `<svg class="note-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M280-120q-33 0-56.5-23.5T200-200v-520q-17 0-28.5-11.5T160-760q0-17 11.5-28.5T200-800h160q0-17 11.5-28.5T400-840h160q17 0 28.5 11.5T600-800h160q17 0 28.5 11.5T800-760q0 17-11.5 28.5T760-720v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM400-280q17 0 28.5-11.5T440-320v-280q0-17-11.5-28.5T400-640q-17 0-28.5 11.5T360-600v280q0 17 11.5 28.5T400-280Zm160 0q17 0 28.5-11.5T600-320v-280q0-17-11.5-28.5T560-640q-17 0-28.5 11.5T520-600v280q0 17 11.5 28.5T560-280ZM280-720v520-520Z"/></svg> Delete`;
+  deleteBtn.onclick = () => showNoteDeleteDialog(item.id);
+
+  const shareBtn = document.createElement("button");
+  shareBtn.classList.add("note-share-btn");
+  shareBtn.innerHTML = `<svg class="note-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm480-280q17 0 28.5-11.5T720-760q0-17-11.5-28.5T680-800q-17 0-28.5 11.5T640-760q0 17 11.5 28.5T680-720Zm0 520ZM200-480Zm480-280Z"/></svg> Share`;
+  shareBtn.onclick = () => shareNote(item.data);
+
+  const copyBtn = document.createElement("button");
+  copyBtn.classList.add("note-copy-btn");
+  copyBtn.innerHTML = `<svg class="note-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-520q0-17 11.5-28.5T160-720q17 0 28.5 11.5T200-680v520h400q17 0 28.5 11.5T640-120q0 17-11.5 28.5T600-80H200Zm160-240v-480 480Z"/></svg> Copy`;
+  copyBtn.onclick = () => copyNote(item.data);
+  
+	
+	
+  optionsMenu.appendChild(editBtn);
+  optionsMenu.appendChild(deleteBtn);
+  optionsMenu.appendChild(shareBtn);
+  optionsMenu.appendChild(copyBtn);
+
+  optionsBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (currentOpenMenu && currentOpenMenu !== optionsMenu) {
+      currentOpenMenu.style.display = "none";
     }
+    optionsMenu.style.display = optionsMenu.style.display === "none" ? "block" : "none";
+    currentOpenMenu = optionsMenu.style.display === "block" ? optionsMenu : null;
+  });
 
-    // Load data from IndexedDB
-    function loadData() {
-      const transaction = db.transaction([storeName], "readonly");
-      const store = transaction.objectStore(storeName);
-      const request = store.getAll();
-
-      request.onsuccess = (e) => {
-        const dataList = e.target.result;
-        const dataListContainer = document.getElementById("note-dataList");
-
-        dataListContainer.innerHTML = ""; // Clear the list before reloading
-
-        dataList.forEach(item => {
-          const div = document.createElement("div");
-          div.classList.add("note-data-item");
-          div.textContent = item.data;
-          dataListContainer.appendChild(div);
-        });
-      };
-
-      request.onerror = (e) => {
-        console.error("Error loading data", e);
-      };
+  // Close menu when clicking elsewhere
+  document.addEventListener("click", (e) => {
+    if (!div.contains(e.target) && !optionsMenu.contains(e.target)) {
+      optionsMenu.style.display = "none";
+      currentOpenMenu = null;
     }
-  </script>
+  });
+
+  div.appendChild(textContent);
+  div.appendChild(optionsBtn);
+  div.appendChild(optionsMenu);
+
+  return div;
+}
+
+function loadData() {
+  const transaction = db.transaction([storeName], "readonly");
+  const store = transaction.objectStore(storeName);
+  const request = store.getAll();
+
+  request.onsuccess = (e) => {
+    const dataList = e.target.result;
+    const container = document.getElementById("note-dataList");
+    container.innerHTML = "";
+    dataList.forEach(item => {
+      const noteElement = createNoteElement(item);
+      container.appendChild(noteElement);
+    });
+  };
+
+  request.onerror = (e) => {
+    console.error("Error loading data", e);
+    showNoteSnackbar("Error loading notes");
+  };
+}
+
+// Snackbar function
+function showNoteSnackbar(message = "Copied!") {
+  const snackbar = document.getElementById("note-snackbar");
+  snackbar.textContent = message;
+  snackbar.style.display = "block";
+  snackbar.style.opacity = "1";
+
+  setTimeout(() => {
+    snackbar.style.opacity = "0";
+    setTimeout(() => {
+      snackbar.style.display = "none";
+    }, 300);
+  }, 2000);
+}
+
+function showNoteDeleteDialog(id) {
+  notePendingDeleteId = id;
+  document.getElementById("note-confirm-dialog").style.display = "flex";
+  closeCurrentMenu();
+}
+
+// Setup dialog buttons
+document.getElementById("note-dialog-skip").onclick = () => {
+  notePendingDeleteId = null;
+  document.getElementById("note-confirm-dialog").style.display = "none";
+};
+
+document.getElementById("note-dialog-continue").onclick = () => {
+  if (notePendingDeleteId !== null) {
+    deleteNote(notePendingDeleteId);
+    notePendingDeleteId = null;
+  }
+  document.getElementById("note-confirm-dialog").style.display = "none";
+};
+</script>
+
+
+
   
 
 
@@ -119,6 +301,8 @@
 <!-- ///////////////// -->
 <!-- Footer Spacer -->
 <!-- ///////////////// -->
+<div class="footerSpacer">
+</div>
 <div class="footerSpacer">
 </div>
 
