@@ -961,27 +961,26 @@ p {
 
 
 
-
 /* ///////////////// */
 /* Notes */
 /* ///////////////// */
 
 .note-header {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-	padding: 20px 0px 5px 0px;
-	align-items: center;
-	background: var(--bg1);
-	box-shadow: 0px 3px 5px var(--shadow1);
-	border-radius: 0px 0px 30px 30px;
-	position: sticky;
-	top: 0px;
-	z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 0px 5px 0px;
+  align-items: center;
+  background: var(--bg1);
+  box-shadow: 0px 3px 5px var(--shadow1);
+  border-radius: 0px 0px 30px 30px;
+  position: sticky;
+  top: 0px;
+  z-index: 10;
 }
 
 .note-pagename {
-	color: var(--accent1);
+  color: var(--accent1);
 }
 
 .note-container {
@@ -999,9 +998,8 @@ p {
 
 #note-userInput {
   padding: 15px;
-  height: 200px;
-  width: 250px;
-  margin-right: 10px;
+  min-height: 50px;
+  width: 300px;
   border: none;
   background: var(--bg3);
   color: var(--font1);
@@ -1014,8 +1012,7 @@ p {
 #note-saveBtn {
   display: inline-block;
   border-radius: 30px;
-  width: 90%;
-  padding: 15px;
+  padding: 15px 50px;
   border: none;
   background-image: linear-gradient(0deg, var(--gradient1), var(--gradient2));
   border-bottom: 2px solid var(--shadow1);
@@ -1032,14 +1029,164 @@ p {
 #note-saveBtn:hover {
   background-color: #45a049;
 }
+
 .note-data-list {
   margin-top: 20px;
+  width: 100%;
+  max-width: 400px;
 }
+
 .note-data-item {
   background-color: var(--bg3);
   color: var(--font1);
-  padding: 8px;
-  margin: 5px 0;
+  padding: 15px;
+  margin: 10px 0;
   border-radius: 8px;
   user-select: text;
+  position: relative;
+  word-break: break-word;
+}
+
+.note-data-text {
+  margin-right: 30px;
+}
+
+.note-options-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note-options-btn:hover {
+  background-color: rgba(0,0,0,0.1);
+}
+
+.note-options-menu {
+  position: absolute;
+  top: 40px;
+  right: 10px;
+  background-color: var(--bg2);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px var(--shadow1);
+  z-index: 2000; /* Higher than other elements */
+  padding: 5px 0;
+  min-width: 150px;
+}
+
+
+.note-options-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 15px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--font1);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.note-option-list-btn-icon {
+  width: 18px;
+  height: 18px;
+  fill: var(--accent1);
+  flex-shrink: 0;
+}
+
+.note-options-menu button:hover {
+  background-color: var(--bg1);
+}
+
+/* Snackbar */
+.note-snackbar {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--accent1);
+  color: var(--bg1);
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0px 3px 6px var(--shadow2);
+  font-weight: bold;
+  z-index: 100;
+  transition: opacity 0.3s ease-in-out;
+  display: none;
+  opacity: 0;
+}
+
+/* Confirm Delete Dialog Overlay */
+.note-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000d0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+/* Confirm Dialog Box */
+.note-dialog-box {
+  background-color: var(--bg1);
+  color: var(--font1);
+  padding: 20px 30px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 8px var(--shadow1);
+  max-width: 300px;
+  text-align: center;
+  width: 200px;
+}
+
+/* Confirm Dialog Buttons */
+.note-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.note-dialog-actions button {
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0px 2px 3px var(--shadow2);
+  transition: background-color 0.2s ease;
+}
+
+#note-dialog-skip {
+  background-color: var(--bg2);
+  color: var(--font1);
+}
+
+#note-dialog-skip:hover {
+  background-color: var(--bg3);
+}
+
+#note-dialog-continue {
+  background-color: var(--accent1);
+  color: var(--bg1);
+}
+
+#note-dialog-continue:hover {
+  background-color: var(--accent2);
 }
