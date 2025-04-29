@@ -1008,6 +1008,7 @@ p {
   border-radius: 10px;
   user-select: text;
   overflow: scroll;
+  resize: vertical;
 }
 
 #note-saveBtn {
@@ -1040,4 +1041,5 @@ p {
   padding: 8px;
   margin: 5px 0;
   border-radius: 8px;
+  user-select: text;
 }
