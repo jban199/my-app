@@ -620,6 +620,7 @@ p {
   border: none;
   border-radius: 25px;
   text-overflow: ellipsis;
+  user-select: text;
 }
 
 #ts-search-btn {
@@ -888,6 +889,7 @@ p {
 	background: var(--bg3);
 	color: var(--font1);
     border-radius: 30px;
+	user-select: text;
 }
 
 #nm-clearButton {
@@ -989,7 +991,7 @@ p {
   padding: 20px 0px 5px 0px;
   align-items: center;
   max-width: 500px;
-  margin-top: 50%;
+  margin-top: 50px;
   background-color: transparent;
   padding: 20px;
   border-radius: 8px;
@@ -997,17 +999,21 @@ p {
 
 #note-userInput {
   padding: 15px;
+  height: 200px;
   width: 250px;
   margin-right: 10px;
   border: none;
   background: var(--bg3);
   color: var(--font1);
-  border-radius: 30px;
+  border-radius: 10px;
+  user-select: text;
+  overflow: scroll;
 }
 
 #note-saveBtn {
   display: inline-block;
-  border-radius: 8px;
+  border-radius: 30px;
+  width: 90%;
   padding: 15px;
   border: none;
   background-image: linear-gradient(0deg, var(--gradient1), var(--gradient2));
