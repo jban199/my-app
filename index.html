@@ -105,6 +105,10 @@
       font-size: 0.95rem;
     }
 
+	#home-widget-network, #home-widget-ram, #home-widget-battery {
+		width: fit-content;
+		min-width: auto;
+	}
 
     #home-widget-moonphases, #home-widget-sunmoonduration {
       display: flex;
@@ -220,13 +224,15 @@
 
 	
 	#home-calendar-event-date {
-		font-size: 1.2rem;
-		font-weight: bold;
+		font-size: 1rem;
+		font-weight: normal;
 	}
 	
 	#home-calendar-event-name {
 		margin-top: 0.5rem;
 		font-size: 1rem;
+		font-weight: bold;
+		color: #cddc39;
 	}
 	
 	#home-calendar-event-desc {
@@ -241,6 +247,41 @@
 		gap: 1rem;
 		margin-top: 1rem;
 	}
+	
+	#home-panchang-event-display button {
+		background: #00000080;
+		border: none;
+		border-radius: 30px;
+		padding: 5px 15px;
+	}
+	
+	#home-panchang-event-display button svg{
+		fill: #60a5fa;
+	}
+	
+	#home-panchang-event-month {
+		font-size: 1rem;
+		font-weight: normal;
+	}
+	
+	#home-panchang-event-tithi {
+		font-size: 1rem;
+		font-weight: normal;
+	}
+	
+	#home-panchang-event-name {
+		margin-top: 0.5rem;
+		font-size: 1rem;
+		font-weight: bold;
+		color: #cddc39;
+	}
+	
+	#home-panchang-event-desc {
+		font-size: 0.85rem;
+		color: #cbd5e1;
+		margin-top: 0.3rem;
+	}
+
 	
     .home-buttons {
 		display: grid;
@@ -351,9 +392,7 @@
 		  <h4>Device Memory</h4>
 		  <p id="home-ram-status" class="home-paragraph">Loading...</p>
 		</div>
-	</div>
-	
-	<div class="home-widget-row">
+
 		<!-- Widget: Network Status -->
 		<div id="home-widget-network" class="home-widget-card">
 			<h4>Network</h4>
@@ -364,27 +403,14 @@
 				<p id="home-network-label" class="home-paragraph">Loading...</p>
 			</div>
 		</div>
+
 		
 	</div>
 	<div class="home-widget-row">
-		<!-- Widget: Quote of the Day -->
-		<div id="home-widget-quote" class="home-quote home-widget-card">
-			<h4>Quote for you:</h4>
-			<span id="home-widget-quote-message">"Where there is a will, there is a way."</span>
-			
-			<div class="home-quote-nav-buttons">
-				<button id="home-quote-next" onclick="homeUpdateQuote()">
-					<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#5985E1">
-						<path d="M420-308q-8 0-14-5.5t-6-14.5v-304q0-9 6-14.5t14-5.5q2 0 14 6l145 145q5 5 7 10t2 11q0 6-2 11t-7 10L434-314q-3 3-6.5 4.5T420-308Z"/>
-					</svg>
-				</button>
-			</div>
-			
-		</div>
 		
 		<!-- Widget: Calendar Events -->
 		<div id="home-widget-calendar-events" class="home-widget-card">
-			<h4>Events</h4>
+			<h4>Calendar Events</h4>
 
 			<div id="home-calendar-event-display">
 				<div id="home-calendar-event-date">--</div>
@@ -405,6 +431,51 @@
 				</div>
 			</div>
 		</div>
+		
+		<!-- Widget: Panchang Events -->
+		<div id="home-widget-panchang-events" class="home-widget-card">
+			<h4>Panchang Events</h4>
+
+			<div id="home-panchang-event-display">
+				<div id="home-panchang-event-month">--</div>
+				<div id="home-panchang-event-tithi">--</div>
+				<div id="home-panchang-event-name">--</div>
+				<div id="home-panchang-event-desc">--</div>
+
+				<div class="home-calendar-event-nav-buttons">
+					<button id="home-panchang-event-prev">
+						<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#5985E1">
+							<path d="M526-314 381-459q-5-5-7-10t-2-11q0-6 2-11t7-10l145-145q3-3 6.5-4.5t7.5-1.5q8 0 14 5.5t6 14.5v304q0 9-6 14.5t-14 5.5q-2 0-14-6Z"/>
+						</svg>
+					</button>
+					<button id="home-panchang-event-next">
+						<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#5985E1">
+							<path d="M420-308q-8 0-14-5.5t-6-14.5v-304q0-9 6-14.5t14-5.5q2 0 14 6l145 145q5 5 7 10t2 11q0 6-2 11t-7 10L434-314q-3 3-6.5 4.5T420-308Z"/>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</div>
+		
+		
+	</div>
+	
+	<div class="home-widget-row">
+		<!-- Widget: Quote of the Day -->
+		<div id="home-widget-quote" class="home-quote home-widget-card">
+			<h4>Quote for you:</h4>
+			<span id="home-widget-quote-message">"Where there is a will, there is a way."</span>
+			
+			<div class="home-quote-nav-buttons">
+				<button id="home-quote-next" onclick="homeUpdateQuote()">
+					<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#5985E1">
+						<path d="M420-308q-8 0-14-5.5t-6-14.5v-304q0-9 6-14.5t14-5.5q2 0 14 6l145 145q5 5 7 10t2 11q0 6-2 11t-7 10L434-314q-3 3-6.5 4.5T420-308Z"/>
+					</svg>
+				</button>
+			</div>
+			
+		</div>
+	
 	</div>
 	
 
@@ -1112,6 +1183,72 @@ function homeUpdateCalendarEventsWidget() {
   }
 }
 homeUpdateCalendarEventsWidget();
+</script>
+
+
+
+
+<script>
+// Widget: Panchang Events
+function homeUpdatePanchangEventsWidget() {
+  try {
+    const PanchangEvents = [
+      { month: "Chaitra", tithi: "Shukla Pratipada", name: "Gudi Padwa / Ugadi", desc: "New Year in Maharashtra, Karnataka, Andhra Pradesh; start of Chaitra Navratri" },
+      { month: "Chaitra", tithi: "Shukla Navami", name: "Ram Navami", desc: "Birth of Lord Rama, celebrated during Chaitra Navratri" },
+      { month: "Vaishakha", tithi: "Shukla Tritiya", name: "Akshaya Tritiya", desc: "Auspicious day for new beginnings and charity" },
+      { month: "Vaishakha", tithi: "Purnima", name: "Buddha Purnima", desc: "Marks the birth, enlightenment, and nirvana of Gautama Buddha" },
+      { month: "Ashadha", tithi: "Shukla Ekadashi", name: "Devshayani Ekadashi", desc: "Vishnu begins his cosmic sleep; start of Chaturmas" },
+      { month: "Shravana", tithi: "Purnima", name: "Raksha Bandhan", desc: "Festival celebrating sibling bonds with a protective thread" },
+      { month: "Bhadrapada", tithi: "Shukla Chaturthi", name: "Ganesh Chaturthi", desc: "Birth of Lord Ganesha; celebrated with devotion and immersion" },
+      { month: "Bhadrapada", tithi: "Shukla Ekadashi", name: "Parivartini Ekadashi", desc: "Vishnu turns in his sleep; important for fasting and worship" },
+      { month: "Ashwin", tithi: "Krishna Amavasya", name: "Mahalaya Amavasya", desc: "Honoring ancestors; start of Navratri preparations" },
+      { month: "Ashwin", tithi: "Shukla Dashami", name: "Vijaya Dashami / Dussehra", desc: "Victory of good over evil; end of Navratri" },
+      { month: "Ashwin", tithi: "Shukla Purnima", name: "Sharad Purnima", desc: "Harvest moon celebrated with moonlight offerings and Raas Leela" },
+      { month: "Kartik", tithi: "Amavasya", name: "Diwali", desc: "Festival of lights; return of Rama to Ayodhya and worship of Lakshmi" },
+      { month: "Kartik", tithi: "Shukla Pratipada", name: "Govardhan Puja", desc: "Commemorates Krishna lifting the Govardhan Hill" },
+      { month: "Kartik", tithi: "Shukla Purnima", name: "Kartik Purnima", desc: "Holy day for river bathing and Guru Nanak Jayanti" },
+      { month: "Margashirsha", tithi: "Shukla Ekadashi", name: "Vaikuntha Ekadashi", desc: "Believed to open the gates of Vishnu’s abode, Vaikuntha" },
+      { month: "Magha", tithi: "Shukla Panchami", name: "Vasant Panchami", desc: "Celebrates the arrival of spring and Goddess Saraswati" },
+      { month: "Phalguna", tithi: "Krishna Ashtami", name: "Janmashtami", desc: "Birth of Lord Krishna, celebrated with fasting and midnight festivities" },
+      { month: "Phalguna", tithi: "Shukla Purnima", name: "Holi", desc: "Festival of colors marking the end of winter and victory of good" }
+    ];
+
+    let currentIndex = 0;
+
+	const monthEl = document.getElementById('home-panchang-event-month');
+    const tithiEl = document.getElementById('home-panchang-event-tithi');
+    const nameEl = document.getElementById('home-panchang-event-name');
+    const descEl = document.getElementById('home-panchang-event-desc');
+
+    function showEvent(index) {
+      const event = PanchangEvents[index];
+      if (event) {
+        monthEl.textContent = event.month;
+		tithiEl.textContent = event.tithi;
+        nameEl.textContent = event.name;
+        descEl.textContent = event.desc;
+      }
+    }
+
+    // Start with today's or next event
+    currentIndex = 0;
+    showEvent(currentIndex);
+
+    document.getElementById('home-panchang-event-next').addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % PanchangEvents.length;
+      showEvent(currentIndex);
+    });
+
+    document.getElementById('home-panchang-event-prev').addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + PanchangEvents.length) % PanchangEvents.length;
+      showEvent(currentIndex);
+    });
+
+  } catch (err) {
+    console.warn("homeUpdatePanchangEventsWidget error:", err);
+  }
+}
+homeUpdatePanchangEventsWidget();
 </script>
 
 
