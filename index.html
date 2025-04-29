@@ -202,40 +202,40 @@
 	}
 	
 	
-	#home-widget-events {
+	#home-widget-calendar-events {
 		display: flex;
 		flex-direction: column;
 		height: fit-content;
 	}
-	#home-event-display button {
+	#home-calendar-event-display button {
 		background: #00000080;
 		border: none;
 		border-radius: 30px;
 		padding: 5px 15px;
 	}
 	
-	#home-event-display button svg{
+	#home-calendar-event-display button svg{
 		fill: #60a5fa;
 	}
 
 	
-	#home-event-date {
+	#home-calendar-event-date {
 		font-size: 1.2rem;
 		font-weight: bold;
 	}
 	
-	#home-event-name {
+	#home-calendar-event-name {
 		margin-top: 0.5rem;
 		font-size: 1rem;
 	}
 	
-	#home-event-desc {
+	#home-calendar-event-desc {
 		margin-top: 0.3rem;
 		font-size: 0.85rem;
 		color: #cbd5e1;
 	}
 
-	.home-event-nav-buttons {
+	.home-calendar-event-nav-buttons {
 		display: flex;
 		justify-content: space-between;
 		gap: 1rem;
@@ -382,22 +382,22 @@
 			
 		</div>
 		
-		<!-- Widget: Events -->
-		<div id="home-widget-events" class="home-widget-card">
+		<!-- Widget: Calendar Events -->
+		<div id="home-widget-calendar-events" class="home-widget-card">
 			<h4>Events</h4>
 
-			<div id="home-event-display">
-				<div id="home-event-date">--</div>
-				<div id="home-event-name">--</div>
-				<div id="home-event-desc">--</div>
+			<div id="home-calendar-event-display">
+				<div id="home-calendar-event-date">--</div>
+				<div id="home-calendar-event-name">--</div>
+				<div id="home-calendar-event-desc">--</div>
 
-				<div class="home-event-nav-buttons">
-					<button id="home-event-prev">
+				<div class="home-calendar-event-nav-buttons">
+					<button id="home-calendar-event-prev">
 						<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#5985E1">
 							<path d="M526-314 381-459q-5-5-7-10t-2-11q0-6 2-11t7-10l145-145q3-3 6.5-4.5t7.5-1.5q8 0 14 5.5t6 14.5v304q0 9-6 14.5t-14 5.5q-2 0-14-6Z"/>
 						</svg>
 					</button>
-					<button id="home-event-next">
+					<button id="home-calendar-event-next">
 						<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#5985E1">
 							<path d="M420-308q-8 0-14-5.5t-6-14.5v-304q0-9 6-14.5t14-5.5q2 0 14 6l145 145q5 5 7 10t2 11q0 6-2 11t-7 10L434-314q-3 3-6.5 4.5T420-308Z"/>
 						</svg>
@@ -1031,18 +1031,39 @@ homeUpdateNetworkStatus();
 
 
 <script>
-// Widget: Events (Upcoming Dates)
-function homeUpdateEventsWidget() {
+// Widget: Calendar Events (Upcoming Dates)
+function homeUpdateCalendarEventsWidget() {
   try {
-    const events = [
-      { date: "January 4", name: "Perihelion", desc: "Closest to the Sun" },
-      { date: "March 20", name: "March Equinox", desc: "Equal Day and Night" },
-      { date: "June 5", name: "World Environment Day", desc: "Environmental Awareness" },
-      { date: "June 21", name: "June Solstice", desc: "Longest Day (Northern Hemisphere)" },
-      { date: "July 4", name: "Earth Aphelion", desc: "Farthest from the Sun" },
-      { date: "September 22", name: "September Equinox", desc: "Equal Day and Night" },
-      { date: "December 21", name: "December Solstice", desc: "Shortest Day (Northern Hemisphere)" },
-      { date: "June 21", name: "International Day of Yoga", desc: "Global Yoga Celebration" }
+    const calendarevents = [
+		{ date: "January 1", name: "New Year's Day", desc: "Beginning of the Gregorian Calendar Year" },
+		{ date: "January 12", name: "Swami Vivekananda Jayanti", desc: "Birth anniversary of spiritual leader and philosopher Swami Vivekananda" },
+		{ date: "January 15", name: "Army Day", desc: "Marks the day Field Marshal K.M. Cariappa became the first Indian Army Chief" },
+		{ date: "January 23", name: "Netaji Subhas Chandra Bose Jayanti", desc: "Birth anniversary of Indian freedom fighter Netaji Bose" },
+		{ date: "January 26", name: "Republic Day", desc: "India's Constitution came into effect in 1950" },
+		{ date: "February 27", name: "Chandrashekhar Azad Jayanti", desc: "Fearless revolutionary who fought British rule with the Hindustan Socialist Republic Association" },
+		{ date: "February 14", name: "Valentine's Day", desc: "Global celebration of love and affection" },
+		{ date: "March 8", name: "International Women's Day", desc: "Celebrating women's achievements and rights" },
+		{ date: "March 20", name: "March Equinox", desc: "Equal day and night around the globe" },
+		{ date: "March 23", name: "Shaheed Diwas", desc: "Honors the martyrdom of Bhagat Singh, Rajguru, and Sukhdev in 1931" },
+		{ date: "April 14", name: "Ambedkar Jayanti", desc: "Birth anniversary of Dr. B.R. Ambedkar, chief architect of the Indian Constitution" },
+		{ date: "April 22", name: "Earth Day", desc: "Global awareness for environmental protection" },
+		{ date: "May 1", name: "Labour Day", desc: "International Workers' Day honoring laborers and working classes" },
+		{ date: "May 5", name: "Kabiguru Rabindranath Tagore Jayanti", desc: "Birth anniversary of Nobel laureate poet and composer Tagore" },
+		{ date: "June 5", name: "World Environment Day", desc: "Promotes global awareness and action for the environment" },
+		{ date: "June 21", name: "June Solstice", desc: "Longest day of the year in the Northern Hemisphere" },
+		{ date: "June 21", name: "International Day of Yoga", desc: "Promotes mental and physical wellness through yoga" },
+		{ date: "July 4", name: "Earth Aphelion", desc: "Point when Earth is farthest from the Sun" },
+		{ date: "July 22", name: "Bal Gangadhar Tilak Jayanti", desc: "Indian nationalist and reformer who gave the slogan 'Swaraj is my birthright'" },
+		{ date: "August 11", name: "Khudiram Bose Martyrdom Day", desc: "Remembers one of the youngest Indian revolutionaries to be martyred" },
+		{ date: "August 15", name: "Independence Day", desc: "Marks India's independence from British rule in 1947" },
+		{ date: "September 5", name: "Teachers' Day", desc: "Birth anniversary of Dr. Radhakrishnan, honoring educators" },
+		{ date: "September 22", name: "September Equinox", desc: "Equal day and night globally" },
+		{ date: "September 28", name: "Bhagat Singh Jayanti", desc: "Revolutionary who inspired generations with his courage and sacrifice" },
+		{ date: "October 2", name: "Gandhi Jayanti", desc: "Birth anniversary of Mahatma Gandhi, advocate of non-violence" },
+		{ date: "November 7", name: "Lala Lajpat Rai Jayanti", desc: "Prominent freedom fighter and part of the Lal-Bal-Pal trio" },
+		{ date: "November 14", name: "Children's Day", desc: "Birth anniversary of Nehru; celebrates children's rights and welfare" },
+		{ date: "December 21", name: "December Solstice", desc: "Shortest day in the Northern Hemisphere" },
+		{ date: "December 25", name: "Christmas", desc: "Celebration of the birth of Jesus Christ" }
     ];
 
     // Helper: Convert MM-DD to comparable number
@@ -1057,40 +1078,40 @@ function homeUpdateEventsWidget() {
     const todayComparable = (today.getMonth() + 1) * 100 + today.getDate();
 
     // Find next event (or today)
-    let startIndex = events.findIndex(event => getComparable(event.date) >= todayComparable);
+    let startIndex = calendarevents.findIndex(calendarevent => getComparable(calendarevent.date) >= todayComparable);
     if (startIndex === -1) startIndex = 0; // If all passed, start from first
 
     let currentIndex = startIndex;
 
-    const dateEl = document.getElementById('home-event-date');
-    const nameEl = document.getElementById('home-event-name');
-    const descEl = document.getElementById('home-event-desc');
+    const dateEl = document.getElementById('home-calendar-event-date');
+    const nameEl = document.getElementById('home-calendar-event-name');
+    const descEl = document.getElementById('home-calendar-event-desc');
 
-    function showEvent(index) {
-      const e = events[index];
+    function showCalendarEvent(index) {
+      const e = calendarevents[index];
       dateEl.textContent = e.date;
       nameEl.textContent = e.name;
       descEl.textContent = e.desc;
     }
 
-    document.getElementById('home-event-prev').addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + events.length) % events.length;
-      showEvent(currentIndex);
+    document.getElementById('home-calendar-event-prev').addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + calendarevents.length) % calendarevents.length;
+      showCalendarEvent(currentIndex);
     });
 
-    document.getElementById('home-event-next').addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % events.length;
-      showEvent(currentIndex);
+    document.getElementById('home-calendar-event-next').addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % calendarevents.length;
+      showCalendarEvent(currentIndex);
     });
 
     // Initialize display
-    showEvent(currentIndex);
+    showCalendarEvent(currentIndex);
 
   } catch (err) {
-    console.warn("homeUpdateEventsWidget error:", err);
+    console.warn("homeUpdateCalendarEventsWidget error:", err);
   }
 }
-homeUpdateEventsWidget();
+homeUpdateCalendarEventsWidget();
 </script>
 
 
