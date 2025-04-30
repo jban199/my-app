@@ -63,6 +63,7 @@ body {
 html, body {
   touch-action: manipulation; /* Limits some gestures */
   overscroll-behavior: none;
+  scroll-behavior: smooth;
 }
 
 
@@ -1009,6 +1010,57 @@ p {
   resize: vertical;
 }
 
+#note-userInput::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+}
+
+#note-userInput::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    margin: 4px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+#note-userInput::-webkit-scrollbar-thumb {
+    background: var(--accent1);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: background-color 0.2s ease;
+}
+
+#note-userInput::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.25);
+    background-clip: content-box;
+}
+
+#note-userInput::-webkit-scrollbar-thumb:active {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+#note-userInput::-webkit-scrollbar-corner {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 0 0 4px 0;
+}
+
+#note-userInput::-webkit-resizer {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 4px 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(0,0,0,0.3)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 3H3v18h18'/%3E%3Cpath d='M21 3L3 21'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    background-size: 12px 12px;
+}
+
+.note-userInput-actionBtns {
+	display: flex;
+	flex-direction: row;
+	gap: 30px;
+}
+
 #note-saveBtn {
   display: inline-block;
   border-radius: 30px;
@@ -1026,9 +1078,21 @@ p {
   box-sizing: border-box;
 }
 
-#note-saveBtn:hover {
-  background-color: #45a049;
+#note-clearBtn {
+  display: inline-block;
+  border-radius: 30px;
+  padding: 15px 50px;
+  border: 2px solid var(--shadow1);
+  background-color: var(--bg1);
+  color: var(--accent1);
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  font-size: 14px;
+  box-sizing: border-box;
 }
+
+
 
 .note-data-list {
   margin-top: 20px;
@@ -1049,6 +1113,8 @@ p {
 
 .note-data-text {
   margin-right: 30px;
+  white-space: pre-wrap; /* This preserves both spaces and line breaks */
+  word-break: break-word; /* Ensures long words don't overflow */
 }
 
 .note-options-btn {
@@ -1153,6 +1219,10 @@ p {
   width: 200px;
 }
 
+.note-dialog-box p {
+	color: var(--font1);
+}
+
 /* Confirm Dialog Buttons */
 .note-dialog-actions {
   display: flex;
@@ -1178,15 +1248,8 @@ p {
   color: var(--font1);
 }
 
-#note-dialog-skip:hover {
-  background-color: var(--bg3);
-}
 
 #note-dialog-continue {
   background-color: var(--accent1);
   color: var(--bg1);
-}
-
-#note-dialog-continue:hover {
-  background-color: var(--accent2);
 }
