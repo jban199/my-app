@@ -654,6 +654,24 @@ p {
   display: inline-block;
 }
 
+.ts-selected-engine-helper {
+	color: var(--accent1);
+	font-size: 14px;
+	position: relative;
+    bottom: 60px;
+    right: 50px;
+}
+
+.ts-selected-engine-helper::before {
+	content: ' ';
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--accent1);
+    position: relative;
+    top: 25px;
+    left: 22px;
+}
+
 .ts-search-engine-icon img {
   width: 40px;
   height: 40px;
