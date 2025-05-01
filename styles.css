@@ -661,10 +661,10 @@ p {
     bottom: 60px;
     left: -25px;
 	width: 100px;
-	animation: bounce 2s ease-in-out infinite;
+	animation: ts-selected-engine-helper-bounce 2s ease-in-out infinite;
 }
 
-@keyframes bounce {
+@keyframes ts-selected-engine-helper-bounce {
   0%, 100% {
     transform: translateY(0);
   }
@@ -1042,11 +1042,21 @@ p {
 .note-userInput-drag-handle-icon {
 	fill: var(--accent1);
     position: relative;
-    left: 159px;
+    left: 158px;
     top: -15px;
-    height: 20px;
-    width: 20px;
+    height: 15px;
+    width: 15px;
 	z-index: -1;
+	animation: note-userInput-drag-handle-icon-bounce 1s ease-in-out infinite;
+}
+
+@keyframes note-userInput-drag-handle-icon-bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(5px);
+  }
 }
 
 
