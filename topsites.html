@@ -32,6 +32,7 @@
 		<div id="ts-engine-select">
 		  <div id="ts-selected-engine" class="ts-search-engine-icon" onclick="toggleDropdown()">
 			<img id="ts-selected-icon" src="images/icons/google.svg" alt="Google Icon">
+			<span class="ts-selected-engine-helper">Tap here</span>
 		  </div>
 
 		  <div id="ts-search-engine-dropdown" class="ts-search-engine-dropdown">
@@ -133,6 +134,7 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
 <!-- ///////////////// -->
 <!-- Top Sites -->
 <!-- ///////////////// -->
+<h4 class="ts-sectionname"> Browsers </h4>
 <section class="ts-options-container">
   <div class="ts-option">
     <a href="https://www.amazon.in/" target="_blank">
@@ -178,6 +180,108 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
   </div>
 </section>
 
+<h4 class="ts-sectionname"> Shopping </h4>
+<section class="ts-options-container">
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+</section>
+
+<h4 class="ts-sectionname"> Shopping </h4>
+<section class="ts-options-container">
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+</section>
+
+<h4 class="ts-sectionname"> Shopping </h4>
+<section class="ts-options-container">
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+  <div class="ts-option">
+    <a href="#" target="_blank">
+      <img src="#">
+      <h3>#</h3>
+    </a>
+  </div>
+</section>
+
 
 
 <!-- ///////////////// -->
@@ -187,6 +291,19 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
 </div>
 
 
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const images = document.querySelectorAll("img");
+
+    images.forEach(img => {
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = "images/nm/nm-placeholder.svg";
+      };
+    });
+  });
+</script>
 
 <!-- ///////////////// -->
 <!-- Bottom Menu -->
