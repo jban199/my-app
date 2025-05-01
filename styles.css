@@ -657,9 +657,20 @@ p {
 .ts-selected-engine-helper {
 	color: var(--accent1);
 	font-size: 14px;
-	position: relative;
+	position: absolute;
     bottom: 60px;
-    right: 50px;
+    left: -25px;
+	width: 100px;
+	animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .ts-selected-engine-helper::before {
