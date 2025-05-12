@@ -531,7 +531,7 @@ p {
 
 .SBM-pages {
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	grid-template-columns: repeat(4, 1fr);
 	gap: 10px;
 	padding: 10px 0px;
 }
@@ -1638,4 +1638,117 @@ p {
 #note-dialog-continue {
   background-color: var(--accent1);
   color: var(--bg1);
+}
+
+
+
+
+
+
+/* ///////////////// */
+/* SpeedoMeter */
+/* ///////////////// */
+
+.speed-header {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 20px 0px 30px 0px;
+	align-items: center;
+	background: var(--bg1);
+	box-shadow: 0px 3px 5px var(--shadow1);
+	border-radius: 0px 0px 30px 30px;
+	position: sticky;
+	top: 0px;
+	z-index: 10;
+}
+
+.speed-pagename {
+	color: var(--accent1);
+}
+
+.speed-main {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	margin-top: 100px;
+}
+
+.speed-display {
+	font-family: 'Orbitron', monospace;
+	font-size: 7rem;
+	font-weight: 600;
+	color: var(--accent1);
+	text-shadow: 0 0 15px var(--accent1);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.speed-unit-label {
+	font-size: 2rem;
+	margin-left: 0.3rem;
+	display: none;
+}
+
+.speed-unit-buttons {
+	margin-top: 2.5rem;
+	display: flex;
+	gap: 1rem;
+}
+
+.speed-unit-button {
+	padding: 0.7rem 1.4rem;
+	border-radius: 999px;
+	background: var(--bg2);
+	border: 2px solid var(--accent1);
+	color: var(--accent1);
+	font-size: 1.1rem;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.speed-unit-button.speed-active,
+.speed-unit-button:hover {
+	background: var(--accent1);
+	color: var(--bg1);
+}
+
+.speed-control-button {
+	margin-top: 2.5rem;
+	padding: 1rem 2.2rem;
+	font-size: 1.2rem;
+	background: var(--bg2);
+	border: 2px solid var(--accent1);
+	color: var(--accent1);
+	border-radius: 12px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.speed-control-button:hover {
+	background: var(--accent1);
+	color: var(--bg3);
+}
+
+
+.speed-snackbar {
+	position: fixed;
+	top: 150px;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: var(--accent1);
+	color: var(--bg1);
+	padding: 10px 20px;
+	border-radius: 30px;
+	box-shadow: 0px 3px 6px var(--shadow2);
+	font-weight: bold;
+	z-index: 9999;
+	transition: opacity 0.3s ease-in-out;
+	opacity: 0;
+	width: max-content;
+	max-width: 80vw;
 }
