@@ -4,7 +4,7 @@
   -webkit-tap-highlight-color: transparent;
   outline: none;
 }
-button, a, svg, img {
+* {
   user-select: none; /* Prevents text selection */
   -webkit-user-select: none; /* For Safari */
   -moz-user-select: none; /* For Firefox */
@@ -61,7 +61,7 @@ body {
 }
 
 html, body {
-  /*touch-action: manipulation;  Limits some gestures */
+  touch-action: manipulation;  Limits some gestures */
   overscroll-behavior: none;
   scroll-behavior: smooth;
 }
