@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Speedometer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --accent: #00ffc3;
+      --text: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 1.2rem;
+      background: #1c1c1c;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .speed-display {
+      font-family: 'Orbitron', monospace;
+      font-size: 7rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-shadow: 0 0 15px var(--accent);
+    }
+
+    .unit-label {
+      font-size: 2rem;
+      margin-left: 0.3rem;
+    }
+
+    .unit-buttons {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .unit-button {
+      padding: 0.7rem 1.4rem;
+      border-radius: 999px;
+      background: var(--card-bg);
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .unit-button.active,
+    .unit-button:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .control-button {
+      margin-top: 2.5rem;
+      padding: 1rem 2.2rem;
+      font-size: 1.2rem;
+      background: var(--card-bg);
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .control-button:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+  </style>
+</head>
+<body>
+
+  <header>Speedometer</header>
+
+  <main>
+    <div class="speed-display">
+      <span id="speed">0.0</span>
+      <span class="unit-label" id="unitLabel">km/h</span>
+    </div>
+
+    <div class="unit-buttons">
+      <button class="unit-button active" data-unit="kmh">km/h</button>
+      <button class="unit-button" data-unit="mph">mi/h</button>
+      <button class="unit-button" data-unit="ms">m/s</button>
+    </div>
+
+    <button id="toggleBtn" class="control-button">Start</button>
+  </main>
+
+  <script>
+    const speedText = document.getElementById("speed");
+    const unitLabel = document.getElementById("unitLabel");
+    const toggleBtn = document.getElementById("toggleBtn");
+    const unitButtons = document.querySelectorAll(".unit-button");
+
+    let watchId = null;
+    let isRunning = false;
+    let unit = 'kmh';
+
+    const unitNames = {
+      kmh: "km/h",
+      mph: "mi/h",
+      ms: "m/s"
+    };
+
+    const convertSpeed = (mps) => {
+      switch (unit) {
+        case 'kmh': return mps * 3.6;
+        case 'mph': return mps * 2.23694;
+        case 'ms': return mps;
+      }
+    };
+
+    const updateDisplay = (speedMps) => {
+      const converted = convertSpeed(speedMps);
+      speedText.textContent = converted.toFixed(1);
+      unitLabel.textContent = unitNames[unit];
+    };
+
+    const startTracking = () => {
+      if (!navigator.geolocation) {
+        alert("Geolocation not supported.");
+        return;
+      }
+
+      watchId = navigator.geolocation.watchPosition(
+        (pos) => {
+          const speed = pos.coords.speed ?? 0;
+          updateDisplay(speed);
+        },
+        (err) => {
+          alert("Error: " + err.message);
+        },
+        {
+          enableHighAccuracy: true,
+          maximumAge: 1000,
+          timeout: 5000
+        }
+      );
+    };
+
+    const stopTracking = () => {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = null;
+      }
+      updateDisplay(0);
+    };
+
+    toggleBtn.addEventListener("click", () => {
+      isRunning = !isRunning;
+      toggleBtn.textContent = isRunning ? "Stop" : "Start";
+      isRunning ? startTracking() : stopTracking();
+    });
+
+    unitButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        unitButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        unit = btn.dataset.unit;
+        // Refresh display with 0.0 to reflect new unit
+        updateDisplay(0);
+      });
+    });
+  </script>
+</body>
+</html>
