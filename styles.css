@@ -11,6 +11,15 @@
   -ms-user-select: none; /* For older versions of Internet Explorer */
 }
 
+input,
+textarea,
+[contenteditable] {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+}
+
 button, a, input, select, textarea {
   -webkit-tap-highlight-color: transparent;
   outline: none;
