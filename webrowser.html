@@ -136,55 +136,137 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
 <!-- ///////////////// -->
 <div class="ts-sectionname">
 	My links
-	<button class="ts-manage-btn">Manage</button>
+	<button class="ts-manage-btn" onclick="openManageLinkModal()">Manage</button>
 </div>
-<section class="ts-options-container">
-	
+<section class="ts-options-container" id="ts-links-container">
+	<!-- Add button (always first) -->
 	<div class="ts-option">
-    <button class="ts-link-add-btn">+</button>
+    <button class="ts-link-add-btn" onclick="openAddLinkModal()">+</button>
   </div>
-  <div class="ts-option">
-    <a href="https://www.amazon.in/" target="_blank">
-      <img src="images/icons/amazon.svg">
-      <h3>Amazon</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="https://www.google.com/" target="_blank">
-      <img src="images/icons/google.svg">
-      <h3>Google</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="https://www.youtube.com/" target="_blank">
-      <img src="images/icons/youtube.svg">
-      <h3>YouTube</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="https://www.wikipedia.org/" target="_blank">
-      <img src="images/icons/wikipedia.svg">
-      <h3>Wikipedia - The free encyclopedia</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="https://www.bing.com/" target="_blank">
-      <img src="images/icons/bing.svg">
-      <h3>Bing</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="https://in.search.yahoo.com/" target="_blank">
-      <img src="images/icons/yahoo.svg">
-      <h3>Yahoo</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="https://duckduckgo.com/" target="_blank">
-      <img src="images/icons/duckduckgo.svg">
-      <h3>DuckDuckGo</h3>
-    </a>
-  </div>
+	<!-- Links will be inserted here dynamically -->
+	
+	<script>
+	// Function to load and display links from IndexedDB
+function loadLinks() {
+  const container = document.getElementById('ts-links-container');
+  if (!container) return;
+
+  // Clear existing links (except the first add button)
+  while (container.children.length > 1) {
+    container.removeChild(container.lastChild);
+  }
+
+  const transaction = webDb.transaction([webStoreName], "readonly");
+  const store = transaction.objectStore(webStoreName);
+  const request = store.getAll();
+
+  request.onsuccess = (e) => {
+    const links = e.target.result;
+    
+    // Sort links by position
+    links.sort((a, b) => a.position - b.position);
+
+    // Add each link to the container
+    links.forEach(link => {
+      const linkElement = createLinkElement(link);
+      container.appendChild(linkElement);
+    });
+  };
+
+  request.onerror = (e) => {
+    console.error("Error loading links", e);
+    showWebSnackbar("Error loading links");
+  };
+}
+
+// Helper function to create a link element
+function createLinkElement(linkData) {
+  const optionDiv = document.createElement('div');
+  optionDiv.className = 'ts-option';
+  optionDiv.dataset.id = linkData.id;
+
+  const link = document.createElement('a');
+  link.href = linkData.url;
+  link.target = '_blank';
+
+  // Use provided image or fallback to favicon
+  const imgSrc = linkData.img || `https://www.google.com/s2/favicons?domain=${new URL(linkData.url).hostname}`;
+  const img = document.createElement('img');
+  img.src = imgSrc;
+  img.onerror = () => { img.src = 'images/icons/default-link.svg'; }; // Fallback if image fails to load
+
+  const title = document.createElement('h3');
+  title.textContent = linkData.name;
+
+  link.appendChild(img);
+  link.appendChild(title);
+  optionDiv.appendChild(link);
+
+  return optionDiv;
+}
+
+// Initialize the database and load links when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize the save button
+  const saveBtn = document.getElementById("ts-add-link-modal-save-btn");
+  if (saveBtn) {
+    saveBtn.addEventListener('click', saveLink);
+  }
+
+  // Load links when database is ready
+  webOpenRequest.onsuccess = (e) => {
+    webDb = e.target.result;
+    loadLinks();
+  };
+});
+
+// Modified saveLink function to refresh display after saving
+function saveLink() {
+  const name = document.getElementById("ts-add-link-name").value.trim();
+  const url = document.getElementById("ts-add-link-url").value.trim();
+  const img = document.getElementById("ts-add-link-img").value.trim();
+
+  if (!name || !url) {
+    showWebSnackbar("Name and URL are required");
+    return;
+  }
+
+  if (!isValidUrl(url)) {
+    showWebSnackbar("Please enter a valid URL (include http:// or https://)");
+    return;
+  }
+
+  const transaction = webDb.transaction([webStoreName], "readwrite");
+  const store = transaction.objectStore(webStoreName);
+  const countRequest = store.count();
+  
+  countRequest.onsuccess = () => {
+    const linkData = { 
+      name, 
+      url: formatUrl(url),
+      img,
+      position: currentEditingLinkId !== null ? 
+                undefined : // Keep existing position when editing
+                countRequest.result // New position for new items
+    };
+
+    if (currentEditingLinkId !== null) {
+      linkData.id = currentEditingLinkId;
+      store.put(linkData);
+      showWebSnackbar("Link updated");
+    } else {
+      store.add(linkData);
+      showWebSnackbar("Link saved");
+    }
+
+    transaction.oncomplete = () => {
+      closeAddLinkModal();
+      clearLinkForm();
+      loadLinks(); // Refresh the display
+    };
+  };
+}
+	</script>
 </section>
 
 
@@ -208,8 +290,8 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
 			</div>
 		</a>
 		<button class="ts-option-more-btn">
-			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/>
+			<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"></path>
 			</svg>
 		</button>
 	</div>
@@ -224,42 +306,303 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
 			</div>
 		</a>
 		<button class="ts-option-more-btn">
-			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/>
+			<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"></path>
 			</svg>
 		</button>
 	</div>
+	
+	<div class="ts-option-wide">
+		<a class="ts-option-details" href="https://stackoverflow.com" target="_blank">
+			<img class="ts-option-img" src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.pngs">
+			<div class="ts-option-link-info">
+				<p class="ts-option-title">Stack Overflow</p>
+				<p class="ts-option-link">https://stackoverflow.com</p>
+				<p class="ts-option-tags">Browser, Search engines</p>
+			</div>
+		</a>
+		<button class="ts-option-more-btn">
+			<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"></path>
+			</svg>
+		</button>
+	</div>
+	
+</section>
+
+
+<!-- ///////////////// -->
+<!-- Add Link Modal -->
+<!-- ///////////////// -->
+<section id="ts-add-link-modal" style="display:none;">
+	<div class="ts-add-link-modal-header">
+		<button id="ts-add-link-modal-back-btn" onclick="closeAddLinkModal()">
+			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z"/>
+			</svg>
+		</button>
+		Add Link
+	</div>
+	<div class="ts-add-link-modal-body">
+		
+		<label for="ts-add-link-name">Name</label>
+		<input type="text" id="ts-add-link-name" placeholder="Example.com">
+		
+		<label for="ts-add-link-url">Address</label>
+		<input type="text" id="ts-add-link-url" placeholder="https://www.example.com">
+		
+		<label for="ts-add-link-img">Image URL (optional)</label>
+		<input type="text" id="ts-add-link-img" placeholder="Image link">
+	</div>
+	<div class="ts-add-link-modal-footer">
+		<button id="ts-add-link-modal-cancel-btn" onclick="closeAddLinkModal()">Cancel</button>
+		<button id="ts-add-link-modal-save-btn">Save</button>
+	</div>
+	
+	<script>
+	function closeAddLinkModal() {
+		const modal = document.getElementById('ts-add-link-modal');
+		if (modal) {
+			modal.style.display = 'none';
+		}
+	}
+	
+	function openAddLinkModal() {
+		const modal = document.getElementById('ts-add-link-modal');
+		if (modal) {
+			modal.style.display = 'block';
+		}
+	}
+	
+	
+	// Link Management Module
+let webDb;
+const webDbName = "tak-webrowser";
+const webStoreName = "myList";
+let currentEditingLinkId = null;
+
+const webOpenRequest = indexedDB.open(webDbName, 1);
+
+webOpenRequest.onupgradeneeded = (e) => {
+  webDb = e.target.result;
+  const objectStore = webDb.createObjectStore(webStoreName, { 
+    keyPath: "id", 
+    autoIncrement: true 
+  });
+  
+  objectStore.createIndex("name", "name", { unique: false });
+  objectStore.createIndex("url", "url", { unique: false });
+  objectStore.createIndex("img", "img", { unique: false });
+  objectStore.createIndex("position", "position", { unique: false });
+};
+
+webOpenRequest.onsuccess = (e) => {
+  webDb = e.target.result;
+  loadLinks(); // Function to load existing links (to be implemented later)
+};
+
+webOpenRequest.onerror = (e) => {
+  console.error("Error opening IndexedDB", e);
+  showWebSnackbar("Error opening database");
+};
+
+// Save link function
+function saveLink() {
+  const name = document.getElementById("ts-add-link-name").value.trim();
+  const url = document.getElementById("ts-add-link-url").value.trim();
+  const img = document.getElementById("ts-add-link-img").value.trim();
+
+  if (!name || !url) {
+    showWebSnackbar("Name and Address are required");
+    return;
+  }
+
+  // Basic URL validation
+  if (!isValidUrl(url)) {
+    showWebSnackbar("Please enter a valid URL (include http:// or https://)");
+    return;
+  }
+
+  const transaction = webDb.transaction([webStoreName], "readwrite");
+  const store = transaction.objectStore(webStoreName);
+
+  // Get current count to set position (for future reordering)
+  const countRequest = store.count();
+  
+  countRequest.onsuccess = () => {
+    const linkData = { 
+      name, 
+      url: formatUrl(url),
+      img,
+      position: countRequest.result // This will be the next available position
+    };
+
+    if (currentEditingLinkId !== null) {
+      // For editing, keep the same position
+      linkData.id = currentEditingLinkId;
+      store.put(linkData);
+      currentEditingLinkId = null;
+      showWebSnackbar("Link updated");
+    } else {
+      store.add(linkData);
+      showWebSnackbar("Link saved");
+    }
+
+    transaction.oncomplete = () => {
+      closeAddLinkModal();
+      clearLinkForm();
+      loadLinks(); // Function to refresh the links display
+    };
+
+    transaction.onerror = (e) => {
+      console.error("Error saving link", e);
+      showWebSnackbar("Error saving link");
+    };
+  };
+}
+
+// Helper function to validate URLs
+function isValidUrl(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+// Helper function to format URLs (ensure they have http/https)
+function formatUrl(url) {
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    return 'https://' + url;
+  }
+  return url;
+}
+
+// Clear the link form
+function clearLinkForm() {
+  document.getElementById("ts-add-link-name").value = "";
+  document.getElementById("ts-add-link-url").value = "";
+  document.getElementById("ts-add-link-img").value = "";
+}
+
+// Initialize the save button
+document.addEventListener('DOMContentLoaded', () => {
+  const saveBtn = document.getElementById("ts-add-link-modal-save-btn");
+  if (saveBtn) {
+    saveBtn.addEventListener('click', saveLink);
+  }
+});
+
+// Modified openAddLinkModal function to handle editing
+function openAddLinkModal(linkData = null) {
+  const modal = document.getElementById('ts-add-link-modal');
+  if (modal) {
+    if (linkData) {
+      // Editing existing link
+      currentEditingLinkId = linkData.id;
+      document.getElementById("ts-add-link-name").value = linkData.name;
+      document.getElementById("ts-add-link-url").value = linkData.url;
+      document.getElementById("ts-add-link-img").value = linkData.img || "";
+    } else {
+      // Adding new link
+      currentEditingLinkId = null;
+      clearLinkForm();
+    }
+    modal.style.display = 'block';
+  }
+}
+	
+	</script>
 </section>
 
 
 
-<h4 class="ts-sectionname"> Shopping </h4>
-<section class="ts-options-container">
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
+
+<!-- ///////////////// -->
+<!-- Manage Links Modal -->
+<!-- ///////////////// -->
+<section id="ts-manage-link-modal" style="display: none;">
+	<div class="ts-manage-link-modal-header">
+		<button id="ts-manage-link-modal-back-btn" onclick="closeManageLinkModal()">
+			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z"/>
+			</svg>
+		</button>
+		Manage Links
+	</div>
+	<div class="ts-manage-link-modal-body">
+	</div>
+	<div class="ts-manage-link-modal-footer">
+		<button id="ts-manage-link-modal-cancel-btn" onclick="closeManageLinkModal()">Cancel</button>
+		<button id="ts-manage-link-modal-save-btn">Save</button>
+	</div>
+	
+	<script>
+	function closeManageLinkModal() {
+		const modal = document.getElementById('ts-manage-link-modal');
+		if (modal) {
+			modal.style.display = 'none';
+		}
+	}
+	
+	function openManageLinkModal() {
+		const modal = document.getElementById('ts-manage-link-modal');
+		if (modal) {
+			modal.style.display = 'block';
+		}
+	}
+	</script>
 </section>
+
+
+
+<!-- ///////////////// -->
+<!-- All Website Option Menu -->
+<!-- ///////////////// -->
+<div class="ts-allweb-options-menu" style="display: block;">
+	<button class="ts-allweb-edit-btn">
+		<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+			<path d="M640-760v280l68 68q6 6 9 13.5t3 15.5v23q0 17-11.5 28.5T680-320H520v234q0 17-11.5 28.5T480-46q-17 0-28.5-11.5T440-86v-234H280q-17 0-28.5-11.5T240-360v-23q0-8 3-15.5t9-13.5l68-68v-280q-17 0-28.5-11.5T280-800q0-17 11.5-28.5T320-840h320q17 0 28.5 11.5T680-800q0 17-11.5 28.5T640-760ZM354-400h252l-46-46v-314H400v314l-46 46Zm126 0Z"/>
+		</svg>
+		Pin to My list
+	</button>
+	
+	<button class="ts-allweb-share-btn">
+		<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+			<path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm480-280q17 0 28.5-11.5T720-760q0-17-11.5-28.5T680-800q-17 0-28.5 11.5T640-760q0 17 11.5 28.5T680-720Zm0 520ZM200-480Zm480-280Z">
+		</svg>
+		Share
+	</button>
+	
+	<button class="ts-allweb-copy-btn">
+		<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+			<path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-520q0-17 11.5-28.5T160-720q17 0 28.5 11.5T200-680v520h400q17 0 28.5 11.5T640-120q0 17-11.5 28.5T600-80H200Zm160-240v-480 480Z">
+		</svg>
+		Copy link
+	</button>
+</div>
+
+
+<!-- Snackbar (hidden initially) -->
+	<div id="web-snackbar" class="web-snackbar">Copied!</div>
+
+<script>
+// Snackbar function
+function showWebSnackbar(message = "Copied!") {
+  const snackbar = document.getElementById("web-snackbar");
+  snackbar.textContent = message;
+  snackbar.style.display = "block";
+  snackbar.style.opacity = "1";
+
+  setTimeout(() => {
+    snackbar.style.opacity = "0";
+    setTimeout(() => {
+      snackbar.style.display = "none";
+    }, 300);
+  }, 2000);
+}
+</script>
 
 
 
