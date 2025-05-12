@@ -573,16 +573,18 @@ function updateButtonState(state) {
     homeUpdateLocation();
 
     if ('geolocation' in navigator) {
+      // Get sun and moon times
       navigator.geolocation.getCurrentPosition(pos => {
         const { latitude, longitude } = pos.coords;
-
         const times = SunCalc.getTimes(new Date(), latitude, longitude);
         document.getElementById('sunrise').textContent = times.sunrise.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         document.getElementById('sunset').textContent = times.sunset.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         document.getElementById('moonrise').textContent = times.moonrise.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         document.getElementById('moonset').textContent = times.moonset.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      });
 
-        // Start watching position to get speed
+      // Start watching for speed if not already started
+      if (speedWatchId === null) {
         speedWatchId = navigator.geolocation.watchPosition(
           (position) => {
             const speed = position.coords.speed;
@@ -599,10 +601,7 @@ function updateButtonState(state) {
             timeout: 10000
           }
         );
-      }, (error) => {
-        console.error('Location fetch error:', error);
-        document.getElementById('home-speedometer').textContent = 'Location error';
-      });
+      }
     }
   } else {
     locationIcon.setAttribute('fill', '#ffffff');
@@ -610,7 +609,7 @@ function updateButtonState(state) {
     locationStatus.textContent = ' Off';
     locationBtn.classList.remove('active');
 
-    if (speedWatchId != null) {
+    if (speedWatchId !== null) {
       navigator.geolocation.clearWatch(speedWatchId);
       speedWatchId = null;
     }
@@ -634,6 +633,7 @@ locationBtn.addEventListener('click', () => {
   }
 });
 </script>
+
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
