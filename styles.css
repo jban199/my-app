@@ -727,16 +727,62 @@ p {
   display: block;
 }
 
+.ts-sectionname {
+	color: var(--font1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px 10px 10px 10px;
+}
 
+.ts-link-add-btn {
+	height: 55px;
+    width: 55px;
+    border: none;
+    border-radius: 10px;
+    background: var(--bg2);
+    color: var(--accent1);
+    font-size: 32px;
+}
 
-/* ///////////////// */
-/* Top Links */
-/* ///////////////// */
+.ts-filter-btn {
+	height: 45px;
+	min-width: 100px;
+    width: fit-content;
+    border: none;
+    border-radius: 10px;
+    background: var(--bg2);
+    color: var(--accent1);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 5px;
+}
+
+.ts-filter-btn svg {
+	fill: var(--accent1);
+}
+
 .ts-options-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr); /* 5 items per row */
   gap: 20px 5px;
   margin-top: 20px;
+}
+
+.ts-options-list {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	margin-top: 20px;
+}
+
+.ts-manage-btn {
+	border-radius: 30px;
+    background: var(--bg2);
+    border: none;
+    padding: 10px 20px;
+    color: var(--accent1);
 }
 
 .ts-option {
@@ -745,6 +791,67 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.ts-option-wide {
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	justify-content: space-between;
+	box-shadow: 0px 0px 5px var(--shadow1);
+	padding: 10px;
+}
+
+.ts-option-details {
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	align-items: center;
+}
+
+.ts-option-img {
+	height: 50px;
+	width: 50px;
+	border-radius: 10px;
+	background: var(--bg3);
+	object-fit: contain;
+    padding: 5px;
+}
+
+.ts-option-link-info {
+	display: flex;
+	flex-direction: column;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 250px;
+}
+
+.ts-option-title {
+	color: var(--font1);
+	margin: 0px;
+}
+
+.ts-option-link {
+	color: var(--font2);
+	margin: 0px;
+	font-size: 12px;
+
+}
+
+.ts-option-tags {
+	color: var(--font2);
+	margin: 0px;
+	font-size: 12px;
+}
+
+.ts-option-more-btn {
+	background: none;
+    border: none;
+}
+
+.ts-option-more-btn svg {
+	fill: var(--accent1);
 }
 
 .ts-option img {
