@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TKA - NearMe</title>
+    <title>TKA - Explorer</title>
 
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
@@ -670,9 +670,19 @@ fullscreenButton.addEventListener('click', () => {
 <!-- Prevent Right Click Context Menu -->
 <!-- ///////////////// -->
 <script>
-  // Prevent the context menu from appearing on right-click
   document.addEventListener('contextmenu', function(event) {
-	event.preventDefault(); // Prevent the context menu from appearing
+    const target = event.target;
+
+    // Allow default context menu on input, textarea, or contenteditable elements
+    if (
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.isContentEditable
+    ) {
+      return; // allow context menu
+    }
+
+    event.preventDefault(); // otherwise, block it
   });
 </script>
 
