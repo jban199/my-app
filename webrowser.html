@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TKA - Topsites</title>
+    <title>TKA - Webrowser</title>
 
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
@@ -132,10 +132,17 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
 
 
 <!-- ///////////////// -->
-<!-- Top Sites -->
+<!-- Websites -->
 <!-- ///////////////// -->
-<h4 class="ts-sectionname"> Browsers </h4>
+<div class="ts-sectionname">
+	My links
+	<button class="ts-manage-btn">Manage</button>
+</div>
 <section class="ts-options-container">
+	
+	<div class="ts-option">
+    <button class="ts-link-add-btn">+</button>
+  </div>
   <div class="ts-option">
     <a href="https://www.amazon.in/" target="_blank">
       <img src="images/icons/amazon.svg">
@@ -180,82 +187,54 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
   </div>
 </section>
 
-<h4 class="ts-sectionname"> Shopping </h4>
-<section class="ts-options-container">
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
+
+<div class="ts-sectionname">
+	All Websites
+	<button class="ts-filter-btn">
+		<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+			<path d="M440-160q-17 0-28.5-11.5T400-200v-240L168-736q-15-20-4.5-42t36.5-22h560q26 0 36.5 22t-4.5 42L560-440v240q0 17-11.5 28.5T520-160h-80Z"/>
+		</svg>
+		All
+	</button>
+</div>
+<section class="ts-options-list">
+	<div class="ts-option-wide">
+		<a class="ts-option-details" href="https://www.google.com" target="_blank">
+			<img class="ts-option-img" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png">
+			<div class="ts-option-link-info">
+				<p class="ts-option-title">Google</p>
+				<p class="ts-option-link">https://www.google.com</p>
+				<p class="ts-option-tags">Browser, Search engines</p>
+			</div>
+		</a>
+		<button class="ts-option-more-btn">
+			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/>
+			</svg>
+		</button>
+	</div>
+	
+	<div class="ts-option-wide">
+		<a class="ts-option-details" href="https://stackoverflow.com" target="_blank">
+			<img class="ts-option-img" src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png">
+			<div class="ts-option-link-info">
+				<p class="ts-option-title">Stack Overflow</p>
+				<p class="ts-option-link">https://stackoverflow.com</p>
+				<p class="ts-option-tags">Browser, Search engines</p>
+			</div>
+		</a>
+		<button class="ts-option-more-btn">
+			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/>
+			</svg>
+		</button>
+	</div>
 </section>
+
+
 
 <h4 class="ts-sectionname"> Shopping </h4>
 <section class="ts-options-container">
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
-</section>
-
-<h4 class="ts-sectionname"> Shopping </h4>
-<section class="ts-options-container">
-  <div class="ts-option">
-    <a href="#" target="_blank">
-      <img src="#">
-      <h3>#</h3>
-    </a>
-  </div>
   <div class="ts-option">
     <a href="#" target="_blank">
       <img src="#">
