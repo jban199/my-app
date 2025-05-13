@@ -25,33 +25,32 @@
 				<path d="M335-9q-51.98 0-88.99-37.01Q209-83.03 209-135v-145h126v25h370v-450H335v25H209v-145q0-51.97 37.01-88.99Q283.02-951 335-951h370q51.97 0 88.99 37.01Q831-876.97 831-825v690q0 51.97-37.01 88.99Q756.97-9 705-9H335ZM176-295l-56-56 209-209H185v-80h280v280h-80v-144L176-295Z"/>
 			</svg>
 			Install this App
-			
+		</a>	
 			<script>
-				let deferredPrompt;
+				let deferredPrompt = null;
 
 				  window.addEventListener('beforeinstallprompt', (e) => {
 					// Let the mini-infobar appear (do NOT call preventDefault)
 					deferredPrompt = e;
 
-					const installBtn = document.getElementById('SBM-installBtn');
-					installBtn.style.display = 'block';
+					document.getElementById('SBM-installBtn').addEventListener('click', async (event) => {
+						event.preventDefault(); // Prevent anchor behavior
 
-					installBtn.addEventListener('click', async (event) => {
-					  event.preventDefault(); // prevent anchor navigation
+						if (!deferredPrompt) {
+						  console.log('Install prompt not available');
+						  return;
+						}
 
-					  if (!deferredPrompt) return;
+						deferredPrompt.prompt();
 
-					  deferredPrompt.prompt();
+						const { outcome } = await deferredPrompt.userChoice;
+						console.log(`User response to the install prompt: ${outcome}`);
 
-					  const { outcome } = await deferredPrompt.userChoice;
-					  console.log(`User response to the install prompt: ${outcome}`);
-
-					  deferredPrompt = null;
-					});
-				  });
+						deferredPrompt = null;
+					  });
 
 			</script>
-		</a>
+		
 		<a class="SBM-OPT-button" href="tel:+916290682269">
 			<svg class="SBM-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 				<path d="M440-120v-80h320v-284q0-117-81.5-198.5T480-764q-117 0-198.5 81.5T200-484v244h-40q-33 0-56.5-23.5T80-320v-80q0-21 10.5-39.5T120-469l3-53q8-68 39.5-126t79-101q47.5-43 109-67T480-840q68 0 129 24t109 66.5Q766-707 797-649t40 126l3 52q19 9 29.5 27t10.5 38v92q0 20-10.5 38T840-249v49q0 33-23.5 56.5T760-120H440Zm-80-280q-17 0-28.5-11.5T320-440q0-17 11.5-28.5T360-480q17 0 28.5 11.5T400-440q0 17-11.5 28.5T360-400Zm240 0q-17 0-28.5-11.5T560-440q0-17 11.5-28.5T600-480q17 0 28.5 11.5T640-440q0 17-11.5 28.5T600-400Zm-359-62q-7-106 64-182t177-76q89 0 156.5 56.5T720-519q-91-1-167.5-49T435-698q-16 80-67.5 142.5T241-462Z"/>
