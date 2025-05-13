@@ -381,7 +381,7 @@ const webDbName = "TAKAppDB";
 const webStoreName = "CustomSites";
 let currentEditingLinkId = null;
 
-const webOpenRequest = indexedDB.open(webDbName, 2);
+const webOpenRequest = indexedDB.open(webDbName);
 
 webOpenRequest.onupgradeneeded = (e) => {
   webDb = e.target.result;
