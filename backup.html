@@ -24,7 +24,7 @@
 <section class="bkup-container">
 	<div class="bkup-container-description">
 		<svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-			<path d="M480-520q150 0 255-47t105-113q0-66-105-113t-255-47q-150 0-255 47T120-680q0 66 105 113t255 47Zm0 100q41 0 102.5-8.5T701-456q57-19 98-49.5t41-74.5v100q0 44-41 74.5T701-356q-57 19-118.5 27.5T480-320q-41 0-102.5-8.5T259-356q-57-19-98-49.5T120-480v-100q0 44 41 74.5t98 49.5q57 19 118.5 27.5T480-420Zm0 200q41 0 102.5-8.5T701-256q57-19 98-49.5t41-74.5v100q0 44-41 74.5T701-156q-57 19-118.5 27.5T480-120q-41 0-102.5-8.5T259-156q-57-19-98-49.5T120-280v-100q0 44 41 74.5t98 49.5q57 19 118.5 27.5T480-220Z"/>
+			<path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h447q16 0 30.5 6t25.5 17l114 114q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T760-120H200Zm280-120q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM280-560h280q17 0 28.5-11.5T600-600v-80q0-17-11.5-28.5T560-720H280q-17 0-28.5 11.5T240-680v80q0 17 11.5 28.5T280-560Z"/>
 		</svg>
 		Backup
 	</div>
@@ -53,6 +53,81 @@
 		<button id="bkup-actionBtn-validateBtn" class="bkup-container-actionBtns-primary" onclick="bkup_validateData()">Validate</button>
 	</div>
 </section>
+
+
+
+<section class="bkup-container">
+	<div class="bkup-container-description">
+		<svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+			<path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560h-80v80q0 17-11.5 28.5T640-640H320q-17 0-28.5-11.5T280-680v-80h-80v560Zm280-560q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"/>
+		</svg>
+		Sample
+	</div>
+	<textarea id="" class="bkup-Display" placeholder="Refresh this page to get the sample data here...">
+	{
+  "dbName": "TAKAppDB",
+  "objectStores": {
+    "UserNotes": [
+      {
+        "data": "Ambience",
+        "id": 1
+      },
+	  {
+        "data": "Area 360",
+        "id": 2
+      },
+	  {
+        "data": "Panorama",
+        "id": 3
+      },
+	  {
+        "data": "Random",
+        "id": 4
+      },
+	  {
+        "data": "Compass & Level",
+        "id": 5
+      }
+    ],
+    "CustomSites": [
+      {
+        "name": "Amazon IN",
+        "url": "https://www.amazon.in/",
+        "img": "https://www.amazon.in/favicon.ico",
+        "position": 0,
+        "id": 1
+      },
+      {
+        "name": "Flipkart",
+        "url": "https://www.flipkart.com/",
+        "img": "https://rukminim1.flixcart.com/www/192/192/promos/11/07/2024/cf1a3e0a-224b-4dd1-bb96-84abf3d298e2.png?q=100",
+        "position": 1,
+        "id": 2
+      },
+      {
+        "name": "Airtel IN",
+        "url": "https://www.airtel.in/",
+        "img": "https://assets.airtel.in/static-assets/new-home/img/favicon-32x32.png",
+        "position": 2,
+        "id": 3
+      },
+      {
+        "name": "DrikPanchang",
+        "url": "https://www.drikpanchang.com/",
+        "img": "https://www.drikpanchang.com/images/logo/1x/xlogo_panditji.png.pagespeed.ic.mkg5bEbgC7.webp",
+        "position": 3,
+        "id": 4
+      }
+    ]
+  }
+}
+	</textarea>
+	<svg class="bkup-Display-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+			<path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
+	</svg>
+</section>
+
+
 
 <script>
 // === CONFIGURATION ===
