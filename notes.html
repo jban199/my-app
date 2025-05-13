@@ -59,7 +59,7 @@ let currentEditingId = null;
 let notePendingDeleteId = null;
 let currentOpenMenu = null;
 
-const openRequest = indexedDB.open(dbName, 1);
+const openRequest = indexedDB.open(dbName, 2);
 
 openRequest.onupgradeneeded = (e) => {
   db = e.target.result;
