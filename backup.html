@@ -50,7 +50,7 @@
 			<path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
 	</svg>
 	<div class="bkup-container-actionBtns">
-		<button id="bkup-actionBtn-generateBtn" class="bkup-container-actionBtns-primary" onclick="bkup_generateData()">Validate</button>
+		<button id="bkup-actionBtn-validateBtn" class="bkup-container-actionBtns-primary" onclick="bkup_validateData()">Validate</button>
 	</div>
 </section>
 
@@ -58,8 +58,10 @@
 // === CONFIGURATION ===
 const ts_dbConfig = {
   name: "TAKAppDB",
-  stores: ["UserNotes", "CustomCalls", "CustomSites", "Theme", "PreferredEngine"] // Update this list as needed
+  stores: ["UserNotes", "CustomSites"] // <-- Update this as needed
 };
+
+let ts_restoreText = ""; // Temp storage for restore string
 
 // === 1. GENERATE BACKUP ===
 async function generateBackup() {
@@ -90,49 +92,53 @@ function copyBackupToClipboard() {
     .catch(() => showTakSnackbar("Copy failed."));
 }
 
-// === 3. VALIDATE & CONFIRM ===
+// === 3. VALIDATE & SHOW CUSTOM CONFIRM ===
 function validateAndConfirmRestore() {
-  const restoreText = document.getElementById("bkup-restoreDisplay").value.trim();
-  if (!restoreText) return showTakSnackbar("Nothing to validate.");
+  const input = document.getElementById("bkup-restoreDisplay").value.trim();
+  if (!input) return showTakSnackbar("Nothing to validate.");
 
-  const confirmMsg = "Do you want to proceed with restoring this backup?"; // Customize later
-  if (window.confirm(confirmMsg)) {
-    continueRestore(restoreText);
-  } else {
-    skipRestore();
-  }
+  ts_restoreText = input; // Save for use after confirmation
+  const dialog = document.getElementById("bkup-confirm-dialog");
+  if (dialog) dialog.style.display = "flex"; // Show custom confirm
 }
 
-// === 4. CONTINUE (PERFORM RESTORE) ===
-async function continueRestore(jsonString) {
+// === 4. CONTINUE (Confirmed Restore) ===
+function continueRestore() {
+  const dialog = document.getElementById("bkup-confirm-dialog");
+  if (dialog) dialog.style.display = "none";
+
   try {
-    const data = JSON.parse(jsonString);
+    const data = JSON.parse(ts_restoreText);
     if (data.dbName !== ts_dbConfig.name || typeof data.objectStores !== "object") {
       return showTakSnackbar("Invalid backup format.");
     }
 
-    const db = await ts_openDB(ts_dbConfig.name);
-    await ts_clearAllStores(db, ts_dbConfig.stores);
+    ts_openDB(ts_dbConfig.name).then(async db => {
+      await ts_clearAllStores(db, ts_dbConfig.stores);
 
-    for (const store of ts_dbConfig.stores) {
-      const items = data.objectStores[store] || [];
-      await ts_bulkPut(db, store, items);
-    }
+      for (const store of ts_dbConfig.stores) {
+        const items = data.objectStores[store] || [];
+        await ts_bulkPut(db, store, items);
+      }
 
-    showTakSnackbar("Restore completed successfully.");
-    db.close();
+      showTakSnackbar("Restore completed successfully.");
+      db.close();
+    });
   } catch (err) {
     console.error("Restore error:", err);
     showTakSnackbar("Restore failed.");
   }
 }
 
-// === 5. SKIP RESTORE ===
+// === 5. SKIP (Cancel Restore) ===
 function skipRestore() {
+  const dialog = document.getElementById("bkup-confirm-dialog");
+  if (dialog) dialog.style.display = "none";
+
   showTakSnackbar("Restore cancelled.");
 }
 
-// === DB HELPERS ===
+// === 6. DB UTILS ===
 function ts_openDB(name) {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(name);
@@ -175,6 +181,24 @@ function ts_bulkPut(db, storeName, dataArray) {
   });
 }
 
+// === 7. EVENT HOOKUP ===
+document.addEventListener("DOMContentLoaded", () => {
+  const generateBtn = document.getElementById("bkup-actionBtn-generateBtn");
+  const copyBtn = document.getElementById("bkup-actionBtn-copyBtn");
+  const validateBtn = document.getElementById("bkup-actionBtn-validateBtn");
+
+  const continueBtn = document.getElementById("bkup-dialog-continue");
+  const skipBtn = document.getElementById("bkup-dialog-skip");
+
+  if (generateBtn) generateBtn.onclick = generateBackup;
+  if (copyBtn) copyBtn.onclick = copyBackupToClipboard;
+  if (validateBtn) validateBtn.onclick = validateAndConfirmRestore;
+
+  if (continueBtn) continueBtn.onclick = continueRestore;
+  if (skipBtn) skipBtn.onclick = skipRestore;
+});
+
+
 </script>
 
 
@@ -186,7 +210,7 @@ function ts_bulkPut(db, storeName, dataArray) {
 	<!-- Confirm Delete Dialog (hidden initially) -->
 	<div id="bkup-confirm-dialog" class="bkup-dialog" style="display: none;">
 		<div class="bkup-dialog-box">
-			<p>Are you sure you want to delete this note?</p>
+			<p>Creating backup of your current data is recommended. Click "Continue" to permanently replace your current data.</p>
 			<div class="bkup-dialog-actions">
 				<button id="bkup-dialog-skip">Skip</button>
 				<button id="bkup-dialog-continue">Continue</button>
