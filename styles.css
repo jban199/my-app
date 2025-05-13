@@ -1759,3 +1759,22 @@ p {
 	width: max-content;
 	max-width: 80vw;
 }
+
+
+.tak-snackbar {
+	position: fixed;
+	top: 150px;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: var(--accent1);
+	color: var(--bg1);
+	padding: 10px 20px;
+	border-radius: 30px;
+	box-shadow: 0px 3px 6px var(--shadow2);
+	font-weight: bold;
+	z-index: 9999;
+	transition: opacity 0.3s ease-in-out;
+	opacity: 0;
+	width: max-content;
+	max-width: 80vw;
+}
