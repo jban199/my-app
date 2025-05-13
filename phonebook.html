@@ -44,17 +44,25 @@ function filterCards() {
     const cards = document.querySelectorAll('.pb-card');
 
     cards.forEach(card => {
-        const name = card.querySelector('.pb-card-name').textContent.toLowerCase();
-        const phone = card.querySelector('.pb-card-phone').textContent.toLowerCase();
+        const name = card.querySelector('.pb-card-name')?.textContent.toLowerCase() || '';
+        const phone = card.querySelector('.pb-card-phone')?.textContent.toLowerCase() || '';
+        const desc = card.querySelector('.pb-card-desc')?.textContent.toLowerCase() || '';
+        const callHref = card.querySelector('.pb-call-btn')?.getAttribute('href').toLowerCase() || '';
 
-        // Check if the name or phone matches the search term
-        if (name.includes(searchTerm) || phone.includes(searchTerm)) {
+        // Check if any of the fields match the search term
+        if (
+            name.includes(searchTerm) ||
+            phone.includes(searchTerm) ||
+            desc.includes(searchTerm) ||
+            callHref.includes(searchTerm)
+        ) {
             card.style.display = 'flex'; // Show the card
         } else {
             card.style.display = 'none'; // Hide the card
         }
     });
 }
+
 
 // Event listener for the search input to filter cards
 searchInput.addEventListener('input', filterCards);
@@ -302,7 +310,7 @@ clearButton.addEventListener('click', () => {
     </div>
 	
 	<div class="pb-card">
-        <img class="pb-card-photo" src="images/icons/placeholder.svg">
+        <img class="pb-card-photo" src="images/icons/deaddiction.svg">
 		<div class="pb-card-info">
             <p class="pb-card-name">National Helpline for Deaddiction</p>
             <p class="pb-card-phone">1800 11 0031</p>
@@ -316,7 +324,7 @@ clearButton.addEventListener('click', () => {
 	
 	
 	<div class="pb-card">
-        <img class="pb-card-photo" src="images/icons/placeholder.svg">
+        <img class="pb-card-photo" src="images/icons/calamity.svg">
 		<div class="pb-card-info">
             <p class="pb-card-name">Disaster Mangement Helpline</p>
 			<p class="pb-card-desc">emergencies in natural disasters and rescue operations.</p>
