@@ -54,6 +54,129 @@
 	</div>
 </section>
 
+<script>
+// === CONFIGURATION ===
+const ts_dbConfig = {
+  name: "TAKAppDB",
+  stores: ["UserNotes", "CustomCalls", "CustomSites", "Theme", "PreferredEngine"] // Update this list as needed
+};
+
+// === 1. GENERATE BACKUP ===
+async function generateBackup() {
+  try {
+    const db = await ts_openDB(ts_dbConfig.name);
+    const backup = { dbName: ts_dbConfig.name, objectStores: {} };
+
+    for (const store of ts_dbConfig.stores) {
+      backup.objectStores[store] = await ts_getAllFromStore(db, store);
+    }
+
+    document.getElementById("bkup-backupDisplay").value = JSON.stringify(backup, null, 2);
+    showTakSnackbar("Backup generated.");
+    db.close();
+  } catch (err) {
+    console.error("Backup error:", err);
+    showTakSnackbar("Failed to generate backup.");
+  }
+}
+
+// === 2. COPY TO CLIPBOARD ===
+function copyBackupToClipboard() {
+  const text = document.getElementById("bkup-backupDisplay").value.trim();
+  if (!text) return showTakSnackbar("Nothing to copy.");
+
+  navigator.clipboard.writeText(text)
+    .then(() => showTakSnackbar("Copied to clipboard."))
+    .catch(() => showTakSnackbar("Copy failed."));
+}
+
+// === 3. VALIDATE & CONFIRM ===
+function validateAndConfirmRestore() {
+  const restoreText = document.getElementById("bkup-restoreDisplay").value.trim();
+  if (!restoreText) return showTakSnackbar("Nothing to validate.");
+
+  const confirmMsg = "Do you want to proceed with restoring this backup?"; // Customize later
+  if (window.confirm(confirmMsg)) {
+    continueRestore(restoreText);
+  } else {
+    skipRestore();
+  }
+}
+
+// === 4. CONTINUE (PERFORM RESTORE) ===
+async function continueRestore(jsonString) {
+  try {
+    const data = JSON.parse(jsonString);
+    if (data.dbName !== ts_dbConfig.name || typeof data.objectStores !== "object") {
+      return showTakSnackbar("Invalid backup format.");
+    }
+
+    const db = await ts_openDB(ts_dbConfig.name);
+    await ts_clearAllStores(db, ts_dbConfig.stores);
+
+    for (const store of ts_dbConfig.stores) {
+      const items = data.objectStores[store] || [];
+      await ts_bulkPut(db, store, items);
+    }
+
+    showTakSnackbar("Restore completed successfully.");
+    db.close();
+  } catch (err) {
+    console.error("Restore error:", err);
+    showTakSnackbar("Restore failed.");
+  }
+}
+
+// === 5. SKIP RESTORE ===
+function skipRestore() {
+  showTakSnackbar("Restore cancelled.");
+}
+
+// === DB HELPERS ===
+function ts_openDB(name) {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(name);
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+function ts_getAllFromStore(db, storeName) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(storeName, "readonly");
+    const store = tx.objectStore(storeName);
+    const request = store.getAll();
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+function ts_clearAllStores(db, stores) {
+  return Promise.all(
+    stores.map(store => {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(store, "readwrite");
+        const storeObj = tx.objectStore(store);
+        const req = storeObj.clear();
+        req.onsuccess = () => resolve();
+        req.onerror = () => reject(req.error);
+      });
+    })
+  );
+}
+
+function ts_bulkPut(db, storeName, dataArray) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(storeName, "readwrite");
+    const store = tx.objectStore(storeName);
+    dataArray.forEach(item => store.put(item));
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+</script>
+
 
 
 
