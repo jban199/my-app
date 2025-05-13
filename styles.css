@@ -1195,6 +1195,13 @@ p {
 	color: var(--font1);
 }
 
+.pb-card-desc {
+    margin: 0;
+    padding: 0;
+	color: var(--font2);
+	font-size: 12px;
+}
+
 .pb-card-phone {
     margin: 0;
     padding: 0;
