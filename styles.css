@@ -1761,6 +1761,10 @@ p {
 }
 
 
+/* ///////////////// */
+/* App Common */
+/* ///////////////// */
+
 .tak-snackbar {
 	position: fixed;
 	top: 150px;
@@ -1796,4 +1800,160 @@ p {
 
 .tak-pagename {
 	color: var(--accent1);
+}
+
+
+
+
+
+
+
+/* ///////////////// */
+/* Backup Restore */
+/* ///////////////// */
+
+.bkup-container {
+	display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    max-width: 500px;
+	margin: 20px auto;
+    background-color: var(--bg2);
+    padding: 20px;
+    border-radius: 40px 80px 20px 20px;
+	box-shadow: 0px 0px 10px var(--shadow1);
+}
+
+.bkup-container-description {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	align-items: center;
+	color: var(--font1);
+	font-size: 18px;
+	width: 100%;
+}
+
+.bkup-container-icons {
+	width: 24px;
+	height: 24px;
+	fill: var(--accent1);
+	margin: 5px;
+}
+
+.bkup-Display-drag-handle-icon {
+	fill: var(--accent1);
+    position: relative;
+    left: 159px;
+    top: -12px;
+    height: 15px;
+    width: 15px;
+	z-index: 1;
+	animation: bkup-Display-drag-handle-icon-bounce 1s ease-in-out infinite;
+}
+
+@keyframes bkup-Display-drag-handle-icon-bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(5px);
+	opacity: 0;
+  }
+}
+
+.bkup-Display {
+    padding: 15px;
+    min-height: 50px;
+    width: 300px;
+    border: none;
+    background: var(--bg1);
+    color: var(--font1);
+    border-radius: 10px;
+    user-select: text;
+    overflow: scroll;
+    resize: vertical;
+}
+
+.bkup-Display::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+}
+
+.bkup-Display::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    margin: 4px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.bkup-Display::-webkit-scrollbar-thumb {
+    background: var(--accent1);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: background-color 0.2s ease;
+}
+
+.bkup-Display::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.25);
+    background-clip: content-box;
+}
+
+.bkup-Display::-webkit-scrollbar-thumb:active {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.bkup-Display::-webkit-scrollbar-corner {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 0 0 4px 0;
+}
+
+.bkup-Display::-webkit-resizer {
+    border-radius: 0 0 4px 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24' fill='%23fd7e14'%3E%3Cpath d='M480-200q-117 0-198.5-81.5T200-480q0-117 81.5-198.5T480-760q117 0 198.5 81.5T760-480q0 117-81.5 198.5T480-200Z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    background-size: 12px 12px;
+}
+
+.bkup-container-actionBtns {
+	display: flex;
+	flex-direction: row;
+	gap: 30px;
+}
+
+
+.bkup-container-actionBtns-primary {
+    display: inline-block;
+    border-radius: 30px;
+    padding: 15px 50px;
+    border: none;
+    background-image: linear-gradient(0deg, var(--gradient1), var(--gradient2));
+    border-bottom: 2px solid var(--shadow1);
+    background-color: var(--bg2);
+    color: var(--accent1);
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    box-sizing: border-box;
+}
+
+.bkup-container-actionBtns-secondary {
+	display: inline-block;
+    border-radius: 30px;
+    padding: 15px 50px;
+    border: 2px solid var(--shadow1);
+    background-color: var(--bg1);
+    color: var(--accent1);
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    font-size: 14px;
+    box-sizing: border-box;
 }
