@@ -512,6 +512,20 @@ clearButton.addEventListener('click', () => {
 </div>
 
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const images = document.querySelectorAll("img");
+
+    images.forEach(img => {
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = "images/nm/nm-placeholder.svg";
+      };
+    });
+  });
+</script>
+
+
 <!-- ///////////////// -->
 <!-- Bottom Menu -->
 <!-- ///////////////// -->
