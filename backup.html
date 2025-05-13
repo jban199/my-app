@@ -130,6 +130,15 @@
 
 
 <script>
+
+window.addEventListener("load", () => {
+  console.log("PWA loaded");
+  if (!window.indexedDB) {
+    alert("IndexedDB not supported or blocked.");
+  }
+});
+
+
 // === CONFIGURATION ===
 const ts_dbConfig = {
   name: "TAKAppDB",
