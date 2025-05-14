@@ -198,69 +198,6 @@ function showTakSnackbar(message = "Welcome!") {
 <div class="footerSpacer">
 </div>
 
-<!-- ///////////////// -->
-<!-- Bottom Menu -->
-<!-- ///////////////// -->
-<section>
-<!-- SBM Trigger -->
-<svg id="SBM-Icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-    <path d="M86-191v-126h788v126H86Zm0-226v-126h788v126H86Zm0-226v-126h788v126H86Z"/>
-</svg>
-
-<!-- SBM container (empty, the content is injected here) -->
-<div id="SBM-container"></div>
-</section>
-
-
-<script>
-window.onload = function() {		
-    // Load SBM
-    fetch('sbm.html')
-        .then(response => response.text())
-        .then(data => {
-            const sidebarContainer = document.getElementById('SBM-container');
-            sidebarContainer.innerHTML = data;
-
-            // Make sure sidebar is hidden after load
-            const overlaySBM = document.getElementById("SBM-section");
-            if (overlaySBM) {
-                overlaySBM.style.transform = "translateY(100%)";
-            }
-
-            // Reattach event listeners after the SBM is loaded
-            const closeButton = document.getElementById("closeSBM");
-            if (closeButton) {
-                closeButton.addEventListener("click", closeSBM);
-            }
-
-            // Get reference to the icon that triggers the sidebar opening
-            const SBMIcon = document.getElementById("SBM-Icon");
-
-            // Function to open the sidebar
-            function openSBM() {
-                if (overlaySBM) {
-                    overlaySBM.style.transform = "translateY(0)";
-                }
-            }
-
-            // Function to close the sidebar
-            function closeSBM() {
-                if (overlaySBM) {
-                    overlaySBM.style.transform = "translateY(100%)";
-                }
-            }
-
-            // Event listener for opening the SBM when the icon is clicked
-            if (SBMIcon) {
-                SBMIcon.addEventListener("click", openSBM);
-            }
-        })
-        .catch(error => {
-            console.error("Error loading SBM:", error);
-        });
-};
-</script>
-
 
 
 <!-- ///////////////// -->
