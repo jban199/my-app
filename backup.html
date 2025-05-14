@@ -1,543 +1,470 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TKA - Backup</title>
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>TKA - Backup</title>
 
-    <!-- PWA Meta Tags -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="favicon.ico" sizes="any">
-    <meta name="theme-color" content="#1A1A1A">
+		<!-- PWA Meta Tags -->
+		<link rel="manifest" href="manifest.json">
+		<link rel="icon" href="favicon.ico" sizes="any">
+		<meta name="theme-color" content="#1A1A1A">
 
-    <!-- Link to the stylesheet -->
-    <link rel="stylesheet" href="styles.css">
+		<!-- Link to the stylesheet -->
+		<link rel="stylesheet" href="styles.css">
 
-</head>
-<body>
+	</head>
+	<body>
 
-<section class="tak-header">
-	<h1 class="tak-pagename"> Backup & Restore </h1>
-</section>
+	<section class="tak-header">
+		<h1 class="tak-pagename"> Backup & Restore </h1>
+	</section>
 
-<section class="bkup-container">
-	<div class="bkup-container-description">
-		<svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-			<path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h447q16 0 30.5 6t25.5 17l114 114q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T760-120H200Zm280-120q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM280-560h280q17 0 28.5-11.5T600-600v-80q0-17-11.5-28.5T560-720H280q-17 0-28.5 11.5T240-680v80q0 17 11.5 28.5T280-560Z"/>
+	<section class="bkup-container">
+		<div class="bkup-container-description">
+			<svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h447q16 0 30.5 6t25.5 17l114 114q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T760-120H200Zm280-120q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM280-560h280q17 0 28.5-11.5T600-600v-80q0-17-11.5-28.5T560-720H280q-17 0-28.5 11.5T240-680v80q0 17 11.5 28.5T280-560Z"/>
+			</svg>
+			Backup
+		</div>
+		<textarea id="backupOutput" class="bkup-Display" placeholder="Your backup data will appear here..."></textarea>
+		<svg class="bkup-Display-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
 		</svg>
-		Backup
-	</div>
-	<textarea id="bkup-backupDisplay" class="bkup-Display" placeholder="Your backup data will appear here..."></textarea>
-	<svg class="bkup-Display-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-			<path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
-	</svg>
-	<div class="bkup-container-actionBtns">
-		<button id="bkup-actionBtn-generateBtn" class="bkup-container-actionBtns-primary" onclick="bkup_generateData()">Generate</button>
-		<button id="bkup-actionBtn-copyBtn" class="bkup-container-actionBtns-secondary" onclick="bkup_copyData()">Copy</button>
-	</div>
-</section>
+		<div class="bkup-container-actionBtns">
+			<button id="bkup-actionBtn-generateBtn" class="bkup-container-actionBtns-primary" onclick="generateBackup()">Generate</button>
+			<button id="bkup-actionBtn-copyBtn" class="bkup-container-actionBtns-secondary" onclick="copyBackup()">Copy</button>
+		</div>
+	</section>
 
-<section class="bkup-container">
-	<div class="bkup-container-description">
-		<svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-			<path d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
+	<section class="bkup-container">
+		<div class="bkup-container-description">
+			<svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
+			</svg>
+			Restore
+		</div>
+		<textarea id="restoreInput" class="bkup-Display" placeholder="Paste your data here..."></textarea>
+		<svg class="bkup-Display-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
 		</svg>
-		Restore
-	</div>
-	<textarea id="bkup-restoreDisplay" class="bkup-Display" placeholder="Paste your data here..."></textarea>
-	<svg class="bkup-Display-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-			<path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
-	</svg>
-	<div class="bkup-container-actionBtns">
-		<button id="bkup-actionBtn-validateBtn" class="bkup-container-actionBtns-primary" onclick="bkup_validateData()">Validate</button>
-	</div>
-</section>
+		<div class="bkup-container-actionBtns">
+			<button id="bkup-actionBtn-validateBtn" class="bkup-container-actionBtns-primary" onclick="validateRestore()">Validate</button>
+		</div>
+	</section>
 
 
 
-<section class="bkup-container">
-	<div class="bkup-container-description">
-		<svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-			<path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560h-80v80q0 17-11.5 28.5T640-640H320q-17 0-28.5-11.5T280-680v-80h-80v560Zm280-560q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"/>
+	<section class="bkup-container">
+		<div class="bkup-container-description">
+			<svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560h-80v80q0 17-11.5 28.5T640-640H320q-17 0-28.5-11.5T280-680v-80h-80v560Zm280-560q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"/>
+			</svg>
+			Sample
+		</div>
+		<textarea id="" class="bkup-Display" placeholder="Refresh this page to get the sample data here...">
+		{
+	  "dbName": "TAKAppDB",
+	  "objectStores": {
+		"UserNotes": [
+		  {
+			"data": "Ambience",
+			"id": 1
+		  },
+		  {
+			"data": "Area 360",
+			"id": 2
+		  },
+		  {
+			"data": "Panorama",
+			"id": 3
+		  },
+		  {
+			"data": "Random",
+			"id": 4
+		  },
+		  {
+			"data": "Compass & Level",
+			"id": 5
+		  }
+		],
+		"CustomSites": [
+		  {
+			"name": "Amazon IN",
+			"url": "https://www.amazon.in/",
+			"img": "https://www.amazon.in/favicon.ico",
+			"position": 0,
+			"id": 1
+		  },
+		  {
+			"name": "Flipkart",
+			"url": "https://www.flipkart.com/",
+			"img": "https://rukminim1.flixcart.com/www/192/192/promos/11/07/2024/cf1a3e0a-224b-4dd1-bb96-84abf3d298e2.png?q=100",
+			"position": 1,
+			"id": 2
+		  },
+		  {
+			"name": "Airtel IN",
+			"url": "https://www.airtel.in/",
+			"img": "https://assets.airtel.in/static-assets/new-home/img/favicon-32x32.png",
+			"position": 2,
+			"id": 3
+		  },
+		  {
+			"name": "DrikPanchang",
+			"url": "https://www.drikpanchang.com/",
+			"img": "https://www.drikpanchang.com/images/logo/1x/xlogo_panditji.png.pagespeed.ic.mkg5bEbgC7.webp",
+			"position": 3,
+			"id": 4
+		  }
+		]
+	  }
+	}
+		</textarea>
+		<svg class="bkup-Display-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
 		</svg>
-		Sample
-	</div>
-	<textarea id="" class="bkup-Display" placeholder="Refresh this page to get the sample data here...">
-	{
-  "dbName": "TAKAppDB",
-  "objectStores": {
-    "UserNotes": [
-      {
-        "data": "Ambience",
-        "id": 1
-      },
-	  {
-        "data": "Area 360",
-        "id": 2
-      },
-	  {
-        "data": "Panorama",
-        "id": 3
-      },
-	  {
-        "data": "Random",
-        "id": 4
-      },
-	  {
-        "data": "Compass & Level",
-        "id": 5
-      }
-    ],
-    "CustomSites": [
-      {
-        "name": "Amazon IN",
-        "url": "https://www.amazon.in/",
-        "img": "https://www.amazon.in/favicon.ico",
-        "position": 0,
-        "id": 1
-      },
-      {
-        "name": "Flipkart",
-        "url": "https://www.flipkart.com/",
-        "img": "https://rukminim1.flixcart.com/www/192/192/promos/11/07/2024/cf1a3e0a-224b-4dd1-bb96-84abf3d298e2.png?q=100",
-        "position": 1,
-        "id": 2
-      },
-      {
-        "name": "Airtel IN",
-        "url": "https://www.airtel.in/",
-        "img": "https://assets.airtel.in/static-assets/new-home/img/favicon-32x32.png",
-        "position": 2,
-        "id": 3
-      },
-      {
-        "name": "DrikPanchang",
-        "url": "https://www.drikpanchang.com/",
-        "img": "https://www.drikpanchang.com/images/logo/1x/xlogo_panditji.png.pagespeed.ic.mkg5bEbgC7.webp",
-        "position": 3,
-        "id": 4
-      }
-    ]
-  }
-}
-	</textarea>
-	<svg class="bkup-Display-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-			<path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
-	</svg>
-</section>
+	</section>
 
 
 
-<script>
-
-window.addEventListener("load", () => {
-  console.log("PWA loaded");
-  if (!window.indexedDB) {
-    alert("IndexedDB not supported or blocked.");
-  }
-});
+  <script>
+    const DB_NAME = "TAKAppDB";
+    const DB_VERSION = 1;
+    const STORE_SITES = "CustomSites";
+    const STORE_NOTES = "UserNotes";
+    let db;
 
 
-// === CONFIGURATION ===
-const ts_dbConfig = {
-  name: "TAKAppDB",
-  stores: ["UserNotes", "CustomSites"] // <-- Update this as needed
-};
+    function initDB() {
+      const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-let ts_restoreText = ""; // Temp storage for restore string
+      request.onupgradeneeded = function(e) {
+        db = e.target.result;
+        if (!db.objectStoreNames.contains(STORE_SITES)) {
+          db.createObjectStore(STORE_SITES, { keyPath: "id", autoIncrement: true });
+        }
+        if (!db.objectStoreNames.contains(STORE_NOTES)) {
+          db.createObjectStore(STORE_NOTES, { keyPath: "id", autoIncrement: true });
+        }
+      };
 
-// === 1. GENERATE BACKUP ===
-async function generateBackup() {
-  try {
-    const db = await ts_openDB(ts_dbConfig.name);
-    const backup = { dbName: ts_dbConfig.name, objectStores: {} };
 
-    for (const store of ts_dbConfig.stores) {
-      backup.objectStores[store] = await ts_getAllFromStore(db, store);
+      request.onerror = function(e) {
+        showTakSnackbar("DB error: " + e.target.errorCode);
+      };
     }
 
-    document.getElementById("bkup-backupDisplay").value = JSON.stringify(backup, null, 2);
-    showTakSnackbar("Backup generated.");
-    db.close();
-  } catch (err) {
-    console.error("Backup error:", err);
-    showTakSnackbar("Failed to generate backup.");
-  }
-}
 
-// === 2. COPY TO CLIPBOARD ===
-function copyBackupToClipboard() {
-  const text = document.getElementById("bkup-backupDisplay").value.trim();
-  if (!text) return showTakSnackbar("Nothing to copy.");
+    function generateBackup() {
+      const output = { UserSites: [], UserNotes: [] };
+      const tx = db.transaction([STORE_SITES, STORE_NOTES], "readonly");
 
-  navigator.clipboard.writeText(text)
-    .then(() => showTakSnackbar("Copied to clipboard."))
-    .catch(() => showTakSnackbar("Copy failed."));
-}
+      const sites = tx.objectStore(STORE_SITES).getAll();
+      const notes = tx.objectStore(STORE_NOTES).getAll();
 
-// === 3. VALIDATE & SHOW CUSTOM CONFIRM ===
-function validateAndConfirmRestore() {
-  const input = document.getElementById("bkup-restoreDisplay").value.trim();
-  if (!input) return showTakSnackbar("Nothing to validate.");
+      sites.onsuccess = function () {
+        output.UserSites = sites.result;
 
-  ts_restoreText = input; // Save for use after confirmation
-  const dialog = document.getElementById("bkup-confirm-dialog");
-  if (dialog) dialog.style.display = "flex"; // Show custom confirm
-}
-
-// === 4. CONTINUE (Confirmed Restore) ===
-function continueRestore() {
-  const dialog = document.getElementById("bkup-confirm-dialog");
-  if (dialog) dialog.style.display = "none";
-
-  try {
-    const data = JSON.parse(ts_restoreText);
-    if (data.dbName !== ts_dbConfig.name || typeof data.objectStores !== "object") {
-      return showTakSnackbar("Invalid backup format.");
+        notes.onsuccess = function () {
+          output.UserNotes = notes.result;
+          document.getElementById("backupOutput").value = JSON.stringify(output, null, 2);
+          showTakSnackbar("Backup generated");
+        };
+      };
     }
 
-    ts_openDB(ts_dbConfig.name).then(async db => {
-      await ts_clearAllStores(db, ts_dbConfig.stores);
-
-      for (const store of ts_dbConfig.stores) {
-        const items = data.objectStores[store] || [];
-        await ts_bulkPut(db, store, items);
-      }
-
-      showTakSnackbar("Restore completed successfully.");
-      db.close();
-    });
-  } catch (err) {
-    console.error("Restore error:", err);
-    showTakSnackbar("Restore failed.");
-  }
-}
-
-// === 5. SKIP (Cancel Restore) ===
-function skipRestore() {
-  const dialog = document.getElementById("bkup-confirm-dialog");
-  if (dialog) dialog.style.display = "none";
-
-  showTakSnackbar("Restore cancelled.");
-}
-
-// === 6. DB UTILS ===
-function ts_openDB(name) {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(name);
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
-  });
-}
-
-function ts_getAllFromStore(db, storeName) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(storeName, "readonly");
-    const store = tx.objectStore(storeName);
-    const request = store.getAll();
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
-  });
-}
-
-function ts_clearAllStores(db, stores) {
-  return Promise.all(
-    stores.map(store => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(store, "readwrite");
-        const storeObj = tx.objectStore(store);
-        const req = storeObj.clear();
-        req.onsuccess = () => resolve();
-        req.onerror = () => reject(req.error);
+    function copyBackup() {
+      const text = document.getElementById("backupOutput").value;
+      navigator.clipboard.writeText(text).then(() => {
+        showTakSnackbar("Copied to clipboard");
       });
-    })
-  );
-}
+    }
 
-function ts_bulkPut(db, storeName, dataArray) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(storeName, "readwrite");
-    const store = tx.objectStore(storeName);
-    dataArray.forEach(item => store.put(item));
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
-}
+    function validateRestore() {
+      const input = document.getElementById("restoreInput").value;
+      let parsed;
 
-// === 7. EVENT HOOKUP ===
-document.addEventListener("DOMContentLoaded", () => {
-  const generateBtn = document.getElementById("bkup-actionBtn-generateBtn");
-  const copyBtn = document.getElementById("bkup-actionBtn-copyBtn");
-  const validateBtn = document.getElementById("bkup-actionBtn-validateBtn");
+      try {
+        parsed = JSON.parse(input);
+        if (!parsed.UserSites || !parsed.UserNotes) {
+          throw new Error("Invalid format");
+        }
+      } catch (e) {
+        showTakSnackbar("Invalid JSON");
+        return;
+      }
 
-  const continueBtn = document.getElementById("bkup-dialog-continue");
-  const skipBtn = document.getElementById("bkup-dialog-skip");
+      const tx = db.transaction([STORE_SITES, STORE_NOTES], "readwrite");
+      const sites = tx.objectStore(STORE_SITES);
+      const notes = tx.objectStore(STORE_NOTES);
 
-  if (generateBtn) generateBtn.onclick = generateBackup;
-  if (copyBtn) copyBtn.onclick = copyBackupToClipboard;
-  if (validateBtn) validateBtn.onclick = validateAndConfirmRestore;
+      sites.clear();
+      notes.clear();
 
-  if (continueBtn) continueBtn.onclick = continueRestore;
-  if (skipBtn) skipBtn.onclick = skipRestore;
-});
+      parsed.UserSites.forEach(c => sites.put(c));
+      parsed.UserNotes.forEach(n => notes.put(n));
 
+      tx.oncomplete = () => showTakSnackbar("Data restored successfully");
+    }
 
-</script>
+    window.onload = initDB;
+  </script>
 
 
 
 
-	<!-- Snackbar (hidden initially) -->
-	<div id="tak-snackbar" class="tak-snackbar">Welcome!</div>
-	
-	<!-- Confirm Delete Dialog (hidden initially) -->
-	<div id="bkup-confirm-dialog" class="bkup-dialog" style="display: none;">
-		<div class="bkup-dialog-box">
-			<p>Creating backup of your current data is recommended. Click "Continue" to permanently replace your current data.</p>
-			<div class="bkup-dialog-actions">
-				<button id="bkup-dialog-skip">Skip</button>
-				<button id="bkup-dialog-continue">Continue</button>
+		<!-- Snackbar (hidden initially) -->
+		<div id="tak-snackbar" class="tak-snackbar">Welcome!</div>
+		
+		<!-- Confirm Delete Dialog (hidden initially) -->
+		<div id="bkup-confirm-dialog" class="bkup-dialog" style="display: none;">
+			<div class="bkup-dialog-box">
+				<p>Creating backup of your current data is recommended. Click "Continue" to permanently replace your current data.</p>
+				<div class="bkup-dialog-actions">
+					<button id="bkup-dialog-skip">Skip</button>
+					<button id="bkup-dialog-continue">Continue</button>
+				</div>
 			</div>
 		</div>
+
+	<script>
+	// Snackbar function
+	function showTakSnackbar(message = "Welcome!") {
+	  const snackbar = document.getElementById("tak-snackbar");
+	  snackbar.textContent = message;
+	  snackbar.style.display = "block";
+	  snackbar.style.opacity = "1";
+
+	  setTimeout(() => {
+		snackbar.style.opacity = "0";
+		setTimeout(() => {
+		  snackbar.style.display = "none";
+		}, 300);
+	  }, 2000);
+	}
+	</script>
+
+
+
+	<!-- ///////////////// -->
+	<!-- Footer Spacer -->
+	<!-- ///////////////// -->
+	<div class="footerSpacer">
 	</div>
 
-<script>
-// Snackbar function
-function showTakSnackbar(message = "Welcome!") {
-  const snackbar = document.getElementById("tak-snackbar");
-  snackbar.textContent = message;
-  snackbar.style.display = "block";
-  snackbar.style.opacity = "1";
-
-  setTimeout(() => {
-    snackbar.style.opacity = "0";
-    setTimeout(() => {
-      snackbar.style.display = "none";
-    }, 300);
-  }, 2000);
-}
-</script>
 
 
+	<script>
+	  document.addEventListener("DOMContentLoaded", function () {
+		const images = document.querySelectorAll("img");
 
-<!-- ///////////////// -->
-<!-- Footer Spacer -->
-<!-- ///////////////// -->
-<div class="footerSpacer">
-</div>
+		images.forEach(img => {
+		  img.onerror = function () {
+			this.onerror = null;
+			this.src = "images/nm/nm-placeholder.svg";
+		  };
+		});
+	  });
+	</script>
 
+	<!-- ///////////////// -->
+	<!-- Bottom Menu -->
+	<!-- ///////////////// -->
+	<section>
+	<!-- SBM Trigger -->
+	<svg id="SBM-Icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+		<path d="M86-191v-126h788v126H86Zm0-226v-126h788v126H86Zm0-226v-126h788v126H86Z"/>
+	</svg>
 
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const images = document.querySelectorAll("img");
-
-    images.forEach(img => {
-      img.onerror = function () {
-        this.onerror = null;
-        this.src = "images/nm/nm-placeholder.svg";
-      };
-    });
-  });
-</script>
-
-<!-- ///////////////// -->
-<!-- Bottom Menu -->
-<!-- ///////////////// -->
-<section>
-<!-- SBM Trigger -->
-<svg id="SBM-Icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-    <path d="M86-191v-126h788v126H86Zm0-226v-126h788v126H86Zm0-226v-126h788v126H86Z"/>
-</svg>
-
-<!-- SBM container (empty, the content is injected here) -->
-<div id="SBM-container"></div>
-</section>
+	<!-- SBM container (empty, the content is injected here) -->
+	<div id="SBM-container"></div>
+	</section>
 
 
-<script>
-window.onload = function() {		
-    // Load SBM
-    fetch('sbm.html')
-        .then(response => response.text())
-        .then(data => {
-            const sidebarContainer = document.getElementById('SBM-container');
-            sidebarContainer.innerHTML = data;
+	<script>
+	window.onload = function() {		
+		// Load SBM
+		fetch('sbm.html')
+			.then(response => response.text())
+			.then(data => {
+				const sidebarContainer = document.getElementById('SBM-container');
+				sidebarContainer.innerHTML = data;
 
-            // Make sure sidebar is hidden after load
-            const overlaySBM = document.getElementById("SBM-section");
-            if (overlaySBM) {
-                overlaySBM.style.transform = "translateY(100%)";
-            }
+				// Make sure sidebar is hidden after load
+				const overlaySBM = document.getElementById("SBM-section");
+				if (overlaySBM) {
+					overlaySBM.style.transform = "translateY(100%)";
+				}
 
-            // Reattach event listeners after the SBM is loaded
-            const closeButton = document.getElementById("closeSBM");
-            if (closeButton) {
-                closeButton.addEventListener("click", closeSBM);
-            }
+				// Reattach event listeners after the SBM is loaded
+				const closeButton = document.getElementById("closeSBM");
+				if (closeButton) {
+					closeButton.addEventListener("click", closeSBM);
+				}
 
-            // Get reference to the icon that triggers the sidebar opening
-            const SBMIcon = document.getElementById("SBM-Icon");
+				// Get reference to the icon that triggers the sidebar opening
+				const SBMIcon = document.getElementById("SBM-Icon");
 
-            // Function to open the sidebar
-            function openSBM() {
-                if (overlaySBM) {
-                    overlaySBM.style.transform = "translateY(0)";
-                }
-            }
+				// Function to open the sidebar
+				function openSBM() {
+					if (overlaySBM) {
+						overlaySBM.style.transform = "translateY(0)";
+					}
+				}
 
-            // Function to close the sidebar
-            function closeSBM() {
-                if (overlaySBM) {
-                    overlaySBM.style.transform = "translateY(100%)";
-                }
-            }
+				// Function to close the sidebar
+				function closeSBM() {
+					if (overlaySBM) {
+						overlaySBM.style.transform = "translateY(100%)";
+					}
+				}
 
-            // Event listener for opening the SBM when the icon is clicked
-            if (SBMIcon) {
-                SBMIcon.addEventListener("click", openSBM);
-            }
-        })
-        .catch(error => {
-            console.error("Error loading SBM:", error);
-        });
-};
-</script>
+				// Event listener for opening the SBM when the icon is clicked
+				if (SBMIcon) {
+					SBMIcon.addEventListener("click", openSBM);
+				}
+			})
+			.catch(error => {
+				console.error("Error loading SBM:", error);
+			});
+	};
+	</script>
 
 
 
-<!-- ///////////////// -->
-<!-- Theme Toggle -->
-<!-- ///////////////// -->
-<section>
-<button id="theme-toggle">
-    <!-- Default dark icon (SVG) -->
-    <svg id="dark-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-      <path d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/>
-    </svg>
+	<!-- ///////////////// -->
+	<!-- Theme Toggle -->
+	<!-- ///////////////// -->
+	<section>
+	<button id="theme-toggle">
+		<!-- Default dark icon (SVG) -->
+		<svg id="dark-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+		  <path d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/>
+		</svg>
 
-    <!-- Light Icon (hidden by default) -->
-    <svg id="light-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="display: none;">
-      <path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/>
-    </svg>
-</button>
-</section>
+		<!-- Light Icon (hidden by default) -->
+		<svg id="light-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="display: none;">
+		  <path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/>
+		</svg>
+	</button>
+	</section>
 
-<!-- ///////////////// -->
-<!-- Set Theme - Based on Local Storage -->
-<!-- ///////////////// -->
-<script>
-  // Wait for the DOM to be fully loaded before running the script
-  document.addEventListener("DOMContentLoaded", function() {
-    const themeLink = document.createElement("link");
-    themeLink.rel = "stylesheet";
-    themeLink.id = "theme-link";
-    
-    // Check if a theme preference is saved in localStorage
-    const savedTheme = localStorage.getItem("theme");
+	<!-- ///////////////// -->
+	<!-- Set Theme - Based on Local Storage -->
+	<!-- ///////////////// -->
+	<script>
+	  // Wait for the DOM to be fully loaded before running the script
+	  document.addEventListener("DOMContentLoaded", function() {
+		const themeLink = document.createElement("link");
+		themeLink.rel = "stylesheet";
+		themeLink.id = "theme-link";
+		
+		// Check if a theme preference is saved in localStorage
+		const savedTheme = localStorage.getItem("theme");
 
-    if (savedTheme === "dark") {
-      themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
-    } else if (savedTheme === "light") {
-      themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
-    } else {
-      themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
-      localStorage.setItem('theme', 'dark');  // Save preference
-    }
+		if (savedTheme === "dark") {
+		  themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
+		} else if (savedTheme === "light") {
+		  themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
+		} else {
+		  themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
+		  localStorage.setItem('theme', 'dark');  // Save preference
+		}
 
-    // Append the theme <link> tag to the <head> of the document
-    document.head.appendChild(themeLink);
+		// Append the theme <link> tag to the <head> of the document
+		document.head.appendChild(themeLink);
 
-    // Initialize icons based on saved theme preference
-    const darkIcon = document.getElementById('dark-icon');
-    const lightIcon = document.getElementById('light-icon');
+		// Initialize icons based on saved theme preference
+		const darkIcon = document.getElementById('dark-icon');
+		const lightIcon = document.getElementById('light-icon');
 
-    if (savedTheme === "dark") {
-      lightIcon.style.display = 'none';
-      darkIcon.style.display = 'block';
-    } else {
-      lightIcon.style.display = 'block';
-      darkIcon.style.display = 'none';
-    }
+		if (savedTheme === "dark") {
+		  lightIcon.style.display = 'none';
+		  darkIcon.style.display = 'block';
+		} else {
+		  lightIcon.style.display = 'block';
+		  darkIcon.style.display = 'none';
+		}
 
-    // Toggle theme when button is clicked
-    const themeToggleButton = document.getElementById('theme-toggle');
+		// Toggle theme when button is clicked
+		const themeToggleButton = document.getElementById('theme-toggle');
 
-    themeToggleButton.addEventListener('click', () => {
-      const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
-      if (currentTheme === 'dark') {
-        themeLink.href = 'light-theme.css';  // Switch to light theme
-        localStorage.setItem('theme', 'light');  // Save preference
-        lightIcon.style.display = 'block';  // Show light icon
-        darkIcon.style.display = 'none';   // Hide dark icon
-      } else {
-        themeLink.href = 'dark-theme.css';   // Switch to dark theme
-        localStorage.setItem('theme', 'dark');  // Save preference
-        lightIcon.style.display = 'none';   // Hide light icon
-        darkIcon.style.display = 'block';   // Show dark icon
-      }
-    });
-  });
-</script>
-
-
-
-<!-- ///////////////// -->
-<!-- Fullscreen Toggle -->
-<!-- ///////////////// -->
-<section>
-  <button id="fullscreen-toggle" class="fullscreen-button">
-  <!-- Icon for entering fullscreen (initially displayed) -->
-  <svg id="fullscreen-enter-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-    <path d="M86-86v-260h126v134h134v126H86Zm529 0v-126h133v-134h126v260H615ZM86-615v-259h260v126H212v133H86Zm662 0v-133H615v-126h259v259H748Z"/>
-  </svg>
-
-  <!-- Icon for exiting fullscreen (hidden initially) -->
-  <svg id="fullscreen-exit-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="display: none;">
-    <path d="M220-86v-134H86v-126h260v260H220Zm395 0v-260h259v126H741v134H615ZM86-615v-126h134v-133h126v259H86Zm529 0v-259h126v133h133v126H615Z"/>
-  </svg>
-</button>
-</section>
-<script>
-  // Fullscreen Toggle Logic
-const fullscreenButton = document.getElementById('fullscreen-toggle');
-fullscreenButton.addEventListener('click', () => {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-    document.getElementById('fullscreen-enter-icon').style.display = 'none';
-    document.getElementById('fullscreen-exit-icon').style.display = 'block';
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-      document.getElementById('fullscreen-enter-icon').style.display = 'block';
-      document.getElementById('fullscreen-exit-icon').style.display = 'none';
-    }
-  }
-});
-
-</script>
+		themeToggleButton.addEventListener('click', () => {
+		  const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
+		  if (currentTheme === 'dark') {
+			themeLink.href = 'light-theme.css';  // Switch to light theme
+			localStorage.setItem('theme', 'light');  // Save preference
+			lightIcon.style.display = 'block';  // Show light icon
+			darkIcon.style.display = 'none';   // Hide dark icon
+		  } else {
+			themeLink.href = 'dark-theme.css';   // Switch to dark theme
+			localStorage.setItem('theme', 'dark');  // Save preference
+			lightIcon.style.display = 'none';   // Hide light icon
+			darkIcon.style.display = 'block';   // Show dark icon
+		  }
+		});
+	  });
+	</script>
 
 
-<!-- ///////////////// -->
-<!-- Prevent Right Click Context Menu -->
-<!-- ///////////////// -->
-<script>
-  document.addEventListener('contextmenu', function(event) {
-    const target = event.target;
 
-    // Allow default context menu on input, textarea, or contenteditable elements
-    if (
-      target.tagName === 'INPUT' ||
-      target.tagName === 'TEXTAREA' ||
-      target.isContentEditable
-    ) {
-      return; // allow context menu
-    }
+	<!-- ///////////////// -->
+	<!-- Fullscreen Toggle -->
+	<!-- ///////////////// -->
+	<section>
+	  <button id="fullscreen-toggle" class="fullscreen-button">
+	  <!-- Icon for entering fullscreen (initially displayed) -->
+	  <svg id="fullscreen-enter-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+		<path d="M86-86v-260h126v134h134v126H86Zm529 0v-126h133v-134h126v260H615ZM86-615v-259h260v126H212v133H86Zm662 0v-133H615v-126h259v259H748Z"/>
+	  </svg>
 
-    event.preventDefault(); // otherwise, block it
-  });
-</script>
+	  <!-- Icon for exiting fullscreen (hidden initially) -->
+	  <svg id="fullscreen-exit-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="display: none;">
+		<path d="M220-86v-134H86v-126h260v260H220Zm395 0v-260h259v126H741v134H615ZM86-615v-126h134v-133h126v259H86Zm529 0v-259h126v133h133v126H615Z"/>
+	  </svg>
+	</button>
+	</section>
+	<script>
+	  // Fullscreen Toggle Logic
+	const fullscreenButton = document.getElementById('fullscreen-toggle');
+	fullscreenButton.addEventListener('click', () => {
+	  if (!document.fullscreenElement) {
+		document.documentElement.requestFullscreen();
+		document.getElementById('fullscreen-enter-icon').style.display = 'none';
+		document.getElementById('fullscreen-exit-icon').style.display = 'block';
+	  } else {
+		if (document.exitFullscreen) {
+		  document.exitFullscreen();
+		  document.getElementById('fullscreen-enter-icon').style.display = 'block';
+		  document.getElementById('fullscreen-exit-icon').style.display = 'none';
+		}
+	  }
+	});
 
-</body>
-</html>
+	</script>
+
+
+	<!-- ///////////////// -->
+	<!-- Prevent Right Click Context Menu -->
+	<!-- ///////////////// -->
+	<script>
+	  document.addEventListener('contextmenu', function(event) {
+		const target = event.target;
+
+		// Allow default context menu on input, textarea, or contenteditable elements
+		if (
+		  target.tagName === 'INPUT' ||
+		  target.tagName === 'TEXTAREA' ||
+		  target.isContentEditable
+		) {
+		  return; // allow context menu
+		}
+
+		event.preventDefault(); // otherwise, block it
+	  });
+	</script>
+
+	</body>
+	</html>
