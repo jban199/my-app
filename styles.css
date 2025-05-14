@@ -1870,7 +1870,7 @@ p {
     border: none;
     background: var(--bg1);
     color: var(--font1);
-    border-radius: 10px;
+    border-radius: 10px 30px 10px 10px;
     user-select: text;
     overflow: scroll;
     resize: vertical;
@@ -1923,14 +1923,14 @@ p {
 .bkup-container-actionBtns {
 	display: flex;
 	flex-direction: row;
-	gap: 30px;
+	gap: 10px;
 }
 
 
 .bkup-container-actionBtns-primary {
     display: inline-block;
     border-radius: 30px;
-    padding: 15px 50px;
+    padding: 15px 30px;
     border: none;
     background-image: linear-gradient(0deg, var(--gradient1), var(--gradient2));
     border-bottom: 2px solid var(--shadow1);
@@ -1947,7 +1947,7 @@ p {
 .bkup-container-actionBtns-secondary {
 	display: inline-block;
     border-radius: 30px;
-    padding: 15px 50px;
+    padding: 15px 30px;
     border: 2px solid var(--shadow1);
     background-color: var(--bg1);
     color: var(--accent1);
