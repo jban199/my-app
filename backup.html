@@ -84,6 +84,7 @@
     function initDB() {
       const request = indexedDB.open(DB_NAME, DB_VERSION);
 
+
       request.onupgradeneeded = function(e) {
         db = e.target.result;
         if (!db.objectStoreNames.contains(STORE_SITES)) {
@@ -94,22 +95,25 @@
         }
       };
 
-
-      request.onerror = function(e) {
-        showTakSnackbar("DB error: " + e.target.errorCode);
-      };
+		request.onsuccess = function(e) {
+			db = e.target.result;
+		};
+		
+		request.onerror = function(e) {
+			showTakSnackbar("DB error: " + e.target.errorCode);
+		};
     }
 
 
     function generateBackup() {
-      const output = { UserSites: [], UserNotes: [] };
+      const output = { CustomSites: [], UserNotes: [] };
       const tx = db.transaction([STORE_SITES, STORE_NOTES], "readonly");
 
       const sites = tx.objectStore(STORE_SITES).getAll();
       const notes = tx.objectStore(STORE_NOTES).getAll();
 
       sites.onsuccess = function () {
-        output.UserSites = sites.result;
+        output.CustomSites = sites.result;
 
         notes.onsuccess = function () {
           output.UserNotes = notes.result;
@@ -132,7 +136,7 @@
 
       try {
         parsed = JSON.parse(input);
-        if (!parsed.UserSites || !parsed.UserNotes) {
+        if (!parsed.CustomSites || !parsed.UserNotes) {
           throw new Error("Invalid format");
         }
       } catch (e) {
@@ -147,7 +151,7 @@
       sites.clear();
       notes.clear();
 
-      parsed.UserSites.forEach(s => sites.put(s));
+      parsed.CustomSites.forEach(s => sites.put(s));
       parsed.UserNotes.forEach(n => notes.put(n));
 
       tx.oncomplete = () => showTakSnackbar("Data restored successfully");
