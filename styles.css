@@ -1870,7 +1870,7 @@ p {
     border: none;
     background: var(--bg1);
     color: var(--font1);
-    border-radius: 10px 30px 10px 10px;
+    border-radius: 10px;
     user-select: text;
     overflow: scroll;
     resize: vertical;
@@ -1918,6 +1918,12 @@ p {
     background-repeat: no-repeat;
     background-position: bottom right;
     background-size: 12px 12px;
+}
+
+.bkup-container-userInstruction {
+	color: var(--font2);
+	margin: 0px;
+	font-size: 12px;
 }
 
 .bkup-container-actionBtns {
