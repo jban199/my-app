@@ -35,6 +35,7 @@
 		<div class="bkup-container-actionBtns">
 			<button id="bkup-actionBtn-generateBtn" class="bkup-container-actionBtns-primary" onclick="generateBackup()">Generate</button>
 			<button id="bkup-actionBtn-copyBtn" class="bkup-container-actionBtns-secondary" onclick="copyBackup()">Copy</button>
+			<button id="bkup-actionBtn-clearBackupBtn" class="bkup-container-actionBtns-secondary" onclick="clearBackup()">Clear</button>
 		</div>
 	</section>
 
@@ -50,25 +51,10 @@
 				<path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
 		</svg>
 		<div class="bkup-container-actionBtns">
+			<button id="bkup-actionBtn-pasteBtn" class="bkup-container-actionBtns-secondary" onclick="pasteRestore()">Paste</button>
 			<button id="bkup-actionBtn-validateBtn" class="bkup-container-actionBtns-primary" onclick="validateRestore()">Validate</button>
+			<button id="bkup-actionBtn-clearRestoreBtn" class="bkup-container-actionBtns-secondary" onclick="clearRestore()">Clear</button>
 		</div>
-	</section>
-
-
-
-	<section class="bkup-container">
-		<div class="bkup-container-description">
-			<svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560h-80v80q0 17-11.5 28.5T640-640H320q-17 0-28.5-11.5T280-680v-80h-80v560Zm280-560q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"/>
-			</svg>
-			Sample
-		</div>
-		<textarea id="" class="bkup-Display" placeholder="Refresh this page to get the sample data here...">
-
-		</textarea>
-		<svg class="bkup-Display-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
-		</svg>
 	</section>
 
 
@@ -129,6 +115,15 @@
         showTakSnackbar("Copied to clipboard");
       });
     }
+	
+	
+	function clearBackup() {
+    const backupOutput = document.getElementById("backupOutput");
+    if (backupOutput) {
+        backupOutput.value = "";
+		showTakSnackbar("Cleared !");
+		}
+	}
 
     function validateRestore() {
       const input = document.getElementById("restoreInput").value;
@@ -156,6 +151,27 @@
 
       tx.oncomplete = () => showTakSnackbar("Data restored successfully");
     }
+	
+	
+	function pasteRestore() {
+	  navigator.clipboard.readText().then(text => {
+		const restoreInput = document.getElementById("restoreInput");
+		if (restoreInput) {
+		  restoreInput.value = text;
+		  showTakSnackbar("Pasted !");
+		}
+	  }).catch(err => {
+		showTakSnackbar("Failed to paste: " + err);
+	  });
+	}
+	
+	function clearRestore() {
+    const backupOutput = document.getElementById("restoreInput");
+    if (backupOutput) {
+        backupOutput.value = "";
+		showTakSnackbar("Cleared !");
+		}
+	}
 
     window.addEventListener("load", function () {
     initDB();
@@ -401,12 +417,6 @@ fullscreenButton.addEventListener('click', () => {
     event.preventDefault(); // otherwise, block it
   });
 </script>
-
-
-
-
-
-
 
 
 </body>
