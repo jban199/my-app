@@ -145,18 +145,9 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
 	
 	<script>
 		function openAddLinkModal() {
-		  const iframe = document.createElement('iframe');
-		  iframe.src = 'webrowser-addlink.html';
-		  iframe.style.width = '100vw';
-		  iframe.style.height = '100vh';
-		  iframe.style.border = 'none';
-		  document.body.appendChild(iframe);
-
-		  // Request fullscreen
-		  iframe.requestFullscreen().catch((err) => {
-			console.error('Fullscreen failed', err);
-		  });
+		  window.location.href = 'add-link.html';
 		}
+
 	</script>
   </div>
 	<!-- Links will be inserted here dynamically -->
