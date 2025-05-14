@@ -157,7 +157,9 @@
       tx.oncomplete = () => showTakSnackbar("Data restored successfully");
     }
 
-    window.onload = initDB;
+    window.addEventListener("load", function () {
+    initDB();
+	});
   </script>
 
 
@@ -218,7 +220,7 @@ function showTakSnackbar(message = "Welcome!") {
 
 
 <script>
-window.onload = function() {		
+window.addEventListener("load", function () {	
     // Load SBM
     fetch('sbm.html')
         .then(response => response.text())
@@ -263,8 +265,9 @@ window.onload = function() {
         .catch(error => {
             console.error("Error loading SBM:", error);
         });
-};
+});
 </script>
+
 
 
 <!-- ///////////////// -->
