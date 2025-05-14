@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KTML IndexedDB Backup & Restore</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 1rem;
+      background: #f4f4f4;
+      color: #333;
+    }
+    h2 {
+      margin-top: 2rem;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      font-family: monospace;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: vertical;
+    }
+    button {
+      display: inline-block;
+      margin: 0.25rem 0.5rem 1rem 0;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #007bff;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    .snackbar {
+      visibility: hidden;
+      min-width: 200px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 4px;
+      padding: 10px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%);
+    }
+    .snackbar.show {
+      visibility: visible;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+    @keyframes fadein {
+      from {bottom: 0; opacity: 0;}
+      to {bottom: 30px; opacity: 1;}
+    }
+    @keyframes fadeout {
+      from {bottom: 30px; opacity: 1;}
+      to {bottom: 0; opacity: 0;}
+    }
+  </style>
+</head>
+<body>
+
+  <h1>KTML DB Backup & Restore</h1>
+
+  <h2>📤 Backup</h2>
+  <textarea id="backupOutput" readonly></textarea><br>
+  <button onclick="generateBackup()">Generate Backup</button>
+  <button onclick="copyBackup()">Copy to Clipboard</button>
+
+  <h2>📥 Restore</h2>
+  <textarea id="restoreInput" placeholder="Paste backup JSON here"></textarea><br>
+  <button onclick="validateRestore()">Validate & Restore</button>
+
+  <div id="snackbar" class="snackbar"></div>
+
+  <script>
+    const DB_NAME = "KTML";
+    const DB_VERSION = 1;
+    const STORE_CONTACTS = "UserContacts";
+    const STORE_NOTES = "UserNotes";
+    let db;
+
+    function showSnackbar(msg) {
+      const x = document.getElementById("snackbar");
+      x.textContent = msg;
+      x.className = "snackbar show";
+      setTimeout(() => { x.className = x.className.replace("show", ""); }, 3000);
+    }
+
+    function initDB() {
+      const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+      request.onupgradeneeded = function(e) {
+        db = e.target.result;
+        if (!db.objectStoreNames.contains(STORE_CONTACTS)) {
+          db.createObjectStore(STORE_CONTACTS, { keyPath: "name" });
+        }
+        if (!db.objectStoreNames.contains(STORE_NOTES)) {
+          db.createObjectStore(STORE_NOTES, { autoIncrement: true });
+        }
+      };
+
+      request.onsuccess = function(e) {
+        db = e.target.result;
+        seedData();
+      };
+
+      request.onerror = function(e) {
+        showSnackbar("DB error: " + e.target.errorCode);
+      };
+    }
+
+    function seedData() {
+      const tx = db.transaction([STORE_CONTACTS, STORE_NOTES], "readwrite");
+      const contacts = tx.objectStore(STORE_CONTACTS);
+      const notes = tx.objectStore(STORE_NOTES);
+
+      contacts.clear();
+      notes.clear();
+
+      contacts.put({ name: "Police", phone: "100" });
+      contacts.put({ name: "Fire", phone: "102" });
+      contacts.put({ name: "Ambulance", phone: "103" });
+
+      notes.put({ text: "Potatoes" });
+      notes.put({ text: "Onion with\nGarlic" });
+      notes.put({ text: "Pizza" });
+
+      tx.oncomplete = () => showSnackbar("Demo data initialized");
+    }
+
+    function generateBackup() {
+      const output = { UserContacts: [], UserNotes: [] };
+      const tx = db.transaction([STORE_CONTACTS, STORE_NOTES], "readonly");
+
+      const contacts = tx.objectStore(STORE_CONTACTS).getAll();
+      const notes = tx.objectStore(STORE_NOTES).getAll();
+
+      contacts.onsuccess = function () {
+        output.UserContacts = contacts.result;
+
+        notes.onsuccess = function () {
+          output.UserNotes = notes.result;
+          document.getElementById("backupOutput").value = JSON.stringify(output, null, 2);
+          showSnackbar("Backup generated");
+        };
+      };
+    }
+
+    function copyBackup() {
+      const text = document.getElementById("backupOutput").value;
+      navigator.clipboard.writeText(text).then(() => {
+        showSnackbar("Copied to clipboard");
+      });
+    }
+
+    function validateRestore() {
+      const input = document.getElementById("restoreInput").value;
+      let parsed;
+
+      try {
+        parsed = JSON.parse(input);
+        if (!parsed.UserContacts || !parsed.UserNotes) {
+          throw new Error("Invalid format");
+        }
+      } catch (e) {
+        showSnackbar("Invalid JSON");
+        return;
+      }
+
+      const tx = db.transaction([STORE_CONTACTS, STORE_NOTES], "readwrite");
+      const contacts = tx.objectStore(STORE_CONTACTS);
+      const notes = tx.objectStore(STORE_NOTES);
+
+      contacts.clear();
+      notes.clear();
+
+      parsed.UserContacts.forEach(c => contacts.put(c));
+      parsed.UserNotes.forEach(n => notes.put(n));
+
+      tx.oncomplete = () => showSnackbar("Data restored successfully");
+    }
+
+    window.onload = initDB;
+  </script>
+</body>
+</html>
