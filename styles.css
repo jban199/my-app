@@ -884,8 +884,10 @@ p {
 	fill: var(--accent1);
 }
 
+
+
 .ts-allweb-options-menu {
-	position: absolute;
+    position: absolute;
     top: 40px;
     right: 10px;
     background-color: var(--bg2);
@@ -939,169 +941,8 @@ p {
   max-width: 65px;
 }
 
-#ts-add-link-modal {
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	height: 100%;
-	width: 100%;
-	background: var(--bg1);
-	display: flex;
-	flex-direction: column;
-	z-index: 9999;
-}
-
-.ts-add-link-modal-header {
-	display: flex;
-	flex-direction: row;
-	gap: 20px;
-	align-items: center;
-	padding: 10px;
-	box-shadow: 0px 2px 10px var(--shadow1);
-	font-size: 20px;
-	font-weight: bold;
-	color: var(--font1);
-}
-
-#ts-add-link-modal-back-btn {
-	height: 45px;
-	width: 45px;
-	border: none;
-	background: none;
-	
-}
-
-#ts-add-link-modal-back-btn svg {
-	height: 32px;
-	width: 32px;
-	fill: var(--accent1)
-}
-
-.ts-add-link-modal-body {
-	display: flex;
-	flex-direction: column;
-	align-items: top;
-	padding: 50px 20px;
-}
-
-.ts-add-link-modal-body label {
-	color: var(--font2);
-	margin-bottom: 5px;
-}
-
-.ts-add-link-modal-body input {
-	border-radius: 10px;
-    padding: 20px 10px;
-    background: var(--bg2);
-    border: none;
-	margin-bottom: 30px;
-	color: var(--font1);
-}
-
-.ts-add-link-modal-footer {
-	display: flex;
-	flex-direction: row;
-	gap: 10px;
-	align-items: center;
-	justify-content: end;
-	padding: 20px 10px;
-	position: fixed;
-    bottom: 0px;
-    right: 0px;
-}
-
-#ts-add-link-modal-cancel-btn {
-	border-radius: 30px;
-    background: var(--bg1);
-    border: none;
-    padding: 10px 20px;
-    color: var(--accent1);
-}
-
-#ts-add-link-modal-save-btn {
-	border-radius: 30px;
-    background: var(--accent1);
-    border: none;
-    padding: 10px 20px;
-    color: var(--font1);
-}
 
 
-
-#ts-manage-link-modal {
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	height: 100%;
-	width: 100%;
-	background: var(--bg1);
-	display: flex;
-	flex-direction: column;
-	z-index: 9999;
-}
-
-.ts-manage-link-modal-header {
-	display: flex;
-	flex-direction: row;
-	gap: 20px;
-	align-items: center;
-	padding: 10px;
-	box-shadow: 0px 2px 10px var(--shadow1);
-	font-size: 20px;
-	font-weight: bold;
-	color: var(--font1);
-}
-
-#ts-manage-link-modal-back-btn {
-	height: 45px;
-	width: 45px;
-	border: none;
-	background: none;
-	
-}
-
-#ts-manage-link-modal-back-btn svg {
-	height: 32px;
-	width: 32px;
-	fill: var(--accent1)
-}
-
-.ts-manage-link-modal-body {
-	display: flex;
-	flex-direction: column;
-	align-items: top;
-	padding: 50px 20px;
-}
-
-
-
-.ts-manage-link-modal-footer {
-	display: flex;
-	flex-direction: row;
-	gap: 10px;
-	align-items: center;
-	justify-content: end;
-	padding: 20px 10px;
-	position: fixed;
-    bottom: 0px;
-    right: 0px;
-}
-
-#ts-manage-link-modal-cancel-btn {
-	border-radius: 30px;
-    background: var(--bg1);
-    border: none;
-    padding: 10px 20px;
-    color: var(--accent1);
-}
-
-#ts-manage-link-modal-save-btn {
-	border-radius: 30px;
-    background: var(--accent1);
-    border: none;
-    padding: 10px 20px;
-    color: var(--font1);
-}
 
 /* ///////////////// */
 /* PhoneBook */
@@ -1568,23 +1409,6 @@ p {
   background-color: var(--bg1);
 }
 
-/* Snackbar */
-.note-snackbar {
-  position: fixed;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--accent1);
-  color: var(--bg1);
-  padding: 10px 20px;
-  border-radius: 30px;
-  box-shadow: 0px 3px 6px var(--shadow2);
-  font-weight: bold;
-  z-index: 100;
-  transition: opacity 0.3s ease-in-out;
-  display: none;
-  opacity: 0;
-}
 
 /* Confirm Delete Dialog Overlay */
 .note-dialog {
