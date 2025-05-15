@@ -171,7 +171,7 @@ webOpenRequest.onsuccess = (e) => {
 
 webOpenRequest.onerror = (e) => {
   console.error("Error opening IndexedDB", e);
-  showWebSnackbar("Error opening database");
+  showTakSnackbar("Error opening database");
 };
 
 // Save link function
@@ -181,13 +181,13 @@ function saveLink() {
   const img = document.getElementById("web-add-link-img").value.trim();
 
   if (!name || !url) {
-    showWebSnackbar("Name and Address are required");
+    showTakSnackbar("Name and Address are required");
     return;
   }
 
   // Basic URL validation
   if (!isValidUrl(url)) {
-    showWebSnackbar("Please enter a valid URL (include http:// or https://)");
+    showTakSnackbar("Please enter a valid URL (include http:// or https://)");
     return;
   }
 
@@ -210,10 +210,10 @@ function saveLink() {
       linkData.id = currentEditingLinkId;
       store.put(linkData);
       currentEditingLinkId = null;
-      showWebSnackbar("Link updated");
+      showTakSnackbar("Link updated");
     } else {
       store.add(linkData);
-      showWebSnackbar("Link saved");
+      showTakSnackbar("Link saved");
     }
 
     transaction.oncomplete = () => {
@@ -224,7 +224,7 @@ function saveLink() {
 
     transaction.onerror = (e) => {
       console.error("Error saving link", e);
-      showWebSnackbar("Error saving link");
+      showTakSnackbar("Error saving link");
     };
   };
 }
@@ -293,7 +293,7 @@ function openAddLinkModal(linkData = null) {
 
 <script>
 // Snackbar function
-function showWebSnackbar(message = "Welcome!") {
+function showTakSnackbar(message = "Welcome!") {
   const snackbar = document.getElementById("tak-snackbar");
   snackbar.textContent = message;
   snackbar.style.display = "block";
