@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TKA - Webrowser-Edit</title>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <meta name="theme-color" content="#1A1A1A">
+
+    <!-- Link to the stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+
+<style>
+#web-edit-link {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	background: var(--bg1);
+	display: flex;
+	flex-direction: column;
+	z-index: 9999;
+}
+
+.web-edit-link-header {
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	align-items: center;
+	padding: 10px;
+	box-shadow: 0px 2px 10px var(--shadow1);
+	font-size: 20px;
+	font-weight: bold;
+	color: var(--font1);
+}
+
+#web-edit-link-back-btn {
+	height: 45px;
+	width: 45px;
+	border: none;
+	background: none;
+	
+}
+
+#web-edit-link-back-btn svg {
+	height: 32px;
+	width: 32px;
+	fill: var(--accent1)
+}
+
+
+.web-edit-link-body {
+	display: flex;
+	flex-direction: column;
+	align-items: top;
+	padding: 50px 20px;
+}
+
+
+.web-edit-link-footer {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	align-items: center;
+	justify-content: end;
+	padding: 20px 10px;
+	position: fixed;
+    bottom: 0px;
+    right: 0px;
+}
+
+#web-edit-link-cancel-btn {
+	border-radius: 30px;
+    background: var(--bg1);
+    border: none;
+    padding: 10px 20px;
+    color: var(--accent1);
+}
+
+#web-edit-link-save-btn {
+	border-radius: 30px;
+    background: var(--accent1);
+    border: none;
+    padding: 10px 20px;
+    color: var(--font1);
+}
+
+
+.web-edit-link-body {
+	display: flex;
+	flex-direction: column;
+	align-items: top;
+	padding: 50px 20px;
+}
+
+.web-edit-link-body label {
+	color: var(--font2);
+	margin-bottom: 5px;
+}
+
+.web-edit-link-body input {
+	border-radius: 10px;
+    padding: 20px 10px;
+    background: var(--bg2);
+    border: none;
+	margin-bottom: 30px;
+	color: var(--font1);
+}
+
+</style>
+</head>
+<body>
+
+
+<section id="web-edit-link">
+	<div class="web-edit-link-header">
+		<button id="web-edit-link-back-btn" onclick="closeEditLink()">
+			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z"/>
+			</svg>
+		</button>
+		Edit Links
+	</div>
+	
+	
+	<div class="web-edit-link-body">
+		<label for="web-edit-link-name">Name</label>
+		<input type="text" id="web-edit-link-name" placeholder="Example.com">
+
+		<label for="web-edit-link-url">Address</label>
+		<input type="text" id="web-edit-link-url" placeholder="https://www.example.com">
+
+		<label for="web-edit-link-img">Image URL (optional)</label>
+		<input type="text" id="web-edit-link-img" placeholder="Image link">
+	</div>
+	
+	
+	
+	<div class="web-edit-link-footer">
+		<button id="web-edit-link-cancel-btn" onclick="closeEditLink()">Cancel</button>
+		<button id="web-edit-link-save-btn">Save</button>
+	</div>
+	
+<script>
+
+function closeEditLink() {
+	location.replace('webrowser-manage.html'); // full reload
+  }
+  
+
+let webDb;
+let currentEditId = null;
+
+// Extract ID from URL
+const urlParams = new URLSearchParams(window.location.search);
+currentEditId = parseInt(urlParams.get("id"), 10);
+
+if (!currentEditId) {
+  showWebSnackbar("No ID provided for editing.");
+  setTimeout(closeEditLink, 1200);
+}
+
+const dbRequest = indexedDB.open("TAKAppDB");
+
+dbRequest.onsuccess = () => {
+  webDb = dbRequest.result;
+  loadLinkToEdit();
+};
+
+function loadLinkToEdit() {
+  const tx = webDb.transaction("CustomSites", "readonly");
+  const store = tx.objectStore("CustomSites");
+  const getReq = store.get(currentEditId);
+
+  getReq.onsuccess = () => {
+    const site = getReq.result;
+    if (!site) {
+      showWebSnackbar("Item not found.");
+      setTimeout(closeEditLink, 1200);
+      return;
+    }
+
+    document.getElementById("web-edit-link-name").value = site.name || "";
+    document.getElementById("web-edit-link-url").value = site.url || "";
+    document.getElementById("web-edit-link-img").value = site.img || "";
+  };
+
+  getReq.onerror = () => {
+    showWebSnackbar("Error loading item.");
+    setTimeout(closeEditLink, 1200);
+  };
+}
+
+document.getElementById("web-edit-link-save-btn").addEventListener("click", () => {
+  const name = document.getElementById("web-edit-link-name").value.trim();
+  const url = document.getElementById("web-edit-link-url").value.trim();
+  const img = document.getElementById("web-edit-link-img").value.trim();
+
+  if (!name || !url) {
+    showWebSnackbar("Name and URL are required.");
+    return;
+  }
+
+  const tx = webDb.transaction("CustomSites", "readwrite");
+  const store = tx.objectStore("CustomSites");
+
+  // Re-fetch item to preserve its position
+  store.get(currentEditId).onsuccess = (e) => {
+    const existing = e.target.result;
+    if (!existing) {
+      showWebSnackbar("Item not found.");
+      return;
+    }
+
+    const updated = {
+      id: currentEditId,
+      name,
+      url,
+      img,
+      position: existing.position || 0
+    };
+
+    store.put(updated);
+
+    tx.oncomplete = () => {
+      showWebSnackbar("Changes saved");
+      setTimeout(closeEditLink, 1200);
+    };
+
+    tx.onerror = () => {
+      showWebSnackbar("Failed to save changes");
+    };
+  };
+});
+
+</script>
+
+</section>
+
+
+
+
+
+
+<!-- Snackbar (hidden initially) -->
+	<div id="tak-snackbar" class="tak-snackbar">Welcome!</div>
+
+<script>
+// Snackbar function
+function showWebSnackbar(message = "Welcome!") {
+  const snackbar = document.getElementById("tak-snackbar");
+  snackbar.textContent = message;
+  snackbar.style.display = "block";
+  snackbar.style.opacity = "1";
+
+  setTimeout(() => {
+    snackbar.style.opacity = "0";
+    setTimeout(() => {
+      snackbar.style.display = "none";
+    }, 300);
+  }, 2000);
+}
+</script>
+
+
+
+
+
+<!-- ///////////////// -->
+<!-- Set Theme - Based on Local Storage -->
+<!-- ///////////////// -->
+<script>
+  // Wait for the DOM to be fully loaded before running the script
+  document.addEventListener("DOMContentLoaded", function() {
+    const themeLink = document.createElement("link");
+    themeLink.rel = "stylesheet";
+    themeLink.id = "theme-link";
+    
+    // Check if a theme preference is saved in localStorage
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
+    } else if (savedTheme === "light") {
+      themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
+    } else {
+      themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
+      localStorage.setItem('theme', 'dark');  // Save preference
+    }
+
+    // Append the theme <link> tag to the <head> of the document
+    document.head.appendChild(themeLink);
+
+    // Initialize icons based on saved theme preference
+    const darkIcon = document.getElementById('dark-icon');
+    const lightIcon = document.getElementById('light-icon');
+
+    if (savedTheme === "dark") {
+      lightIcon.style.display = 'none';
+      darkIcon.style.display = 'block';
+    } else {
+      lightIcon.style.display = 'block';
+      darkIcon.style.display = 'none';
+    }
+
+    // Toggle theme when button is clicked
+    const themeToggleButton = document.getElementById('theme-toggle');
+
+    themeToggleButton.addEventListener('click', () => {
+      const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
+      if (currentTheme === 'dark') {
+        themeLink.href = 'light-theme.css';  // Switch to light theme
+        localStorage.setItem('theme', 'light');  // Save preference
+        lightIcon.style.display = 'block';  // Show light icon
+        darkIcon.style.display = 'none';   // Hide dark icon
+      } else {
+        themeLink.href = 'dark-theme.css';   // Switch to dark theme
+        localStorage.setItem('theme', 'dark');  // Save preference
+        lightIcon.style.display = 'none';   // Hide light icon
+        darkIcon.style.display = 'block';   // Show dark icon
+      }
+    });
+  });
+</script>
+
+<!-- ///////////////// -->
+<!-- Prevent Right Click Context Menu -->
+<!-- ///////////////// -->
+<script>
+  document.addEventListener('contextmenu', function(event) {
+    const target = event.target;
+
+    // Allow default context menu on input, textarea, or contenteditable elements
+    if (
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.isContentEditable
+    ) {
+      return; // allow context menu
+    }
+
+    event.preventDefault(); // otherwise, block it
+  });
+</script>
+
+
+</body>
+</html>
