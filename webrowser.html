@@ -152,7 +152,38 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
   </div>
 	<!-- Links will be inserted here dynamically -->
 	
-	<script>
+<script>
+
+let webDb;
+const webDbName = "TAKAppDB";
+const webStoreName = "CustomSites";
+let currentEditingLinkId = null;
+
+const webOpenRequest = indexedDB.open(webDbName);
+
+webOpenRequest.onupgradeneeded = (e) => {
+  webDb = e.target.result;
+  const objectStore = webDb.createObjectStore(webStoreName, { 
+    keyPath: "id", 
+    autoIncrement: true 
+  });
+  
+  objectStore.createIndex("name", "name", { unique: false });
+  objectStore.createIndex("url", "url", { unique: false });
+  objectStore.createIndex("img", "img", { unique: false });
+  objectStore.createIndex("position", "position", { unique: false });
+};
+
+webOpenRequest.onsuccess = (e) => {
+  webDb = e.target.result;
+  loadLinks(); // Function to load existing links (to be implemented later)
+};
+
+webOpenRequest.onerror = (e) => {
+  console.error("Error opening IndexedDB", e);
+  showWebSnackbar("Error opening database");
+};
+
 	// Function to load and display links from IndexedDB
 function loadLinks() {
   const container = document.getElementById('ts-links-container');
@@ -214,11 +245,6 @@ function createLinkElement(linkData) {
 
 // Initialize the database and load links when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize the save button
-  const saveBtn = document.getElementById("ts-add-link-modal-save-btn");
-  if (saveBtn) {
-    saveBtn.addEventListener('click', saveLink);
-  }
 
   // Load links when database is ready
   webOpenRequest.onsuccess = (e) => {
@@ -227,53 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 });
 
-// Modified saveLink function to refresh display after saving
-function saveLink() {
-  const name = document.getElementById("ts-add-link-name").value.trim();
-  const url = document.getElementById("ts-add-link-url").value.trim();
-  const img = document.getElementById("ts-add-link-img").value.trim();
-
-  if (!name || !url) {
-    showWebSnackbar("Name and URL are required");
-    return;
-  }
-
-  if (!isValidUrl(url)) {
-    showWebSnackbar("Please enter a valid URL (include http:// or https://)");
-    return;
-  }
-
-  const transaction = webDb.transaction([webStoreName], "readwrite");
-  const store = transaction.objectStore(webStoreName);
-  const countRequest = store.count();
-  
-  countRequest.onsuccess = () => {
-    const linkData = { 
-      name, 
-      url: formatUrl(url),
-      img,
-      position: currentEditingLinkId !== null ? 
-                undefined : // Keep existing position when editing
-                countRequest.result // New position for new items
-    };
-
-    if (currentEditingLinkId !== null) {
-      linkData.id = currentEditingLinkId;
-      store.put(linkData);
-      showWebSnackbar("Link updated");
-    } else {
-      store.add(linkData);
-      showWebSnackbar("Link saved");
-    }
-
-    transaction.oncomplete = () => {
-      closeAddLinkModal();
-      clearLinkForm();
-      loadLinks(); // Refresh the display
-    };
-  };
-}
-	</script>
+</script>
 </section>
 
 
