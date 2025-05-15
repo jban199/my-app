@@ -396,8 +396,8 @@ function ts_shareSite(url) {
 
 function ts_copySiteLink(url) {
   navigator.clipboard.writeText(url)
-    .then(() => showWebSnackbar("Link copied"))
-    .catch(() => showWebSnackbar("Failed to copy"));
+    .then(() => showTakSnackbar("Link copied"))
+    .catch(() => showTakSnackbar("Failed to copy"));
 }
 
 function ts_moveSite(id, direction) {
@@ -416,17 +416,6 @@ function ts_moveSite(id, direction) {
   };
 }
 
-function showWebSnackbar(message = "Copied!") {
-  const snackbar = document.getElementById("tak-snackbar");
-  snackbar.textContent = message;
-  snackbar.style.display = "block";
-  snackbar.style.opacity = "1";
-
-  setTimeout(() => {
-    snackbar.style.opacity = "0";
-    setTimeout(() => snackbar.style.display = "none", 300);
-  }, 2000);
-}
 </script>
 
 
@@ -443,7 +432,7 @@ function showWebSnackbar(message = "Copied!") {
 
 <script>
 // Snackbar function
-function showWebSnackbar(message = "Welcome!") {
+function showTakSnackbar(message = "Welcome!") {
   const snackbar = document.getElementById("tak-snackbar");
   snackbar.textContent = message;
   snackbar.style.display = "block";
