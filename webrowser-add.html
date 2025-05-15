@@ -14,6 +14,95 @@
     <!-- Link to the stylesheet -->
     <link rel="stylesheet" href="styles.css">
 
+
+<style>
+#web-add-link {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	background: var(--bg1);
+	display: flex;
+	flex-direction: column;
+	z-index: 9999;
+}
+
+.web-add-link-header {
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	align-items: center;
+	padding: 10px;
+	box-shadow: 0px 2px 10px var(--shadow1);
+	font-size: 20px;
+	font-weight: bold;
+	color: var(--font1);
+}
+
+#web-add-link-back-btn {
+	height: 45px;
+	width: 45px;
+	border: none;
+	background: none;
+	
+}
+
+#web-add-link-back-btn svg {
+	height: 32px;
+	width: 32px;
+	fill: var(--accent1)
+}
+
+.web-add-link-body {
+	display: flex;
+	flex-direction: column;
+	align-items: top;
+	padding: 50px 20px;
+}
+
+.web-add-link-body label {
+	color: var(--font2);
+	margin-bottom: 5px;
+}
+
+.web-add-link-body input {
+	border-radius: 10px;
+    padding: 20px 10px;
+    background: var(--bg2);
+    border: none;
+	margin-bottom: 30px;
+	color: var(--font1);
+}
+
+.web-add-link-footer {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	align-items: center;
+	justify-content: end;
+	padding: 20px 10px;
+	position: fixed;
+    bottom: 0px;
+    right: 0px;
+}
+
+#web-add-link-cancel-btn {
+	border-radius: 30px;
+    background: var(--bg1);
+    border: none;
+    padding: 10px 20px;
+    color: var(--accent1);
+}
+
+#web-add-link-save-btn {
+	border-radius: 30px;
+    background: var(--accent1);
+    border: none;
+    padding: 10px 20px;
+    color: var(--font1);
+}
+</style>
 </head>
 <body>
 
@@ -21,29 +110,29 @@
 <!-- ///////////////// -->
 <!-- Add Link Modal -->
 <!-- ///////////////// -->
-<section id="ts-add-link-modal">
-	<div class="ts-add-link-modal-header">
-		<button id="ts-add-link-modal-back-btn" onclick="closeAddLink()">
+<section id="web-add-link">
+	<div class="web-add-link-header">
+		<button id="web-add-link-back-btn" onclick="closeAddLink()">
 			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 				<path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z"/>
 			</svg>
 		</button>
 		Add Link
 	</div>
-	<div class="ts-add-link-modal-body">
+	<div class="web-add-link-body">
 		
-		<label for="ts-add-link-name">Name</label>
-		<input type="text" id="ts-add-link-name" placeholder="Example.com">
+		<label for="web-add-link-name">Name</label>
+		<input type="text" id="web-add-link-name" placeholder="Example.com">
 		
-		<label for="ts-add-link-url">Address</label>
-		<input type="text" id="ts-add-link-url" placeholder="https://www.example.com">
+		<label for="web-add-link-url">Address</label>
+		<input type="text" id="web-add-link-url" placeholder="https://www.example.com">
 		
-		<label for="ts-add-link-img">Image URL (optional)</label>
-		<input type="text" id="ts-add-link-img" placeholder="Image link">
+		<label for="web-add-link-img">Image URL (optional)</label>
+		<input type="text" id="web-add-link-img" placeholder="Image link">
 	</div>
-	<div class="ts-add-link-modal-footer">
-		<button id="ts-add-link-modal-cancel-btn" onclick="closeAddLink()">Cancel</button>
-		<button id="ts-add-link-modal-save-btn">Save</button>
+	<div class="web-add-link-footer">
+		<button id="web-add-link-cancel-btn" onclick="closeAddLink()">Cancel</button>
+		<button id="web-add-link-save-btn">Save</button>
 	</div>
 	
 	<script>
@@ -87,9 +176,9 @@ webOpenRequest.onerror = (e) => {
 
 // Save link function
 function saveLink() {
-  const name = document.getElementById("ts-add-link-name").value.trim();
-  const url = document.getElementById("ts-add-link-url").value.trim();
-  const img = document.getElementById("ts-add-link-img").value.trim();
+  const name = document.getElementById("web-add-link-name").value.trim();
+  const url = document.getElementById("web-add-link-url").value.trim();
+  const img = document.getElementById("web-add-link-img").value.trim();
 
   if (!name || !url) {
     showWebSnackbar("Name and Address are required");
@@ -160,14 +249,14 @@ function formatUrl(url) {
 
 // Clear the link form
 function clearLinkForm() {
-  document.getElementById("ts-add-link-name").value = "";
-  document.getElementById("ts-add-link-url").value = "";
-  document.getElementById("ts-add-link-img").value = "";
+  document.getElementById("web-add-link-name").value = "";
+  document.getElementById("web-add-link-url").value = "";
+  document.getElementById("web-add-link-img").value = "";
 }
 
 // Initialize the save button
 document.addEventListener('DOMContentLoaded', () => {
-  const saveBtn = document.getElementById("ts-add-link-modal-save-btn");
+  const saveBtn = document.getElementById("web-add-link-save-btn");
   if (saveBtn) {
     saveBtn.addEventListener('click', saveLink);
   }
@@ -175,14 +264,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Modified openAddLinkModal function to handle editing
 function openAddLinkModal(linkData = null) {
-  const modal = document.getElementById('ts-add-link-modal');
+  const modal = document.getElementById('web-add-link');
   if (modal) {
     if (linkData) {
       // Editing existing link
       currentEditingLinkId = linkData.id;
-      document.getElementById("ts-add-link-name").value = linkData.name;
-      document.getElementById("ts-add-link-url").value = linkData.url;
-      document.getElementById("ts-add-link-img").value = linkData.img || "";
+      document.getElementById("web-add-link-name").value = linkData.name;
+      document.getElementById("web-add-link-url").value = linkData.url;
+      document.getElementById("web-add-link-img").value = linkData.img || "";
     } else {
       // Adding new link
       currentEditingLinkId = null;
@@ -200,12 +289,12 @@ function openAddLinkModal(linkData = null) {
 
 
 <!-- Snackbar (hidden initially) -->
-	<div id="web-snackbar" class="web-snackbar">Copied!</div>
+	<div id="tak-snackbar" class="tak-snackbar">Welcome!</div>
 
 <script>
 // Snackbar function
-function showWebSnackbar(message = "Copied!") {
-  const snackbar = document.getElementById("web-snackbar");
+function showWebSnackbar(message = "Welcome!") {
+  const snackbar = document.getElementById("tak-snackbar");
   snackbar.textContent = message;
   snackbar.style.display = "block";
   snackbar.style.opacity = "1";
