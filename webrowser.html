@@ -257,6 +257,64 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 });
 
+
+
+
+
+
+
+
+document.addEventListener('click', (event) => {
+  const pinBtn = event.target.closest('.ts-allweb-edit-btn');
+  if (!pinBtn) return;
+
+  const card = pinBtn.closest('.ts-option-wide');
+  if (!card) return;
+
+  const anchor = card.querySelector('.ts-option-details');
+  const img = anchor.querySelector('.ts-option-img');
+  const title = card.querySelector('.ts-option-title');
+  const url = anchor.href;
+
+  // Fallback if any data is missing
+  if (!title || !url) {
+    showTakSnackbar("Missing link details");
+    return;
+  }
+
+  // Start readwrite transaction
+  const transaction = webDb.transaction([webStoreName], 'readwrite');
+  const store = transaction.objectStore(webStoreName);
+
+  // Get all to find max position
+  const getAllReq = store.getAll();
+  getAllReq.onsuccess = () => {
+    const items = getAllReq.result;
+    const maxPos = items.reduce((max, item) => Math.max(max, item.position || 0), 0);
+
+    const newEntry = {
+      name: title.textContent.trim(),
+      url: url.trim(),
+      img: img?.src || '',
+      position: maxPos + 1,
+    };
+
+    const addReq = store.add(newEntry);
+    addReq.onsuccess = () => {
+      showTakSnackbar("Added to My list");
+	  loadLinks();
+    };
+    addReq.onerror = () => {
+      showTakSnackbar("Failed to add link");
+    };
+  };
+
+  getAllReq.onerror = () => {
+    showTakSnackbar("Could not fetch position info");
+  };
+});
+
+
 </script>
 </section>
 
