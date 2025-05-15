@@ -145,7 +145,11 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
 	
 	<script>
 		function openAddLinkModal() {
-		  window.location.href = 'webrowser-addlink.html';
+		  window.location.href = 'webrowser-add.html';
+		}
+		
+		function openManageLinkModal() {
+		  window.location.href = 'webrowser-manage.html';
 		}
 
 	</script>
@@ -318,43 +322,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </section>
 
 
-
-
-<!-- ///////////////// -->
-<!-- Manage Links Modal -->
-<!-- ///////////////// -->
-<section id="ts-manage-link-modal" style="display: none;">
-	<div class="ts-manage-link-modal-header">
-		<button id="ts-manage-link-modal-back-btn" onclick="closeManageLinkModal()">
-			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z"/>
-			</svg>
-		</button>
-		Manage Links
-	</div>
-	<div class="ts-manage-link-modal-body">
-	</div>
-	<div class="ts-manage-link-modal-footer">
-		<button id="ts-manage-link-modal-cancel-btn" onclick="closeManageLinkModal()">Cancel</button>
-		<button id="ts-manage-link-modal-save-btn">Save</button>
-	</div>
-	
-	<script>
-	function closeManageLinkModal() {
-		const modal = document.getElementById('ts-manage-link-modal');
-		if (modal) {
-			modal.style.display = 'none';
-		}
-	}
-	
-	function openManageLinkModal() {
-		const modal = document.getElementById('ts-manage-link-modal');
-		if (modal) {
-			modal.style.display = 'block';
-		}
-	}
-	</script>
-</section>
 
 
 
