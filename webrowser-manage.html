@@ -384,13 +384,14 @@ document.getElementById("web-mgmt-dialog-continue").onclick = () => {
   }
   sitePendingDeleteId = null;
   document.getElementById("web-mgmt-confirm-dialog").style.display = "none";
+  showTakSnackbar("Link deleted");
 };
 
 function ts_shareSite(url) {
   if (navigator.share) {
     navigator.share({ title: "Shared Link", url }).catch(console.error);
   } else {
-    alert("Share not supported.");
+    showTakSnackbar("Share not supported.");
   }
 }
 
