@@ -185,7 +185,7 @@ webOpenRequest.onsuccess = (e) => {
 
 webOpenRequest.onerror = (e) => {
   console.error("Error opening IndexedDB", e);
-  showWebSnackbar("Error opening database");
+  showTakSnackbar("Error opening database");
 };
 
 	// Function to load and display links from IndexedDB
@@ -217,7 +217,7 @@ function loadLinks() {
 
   request.onerror = (e) => {
     console.error("Error loading links", e);
-    showWebSnackbar("Error loading links");
+    showTakSnackbar("Error loading links");
   };
 }
 
@@ -271,94 +271,185 @@ document.addEventListener('DOMContentLoaded', () => {
 	</button>
 </div>
 <section class="ts-options-list">
-	<div class="ts-option-wide">
-		<a class="ts-option-details" href="https://www.google.com" target="_blank">
-			<img class="ts-option-img" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png">
-			<div class="ts-option-link-info">
-				<p class="ts-option-title">Google</p>
-				<p class="ts-option-link">https://www.google.com</p>
-				<p class="ts-option-tags">Browser, Search engines</p>
-			</div>
-		</a>
-		<button class="ts-option-more-btn">
+	<script type="application/json" class="ts-card-json">
+	{
+		"content": [
+			{
+				"title": "Google",
+				"link": "https://www.google.com",
+				"image": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+				"tags": "Browser, Search engines"
+			},
+			{
+				"title": "Stack Overflow",
+				"link": "https://stackoverflow.com",
+				"image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png",
+				"tags": "Browser, Search engines, Education, Communication"
+			},
+			{
+			"title" : "GitHub",
+			"link" : "https://github.com",
+			"image" : "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+			"tags" : ""
+			},
+			{
+			"title" : "MDN Web Docs",
+			"link" : "https://developer.mozilla.org",
+			"image" : "https://developer.mozilla.org/static/img/opengraph-logo.72382e605ce3.png",
+			"tags" : ""
+			},
+			{
+			"title" : "Example",
+			"link" : "https://www.example.com",
+			"image" : "https://media.lordicon.com/icons/wired/lineal/2521-example.svg",
+			"tags" : ""
+			}
+		]
+	}
+	</script>
+	
+<script>
+document.querySelectorAll('.ts-options-list').forEach(section => {
+	const jsonEl = section.querySelector('.ts-card-json');
+	if (!jsonEl) return;
+
+	let data;
+	try {
+		data = JSON.parse(jsonEl.textContent).content;
+	} catch (e) {
+		console.error('Invalid JSON in ts-card-json', e);
+		return;
+	}
+
+	data.forEach(item => {
+		const wrapper = document.createElement('div');
+		wrapper.className = 'ts-option-wide';
+
+		const anchor = document.createElement('a');
+		anchor.className = 'ts-option-details';
+		anchor.href = item.link;
+		anchor.target = '_blank';
+
+		const img = document.createElement('img');
+		img.className = 'ts-option-img';
+		img.src = item.image;
+
+		const info = document.createElement('div');
+		info.className = 'ts-option-link-info';
+
+		const title = document.createElement('p');
+		title.className = 'ts-option-title';
+		title.textContent = item.title;
+
+		const link = document.createElement('p');
+		link.className = 'ts-option-link';
+		link.textContent = item.link;
+
+		const tags = document.createElement('p');
+		tags.className = 'ts-option-tags';
+		tags.textContent = item.tags || '';
+
+		info.append(title, link, tags);
+		anchor.append(img, info);
+		wrapper.appendChild(anchor);
+
+		// Menu Button
+		const menuBtn = document.createElement('button');
+		menuBtn.className = 'ts-option-more-btn';
+		menuBtn.innerHTML = `
 			<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"></path>
 			</svg>
-		</button>
-	</div>
-	
-	<div class="ts-option-wide">
-		<a class="ts-option-details" href="https://stackoverflow.com" target="_blank">
-			<img class="ts-option-img" src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png">
-			<div class="ts-option-link-info">
-				<p class="ts-option-title">Stack Overflow</p>
-				<p class="ts-option-link">https://stackoverflow.com</p>
-				<p class="ts-option-tags">Browser, Search engines</p>
-			</div>
-		</a>
-		<button class="ts-option-more-btn">
-			<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"></path>
-			</svg>
-		</button>
-	</div>
-	
-	<div class="ts-option-wide">
-		<a class="ts-option-details" href="https://stackoverflow.com" target="_blank">
-			<img class="ts-option-img" src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.pngs">
-			<div class="ts-option-link-info">
-				<p class="ts-option-title">Stack Overflow</p>
-				<p class="ts-option-link">https://stackoverflow.com</p>
-				<p class="ts-option-tags">Browser, Search engines</p>
-			</div>
-		</a>
-		<button class="ts-option-more-btn">
-			<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"></path>
-			</svg>
-		</button>
-	</div>
-	
+		`;
+
+		// Menu
+		const menu = document.createElement('div');
+		menu.className = 'ts-allweb-options-menu';
+		menu.style.display = 'none';
+		menu.innerHTML = `
+			<button class="ts-allweb-edit-btn">
+				<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M640-760v280l68 68q6 6 9 13.5t3 15.5v23q0 17-11.5 28.5T680-320H520v234q0 17-11.5 28.5T480-46q-17 0-28.5-11.5T440-86v-234H280q-17 0-28.5-11.5T240-360v-23q0-8 3-15.5t9-13.5l68-68v-280q-17 0-28.5-11.5T280-800q0-17 11.5-28.5T320-840h320q17 0 28.5 11.5T680-800q0 17-11.5 28.5T640-760ZM354-400h252l-46-46v-314H400v314l-46 46Zm126 0Z"/>
+				</svg>
+				Pin to My list
+			</button>
+			<button class="ts-allweb-share-btn">
+				<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm480-280q17 0 28.5-11.5T720-760q0-17-11.5-28.5T680-800q-17 0-28.5 11.5T640-760q0 17 11.5 28.5T680-720Zm0 520ZM200-480Zm480-280Z">
+				</svg>
+				Share
+			</button>
+			<button class="ts-allweb-copy-btn">
+				<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-520q0-17 11.5-28.5T160-720q17 0 28.5 11.5T200-680v520h400q17 0 28.5 11.5T640-120q0 17-11.5 28.5T600-80H200Zm160-240v-480 480Z">
+				</svg>
+				Copy link
+			</button>
+		`;
+
+		// Toggle menu
+		menuBtn.addEventListener('click', e => {
+			e.stopPropagation();
+			closeAllMenus();
+			menu.style.display = 'block';
+		});
+
+		// Share
+		menu.querySelector('.ts-allweb-share-btn').addEventListener('click', e => {
+			e.stopPropagation();
+			if (navigator.share) {
+				navigator.share({
+					title: item.title,
+					text: `Check this out: ${item.title}`,
+					url: item.link
+				})
+				.then(() => showTakSnackbar("Shared successfully!"))
+				.catch(() => showTakSnackbar("Sharing cancelled or failed."));
+			} else {
+				showTakSnackbar("Sharing not supported in this browser.");
+			}
+			menu.style.display = 'none';
+		});
+
+		// Copy link
+		menu.querySelector('.ts-allweb-copy-btn').addEventListener('click', e => {
+			e.stopPropagation();
+			navigator.clipboard.writeText(item.link)
+				.then(() => showTakSnackbar("Copied!"))
+				.catch(() => showTakSnackbar("Failed to copy."));
+			menu.style.display = 'none';
+		});
+
+		// Append all
+		wrapper.append(menuBtn, menu);
+		section.appendChild(wrapper);
+	});
+});
+
+// Close all open menus on click outside
+document.addEventListener('click', closeAllMenus);
+
+function closeAllMenus() {
+	document.querySelectorAll('.ts-allweb-options-menu').forEach(menu => {
+		menu.style.display = 'none';
+	});
+}
+</script>
+
+
+
 </section>
 
 
 
 
-
-<!-- ///////////////// -->
-<!-- All Website Option Menu -->
-<!-- ///////////////// -->
-<div class="ts-allweb-options-menu" style="display: block;">
-	<button class="ts-allweb-edit-btn">
-		<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-			<path d="M640-760v280l68 68q6 6 9 13.5t3 15.5v23q0 17-11.5 28.5T680-320H520v234q0 17-11.5 28.5T480-46q-17 0-28.5-11.5T440-86v-234H280q-17 0-28.5-11.5T240-360v-23q0-8 3-15.5t9-13.5l68-68v-280q-17 0-28.5-11.5T280-800q0-17 11.5-28.5T320-840h320q17 0 28.5 11.5T680-800q0 17-11.5 28.5T640-760ZM354-400h252l-46-46v-314H400v314l-46 46Zm126 0Z"/>
-		</svg>
-		Pin to My list
-	</button>
-	
-	<button class="ts-allweb-share-btn">
-		<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-			<path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm480-280q17 0 28.5-11.5T720-760q0-17-11.5-28.5T680-800q-17 0-28.5 11.5T640-760q0 17 11.5 28.5T680-720Zm0 520ZM200-480Zm480-280Z">
-		</svg>
-		Share
-	</button>
-	
-	<button class="ts-allweb-copy-btn">
-		<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-			<path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-520q0-17 11.5-28.5T160-720q17 0 28.5 11.5T200-680v520h400q17 0 28.5 11.5T640-120q0 17-11.5 28.5T600-80H200Zm160-240v-480 480Z">
-		</svg>
-		Copy link
-	</button>
-</div>
-
-
 <!-- Snackbar (hidden initially) -->
-	<div id="web-snackbar" class="web-snackbar">Copied!</div>
+	<div id="tak-snackbar" class="tak-snackbar">Welcome!</div>
 
 <script>
 // Snackbar function
-function showWebSnackbar(message = "Copied!") {
-  const snackbar = document.getElementById("web-snackbar");
+function showTakSnackbar(message = "Welcome!") {
+  const snackbar = document.getElementById("tak-snackbar");
   snackbar.textContent = message;
   snackbar.style.display = "block";
   snackbar.style.opacity = "1";
