@@ -162,7 +162,7 @@ const urlParams = new URLSearchParams(window.location.search);
 currentEditId = parseInt(urlParams.get("id"), 10);
 
 if (!currentEditId) {
-  showWebSnackbar("No ID provided for editing.");
+  showTakSnackbar("No ID provided for editing.");
   setTimeout(closeEditLink, 1200);
 }
 
@@ -181,7 +181,7 @@ function loadLinkToEdit() {
   getReq.onsuccess = () => {
     const site = getReq.result;
     if (!site) {
-      showWebSnackbar("Item not found.");
+      showTakSnackbar("Item not found.");
       setTimeout(closeEditLink, 1200);
       return;
     }
@@ -192,7 +192,7 @@ function loadLinkToEdit() {
   };
 
   getReq.onerror = () => {
-    showWebSnackbar("Error loading item.");
+    showTakSnackbar("Error loading item.");
     setTimeout(closeEditLink, 1200);
   };
 }
@@ -203,7 +203,7 @@ document.getElementById("web-edit-link-save-btn").addEventListener("click", () =
   const img = document.getElementById("web-edit-link-img").value.trim();
 
   if (!name || !url) {
-    showWebSnackbar("Name and URL are required.");
+    showTakSnackbar("Name and URL are required.");
     return;
   }
 
@@ -214,7 +214,7 @@ document.getElementById("web-edit-link-save-btn").addEventListener("click", () =
   store.get(currentEditId).onsuccess = (e) => {
     const existing = e.target.result;
     if (!existing) {
-      showWebSnackbar("Item not found.");
+      showTakSnackbar("Item not found.");
       return;
     }
 
@@ -229,12 +229,12 @@ document.getElementById("web-edit-link-save-btn").addEventListener("click", () =
     store.put(updated);
 
     tx.oncomplete = () => {
-      showWebSnackbar("Changes saved");
+      showTakSnackbar("Changes saved");
       setTimeout(closeEditLink, 1200);
     };
 
     tx.onerror = () => {
-      showWebSnackbar("Failed to save changes");
+      showTakSnackbar("Failed to save changes");
     };
   };
 });
@@ -253,7 +253,7 @@ document.getElementById("web-edit-link-save-btn").addEventListener("click", () =
 
 <script>
 // Snackbar function
-function showWebSnackbar(message = "Welcome!") {
+function showTakSnackbar(message = "Welcome!") {
   const snackbar = document.getElementById("tak-snackbar");
   snackbar.textContent = message;
   snackbar.style.display = "block";
