@@ -25,6 +25,7 @@ const PRECACHE_ASSETS = [
   'https://jban199.github.io/my-app/webrowser-edit.html',
   'https://jban199.github.io/my-app/webrowser-manage.html',
   'https://jban199.github.io/my-app/speedometer.html',
+  'https://jban199.github.io/my-app/backup.html',
   'https://jban199.github.io/my-app/favicon.ico',
   'https://jban199.github.io/my-app/images/icon-192x192.png',
   'https://jban199.github.io/my-app/images/icon-512x512.png',
