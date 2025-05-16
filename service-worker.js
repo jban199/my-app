@@ -1,5 +1,5 @@
 // Service Worker Version - Update this to force new installs
-const SW_VERSION = '1.0.0';
+const SW_VERSION = '1.0.1';
 const CACHE_NAME = `app-cache-v${SW_VERSION}`;
 const OFFLINE_URL = 'https://jban199.github.io/my-app/offline.html';
 
@@ -14,13 +14,17 @@ const PRECACHE_ASSETS = [
   'https://jban199.github.io/my-app/sbm.html',
   'https://jban199.github.io/my-app/sidebar.html',
   'https://jban199.github.io/my-app/offline.html',
-  'https://jban199.github.io/my-app/calls.html',
+  'https://jban199.github.io/my-app/ved.html',
   'https://jban199.github.io/my-app/hologram.html',
   'https://jban199.github.io/my-app/explorer.html',
   'https://jban199.github.io/my-app/alert.html',
   'https://jban199.github.io/my-app/notes.html',
   'https://jban199.github.io/my-app/phonebook.html',
   'https://jban199.github.io/my-app/webrowser.html',
+  'https://jban199.github.io/my-app/webrowser-add.html',
+  'https://jban199.github.io/my-app/webrowser-edit.html',
+  'https://jban199.github.io/my-app/webrowser-manage.html',
+  'https://jban199.github.io/my-app/speedometer.html',
   'https://jban199.github.io/my-app/favicon.ico',
   'https://jban199.github.io/my-app/images/icon-192x192.png',
   'https://jban199.github.io/my-app/images/icon-512x512.png',
