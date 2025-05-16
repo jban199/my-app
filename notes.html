@@ -36,7 +36,24 @@
 	</div>
 
 	<!-- Snackbar (hidden initially) -->
-	<div id="note-snackbar" class="note-snackbar">Copied!</div>
+	<div id="tak-snackbar" class="tak-snackbar">Welcome!</div>
+	
+	<script>
+		// Snackbar function
+		function showTakSnackbar(message = "Welcome!") {
+		  const snackbar = document.getElementById("tak-snackbar");
+		  snackbar.textContent = message;
+		  snackbar.style.display = "block";
+		  snackbar.style.opacity = "1";
+
+		  setTimeout(() => {
+			snackbar.style.opacity = "0";
+			setTimeout(() => {
+			  snackbar.style.display = "none";
+			}, 300);
+		  }, 20000);
+		}
+	</script>
 
 	<!-- Confirm Delete Dialog (hidden initially) -->
 	<div id="note-confirm-dialog" class="note-dialog" style="display: none;">
@@ -74,14 +91,14 @@ openRequest.onsuccess = (e) => {
 
 openRequest.onerror = (e) => {
   console.error("Error opening IndexedDB", e);
-  showNoteSnackbar("Error opening database");
+  showTakSnackbar("Error opening database");
 };
 
 function note_saveData() {
   const userInput = document.getElementById("note-userInput").value;
 
   if (userInput.trim() === "") {
-    showNoteSnackbar("Please enter some data");
+    showTakSnackbar("Please enter some data");
     return;
   }
 
@@ -92,10 +109,10 @@ function note_saveData() {
   if (currentEditingId !== null) {
     store.put({ id: currentEditingId, data: userInput });
     currentEditingId = null;
-    showNoteSnackbar("Note updated");
+    showTakSnackbar("Note updated");
   } else {
     store.add(data);
-    showNoteSnackbar("Note saved");
+    showTakSnackbar("Note saved");
   }
 
   transaction.oncomplete = () => {
@@ -105,7 +122,7 @@ function note_saveData() {
 
   transaction.onerror = (e) => {
     console.error("Error saving data", e);
-    showNoteSnackbar("Error saving note");
+    showTakSnackbar("Error saving note");
   };
 }
 
@@ -117,9 +134,9 @@ function note_clearData() {
   // If we're in edit mode, cancel it by clearing the currentEditingId
   if (currentEditingId !== null) {
     currentEditingId = null;
-    showNoteSnackbar("Edit canceled");
+    showTakSnackbar("Edit canceled");
   } else {
-    showNoteSnackbar("Cleared");
+    showTakSnackbar("Cleared");
   }
   
   // Optional: Return focus to the textarea
@@ -133,11 +150,11 @@ function deleteNote(id) {
 
   transaction.oncomplete = () => {
     loadData();
-    showNoteSnackbar("Note deleted");
+    showTakSnackbar("Note deleted");
   };
   transaction.onerror = (e) => {
     console.error("Error deleting", e);
-    showNoteSnackbar("Error deleting note");
+    showTakSnackbar("Error deleting note");
   };
 }
 
@@ -145,17 +162,17 @@ function editNote(item) {
   document.getElementById("note-userInput").value = item.data;
   currentEditingId = item.id;
   document.getElementById("note-userInput").focus();
-  showNoteSnackbar("Editing note");
+  showTakSnackbar("Editing note");
   closeCurrentMenu();
 }
 
 function shareNote(text) {
   if (navigator.share) {
     navigator.share({ title: "Shared Note", text: text })
-      .then(() => showNoteSnackbar("Note shared"))
+      .then(() => showTakSnackbar("Note shared"))
       .catch(err => {
         console.error("Error sharing", err);
-        showNoteSnackbar("Sharing cancelled");
+        showTakSnackbar("Sharing cancelled");
       });
   } else {
     copyNote(text);
@@ -165,10 +182,10 @@ function shareNote(text) {
 
 function copyNote(text) {
   navigator.clipboard.writeText(text)
-    .then(() => showNoteSnackbar("Copied to clipboard"))
+    .then(() => showTakSnackbar("Copied to clipboard"))
     .catch(err => {
       console.error("Failed to copy", err);
-      showNoteSnackbar("Failed to copy");
+      showTakSnackbar("Failed to copy");
     });
   closeCurrentMenu();
 }
@@ -267,24 +284,10 @@ function loadData() {
 
   request.onerror = (e) => {
     console.error("Error loading data", e);
-    showNoteSnackbar("Error loading notes");
+    showTakSnackbar("Error loading notes");
   };
 }
 
-// Snackbar function
-function showNoteSnackbar(message = "Copied!") {
-  const snackbar = document.getElementById("note-snackbar");
-  snackbar.textContent = message;
-  snackbar.style.display = "block";
-  snackbar.style.opacity = "1";
-
-  setTimeout(() => {
-    snackbar.style.opacity = "0";
-    setTimeout(() => {
-      snackbar.style.display = "none";
-    }, 300);
-  }, 2000);
-}
 
 function showNoteDeleteDialog(id) {
   notePendingDeleteId = id;
