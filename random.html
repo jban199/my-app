@@ -111,7 +111,7 @@
   <div class="rand-card" data-rand-type="card">
     <h4>Card</h4>
     <div class="rand-image-wrapper">
-      <img src="card_back.png" alt="card" />
+      <img src="images/random/card-back.png" alt="card" />
     </div>
     <div class="rand-label">Back</div>
     <button class="rand-btn">Flip</button>
@@ -170,6 +170,34 @@
 		{ file: "images/random/card-clubs-8.png", label: "8 of Clubs" },
 		{ file: "images/random/card-hearts-8.png", label: "8 of Hearts" },
 		{ file: "images/random/card-diamonds-8.png", label: "8 of Diamonds" },
+		{ file: "images/random/card-spades-7.png", label: "7 of Spades" },
+		{ file: "images/random/card-clubs-7.png", label: "7 of Clubs" },
+		{ file: "images/random/card-hearts-7.png", label: "7 of Hearts" },
+		{ file: "images/random/card-diamonds-7.png", label: "7 of Diamonds" },
+		{ file: "images/random/card-spades-6.png", label: "6 of Spades" },
+		{ file: "images/random/card-clubs-6.png", label: "6 of Clubs" },
+		{ file: "images/random/card-hearts-6.png", label: "6 of Hearts" },
+		{ file: "images/random/card-diamonds-6.png", label: "6 of Diamonds" },
+		{ file: "images/random/card-spades-5.png", label: "5 of Spades" },
+		{ file: "images/random/card-clubs-5.png", label: "5 of Clubs" },
+		{ file: "images/random/card-hearts-5.png", label: "5 of Hearts" },
+		{ file: "images/random/card-diamonds-5.png", label: "5 of Diamonds" },
+		{ file: "images/random/card-spades-4.png", label: "4 of Spades" },
+		{ file: "images/random/card-clubs-4.png", label: "4 of Clubs" },
+		{ file: "images/random/card-hearts-4.png", label: "4 of Hearts" },
+		{ file: "images/random/card-diamonds-4.png", label: "4 of Diamonds" },
+		{ file: "images/random/card-spades-3.png", label: "3 of Spades" },
+		{ file: "images/random/card-clubs-3.png", label: "3 of Clubs" },
+		{ file: "images/random/card-hearts-3.png", label: "3 of Hearts" },
+		{ file: "images/random/card-diamonds-3.png", label: "3 of Diamonds" },
+		{ file: "images/random/card-spades-2.png", label: "2 of Spades" },
+		{ file: "images/random/card-clubs-2.png", label: "2 of Clubs" },
+		{ file: "images/random/card-hearts-2.png", label: "2 of Hearts" },
+		{ file: "images/random/card-diamonds-2.png", label: "2 of Diamonds" },
+		{ file: "images/random/card-spades-1.png", label: "1 of Spades" },
+		{ file: "images/random/card-clubs-1.png", label: "1 of Clubs" },
+		{ file: "images/random/card-hearts-1.png", label: "1 of Hearts" },
+		{ file: "images/random/card-diamonds-1.png", label: "1 of Diamonds" }
       ],
       elements: [
         { file: "images/random/wood.svg", label: "Wood" },
@@ -202,7 +230,7 @@ function rand_setupCards() {
         img.src = choice.file;
         label.textContent = choice.label;
         img.classList.remove('rand-flip');
-      }, 300);
+      }, 500);
     });
   });
 }
