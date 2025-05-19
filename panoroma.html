@@ -23,12 +23,10 @@
 
 
 <section id="pano-section">
-  <h2>Pano Viewer</h2>
+  <h2 class="pano-heading">Panorama Viewer</h2>
 
   <div class="pano-controls">
-    <label>
-      <input type="checkbox" id="pano-toggle-gyro"> Enable Gyro Scroll
-    </label>
+    <button id="pano-enable-gyro-btn">Enable Gyro Scroll</button>
     <button id="pano-fullscreen-btn">Fullscreen</button>
     <input type="file" id="pano-upload" accept="image/*">
   </div>
@@ -38,9 +36,9 @@
   </div>
 
   <div class="pano-thumbs">
-    <img src="images/pano/sample1.jfif" alt="Pano 1">
-    <img src="images/pano/sample2.jpg" alt="Pano 2">
-    <img src="images/pano/sample3.jpg" alt="Pano 3">
+    <img src="images/pano/sample1.jfif" alt="Sample 1">
+    <img src="images/pano/sample2.jpg" alt="Sample 2">
+    <img src="images/pano/sample3.jpg" alt="Sample 3">
   </div>
 
   <style>
@@ -49,6 +47,10 @@
       background: #111;
       color: #fff;
       font-family: sans-serif;
+    }
+    .pano-heading {
+      font-size: 1.5em;
+      margin-bottom: 0.5em;
     }
     .pano-controls {
       display: flex;
@@ -91,17 +93,17 @@
     const pano_viewer = document.getElementById('pano-viewer');
     const pano_image = document.getElementById('pano-image');
     const pano_upload = document.getElementById('pano-upload');
-    const pano_toggleGyro = document.getElementById('pano-toggle-gyro');
     const pano_fullscreenBtn = document.getElementById('pano-fullscreen-btn');
+    const pano_enableGyroBtn = document.getElementById('pano-enable-gyro-btn');
 
-    // Image Switch
+    // Thumbnail switch
     document.querySelectorAll('.pano-thumbs img').forEach(img => {
       img.addEventListener('click', () => {
         pano_image.src = img.src;
       });
     });
 
-    // Upload
+    // File upload
     pano_upload.addEventListener('change', e => {
       const file = e.target.files[0];
       if (file) {
@@ -113,38 +115,36 @@
     // Fullscreen
     pano_fullscreenBtn.addEventListener('click', () => {
       if (pano_viewer.requestFullscreen) pano_viewer.requestFullscreen();
+      else if (pano_viewer.webkitRequestFullscreen) pano_viewer.webkitRequestFullscreen();
+      else if (pano_viewer.msRequestFullscreen) pano_viewer.msRequestFullscreen();
     });
 
-    // Gyro Toggle
+    // Gyro support
     let gyroEnabled = false;
 
-    pano_toggleGyro.addEventListener('change', async () => {
-      if (pano_toggleGyro.checked) {
-        if (typeof DeviceOrientationEvent !== 'undefined' &&
-            typeof DeviceOrientationEvent.requestPermission === 'function') {
-          try {
-            const permission = await DeviceOrientationEvent.requestPermission();
-            if (permission === 'granted') {
-              gyroEnabled = true;
-            } else {
-              showTakSnackbar('Gyro permission denied');
-              pano_toggleGyro.checked = false;
-            }
-          } catch (err) {
-            showTakSnackbar('Gyro not available');
-            pano_toggleGyro.checked = false;
+    pano_enableGyroBtn.addEventListener('click', async () => {
+      if (typeof DeviceOrientationEvent !== 'undefined' &&
+          typeof DeviceOrientationEvent.requestPermission === 'function') {
+        try {
+          const permission = await DeviceOrientationEvent.requestPermission();
+          if (permission === 'granted') {
+            gyroEnabled = true;
+            showTakSnackbar('Gyro enabled');
+          } else {
+            showTakSnackbar('Gyro permission denied');
           }
-        } else {
-          gyroEnabled = true; // older support
+        } catch (err) {
+          showTakSnackbar('Gyro not supported');
         }
       } else {
-        gyroEnabled = false;
+        gyroEnabled = true; // older Android
+        showTakSnackbar('Gyro enabled');
       }
     });
 
-    // Gyro scroll
+    // Gyro scrolling
     if ('DeviceOrientationEvent' in window) {
-      window.addEventListener('deviceorientation', e => {
+      window.addEventListener('deviceorientation', (e) => {
         if (gyroEnabled && e.gamma !== null) {
           pano_viewer.scrollLeft += e.gamma * 2;
         }
@@ -162,7 +162,7 @@
       startX = e.touches[0].clientX;
     });
 
-    // Zoom with pinch or double tap
+    // Zoom (pinch + double tap)
     let scale = 1;
     let lastTouch = 0;
     pano_viewer.addEventListener('touchstart', e => {
@@ -173,7 +173,7 @@
       } else if (e.touches.length === 1) {
         const now = new Date().getTime();
         if (now - lastTouch < 300) {
-          // Double tap
+          // Double tap to zoom
           scale = scale === 1 ? 2 : 1;
           pano_image.style.transform = `scale(${scale})`;
         }
@@ -195,8 +195,16 @@
         }
       }
     });
+
+    // Mock snackbar if not defined
+    if (typeof showTakSnackbar !== 'function') {
+      function showTakSnackbar(msg) {
+        alert(msg); // fallback
+      }
+    }
   </script>
 </section>
+
 
 
 
