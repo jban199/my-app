@@ -314,6 +314,36 @@
 	.home-paragraph {
 		color: white;
 	}
+	
+	
+	.home-QuickAccess-apps {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		width: 250px;
+	}
+	
+	.home-QuickAccess-button {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		color: var(--font1);
+		font-size: 12px;
+		background: var(--bg2);
+		background-image: linear-gradient(0deg, var(--gradient1), var(--gradient2));
+		padding: 10px;
+		border-radius: 20px;
+		margin-bottom: 5px;
+	}
+	
+	.home-QuickAccess-button-icons {
+		width: 24px;
+		height: 24px;
+		fill: var(--accent1);
+		margin: 5px;
+	}
 
 </style>
 </head>
@@ -551,52 +581,86 @@
 	</a>
   </div>
   
-  		<a class="SBM-OPT-button" id="tak-app-share-btn">
-			<svg class="SBM-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+  
+  
+	<!-- ///////////////////// -->
+	<!-- ///////////////////// -->
+	<!-- Home QuickAccess Apps ... START -->
+	<!-- ///////////////////// -->
+	<!-- ///////////////////// -->
+	<Section class="home-QuickAccess-apps">
+		<a class="home-QuickAccess-button" href="backup.html">
+			<svg class="home-QuickAccess-button-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
+			</svg>
+			Backup your data
+		</a>
+		
+		<a class="home-QuickAccess-button" id="SBM-installBtn" href="#">
+			<svg class="home-QuickAccess-button-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M335-9q-51.98 0-88.99-37.01Q209-83.03 209-135v-145h126v25h370v-450H335v25H209v-145q0-51.97 37.01-88.99Q283.02-951 335-951h370q51.97 0 88.99 37.01Q831-876.97 831-825v690q0 51.97-37.01 88.99Q756.97-9 705-9H335ZM176-295l-56-56 209-209H185v-80h280v280h-80v-144L176-295Z"/>
+			</svg>
+			Install this App
+		</a>	
+			<script>
+				let deferredPrompt = null;
+
+				  window.addEventListener('beforeinstallprompt', (e) => {
+					// Let the mini-infobar appear (do NOT call preventDefault)
+					deferredPrompt = e;
+
+					document.getElementById('SBM-installBtn').addEventListener('click', async (event) => {
+						event.preventDefault(); // Prevent anchor behavior
+
+						if (!deferredPrompt) {
+						  console.log('Install prompt not available');
+						  return;
+						}
+
+						deferredPrompt.prompt();
+
+						const { outcome } = await deferredPrompt.userChoice;
+						console.log(`User response to the install prompt: ${outcome}`);
+
+						deferredPrompt = null;
+					  });
+
+			</script>
+		<a class="home-QuickAccess-button" id="tak-app-share-btns">
+			<svg class="home-QuickAccess-button-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 				<path d="M683.94-46Q621-46 577-89.75T533-196q0-5 2-19L288-358q-19 14-41.91 22-22.91 8-49.09 8-62.92 0-106.96-44.26Q46-416.53 46-479.76 46-543 90.04-587.5 134.08-632 197-632q26 0 50 8.5t44 23.5l243-141q-1-5-1-11v-11q0-62.92 44.06-106.96 44.06-44.04 107-44.04T791-869.94q44 44.06 44 107T790.96-656Q746.92-612 684-612q-28.36 0-53.18-9.5T586-648L347-511q2 8.05 2.5 15.52.5 7.48.5 15.98t-1 17q-1 8.5-3 16.5l238 137q20-18 45.45-28.5Q654.91-348 684-348q62.92 0 106.96 44.26Q835-259.47 835-196.24 835-133 790.94-89.5 746.88-46 683.94-46Z"/>
 			</svg>
 			Share this App
 		</a>
-<button id="tak-app-share-btns">Share App</button>
+			<script>
+				function tak_app_share() {
+				  const shareData = {
+					title: 'Trikagnikalaya App',
+					text: `Trikagnikalaya App\nPlease visit this web page and install it from your browser options (chrome, opera, edge, etc.) click on "Add to homescreen".`,
+					url: 'https://jban199.github.io/my-app/'
+				  };
 
-<!--		
-<script>
-document.getElementById('tak-app-share-btn').addEventListener('click', function () {
-  const shareData = {
-    title: 'Trikagnikalaya App',
-    text: `Trikagnikalaya App\nPlease visit this web page and install it from your browser options (chrome, opera, edge, etc.) click on "Add to homescreen".`,
-    url: 'https://jban199.github.io/my-app/'
-  };
+				  if (navigator.share) {
+					navigator.share(shareData)
+					  .then(() => showTakSnackbar('App shared successfully!'))
+					  .catch(() => showTakSnackbar('Sharing failed or was cancelled.'));
+				  } else {
+					showTakSnackbar('Sharing is not supported on this browser. Please copy the URL manually.');
+				  }
+				}
 
-  if (navigator.share) {
-    navigator.share(shareData)
-      .then(() => showTakSnackbar('App shared successfully!'))
-      .catch(err => showTakSnackbar('Sharing failed or was cancelled.'));
-  } else {
-    showTakSnackbar('Sharing is not supported on this browser. Please copy the URL manually.');
-  }
-});
-</script>
--->
-<script>
-function tak_app_share() {
-  const shareData = {
-    title: 'Trikagnikalaya App',
-    text: `Trikagnikalaya App\nPlease visit this web page and install it from your browser options (chrome, opera, edge, etc.) click on "Add to homescreen".`,
-    url: 'https://jban199.github.io/my-app/'
-  };
+				document.getElementById('tak-app-share-btn').addEventListener('click', tak_app_share);
+			</script>
+	</section>
 
-  if (navigator.share) {
-    navigator.share(shareData)
-      .then(() => showTakSnackbar('App shared successfully!'))
-      .catch(() => showTakSnackbar('Sharing failed or was cancelled.'));
-  } else {
-    showTakSnackbar('Sharing is not supported on this browser. Please copy the URL manually.');
-  }
-}
 
-document.getElementById('tak-app-share-btn').addEventListener('click', tak_app_share);
-</script>
+
+
+	<!-- ///////////////////// -->
+	<!-- ///////////////////// -->
+	<!-- Home QuickAccess Apps ... Ends -->
+	<!-- ///////////////////// -->
+	<!-- ///////////////////// -->
 
 <script>
 const locationBtn = document.getElementById('home-location-permission-btn');
