@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mobile Panorama Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            touch-action: none;
+            height: 100vh;
+            width: 100vw;
+            background-color: #000;
+        }
+        
+        #container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        #panorama-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #panorama-img {
+            position: absolute;
+            height: 100%;
+            width: auto;
+            max-width: none;
+            transition: transform 0.1s ease-out;
+        }
+        
+        .vertical #panorama-img {
+            height: auto;
+            width: 100%;
+        }
+        
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            z-index: 10;
+        }
+        
+        button {
+            padding: 10px 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 1px solid white;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        button:active {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        #orientation-info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 10;
+        }
+        
+        #permission-request {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        #permission-request h2 {
+            margin-bottom: 20px;
+        }
+        
+        #permission-request p {
+            margin-bottom: 30px;
+            max-width: 80%;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="panorama-container">
+            <img id="panorama-img" src="https://images.pexels.com/photos/457937/pexels-photo-457937.jpeg" alt="Panorama">
+        </div>
+        
+        <div id="orientation-info">Orientation: <span id="orientation-text">portrait</span></div>
+        
+        <div id="controls">
+            <button id="fullscreen-btn">Fullscreen</button>
+            <button id="reset-btn">Reset View</button>
+        </div>
+        
+        <div id="permission-request">
+            <h2>Panorama Viewer</h2>
+            <p>This app works best with device orientation permissions and in fullscreen mode. Would you like to enable these features?</p>
+            <button id="enable-permissions">Enable Features</button>
+            <button id="continue-without">Continue Without</button>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const panoramaImg = document.getElementById('panorama-img');
+        const panoramaContainer = document.getElementById('panorama-container');
+        const container = document.getElementById('container');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const orientationText = document.getElementById('orientation-text');
+        const permissionRequest = document.getElementById('permission-request');
+        const enablePermissionsBtn = document.getElementById('enable-permissions');
+        const continueWithoutBtn = document.getElementById('continue-without');
+        
+        // Variables
+        let isDragging = false;
+        let startX, startY;
+        let scrollLeft, scrollTop;
+        let currentX = 0, currentY = 0;
+        let isVertical = false;
+        let isFullscreen = false;
+        let permissionGranted = false;
+        
+        // Check if we've already asked for permissions
+        if (sessionStorage.getItem('permissionsAsked') === 'true') {
+            permissionRequest.classList.add('hidden');
+            initPanoramaViewer();
+        }
+        
+        // Permission buttons
+        enablePermissionsBtn.addEventListener('click', () => {
+            permissionRequest.classList.add('hidden');
+            sessionStorage.setItem('permissionsAsked', 'true');
+            permissionGranted = true;
+            initPanoramaViewer();
+            requestFullscreen();
+        });
+        
+        continueWithoutBtn.addEventListener('click', () => {
+            permissionRequest.classList.add('hidden');
+            sessionStorage.setItem('permissionsAsked', 'true');
+            initPanoramaViewer();
+        });
+        
+        // Initialize the panorama viewer
+        function initPanoramaViewer() {
+            // Load the image
+            panoramaImg.onload = function() {
+                checkOrientation();
+                centerImage();
+            };
+            
+            // If image is already loaded (cached)
+            if (panoramaImg.complete) {
+                panoramaImg.onload();
+            }
+            
+            // Event listeners
+            panoramaContainer.addEventListener('mousedown', startDrag);
+            panoramaContainer.addEventListener('touchstart', startDrag, { passive: false });
+            
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('touchmove', drag, { passive: false });
+            
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchend', endDrag);
+            
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+            resetBtn.addEventListener('click', centerImage);
+            
+            window.addEventListener('resize', centerImage);
+            window.addEventListener('orientationchange', handleOrientationChange);
+            
+            // Request device orientation permission if granted
+            if (permissionGranted && typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(response => {
+                        if (response === 'granted') {
+                            window.addEventListener('deviceorientation', handleDeviceOrientation);
+                        }
+                    })
+                    .catch(console.error);
+            }
+        }
+        
+        // Check screen orientation and adjust image accordingly
+        function checkOrientation() {
+            const imgAspect = panoramaImg.naturalWidth / panoramaImg.naturalHeight;
+            const screenAspect = window.innerWidth / window.innerHeight;
+            
+            isVertical = imgAspect < screenAspect;
+            
+            if (isVertical) {
+                panoramaContainer.classList.add('vertical');
+                orientationText.textContent = 'vertical';
+            } else {
+                panoramaContainer.classList.remove('vertical');
+                orientationText.textContent = 'horizontal';
+            }
+        }
+        
+        // Handle orientation change
+        function handleOrientationChange() {
+            checkOrientation();
+            centerImage();
+        }
+        
+        // Center the image
+        function centerImage() {
+            const containerWidth = panoramaContainer.offsetWidth;
+            const containerHeight = panoramaContainer.offsetHeight;
+            const imgWidth = isVertical ? containerWidth : panoramaImg.naturalWidth * (containerHeight / panoramaImg.naturalHeight);
+            const imgHeight = isVertical ? panoramaImg.naturalHeight * (containerWidth / panoramaImg.naturalWidth) : containerHeight;
+            
+            panoramaImg.style.width = `${imgWidth}px`;
+            panoramaImg.style.height = `${imgHeight}px`;
+            
+            currentX = (imgWidth - containerWidth) / 2;
+            currentY = (imgHeight - containerHeight) / 2;
+            
+            updateImagePosition();
+        }
+        
+        // Drag functions
+        function startDrag(e) {
+            isDragging = true;
+            
+            if (e.type === 'touchstart') {
+                e.preventDefault();
+                startX = e.touches[0].pageX;
+                startY = e.touches[0].pageY;
+            } else {
+                startX = e.pageX;
+                startY = e.pageY;
+            }
+            
+            scrollLeft = currentX;
+            scrollTop = currentY;
+        }
+        
+        function drag(e) {
+            if (!isDragging) return;
+            
+            e.preventDefault();
+            
+            let x, y;
+            
+            if (e.type === 'touchmove') {
+                x = e.touches[0].pageX;
+                y = e.touches[0].pageY;
+            } else {
+                x = e.pageX;
+                y = e.pageY;
+            }
+            
+            const walkX = (x - startX) * 2;
+            const walkY = (y - startY) * 2;
+            
+            currentX = scrollLeft - walkX;
+            currentY = scrollTop - walkY;
+            
+            updateImagePosition();
+        }
+        
+        function endDrag() {
+            isDragging = false;
+        }
+        
+        // Update image position with boundaries
+        function updateImagePosition() {
+            const containerWidth = panoramaContainer.offsetWidth;
+            const containerHeight = panoramaContainer.offsetHeight;
+            const imgWidth = panoramaImg.offsetWidth;
+            const imgHeight = panoramaImg.offsetHeight;
+            
+            // Calculate max scroll values
+            const maxX = Math.max(0, imgWidth - containerWidth);
+            const maxY = Math.max(0, imgHeight - containerHeight);
+            
+            // Constrain currentX and currentY within bounds
+            currentX = Math.max(0, Math.min(maxX, currentX));
+            currentY = Math.max(0, Math.min(maxY, currentY));
+            
+            panoramaImg.style.transform = `translate(-${currentX}px, -${currentY}px)`;
+        }
+        
+        // Handle device orientation for scrolling
+        function handleDeviceOrientation(e) {
+            if (!isDragging) {
+                const beta = e.beta;  // -180 to 180 (front/back tilt)
+                const gamma = e.gamma; // -90 to 90 (left/right tilt)
+                
+                if (isVertical) {
+                    // Vertical panorama - use beta (front/back tilt)
+                    const imgHeight = panoramaImg.offsetHeight;
+                    const containerHeight = panoramaContainer.offsetHeight;
+                    const maxY = Math.max(0, imgHeight - containerHeight);
+                    
+                    // Map beta (-180 to 180) to scroll position (0 to maxY)
+                    let newY = ((beta + 180) / 360) * maxY;
+                    
+                    // Smooth the transition
+                    currentY = currentY * 0.7 + newY * 0.3;
+                } else {
+                    // Horizontal panorama - use gamma (left/right tilt)
+                    const imgWidth = panoramaImg.offsetWidth;
+                    const containerWidth = panoramaContainer.offsetWidth;
+                    const maxX = Math.max(0, imgWidth - containerWidth);
+                    
+                    // Map gamma (-90 to 90) to scroll position (0 to maxX)
+                    let newX = ((gamma + 90) / 180) * maxX;
+                    
+                    // Smooth the transition
+                    currentX = currentX * 0.7 + newX * 0.3;
+                }
+                
+                updateImagePosition();
+            }
+        }
+        
+        // Fullscreen functions
+        function toggleFullscreen() {
+            if (!isFullscreen) {
+                requestFullscreen();
+            } else {
+                exitFullscreen();
+            }
+        }
+        
+        function requestFullscreen() {
+            if (container.requestFullscreen) {
+                container.requestFullscreen();
+            } else if (container.webkitRequestFullscreen) {
+                container.webkitRequestFullscreen();
+            } else if (container.msRequestFullscreen) {
+                container.msRequestFullscreen();
+            }
+        }
+        
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+        
+        // Fullscreen change event
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('msfullscreenchange', handleFullscreenChange);
+        
+        function handleFullscreenChange() {
+            isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+            fullscreenBtn.textContent = isFullscreen ? 'Exit Fullscreen' : 'Fullscreen';
+        }
+    </script>
+</body>
+</html>
