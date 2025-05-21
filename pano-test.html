@@ -34,9 +34,6 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         
         #panorama-img {
@@ -106,15 +103,6 @@
             text-align: center;
         }
         
-        #permission-request h2 {
-            margin-bottom: 20px;
-        }
-        
-        #permission-request p {
-            margin-bottom: 30px;
-            max-width: 80%;
-        }
-        
         .hidden {
             display: none !important;
         }
@@ -131,13 +119,14 @@
         <div id="controls">
             <button id="fullscreen-btn">Fullscreen</button>
             <button id="reset-btn">Reset View</button>
+            <button id="orientation-btn">Enable Tilt</button>
         </div>
         
-        <div id="permission-request">
-            <h2>Panorama Viewer</h2>
-            <p>This app works best with device orientation permissions and in fullscreen mode. Would you like to enable these features?</p>
-            <button id="enable-permissions">Enable Features</button>
-            <button id="continue-without">Continue Without</button>
+        <div id="permission-request" class="hidden">
+            <h2>Enable Device Orientation?</h2>
+            <p>For tilt-to-scroll functionality, we need permission to access your device's orientation sensors.</p>
+            <button id="enable-orientation">Enable Tilt Control</button>
+            <button id="skip-orientation">Continue Without</button>
         </div>
     </div>
 
@@ -148,10 +137,11 @@
         const container = document.getElementById('container');
         const fullscreenBtn = document.getElementById('fullscreen-btn');
         const resetBtn = document.getElementById('reset-btn');
+        const orientationBtn = document.getElementById('orientation-btn');
         const orientationText = document.getElementById('orientation-text');
         const permissionRequest = document.getElementById('permission-request');
-        const enablePermissionsBtn = document.getElementById('enable-permissions');
-        const continueWithoutBtn = document.getElementById('continue-without');
+        const enableOrientationBtn = document.getElementById('enable-orientation');
+        const skipOrientationBtn = document.getElementById('skip-orientation');
         
         // Variables
         let isDragging = false;
@@ -160,33 +150,18 @@
         let currentX = 0, currentY = 0;
         let isVertical = false;
         let isFullscreen = false;
-        let permissionGranted = false;
+        let orientationEnabled = false;
+        let imgWidth, imgHeight;
+        let containerWidth, containerHeight;
         
-        // Check if we've already asked for permissions
-        if (sessionStorage.getItem('permissionsAsked') === 'true') {
-            permissionRequest.classList.add('hidden');
-            initPanoramaViewer();
-        }
-        
-        // Permission buttons
-        enablePermissionsBtn.addEventListener('click', () => {
-            permissionRequest.classList.add('hidden');
-            sessionStorage.setItem('permissionsAsked', 'true');
-            permissionGranted = true;
-            initPanoramaViewer();
-            requestFullscreen();
-        });
-        
-        continueWithoutBtn.addEventListener('click', () => {
-            permissionRequest.classList.add('hidden');
-            sessionStorage.setItem('permissionsAsked', 'true');
-            initPanoramaViewer();
-        });
+        // Initialize
+        initPanoramaViewer();
         
         // Initialize the panorama viewer
         function initPanoramaViewer() {
             // Load the image
             panoramaImg.onload = function() {
+                calculateDimensions();
                 checkOrientation();
                 centerImage();
             };
@@ -208,56 +183,66 @@
             
             fullscreenBtn.addEventListener('click', toggleFullscreen);
             resetBtn.addEventListener('click', centerImage);
+            orientationBtn.addEventListener('click', requestOrientationPermission);
             
-            window.addEventListener('resize', centerImage);
+            window.addEventListener('resize', handleResize);
             window.addEventListener('orientationchange', handleOrientationChange);
-            
-            // Request device orientation permission if granted
-            if (permissionGranted && typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission()
-                    .then(response => {
-                        if (response === 'granted') {
-                            window.addEventListener('deviceorientation', handleDeviceOrientation);
-                        }
-                    })
-                    .catch(console.error);
-            }
         }
         
-        // Check screen orientation and adjust image accordingly
-        function checkOrientation() {
+        function calculateDimensions() {
+            containerWidth = panoramaContainer.offsetWidth;
+            containerHeight = panoramaContainer.offsetHeight;
+            
             const imgAspect = panoramaImg.naturalWidth / panoramaImg.naturalHeight;
-            const screenAspect = window.innerWidth / window.innerHeight;
+            const screenAspect = containerWidth / containerHeight;
             
             isVertical = imgAspect < screenAspect;
             
             if (isVertical) {
+                // Vertical scrolling
+                imgWidth = containerWidth;
+                imgHeight = panoramaImg.naturalHeight * (containerWidth / panoramaImg.naturalWidth);
                 panoramaContainer.classList.add('vertical');
                 orientationText.textContent = 'vertical';
             } else {
+                // Horizontal scrolling
+                imgHeight = containerHeight;
+                imgWidth = panoramaImg.naturalWidth * (containerHeight / panoramaImg.naturalHeight);
                 panoramaContainer.classList.remove('vertical');
                 orientationText.textContent = 'horizontal';
             }
+            
+            panoramaImg.style.width = `${imgWidth}px`;
+            panoramaImg.style.height = `${imgHeight}px`;
+        }
+        
+        function handleResize() {
+            calculateDimensions();
+            centerImage();
+        }
+        
+        // Check screen orientation and adjust image accordingly
+        function checkOrientation() {
+            calculateDimensions();
         }
         
         // Handle orientation change
         function handleOrientationChange() {
-            checkOrientation();
-            centerImage();
+            // Delay slightly to allow screen to update
+            setTimeout(() => {
+                calculateDimensions();
+                centerImage();
+            }, 100);
         }
         
         // Center the image
         function centerImage() {
-            const containerWidth = panoramaContainer.offsetWidth;
-            const containerHeight = panoramaContainer.offsetHeight;
-            const imgWidth = isVertical ? containerWidth : panoramaImg.naturalWidth * (containerHeight / panoramaImg.naturalHeight);
-            const imgHeight = isVertical ? panoramaImg.naturalHeight * (containerWidth / panoramaImg.naturalWidth) : containerHeight;
-            
-            panoramaImg.style.width = `${imgWidth}px`;
-            panoramaImg.style.height = `${imgHeight}px`;
-            
             currentX = (imgWidth - containerWidth) / 2;
             currentY = (imgHeight - containerHeight) / 2;
+            
+            // Constrain values
+            currentX = Math.max(0, Math.min(imgWidth - containerWidth, currentX));
+            currentY = Math.max(0, Math.min(imgHeight - containerHeight, currentY));
             
             updateImagePosition();
         }
@@ -300,6 +285,10 @@
             currentX = scrollLeft - walkX;
             currentY = scrollTop - walkY;
             
+            // Constrain values
+            currentX = Math.max(0, Math.min(imgWidth - containerWidth, currentX));
+            currentY = Math.max(0, Math.min(imgHeight - containerHeight, currentY));
+            
             updateImagePosition();
         }
         
@@ -307,53 +296,69 @@
             isDragging = false;
         }
         
-        // Update image position with boundaries
+        // Update image position
         function updateImagePosition() {
-            const containerWidth = panoramaContainer.offsetWidth;
-            const containerHeight = panoramaContainer.offsetHeight;
-            const imgWidth = panoramaImg.offsetWidth;
-            const imgHeight = panoramaImg.offsetHeight;
-            
-            // Calculate max scroll values
-            const maxX = Math.max(0, imgWidth - containerWidth);
-            const maxY = Math.max(0, imgHeight - containerHeight);
-            
-            // Constrain currentX and currentY within bounds
-            currentX = Math.max(0, Math.min(maxX, currentX));
-            currentY = Math.max(0, Math.min(maxY, currentY));
-            
             panoramaImg.style.transform = `translate(-${currentX}px, -${currentY}px)`;
+        }
+        
+        // Device orientation functions
+        function requestOrientationPermission() {
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                // iOS 13+ devices
+                permissionRequest.classList.remove('hidden');
+            } else {
+                // Other devices
+                enableOrientation();
+            }
+        }
+        
+        enableOrientationBtn.addEventListener('click', () => {
+            DeviceOrientationEvent.requestPermission()
+                .then(response => {
+                    if (response === 'granted') {
+                        enableOrientation();
+                    }
+                    permissionRequest.classList.add('hidden');
+                })
+                .catch(console.error);
+        });
+        
+        skipOrientationBtn.addEventListener('click', () => {
+            permissionRequest.classList.add('hidden');
+        });
+        
+        function enableOrientation() {
+            window.addEventListener('deviceorientation', handleDeviceOrientation);
+            orientationEnabled = true;
+            orientationBtn.textContent = 'Tilt Enabled';
+            orientationBtn.style.backgroundColor = 'rgba(0, 255, 0, 0.3)';
         }
         
         // Handle device orientation for scrolling
         function handleDeviceOrientation(e) {
-            if (!isDragging) {
+            if (!isDragging && orientationEnabled) {
                 const beta = e.beta;  // -180 to 180 (front/back tilt)
                 const gamma = e.gamma; // -90 to 90 (left/right tilt)
                 
                 if (isVertical) {
                     // Vertical panorama - use beta (front/back tilt)
-                    const imgHeight = panoramaImg.offsetHeight;
-                    const containerHeight = panoramaContainer.offsetHeight;
-                    const maxY = Math.max(0, imgHeight - containerHeight);
-                    
                     // Map beta (-180 to 180) to scroll position (0 to maxY)
-                    let newY = ((beta + 180) / 360) * maxY;
+                    let newY = ((beta + 90) / 180) * (imgHeight - containerHeight);
                     
                     // Smooth the transition
-                    currentY = currentY * 0.7 + newY * 0.3;
+                    currentY = currentY * 0.8 + newY * 0.2;
                 } else {
                     // Horizontal panorama - use gamma (left/right tilt)
-                    const imgWidth = panoramaImg.offsetWidth;
-                    const containerWidth = panoramaContainer.offsetWidth;
-                    const maxX = Math.max(0, imgWidth - containerWidth);
-                    
                     // Map gamma (-90 to 90) to scroll position (0 to maxX)
-                    let newX = ((gamma + 90) / 180) * maxX;
+                    let newX = ((gamma + 90) / 180) * (imgWidth - containerWidth);
                     
                     // Smooth the transition
-                    currentX = currentX * 0.7 + newX * 0.3;
+                    currentX = currentX * 0.8 + newX * 0.2;
                 }
+                
+                // Constrain values
+                currentX = Math.max(0, Math.min(imgWidth - containerWidth, currentX));
+                currentY = Math.max(0, Math.min(imgHeight - containerHeight, currentY));
                 
                 updateImagePosition();
             }
@@ -370,7 +375,9 @@
         
         function requestFullscreen() {
             if (container.requestFullscreen) {
-                container.requestFullscreen();
+                container.requestFullscreen().catch(err => {
+                    console.error(`Error attempting to enable fullscreen: ${err.message}`);
+                });
             } else if (container.webkitRequestFullscreen) {
                 container.webkitRequestFullscreen();
             } else if (container.msRequestFullscreen) {
@@ -396,6 +403,12 @@
         function handleFullscreenChange() {
             isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
             fullscreenBtn.textContent = isFullscreen ? 'Exit Fullscreen' : 'Fullscreen';
+            
+            // Recalculate dimensions after fullscreen change
+            setTimeout(() => {
+                calculateDimensions();
+                centerImage();
+            }, 100);
         }
     </script>
 </body>
