@@ -13,10 +13,9 @@
 
     <!-- Link to the stylesheet -->
     <link rel="stylesheet" href="styles.css">
-
+	
 </head>
 <body>
-
 
 <section class="nm-header">
 	<h1 class="nm-pagename"> Explorer </h1>
@@ -553,6 +552,26 @@ window.onload = function() {
 };
 </script>
 
+
+
+<!-- ///////////////// -->
+<!-- User Selected Accent Color -->
+<!-- ///////////////// -->
+<style id="theme-accent-style">
+  :root {
+	--accent1: #FD7E14; /* Default fallback accent */
+  }
+</style>
+<script>
+	(function theme_applyAccentFromStorage() {
+	const savedAccent = localStorage.getItem('theme_accent');
+	const accentStyle = document.getElementById('theme-accent-style');
+
+	if (savedAccent && accentStyle) {
+	  accentStyle.textContent = `:root { --accent1: ${savedAccent}; }`;
+	}
+	})();
+</script>
 
 
 
