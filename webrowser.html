@@ -327,6 +327,21 @@ document.addEventListener('click', (event) => {
 		</svg>
 		All
 	</button>
+	<div class="ts-allweb-options-menu" style="display: block;">
+		<button>Show All</button>
+		<button>Browser</button>
+		<button>Search engines</button>
+		<button>Education</button>
+		<button>Communication</button>
+	</div>
+	
+	<label for="cars">Choose a car:</label>
+	<select id="cars">
+		  <option value="volvo">Volvo</option>
+		  <option value="saab">Saab</option>
+		  <option value="opel">Opel</option>
+		  <option value="audi">Audi</option>
+	</select>
 </div>
 <section class="ts-options-list">
 	<script type="application/json" class="ts-card-json">
@@ -605,6 +620,26 @@ window.onload = function() {
             console.error("Error loading SBM:", error);
         });
 };
+</script>
+
+
+<!-- ///////////////// -->
+<!-- User Selected Accent Color -->
+<!-- ///////////////// -->
+<style id="theme-accent-style">
+  :root {
+	--accent1: #FD7E14; /* Default fallback accent */
+  }
+</style>
+<script>
+	(function theme_applyAccentFromStorage() {
+	const savedAccent = localStorage.getItem('theme_accent');
+	const accentStyle = document.getElementById('theme-accent-style');
+
+	if (savedAccent && accentStyle) {
+	  accentStyle.textContent = `:root { --accent1: ${savedAccent}; }`;
+	}
+	})();
 </script>
 
 
