@@ -185,7 +185,10 @@
 		<td class="stopwch-laps-difference">+${stopwch_format(lapDiff).replace(/<[^>]+>/g, '')}</td>
 	  `;
 
-	  stopwch_lapsTable.prepend(row);
+		stopwch_lapsTable.prepend(row);
+	  
+		// Scroll to top to show the latest lap
+		document.querySelector('.stopwch-laps').scrollTop = 0;
 	}
 
 
