@@ -188,7 +188,11 @@
 		stopwch_lapsTable.prepend(row);
 	  
 		// Scroll to top to show the latest lap
-		document.querySelector('.stopwch-laps').scrollTop = 0;
+		document.querySelector('.stopwch-laps').scrollTo({
+		  top: 0,
+		  behavior: 'smooth'
+		});
+
 	}
 
 
