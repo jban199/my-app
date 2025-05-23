@@ -23,54 +23,196 @@
 
 <section class="theme-section">
   <style>
-    .theme-section {
-      padding: 1em;
-      background-color: var(--bg2);
-      border-radius: 8px;
-      margin: 1em 0;
-      color: var(--font1);
+
+
+    .theme-item-container {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 10px;
+		padding: 300px 10px 100px 10px;
     }
 
-    .theme-heading {
-      margin-bottom: 0.5em;
-      font-size: 1.2em;
+    .theme-color-card {
+		display: flex;
+		align-items: center;
+		text-align: left;
+		background-color: var(--bg2);
+		border-radius: 8px;
+		padding: 0.5em 1em;
+		min-width: 160px;
+		cursor: pointer;
+		border: 2px solid transparent;
+		transition: border-color 0.2s ease, transform 0.2s ease;
     }
 
-    .theme-color-options {
-      display: flex;
-      gap: 0.5em;
-      flex-wrap: wrap;
+    .theme-color-card:hover {
+      border-color: var(--accent1);
+      transform: scale(1.02);
     }
 
-    .theme-color-btn {
-      width: 32px;
-      height: 32px;
+    .theme-color-dot {
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       border: 2px solid var(--font1);
-      cursor: pointer;
-      transition: transform 0.2s ease;
+      margin-right: 0.75em;
+      flex-shrink: 0;
     }
 
-    .theme-color-btn:hover {
-      transform: scale(1.1);
+    .theme-color-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .theme-color-name {
+	  color: var(--font1);
+    }
+
+    .theme-color-code {
+      color: var(--font2);
     }
   </style>
 
-  <h2 class="theme-heading">Choose Theme Accent</h2>
-  <div class="theme-color-options">
-    <button class="theme-color-btn" data-color="#1E90FF" title="Dodger Blue" style="background:#1E90FF;"></button>
-    <button class="theme-color-btn" data-color="#FF5722" title="Deep Orange" style="background:#FF5722;"></button>
-    <button class="theme-color-btn" data-color="#4CAF50" title="Green" style="background:#4CAF50;"></button>
-    <button class="theme-color-btn" data-color="#9C27B0" title="Purple" style="background:#9C27B0;"></button>
-    <button class="theme-color-btn" data-color="#FFC107" title="Amber" style="background:#FFC107;"></button>
-    <button class="theme-color-btn" data-color="#00BCD4" title="Cyan" style="background:#00BCD4;"></button>
-  </div>
 
+
+	<div class="theme-item-container">
+		<button class="theme-color-card" data-color="#FD7E14">
+			<span class="theme-color-dot" style="background:#FD7E14;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Default</span>
+				<span class="theme-color-code">#FD7E14</span>
+			</span>
+		</button>
+		
+		<button class="theme-color-card" data-color="#1E90FF">
+			<span class="theme-color-dot" style="background:#1E90FF;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Dodger Blue</span>
+				<span class="theme-color-code">#1E90FF</span>
+			</span>
+		</button>
+
+		<button class="theme-color-card" data-color="#808000">
+			<span class="theme-color-dot" style="background:#808000;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Olive</span>
+				<span class="theme-color-code">#808000</span>
+			</span>
+		</button>
+
+		<button class="theme-color-card" data-color="#DC143C">
+			<span class="theme-color-dot" style="background:#DC143C;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Crimson</span>
+				<span class="theme-color-code">#DC143C</span>
+			</span>
+		</button>
+
+		<button class="theme-color-card" data-color="#FFD700">
+			<span class="theme-color-dot" style="background:#FFD700;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Gold</span>
+				<span class="theme-color-code">#FFD700</span>
+			</span>
+		</button>
+
+		<button class="theme-color-card" data-color="#6A5ACD">
+			<span class="theme-color-dot" style="background:#6A5ACD;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Slate Blue</span>
+				<span class="theme-color-code">#6A5ACD</span>
+			</span>
+		</button>
+
+		<button class="theme-color-card" data-color="#2E8B57">
+			<span class="theme-color-dot" style="background:#2E8B57;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Sea Green</span>
+				<span class="theme-color-code">#2E8B57</span>
+			</span>
+		</button>
+		
+		<button class="theme-color-card" data-color="#FF6347">
+			<span class="theme-color-dot" style="background:#FF6347;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Tomato</span>
+				<span class="theme-color-code">#FF6347</span>
+			</span>
+		</button>
+		
+		<button class="theme-color-card" data-color="#9932CC">
+			<span class="theme-color-dot" style="background:#9932CC;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Dark Orchid</span>
+				<span class="theme-color-code">#9932CC</span>
+			</span>
+		</button>
+		
+		<button class="theme-color-card" data-color="#C71585">
+			<span class="theme-color-dot" style="background:#C71585;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Medium Violet Red</span>
+				<span class="theme-color-code">#C71585</span>
+			</span>
+		</button>
+		
+		<button class="theme-color-card" data-color="#00BFFF">
+			<span class="theme-color-dot" style="background:#00BFFF;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Deep Sky Blue</span>
+				<span class="theme-color-code">#00BFFF</span>
+			</span>
+		</button>
+		
+		<button class="theme-color-card" data-color="#B22222">
+			<span class="theme-color-dot" style="background:#B22222;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Fire Brick</span>
+				<span class="theme-color-code">#B22222</span>
+			</span>
+		</button>
+		
+		<button class="theme-color-card" data-color="#008B8B">
+			<span class="theme-color-dot" style="background:#008B8B;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Dark Cyan</span>
+				<span class="theme-color-code">#008B8B</span>
+			</span>
+		</button>
+		
+		<button class="theme-color-card" data-color="#32CD32">
+			<span class="theme-color-dot" style="background:#32CD32;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Lime Green</span>
+				<span class="theme-color-code">#32CD32</span>
+			</span>
+		</button>
+		
+		<button class="theme-color-card" data-color="#FF4500">
+			<span class="theme-color-dot" style="background:#FF4500;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Orange Red</span>
+				<span class="theme-color-code">#FF4500</span>
+			</span>
+		</button>
+		
+		<button class="theme-color-card" data-color="#4169E1">
+			<span class="theme-color-dot" style="background:#4169E1;"></span>
+			<span class="theme-color-info">
+				<span class="theme-color-name">Royal Blue</span>
+				<span class="theme-color-code">#4169E1</span>
+			</span>
+		</button>
+		
+	</div>
+
+
+  <!-- JS -->
   <script>
     function theme_setAccentColor(color) {
       document.documentElement.style.setProperty('--accent1', color);
       localStorage.setItem('theme_accent', color);
-      showTakSnackbar(`Accent color set to ${color}`);
+      showTakSnackbar('Theme color changed!');
     }
 
     function theme_initAccentPicker() {
@@ -79,7 +221,7 @@
         document.documentElement.style.setProperty('--accent1', savedColor);
       }
 
-      document.querySelectorAll('.theme-color-btn').forEach(btn => {
+      document.querySelectorAll('.theme-color-card').forEach(btn => {
         btn.addEventListener('click', () => {
           const color = btn.getAttribute('data-color');
           theme_setAccentColor(color);
@@ -90,6 +232,9 @@
     document.addEventListener('DOMContentLoaded', theme_initAccentPicker);
   </script>
 </section>
+
+
+
 
 
 
@@ -334,6 +479,13 @@ fullscreenButton.addEventListener('click', () => {
     event.preventDefault(); // otherwise, block it
   });
 </script>
+
+
+<!-- ///////////////// -->
+<!-- Capacitor Functions -->
+<!-- ///////////////// -->
+<script type="module" src="capacitorFunctions.js"></script>
+
 
 </body>
 </html>
