@@ -17,6 +17,22 @@
 </head>
 <body>
 
+
+<section id="tak-page-loader">
+	<div class="tak-spinner"></div>
+	<p>Loading...</p>
+	
+	<script>
+		window.addEventListener('load', function () {
+			const loader = document.getElementById('tak-page-loader');
+			if (loader) {
+			loader.style.display = 'none';
+			}
+		});
+	</script>
+</section>
+
+
 <section class="tak-header">
 	<h1 class="tak-pagename"> Theme </h1>
 </section>
