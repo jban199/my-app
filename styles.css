@@ -1134,8 +1134,8 @@ p {
     position: relative;
     left: 160px;
     top: -12px;
-    height: 15px;
-    width: 15px;
+    height: 20px;
+    width: 20px;
 	z-index: -1;
 	animation: note-userInput-drag-handle-icon-bounce 1s ease-in-out infinite;
 }
