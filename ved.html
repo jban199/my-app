@@ -17,6 +17,22 @@
 </head>
 <body>
 
+
+<section id="tak-page-loader">
+	<div class="tak-spinner"></div>
+	<p>Loading...</p>
+	
+	<script>
+		window.addEventListener('load', function () {
+			const loader = document.getElementById('tak-page-loader');
+			if (loader) {
+			loader.style.display = 'none';
+			}
+		});
+	</script>
+</section>
+
+
 <section class="padding20">
 	<div class="padding20"></div>
     <h1>Aum Namo Bhairava</h1>
@@ -645,6 +661,11 @@ fullscreenButton.addEventListener('click', () => {
 <script src="service-worker.js"></script>
 <script src="app.js" defer></script>
 
+
+<!-- ///////////////// -->
+<!-- Capacitor Functions -->
+<!-- ///////////////// -->
+<script type="module" src="capacitorFunctions.js"></script>
 
 
 </body>
