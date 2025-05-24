@@ -20,6 +20,21 @@
 <section class="tak-header">
   <h1 class="tak-pagename"> Notes </h1>
 </section>
+
+<section id="tak-page-loader">
+	<div class="tak-spinner"></div>
+	<p>Loading...</p>
+	
+	<script>
+		window.addEventListener('load', function () {
+			const loader = document.getElementById('tak-page-loader');
+			if (loader) {
+			loader.style.display = 'none';
+			}
+		});
+	</script>
+</section>
+
 	<div class="note-container">
 		<textarea id="note-userInput" placeholder="Enter some data..."></textarea>
 		<svg class="note-userInput-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
