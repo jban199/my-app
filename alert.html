@@ -17,6 +17,19 @@
 </head>
 <body>
 
+<section id="tak-page-loader">
+	<div class="tak-spinner"></div>
+	<p>Loading...</p>
+	
+	<script>
+		window.addEventListener('load', function () {
+			const loader = document.getElementById('tak-page-loader');
+			if (loader) {
+			loader.style.display = 'none';
+			}
+		});
+	</script>
+</section>
 
 <!-- ///////////////// -->
 <!-- Siren buttons -->
