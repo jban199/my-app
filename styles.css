@@ -1499,8 +1499,8 @@ p {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #BABABA80;
-  backdrop-filter: blur(10px);
+  background-color: #1A1A1A;
+  color: #FFFFFF;
   z-index: 9999;
   display: flex;
   flex-direction: column;
