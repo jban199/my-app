@@ -17,8 +17,8 @@
 </head>
 <body>
 
-<section class="speed-header">
-	<h1 class="speed-pagename"> SpeedoMeter </h1>
+<section class="tak-header">
+	<h1 class="tak-pagename"> SpeedoMeter </h1>
 </section>
 
 
@@ -37,7 +37,7 @@
     <button id="speed-toggleBtn" class="speed-control-button">Start</button>
 	
 	<!-- Snackbar (hidden initially) -->
-	<div id="speed-snackbar" class="speed-snackbar">Welcome</div>
+	<div id="tak-snackbar" class="tak-snackbar">Welcome</div>
 	
   </main>
 
@@ -46,7 +46,7 @@
   const unitLabel = document.getElementById("speed-unitLabel");
   const toggleBtn = document.getElementById("speed-toggleBtn");
   const unitButtons = document.querySelectorAll(".speed-unit-button");
-  const snackbar = document.getElementById("speed-snackbar");
+  const snackbar = document.getElementById("tak-snackbar");
 
   let watchId = null;
   let isRunning = false;
@@ -75,7 +75,7 @@
 
   const startTracking = () => {
     if (!navigator.geolocation) {
-      showSpeedSnackbar("Geolocation not supported.");
+      showTakSnackbar("Geolocation not supported.");
       return;
     }
 
@@ -85,7 +85,7 @@
         updateDisplay();
       },
       (err) => {
-        showSpeedSnackbar("Error: " + err.message);
+        showTakSnackbar("Error: " + err.message);
       },
       {
         enableHighAccuracy: true,
@@ -124,8 +124,8 @@
   
   
   // Snackbar function
-function showSpeedSnackbar(message = "Copied!") {
-  const snackbar = document.getElementById("speed-snackbar");
+function showTakSnackbar(message = "Welcome!") {
+  const snackbar = document.getElementById("tak-snackbar");
   snackbar.textContent = message;
   snackbar.style.display = "block";
   snackbar.style.opacity = "1";
@@ -368,5 +368,13 @@ fullscreenButton.addEventListener('click', () => {
     event.preventDefault(); // otherwise, block it
   });
 </script>
+
+
+<!-- ///////////////// -->
+<!-- Capacitor Functions -->
+<!-- ///////////////// -->
+<script type="module" src="capacitorFunctions.js"></script>
+
+
 </body>
 </html>
