@@ -348,6 +348,22 @@
 </style>
 </head>
 <body class="home-body-container">
+
+<section id="tak-page-loader">
+	<div class="tak-spinner"></div>
+	<p>Loading...</p>
+	
+	<script>
+		window.addEventListener('load', function () {
+			const loader = document.getElementById('tak-page-loader');
+			if (loader) {
+			loader.style.display = 'none';
+			}
+		});
+	</script>
+</section>
+
+
 	<div class="home-widget-row">
 		<!-- Widget: Date & Time -->
 		<div id="home-widget-datetime" class="">
