@@ -21,7 +21,19 @@
 	<h1 class="tak-pagename"> Template </h1>
 </section>
 
-
+<section id="tak-page-loader">
+	<div class="tak-spinner"></div>
+	<p>Loading...</p>
+	
+	<script>
+		window.addEventListener('load', function () {
+			const loader = document.getElementById('tak-page-loader');
+			if (loader) {
+			loader.style.display = 'none';
+			}
+		});
+	</script>
+</section>
 
 
 <!-- Snackbar (hidden initially) -->
@@ -287,6 +299,13 @@ fullscreenButton.addEventListener('click', () => {
     event.preventDefault(); // otherwise, block it
   });
 </script>
+
+
+<!-- ///////////////// -->
+<!-- Capacitor Functions -->
+<!-- ///////////////// -->
+<script type="module" src="capacitorFunctions.js"></script>
+
 
 </body>
 </html>
