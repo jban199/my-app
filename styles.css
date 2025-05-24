@@ -1506,6 +1506,14 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  transition: opacity 0.5s ease;
+  opacity: 1;
+  pointer-events: all;
+}
+
+#tak-page-loader.fade-out {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .tak-spinner {
