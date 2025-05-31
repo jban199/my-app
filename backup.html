@@ -81,124 +81,147 @@
 
 
 
-  <script>
-    const DB_NAME = "TAKAppDB";
-    const DB_VERSION = 3;
-    const STORE_SITES = "CustomSites";
-    const STORE_NOTES = "UserNotes";
+<script>
+    // Configuration - Single Point of Modification
+    const DB_CONFIG = {
+        name: "TAKAppDB",
+        version: 4,
+        stores: [
+            { name: "CustomSites", keyPath: "id", autoIncrement: true },
+            { name: "UserNotes", keyPath: "id", autoIncrement: true },
+            { name: "UserDocs", keyPath: "id", autoIncrement: true }
+            // Simply add new stores here in future
+        ]
+    };
+
     let db;
 
-
+    // Initialize Database
     function initDB() {
-      const request = indexedDB.open(DB_NAME, DB_VERSION);
+        const request = indexedDB.open(DB_CONFIG.name, DB_CONFIG.version);
 
-
-      request.onupgradeneeded = function(e) {
-        db = e.target.result;
-        if (!db.objectStoreNames.contains(STORE_SITES)) {
-          db.createObjectStore(STORE_SITES, { keyPath: "id", autoIncrement: true });
-        }
-        if (!db.objectStoreNames.contains(STORE_NOTES)) {
-          db.createObjectStore(STORE_NOTES, { keyPath: "id", autoIncrement: true });
-        }
-      };
-
-		request.onsuccess = function(e) {
-			db = e.target.result;
-		};
-		
-		request.onerror = function(e) {
-			showTakSnackbar("DB error: " + e.target.errorCode);
-		};
-    }
-
-
-    function generateBackup() {
-      const output = { CustomSites: [], UserNotes: [] };
-      const tx = db.transaction([STORE_SITES, STORE_NOTES], "readonly");
-
-      const sites = tx.objectStore(STORE_SITES).getAll();
-      const notes = tx.objectStore(STORE_NOTES).getAll();
-
-      sites.onsuccess = function () {
-        output.CustomSites = sites.result;
-
-        notes.onsuccess = function () {
-          output.UserNotes = notes.result;
-          document.getElementById("backupOutput").value = JSON.stringify(output, null, 2);
-          showTakSnackbar("Backup generated");
+        request.onupgradeneeded = function(e) {
+            db = e.target.result;
+            DB_CONFIG.stores.forEach(store => {
+                if (!db.objectStoreNames.contains(store.name)) {
+                    db.createObjectStore(store.name, { 
+                        keyPath: store.keyPath, 
+                        autoIncrement: store.autoIncrement 
+                    });
+                }
+            });
         };
-      };
+
+        request.onsuccess = function(e) {
+            db = e.target.result;
+        };
+        
+        request.onerror = function(e) {
+            showTakSnackbar("DB error: " + e.target.errorCode);
+        };
     }
 
-    function copyBackup() {
-      const text = document.getElementById("backupOutput").value;
-      navigator.clipboard.writeText(text).then(() => {
-        showTakSnackbar("Copied to clipboard");
-      });
-    }
-	
-	
-	function clearBackup() {
-    const backupOutput = document.getElementById("backupOutput");
-    if (backupOutput) {
-        backupOutput.value = "";
-		showTakSnackbar("Cleared !");
-		}
-	}
+    // Generate Backup Data
+    function generateBackup() {
+        const output = {};
+        const storeNames = DB_CONFIG.stores.map(store => store.name);
+        const tx = db.transaction(storeNames, "readonly");
 
+        // Create promises for all store data
+        const storePromises = DB_CONFIG.stores.map(store => {
+            return new Promise(resolve => {
+                const request = tx.objectStore(store.name).getAll();
+                request.onsuccess = () => {
+                    output[store.name] = request.result;
+                    resolve();
+                };
+                request.onerror = () => resolve(); // Continue even if one fails
+            });
+        });
+
+        // When all stores are loaded
+        Promise.all(storePromises).then(() => {
+            document.getElementById("backupOutput").value = JSON.stringify(output, null, 2);
+            showTakSnackbar("Backup generated");
+        });
+    }
+
+    // Restore Data from Backup
     function validateRestore() {
-      const input = document.getElementById("restoreInput").value;
-      let parsed;
+        const input = document.getElementById("restoreInput").value;
+        let parsed;
 
-      try {
-        parsed = JSON.parse(input);
-        if (!parsed.CustomSites || !parsed.UserNotes) {
-          throw new Error("Invalid format");
+        try {
+            parsed = JSON.parse(input);
+            
+            // Verify all expected stores are present
+            const missingStores = DB_CONFIG.stores.filter(
+                store => !parsed.hasOwnProperty(store.name)
+            );
+            
+            if (missingStores.length > 0) {
+                throw new Error(`Missing stores: ${missingStores.map(s => s.name).join(', ')}`);
+            }
+        } catch (e) {
+            showTakSnackbar("Invalid backup: " + e.message);
+            return;
         }
-      } catch (e) {
-        showTakSnackbar("Invalid JSON");
-        return;
-      }
 
-      const tx = db.transaction([STORE_SITES, STORE_NOTES], "readwrite");
-      const sites = tx.objectStore(STORE_SITES);
-      const notes = tx.objectStore(STORE_NOTES);
+        const storeNames = DB_CONFIG.stores.map(store => store.name);
+        const tx = db.transaction(storeNames, "readwrite");
 
-      sites.clear();
-      notes.clear();
+        // Clear and restore all stores
+        DB_CONFIG.stores.forEach(store => {
+            const objectStore = tx.objectStore(store.name);
+            objectStore.clear();
+            
+            if (Array.isArray(parsed[store.name])) {
+                parsed[store.name].forEach(item => objectStore.put(item));
+            }
+        });
 
-      parsed.CustomSites.forEach(s => sites.put(s));
-      parsed.UserNotes.forEach(n => notes.put(n));
-
-      tx.oncomplete = () => showTakSnackbar("Data restored successfully");
+        tx.oncomplete = () => showTakSnackbar("Data restored successfully");
+        tx.onerror = () => showTakSnackbar("Restoration failed");
     }
-	
-	
-	function pasteRestore() {
-	  navigator.clipboard.readText().then(text => {
-		const restoreInput = document.getElementById("restoreInput");
-		if (restoreInput) {
-		  restoreInput.value = text;
-		  showTakSnackbar("Pasted !");
-		}
-	  }).catch(err => {
-		showTakSnackbar("Failed to paste: " + err);
-	  });
-	}
-	
-	function clearRestore() {
-    const backupOutput = document.getElementById("restoreInput");
-    if (backupOutput) {
-        backupOutput.value = "";
-		showTakSnackbar("Cleared !");
-		}
-	}
 
-    window.addEventListener("load", function () {
-    initDB();
-	});
-  </script>
+    // Helper Functions (unchanged)
+    function copyBackup() {
+        const text = document.getElementById("backupOutput").value;
+        navigator.clipboard.writeText(text).then(() => {
+            showTakSnackbar("Copied to clipboard");
+        });
+    }
+    
+    function clearBackup() {
+        const backupOutput = document.getElementById("backupOutput");
+        if (backupOutput) {
+            backupOutput.value = "";
+            showTakSnackbar("Cleared!");
+        }
+    }
+    
+    function pasteRestore() {
+        navigator.clipboard.readText().then(text => {
+            const restoreInput = document.getElementById("restoreInput");
+            if (restoreInput) {
+                restoreInput.value = text;
+                showTakSnackbar("Pasted!");
+            }
+        }).catch(err => {
+            showTakSnackbar("Failed to paste: " + err);
+        });
+    }
+    
+    function clearRestore() {
+        const backupOutput = document.getElementById("restoreInput");
+        if (backupOutput) {
+            backupOutput.value = "";
+            showTakSnackbar("Cleared!");
+        }
+    }
+
+    window.addEventListener("load", initDB);
+</script>
 
 
 
