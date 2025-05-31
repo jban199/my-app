@@ -54,6 +54,11 @@
       border-radius: 20px;
     }
 
+    #compass-section .compass-title {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+    }
 
     #compass-section .compass-container {
       width: 250px;
@@ -105,12 +110,13 @@
     }
   </style>
 
+  <h2 class="compass-title">Compass (Referred)</h2>
   <div class="compass-container">
-    <img src="images/compass/compass.png" alt="Compass" class="compass-img" id="compass-img" />
+    <img src="compass.png" alt="Compass" class="compass-img" id="compass-img" />
   </div>
   <div class="compass-degree" id="compass-degree">Heading: --°</div>
   <button class="compass-btn" id="compass-permission-btn" style="display: none;">Enable Compass</button>
-  <div class="compass-debug" id="compass-debug"></div>
+  <div class="images/compass/compass-debug" id="compass-debug"></div>
 
   <script>
     (function compass_init() {
@@ -194,6 +200,7 @@
     })();
   </script>
 </section>
+
 
 
 
