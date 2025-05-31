@@ -76,7 +76,7 @@
       height: 100%;
       object-fit: contain;
       transform: rotate(0deg);
-      transition: transform 0.5s ease-out;
+      transition: transform 0.3s ease-out;
     }
 
     #compass-section .compass-degree {
@@ -87,6 +87,19 @@
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(5px);
+      text-align: center;
+    }
+
+    #compass-section .compass-btn {
+      margin-top: 15px;
+      padding: 8px 16px;
+      border: none;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      backdrop-filter: blur(3px);
     }
   </style>
 
@@ -94,33 +107,74 @@
   <div class="compass-container">
     <img src="images/compass/compass.png" alt="Compass" class="compass-img" id="compass-img" />
   </div>
-  <div class="compass-degree" id="compass-degree">Heading: 0°</div>
+  <div class="compass-degree" id="compass-degree">Heading: --°</div>
+  <button class="compass-btn" id="compass-permission-btn" style="display: none;">Enable Compass</button>
 
   <script>
     (function compass_init() {
       const compass_img = document.querySelector('#compass-img');
       const compass_degree = document.querySelector('#compass-degree');
+      const compass_btn = document.querySelector('#compass-permission-btn');
+
+      let lastRotation = 0;
+
+      function smoothRotate(newDeg) {
+        const rotation = 360 - newDeg;
+        // Avoid too much jitter by ignoring very small changes
+        if (Math.abs(rotation - lastRotation) > 1) {
+          compass_img.style.transform = `rotate(${rotation}deg)`;
+          compass_degree.textContent = `Heading: ${Math.round(newDeg)}°`;
+          lastRotation = rotation;
+        }
+      }
 
       function compass_handleOrientation(event) {
-        const compass_alpha = event.alpha;
-        if (typeof compass_alpha === 'number') {
-          const compass_rotation = 360 - compass_alpha;
-          compass_img.style.transform = `rotate(${compass_rotation}deg)`;
-          compass_degree.textContent = `Heading: ${Math.round(compass_alpha)}°`;
+        if (event.absolute || event.webkitCompassHeading || typeof event.alpha === 'number') {
+          const heading = event.webkitCompassHeading || event.alpha;
+          if (heading !== null && heading !== undefined) {
+            smoothRotate(heading);
+          } else {
+            compass_degree.textContent = 'Compass data not available';
+          }
         } else {
           compass_degree.textContent = 'Compass data not available';
         }
       }
 
-      if (window.DeviceOrientationEvent) {
+      function startListening() {
         window.addEventListener('deviceorientationabsolute', compass_handleOrientation, true);
         window.addEventListener('deviceorientation', compass_handleOrientation, true);
-      } else {
-        compass_degree.textContent = 'Compass not supported';
       }
+
+      function requestPermissionIfNeeded() {
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+          compass_btn.style.display = 'inline-block';
+          compass_btn.addEventListener('click', () => {
+            DeviceOrientationEvent.requestPermission()
+              .then(permissionState => {
+                if (permissionState === 'granted') {
+                  startListening();
+                  compass_btn.style.display = 'none';
+                } else {
+                  compass_degree.textContent = 'Permission denied';
+                }
+              })
+              .catch(err => {
+                console.error(err);
+                compass_degree.textContent = 'Error requesting permission';
+              });
+          });
+        } else {
+          // No permission required
+          startListening();
+        }
+      }
+
+      requestPermissionIfNeeded();
     })();
   </script>
 </section>
+
 
 
 
