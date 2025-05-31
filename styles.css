@@ -1313,69 +1313,6 @@ p {
 }
 
 
-/* Confirm Delete Dialog Overlay */
-.note-dialog {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #000000d0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 99;
-}
-
-/* Confirm Dialog Box */
-.note-dialog-box {
-  background-color: var(--bg1);
-  color: var(--font1);
-  padding: 20px 30px;
-  border-radius: 16px;
-  box-shadow: 0px 4px 8px var(--shadow1);
-  max-width: 300px;
-  text-align: center;
-  width: 200px;
-}
-
-.note-dialog-box p {
-	color: var(--font1);
-}
-
-/* Confirm Dialog Buttons */
-.note-dialog-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  gap: 10px;
-}
-
-.note-dialog-actions button {
-  flex: 1;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 14px;
-  cursor: pointer;
-  box-shadow: 0px 2px 3px var(--shadow2);
-  transition: background-color 0.2s ease;
-}
-
-#note-dialog-skip {
-  background-color: var(--bg2);
-  color: var(--font1);
-}
-
-
-#note-dialog-continue {
-  background-color: var(--accent1);
-  color: var(--bg1);
-}
-
-
-
 
 
 
@@ -1532,6 +1469,68 @@ p {
   }
 }
 
+
+
+/* Confirm Dialog Overlay */
+.tak-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000d0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+/* Confirm Dialog Box */
+.tak-dialog-box {
+  background-color: var(--bg1);
+  color: var(--font1);
+  padding: 20px 30px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 8px var(--shadow1);
+  max-width: 300px;
+  text-align: center;
+  width: 200px;
+}
+
+.tak-dialog-box p {
+	color: var(--font1);
+}
+
+/* Confirm Dialog Buttons */
+.tak-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.tak-dialog-actions button {
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0px 2px 3px var(--shadow2);
+  transition: background-color 0.2s ease;
+}
+
+.tak-dialog-skip {
+  background-color: var(--bg2);
+  color: var(--font1);
+}
+
+
+.tak-dialog-continue {
+  background-color: var(--accent1);
+  color: var(--bg1);
+}
 
 
 
@@ -1692,65 +1691,4 @@ p {
     text-align: center;
     font-size: 14px;
     box-sizing: border-box;
-}
-
-
-.bkup-dialog {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #000000d0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 99;
-}
-
-/* Confirm Dialog Box */
-.bkup-dialog-box {
-  background-color: var(--bg1);
-  color: var(--font1);
-  padding: 20px 30px;
-  border-radius: 16px;
-  box-shadow: 0px 4px 8px var(--shadow1);
-  max-width: 300px;
-  text-align: center;
-  width: 200px;
-}
-
-.bkup-dialog-box p {
-	color: var(--font1);
-}
-
-/* Confirm Dialog Buttons */
-.bkup-dialog-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  gap: 10px;
-}
-
-.bkup-dialog-actions button {
-  flex: 1;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 14px;
-  cursor: pointer;
-  box-shadow: 0px 2px 3px var(--shadow2);
-  transition: background-color 0.2s ease;
-}
-
-#bkup-dialog-skip {
-  background-color: var(--bg2);
-  color: var(--font1);
-}
-
-
-#bkup-dialog-continue {
-  background-color: var(--accent1);
-  color: var(--bg1);
 }
