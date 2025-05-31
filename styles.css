@@ -1574,10 +1574,10 @@ p {
 .bkup-Display-drag-handle-icon {
 	fill: var(--accent1);
     position: relative;
-    left: 159px;
+    left: 160px;
     top: -12px;
-    height: 15px;
-    width: 15px;
+    height: 20px;
+    width: 20px;
 	z-index: 1;
 	animation: bkup-Display-drag-handle-icon-bounce 1s ease-in-out infinite;
 }
