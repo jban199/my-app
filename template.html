@@ -62,6 +62,16 @@ function showTakSnackbar(message = "Welcome!") {
 </script>
 
 
+<!-- Confirm Dialog (hidden initially) -->
+<div id="SECTION-confirm-dialog" class="tak-dialog" style="display: none;">
+	<div class="tak-dialog-box">
+		<p>Are you sure you want to delete this note?</p>
+		<div class="tak-dialog-actions">
+			<button class="tak-dialog-skip" id="SECTION-dialog-skip">Skip</button>
+			<button class="tak-dialog-continue" id="SECTION-dialog-continue">Continue</button>
+		</div>
+	</div>
+</div>
 
 <!-- ///////////////// -->
 <!-- Footer Spacer -->
