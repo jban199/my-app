@@ -127,10 +127,13 @@
 
       let lastHeading = null;
       let lastUpdate = 0;
+      let calibrationShown = false;
       let isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-      let isChrome = /Chrome/.test(navigator.userAgent);
+      let isAndroid = /Android/.test(navigator.userAgent);
       let isOpera = /Opera/.test(navigator.userAgent);
-      let smoothingFactor = isOpera ? 0.2 : 0.5;
+      let smoothingFactor = isOpera ? 0.1 : 0.3; // More aggressive smoothing for Opera
+      let lastStableHeading = null;
+      let unstableCount = 0;
 
       // Check if device orientation is supported
       if (!window.DeviceOrientationEvent) {
@@ -141,6 +144,7 @@
       function smoothHeading(newHeading) {
         if (lastHeading === null) return newHeading;
         
+        // Handle crossing the 360/0 boundary
         if (Math.abs(newHeading - lastHeading) > 180) {
           if (newHeading > lastHeading) {
             lastHeading += 360;
@@ -149,7 +153,10 @@
           }
         }
         
+        // Apply smoothing
         const smoothed = lastHeading * (1 - smoothingFactor) + newHeading * smoothingFactor;
+        
+        // Normalize back to 0-360
         return (smoothed + 360) % 360;
       }
 
@@ -161,37 +168,68 @@
 
       function handleOrientation(event) {
         let heading = null;
+        let source = '';
         
+        // Check for iOS compass heading first
         if (event.webkitCompassHeading !== undefined) {
           heading = event.webkitCompassHeading;
-          compass_debug.textContent = `iOS Heading: ${heading.toFixed(1)}°`;
+          source = 'iOS';
         } 
+        // Check for absolute orientation (Android Chrome)
         else if (event.absolute === true && event.alpha !== null) {
           heading = event.alpha;
-          compass_debug.textContent = `Absolute Alpha: ${heading.toFixed(1)}°`;
+          source = 'Absolute';
         }
+        // Fallback for relative orientation (some Android browsers)
         else if (event.alpha !== null) {
           heading = event.alpha;
-          compass_debug.textContent = `Relative Alpha: ${heading.toFixed(1)}°`;
-          showTakSnackbar("Move your device in a figure 8 to calibrate");
+          source = 'Relative';
+          
+          // Only show calibration message once for relative sensors
+          if (!calibrationShown && isAndroid) {
+            showTakSnackbar("Move your device in a figure 8 to calibrate");
+            calibrationShown = true;
+          }
         }
         
         if (heading !== null) {
           const now = Date.now();
+          
+          // Check if heading is stable (not changing too rapidly)
+          if (lastStableHeading !== null && Math.abs(heading - lastStableHeading) > 10) {
+            unstableCount++;
+            if (unstableCount > 5) {
+              // Too unstable - likely needs calibration
+              if (!calibrationShown) {
+                showTakSnackbar("Device needs calibration - move slowly");
+                calibrationShown = true;
+              }
+              return;
+            }
+          } else {
+            unstableCount = 0;
+          }
+          
+          // Only update if significant change or every second
           if (lastHeading === null || 
-              Math.abs(heading - lastHeading) > 2 || 
+              Math.abs(heading - lastHeading) > 1 || 
               now - lastUpdate > 1000) {
             const smoothedHeading = smoothHeading(heading);
             rotateCompass(smoothedHeading);
             lastHeading = smoothedHeading;
+            lastStableHeading = smoothedHeading;
             lastUpdate = now;
           }
+          
+          compass_debug.textContent = `${source} Heading: ${heading.toFixed(1)}° | Smooth: ${lastHeading.toFixed(1)}°`;
         }
       }
 
       function startCompass() {
         try {
+          // Try absolute first
           window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+          // Fallback to regular
           window.addEventListener('deviceorientation', handleOrientation, true);
           showTakSnackbar("Compass activated");
         } catch (e) {
