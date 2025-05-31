@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TKA - Document-Add</title>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <meta name="theme-color" content="#1A1A1A">
+
+    <!-- Link to the stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+
+<style>
+#doc-edit {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: var(--bg1);
+	display: flex;
+	flex-direction: column;
+	z-index: 9999;
+	overflow: hidden;
+}
+
+.doc-edit-header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 20px;
+	padding: 10px;
+	box-shadow: 0 2px 10px var(--shadow1);
+	font-size: 20px;
+	font-weight: bold;
+	color: var(--font1);
+}
+
+#doc-edit-back-btn {
+	border: none;
+	background: none;
+	width: 45px;
+	height: 45px;
+}
+
+#doc-edit-back-btn svg {
+	width: 32px;
+	height: 32px;
+	fill: var(--accent1);
+}
+
+.doc-edit-body {
+	flex: 1;
+	overflow-y: auto;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.doc-edit-body label {
+	color: var(--font2);
+	margin-top: 20px;
+}
+
+.doc-edit-body input {
+	width: 100%;
+	border: none;
+	border-radius: 10px;
+	background: var(--bg2);
+	color: var(--font1);
+	padding: 15px;
+	box-sizing: border-box;
+}
+
+#doc-fields-container .field-pair {
+	display: flex;
+	gap: 10px;
+	margin-top: 10px;
+}
+
+.field-pair input {
+	flex: 1;
+	padding: 10px;
+	border-radius: 8px;
+	border: none;
+	background: var(--bg2);
+	color: var(--font1);
+}
+
+.remove-field-btn {
+	background: none;
+	border: none;
+	color: red;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+#edit-field-btn {
+	color: var(--accent1);
+	background: transparent;
+	border: none;
+	padding: 10px;
+	cursor: pointer;
+}
+
+.doc-edit-footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+	padding: 15px;
+	box-shadow: 0 -2px 10px var(--shadow1);
+	background: var(--bg1);
+	position: sticky;
+	bottom: 0;
+}
+
+#doc-cancel-btn {
+	background: var(--bg1);
+	color: var(--accent1);
+	border: none;
+	padding: 10px 20px;
+	border-radius: 30px;
+}
+
+#doc-save-btn {
+	background: var(--accent1);
+	color: var(--font1);
+	border: none;
+	padding: 10px 20px;
+	border-radius: 30px;
+}
+</style>
+
+</head>
+<body>
+
+
+<!-- ///////////////////// -->
+<!-- Edit Document         -->
+<!-- ///////////////////// -->
+<section id="doc-edit">
+    <div class="doc-edit-header">
+        <button id="doc-edit-back-btn" onclick="closeDocEdit()">
+            <svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+                <path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z"/>
+            </svg>
+        </button>
+        Edit Document
+    </div>
+
+    <div class="doc-edit-body">
+        <label for="doc-name">Document Name</label>
+        <input type="text" id="doc-name" placeholder="Aadhar Card, PAN Card, Voter Id ...">
+
+        <div id="doc-fields-container"></div>
+
+        <button id="edit-field-btn">+ Add Field</button>
+    </div>
+
+    <div class="doc-edit-footer">
+        <button id="doc-cancel-btn" onclick="closeDocEdit()">Cancel</button>
+        <button id="doc-save-btn">Save Changes</button>
+    </div>
+
+<script>
+// Store the current document ID being edited
+let currentDocId = null;
+
+function closeDocEdit() {
+    location.replace('document.html');
+}
+
+let docDb;
+const docDbName = "TAKAppDB";
+const docStoreName = "UserDocs";
+const saveBtn = document.getElementById("doc-save-btn");
+saveBtn.disabled = true;
+
+const request = indexedDB.open(docDbName, 4);
+
+request.onupgradeneeded = (event) => {
+    const db = event.target.result;
+    if (!db.objectStoreNames.contains(docStoreName)) {
+        db.createObjectStore(docStoreName, { keyPath: 'id', autoIncrement: true });
+    }
+};
+
+request.onsuccess = (event) => {
+    docDb = event.target.result;
+    saveBtn.disabled = false;
+    
+    // Load document data if ID is in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const docId = urlParams.get('id');
+    if (docId) {
+        loadDocumentForEditing(parseInt(docId));
+    }
+};
+
+request.onerror = () => {
+    showTakSnackbar("Failed to open database");
+};
+
+function loadDocumentForEditing(docId) {
+    currentDocId = docId;
+    const tx = docDb.transaction([docStoreName], "readonly");
+    const store = tx.objectStore(docStoreName);
+    const req = store.get(docId);
+
+    req.onsuccess = () => {
+        const docData = req.result;
+        if (docData) {
+            document.getElementById("doc-name").value = docData.name;
+            
+            const fieldsContainer = document.getElementById("doc-fields-container");
+            fieldsContainer.innerHTML = "";
+            
+            docData.fields.forEach(field => {
+                addFieldToContainer(field.key, field.value);
+            });
+        } else {
+            showTakSnackbar("Document not found");
+            closeDocEdit();
+        }
+    };
+
+    req.onerror = () => {
+        showTakSnackbar("Failed to load document");
+    };
+}
+
+function addFieldToContainer(key = "", value = "") {
+    const fieldDiv = document.createElement("div");
+    fieldDiv.className = "field-pair";
+    fieldDiv.innerHTML = `
+        <input type="text" class="field-key" placeholder="Field Name" value="${escapeHtml(key)}">
+        <input type="text" class="field-value" placeholder="Field Value" value="${escapeHtml(value)}">
+        <button class="remove-field-btn" onclick="this.parentElement.remove()">✕</button>
+    `;
+    document.getElementById("doc-fields-container").appendChild(fieldDiv);
+}
+
+// Helper function to prevent XSS
+function escapeHtml(unsafe) {
+    return unsafe ? unsafe.toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;") : "";
+}
+
+document.getElementById("edit-field-btn").onclick = () => {
+    addFieldToContainer();
+};
+
+saveBtn.onclick = () => {
+    if (!docDb) {
+        showTakSnackbar("Database not ready");
+        return;
+    }
+
+    const name = document.getElementById("doc-name").value.trim();
+    if (!name) {
+        showTakSnackbar("Document name required");
+        return;
+    }
+
+    const fields = Array.from(document.querySelectorAll(".field-pair")).map(pair => {
+        const key = pair.querySelector(".field-key").value.trim();
+        const value = pair.querySelector(".field-value").value.trim();
+        return key ? { key, value } : null;
+    }).filter(Boolean);
+
+    if (fields.length === 0) {
+        showTakSnackbar("Add at least one field");
+        return;
+    }
+
+    const docData = { id: currentDocId, name, fields };
+    const tx = docDb.transaction([docStoreName], "readwrite");
+    const store = tx.objectStore(docStoreName);
+    const req = store.put(docData); // Using put instead of add to update
+
+    req.onsuccess = () => {
+        showTakSnackbar("Document updated");
+        closeDocEdit();
+    };
+
+    req.onerror = () => {
+        showTakSnackbar("Failed to update document");
+    };
+};
+</script>
+</section>
+
+
+
+
+
+
+<!-- Snackbar (hidden initially) -->
+	<div id="tak-snackbar" class="tak-snackbar">Welcome!</div>
+
+<script>
+// Snackbar function
+function showTakSnackbar(message = "Welcome!") {
+  const snackbar = document.getElementById("tak-snackbar");
+  snackbar.textContent = message;
+  snackbar.style.display = "block";
+  snackbar.style.opacity = "1";
+
+  setTimeout(() => {
+    snackbar.style.opacity = "0";
+    setTimeout(() => {
+      snackbar.style.display = "none";
+    }, 300);
+  }, 2000);
+}
+</script>
+
+
+
+
+<!-- ///////////////// -->
+<!-- User Selected Accent Color -->
+<!-- ///////////////// -->
+<style id="theme-accent-style">
+  :root {
+	--accent1: #FD7E14; /* Default fallback accent */
+  }
+</style>
+<script>
+	(function theme_applyAccentFromStorage() {
+	const savedAccent = localStorage.getItem('theme_accent');
+	const accentStyle = document.getElementById('theme-accent-style');
+
+	if (savedAccent && accentStyle) {
+	  accentStyle.textContent = `:root { --accent1: ${savedAccent}; }`;
+	}
+	})();
+</script>
+
+
+<!-- ///////////////// -->
+<!-- Set Theme - Based on Local Storage -->
+<!-- ///////////////// -->
+<script>
+  // Wait for the DOM to be fully loaded before running the script
+  document.addEventListener("DOMContentLoaded", function() {
+    const themeLink = document.createElement("link");
+    themeLink.rel = "stylesheet";
+    themeLink.id = "theme-link";
+    
+    // Check if a theme preference is saved in localStorage
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
+    } else if (savedTheme === "light") {
+      themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
+    } else {
+      themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
+      localStorage.setItem('theme', 'dark');  // Save preference
+    }
+
+    // Append the theme <link> tag to the <head> of the document
+    document.head.appendChild(themeLink);
+
+    // Initialize icons based on saved theme preference
+    const darkIcon = document.getElementById('dark-icon');
+    const lightIcon = document.getElementById('light-icon');
+
+    if (savedTheme === "dark") {
+      lightIcon.style.display = 'none';
+      darkIcon.style.display = 'block';
+    } else {
+      lightIcon.style.display = 'block';
+      darkIcon.style.display = 'none';
+    }
+
+    // Toggle theme when button is clicked
+    const themeToggleButton = document.getElementById('theme-toggle');
+
+    themeToggleButton.addEventListener('click', () => {
+      const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
+      if (currentTheme === 'dark') {
+        themeLink.href = 'light-theme.css';  // Switch to light theme
+        localStorage.setItem('theme', 'light');  // Save preference
+        lightIcon.style.display = 'block';  // Show light icon
+        darkIcon.style.display = 'none';   // Hide dark icon
+      } else {
+        themeLink.href = 'dark-theme.css';   // Switch to dark theme
+        localStorage.setItem('theme', 'dark');  // Save preference
+        lightIcon.style.display = 'none';   // Hide light icon
+        darkIcon.style.display = 'block';   // Show dark icon
+      }
+    });
+  });
+</script>
+
+<!-- ///////////////// -->
+<!-- Prevent Right Click Context Menu -->
+<!-- ///////////////// -->
+<script>
+  document.addEventListener('contextmenu', function(event) {
+    const target = event.target;
+
+    // Allow default context menu on input, textarea, or contenteditable elements
+    if (
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.isContentEditable
+    ) {
+      return; // allow context menu
+    }
+
+    event.preventDefault(); // otherwise, block it
+  });
+</script>
+
+
+<!-- ///////////////// -->
+<!-- Capacitor Functions -->
+<!-- ///////////////// -->
+<script type="module" src="capacitorFunctions.js"></script>
+
+
+</body>
+</html>
