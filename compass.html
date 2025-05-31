@@ -54,11 +54,6 @@
       border-radius: 20px;
     }
 
-    #compass-section .compass-title {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
-    }
 
     #compass-section .compass-container {
       width: 250px;
@@ -101,72 +96,97 @@
       cursor: pointer;
       backdrop-filter: blur(3px);
     }
+
+    #compass-section .compass-debug {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      opacity: 0.6;
+      text-align: center;
+    }
   </style>
 
-  <h2 class="compass-title">Compass</h2>
   <div class="compass-container">
     <img src="images/compass/compass.png" alt="Compass" class="compass-img" id="compass-img" />
   </div>
   <div class="compass-degree" id="compass-degree">Heading: --°</div>
   <button class="compass-btn" id="compass-permission-btn" style="display: none;">Enable Compass</button>
+  <div class="compass-debug" id="compass-debug"></div>
 
   <script>
     (function compass_init() {
       const compass_img = document.querySelector('#compass-img');
       const compass_degree = document.querySelector('#compass-degree');
       const compass_btn = document.querySelector('#compass-permission-btn');
+      const compass_debug = document.querySelector('#compass-debug');
 
-      let lastRotation = 0;
+      let lastHeading = null;
+      let lastUpdate = 0;
 
-      function smoothRotate(newDeg) {
-        const rotation = 360 - newDeg;
-        // Avoid too much jitter by ignoring very small changes
-        if (Math.abs(rotation - lastRotation) > 1) {
-          compass_img.style.transform = `rotate(${rotation}deg)`;
-          compass_degree.textContent = `Heading: ${Math.round(newDeg)}°`;
-          lastRotation = rotation;
-        }
+      function clampDiff(a, b, maxDiff = 2) {
+        return Math.abs(a - b) > maxDiff;
       }
 
-      function compass_handleOrientation(event) {
-        if (event.absolute || event.webkitCompassHeading || typeof event.alpha === 'number') {
-          const heading = event.webkitCompassHeading || event.alpha;
-          if (heading !== null && heading !== undefined) {
-            smoothRotate(heading);
-          } else {
-            compass_degree.textContent = 'Compass data not available';
-          }
+      function rotateCompass(deg) {
+        const rotation = 360 - deg;
+        compass_img.style.transform = `rotate(${rotation}deg)`;
+        compass_degree.textContent = `Heading: ${Math.round(deg)}°`;
+      }
+
+      function handleOrientation(event) {
+        let heading = null;
+        if (event.webkitCompassHeading != null) {
+          heading = event.webkitCompassHeading;
+          compass_debug.textContent = `webkitCompassHeading: ${heading}`;
+        } else if (event.absolute === true && typeof event.alpha === 'number') {
+          heading = event.alpha;
+          compass_debug.textContent = `alpha (abs): ${heading}`;
         } else {
-          compass_degree.textContent = 'Compass data not available';
+          compass_debug.textContent = `Invalid event: no heading`;
+        }
+
+        if (heading != null) {
+          const now = Date.now();
+          if (
+            lastHeading === null ||
+            clampDiff(heading, lastHeading) ||
+            now - lastUpdate > 1000
+          ) {
+            rotateCompass(heading);
+            lastHeading = heading;
+            lastUpdate = now;
+          }
         }
       }
 
-      function startListening() {
-        window.addEventListener('deviceorientationabsolute', compass_handleOrientation, true);
-        window.addEventListener('deviceorientation', compass_handleOrientation, true);
+      function startCompass() {
+        window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+        window.addEventListener('deviceorientation', handleOrientation, true);
       }
 
       function requestPermissionIfNeeded() {
-        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        if (
+          typeof DeviceOrientationEvent !== 'undefined' &&
+          typeof DeviceOrientationEvent.requestPermission === 'function'
+        ) {
           compass_btn.style.display = 'inline-block';
           compass_btn.addEventListener('click', () => {
             DeviceOrientationEvent.requestPermission()
-              .then(permissionState => {
+              .then((permissionState) => {
                 if (permissionState === 'granted') {
-                  startListening();
+                  startCompass();
                   compass_btn.style.display = 'none';
                 } else {
                   compass_degree.textContent = 'Permission denied';
                 }
               })
-              .catch(err => {
+              .catch((err) => {
+                compass_degree.textContent = 'Permission error';
                 console.error(err);
-                compass_degree.textContent = 'Error requesting permission';
               });
           });
         } else {
-          // No permission required
-          startListening();
+          // No permission needed
+          startCompass();
         }
       }
 
@@ -174,6 +194,7 @@
     })();
   </script>
 </section>
+
 
 
 
