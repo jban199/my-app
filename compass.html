@@ -76,7 +76,7 @@
       height: 100%;
       object-fit: contain;
       transform: rotate(0deg);
-      transition: transform 0.3s ease-out;
+      transition: transform 0.5s ease-out;
     }
 
     #compass-section .compass-degree {
@@ -110,7 +110,7 @@
     }
   </style>
 
-  <h2 class="compass-title">Compass (Referred)</h2>
+  <h2 class="compass-title">Compass</h2>
   <div class="compass-container">
     <img src="images/compass/compass.png" alt="Compass" class="compass-img" id="compass-img" />
   </div>
@@ -120,16 +120,37 @@
 
   <script>
     (function compass_init() {
-      const compass_img = document.querySelector('#compass-img');
-      const compass_degree = document.querySelector('#compass-degree');
-      const compass_btn = document.querySelector('#compass-permission-btn');
-      const compass_debug = document.querySelector('#compass-debug');
+      const compass_img = document.getElementById('compass-img');
+      const compass_degree = document.getElementById('compass-degree');
+      const compass_btn = document.getElementById('compass-permission-btn');
+      const compass_debug = document.getElementById('compass-debug');
 
       let lastHeading = null;
       let lastUpdate = 0;
+      let isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      let isChrome = /Chrome/.test(navigator.userAgent);
+      let isOpera = /Opera/.test(navigator.userAgent);
+      let smoothingFactor = isOpera ? 0.2 : 0.5;
 
-      function clampDiff(a, b, maxDiff = 2) {
-        return Math.abs(a - b) > maxDiff;
+      // Check if device orientation is supported
+      if (!window.DeviceOrientationEvent) {
+        showTakSnackbar("Compass not supported on this device");
+        return;
+      }
+
+      function smoothHeading(newHeading) {
+        if (lastHeading === null) return newHeading;
+        
+        if (Math.abs(newHeading - lastHeading) > 180) {
+          if (newHeading > lastHeading) {
+            lastHeading += 360;
+          } else {
+            newHeading += 360;
+          }
+        }
+        
+        const smoothed = lastHeading * (1 - smoothingFactor) + newHeading * smoothingFactor;
+        return (smoothed + 360) % 360;
       }
 
       function rotateCompass(deg) {
@@ -140,63 +161,75 @@
 
       function handleOrientation(event) {
         let heading = null;
-        if (event.webkitCompassHeading != null) {
+        
+        if (event.webkitCompassHeading !== undefined) {
           heading = event.webkitCompassHeading;
-          compass_debug.textContent = `webkitCompassHeading: ${heading}`;
-        } else if (event.absolute === true && typeof event.alpha === 'number') {
+          compass_debug.textContent = `iOS Heading: ${heading.toFixed(1)}°`;
+        } 
+        else if (event.absolute === true && event.alpha !== null) {
           heading = event.alpha;
-          compass_debug.textContent = `alpha (abs): ${heading}`;
-        } else {
-          compass_debug.textContent = `Invalid event: no heading`;
+          compass_debug.textContent = `Absolute Alpha: ${heading.toFixed(1)}°`;
         }
-
-        if (heading != null) {
+        else if (event.alpha !== null) {
+          heading = event.alpha;
+          compass_debug.textContent = `Relative Alpha: ${heading.toFixed(1)}°`;
+          showTakSnackbar("Move your device in a figure 8 to calibrate");
+        }
+        
+        if (heading !== null) {
           const now = Date.now();
-          if (
-            lastHeading === null ||
-            clampDiff(heading, lastHeading) ||
-            now - lastUpdate > 1000
-          ) {
-            rotateCompass(heading);
-            lastHeading = heading;
+          if (lastHeading === null || 
+              Math.abs(heading - lastHeading) > 2 || 
+              now - lastUpdate > 1000) {
+            const smoothedHeading = smoothHeading(heading);
+            rotateCompass(smoothedHeading);
+            lastHeading = smoothedHeading;
             lastUpdate = now;
           }
         }
       }
 
       function startCompass() {
-        window.addEventListener('deviceorientationabsolute', handleOrientation, true);
-        window.addEventListener('deviceorientation', handleOrientation, true);
+        try {
+          window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+          window.addEventListener('deviceorientation', handleOrientation, true);
+          showTakSnackbar("Compass activated");
+        } catch (e) {
+          showTakSnackbar("Error starting compass");
+          console.error(e);
+        }
       }
 
       function requestPermissionIfNeeded() {
-        if (
-          typeof DeviceOrientationEvent !== 'undefined' &&
-          typeof DeviceOrientationEvent.requestPermission === 'function'
-        ) {
+        if (typeof DeviceOrientationEvent !== 'undefined' && 
+            typeof DeviceOrientationEvent.requestPermission === 'function') {
           compass_btn.style.display = 'inline-block';
           compass_btn.addEventListener('click', () => {
+            showTakSnackbar("Requesting compass permission...");
             DeviceOrientationEvent.requestPermission()
               .then((permissionState) => {
                 if (permissionState === 'granted') {
                   startCompass();
                   compass_btn.style.display = 'none';
                 } else {
-                  compass_degree.textContent = 'Permission denied';
+                  showTakSnackbar("Permission denied - cannot access compass");
                 }
               })
               .catch((err) => {
-                compass_degree.textContent = 'Permission error';
+                showTakSnackbar("Error requesting permission");
                 console.error(err);
               });
           });
         } else {
-          // No permission needed
           startCompass();
         }
       }
 
-      requestPermissionIfNeeded();
+      if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        requestPermissionIfNeeded();
+      } else {
+        showTakSnackbar("Compass works best on mobile devices");
+      }
     })();
   </script>
 </section>
