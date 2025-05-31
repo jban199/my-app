@@ -45,6 +45,7 @@
 <!-- Document List Section -->
 <!-- ////////////////////// -->
 <section id="doc-list-section">
+	<center><button class="doc-add-btn" onclick="window.location.href='document-add.html';">Add new Document</button></center>
   <div class="doc-list-container" id="doc-list-container"></div>
 
   <!-- Confirm Delete Dialog (hidden initially) -->
@@ -64,11 +65,21 @@
       max-width: 700px;
       margin: auto;
     }
+	
+	.doc-add-btn {
+		border-radius: 30px;
+		background: var(--bg2);
+		border: none;
+		padding: 10px 20px;
+		color: var(--accent1);
+		margin-bottom: 20px;
+	}
 
     .doc-list-container {
       display: flex;
       flex-direction: column;
       gap: 20px;
+	  color: var(--font2);
     }
 
     .doc-card {
@@ -207,7 +218,7 @@
       const container = document.getElementById("doc-list-container");
       container.innerHTML = "";
       if (!docs || !docs.length) {
-        container.innerHTML = "<div>No documents found.</div>";
+        container.innerHTML = "<center><div>No documents to show</div></center>";
         return;
       }
 
