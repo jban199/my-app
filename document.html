@@ -184,7 +184,7 @@
     }
 
     function openDocDb() {
-      const request = indexedDB.open(docDbName, 4);
+      const request = indexedDB.open(docDbName);
 
       request.onupgradeneeded = (event) => {
         const db = event.target.result;
