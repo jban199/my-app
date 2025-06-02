@@ -344,17 +344,11 @@ document.addEventListener('click', (event) => {
 		<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 			<path d="M440-160q-17 0-28.5-11.5T400-200v-240L168-736q-15-20-4.5-42t36.5-22h560q26 0 36.5 22t-4.5 42L560-440v240q0 17-11.5 28.5T520-160h-80Z"/>
 		</svg>
-		All
+		<span class="ts-filter-label">Show All</span>
 	</button>
-	<div class="ts-allweb-options-menu" style="display: block;">
-		<button>Show All</button>
-		<button>Browser</button>
-		<button>Search engines</button>
-		<button>Education</button>
-		<button>Communication</button>
-	</div>
-	
+	<div class="ts-allweb-filter-menu" id="ts-allweb-filter-menu" style="display: none;"></div>
 </div>
+
 <section class="ts-options-list">
 	<script type="application/json" class="ts-card-json">
 	{
@@ -520,6 +514,63 @@ function closeAllMenus() {
 	});
 }
 </script>
+
+
+<script>
+// Step 1: Extract unique tags from JSON data
+const allTags = new Set();
+document.querySelectorAll('.ts-option-tags').forEach(tagEl => {
+	const tagText = tagEl.textContent.trim();
+	tagText.split(',').forEach(tag => {
+		const cleanTag = tag.trim();
+		if (cleanTag) allTags.add(cleanTag);
+	});
+});
+
+// Step 2: Create the filter menu with "Show All" + unique tags
+const menuContainer = document.getElementById('ts-allweb-filter-menu');
+menuContainer.innerHTML = ''; // Clear any previous content
+
+const tagsList = ['Show All', ...[...allTags].sort()];
+tagsList.forEach(tag => {
+	const btn = document.createElement('button');
+	btn.textContent = tag;
+
+	btn.addEventListener('click', () => {
+		// Step 3: Show/hide cards based on selected tag
+		document.querySelectorAll('.ts-option-wide').forEach(card => {
+			const tagsText = card.querySelector('.ts-option-tags')?.textContent || '';
+			card.style.display = (tag === 'Show All' || tagsText.includes(tag)) ? '' : 'none';
+		});
+
+		// Step 4: Update the filter button label
+		const labelEl = document.querySelector('.ts-filter-label');
+		if (labelEl) labelEl.textContent = tag;
+
+		// Step 5: Close the menu
+		menuContainer.style.display = 'none';
+	});
+	menuContainer.appendChild(btn);
+});
+
+// Step 6: Toggle the filter menu on filter button click
+const filterBtn = document.querySelector('.ts-filter-btn');
+filterBtn.addEventListener('click', e => {
+	e.stopPropagation(); // Prevent closing when clicking the button
+	const isOpen = menuContainer.style.display === 'block';
+	closeAllMenus();
+	menuContainer.style.display = isOpen ? 'none' : 'block';
+});
+
+// Step 7: Hide filter menu when clicking outside
+document.addEventListener('click', closeAllMenus);
+
+function closeAllMenus() {
+	menuContainer.style.display = 'none';
+}
+</script>
+
+
 
 
 
