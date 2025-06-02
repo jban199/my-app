@@ -346,6 +346,7 @@ document.addEventListener('click', (event) => {
 		</svg>
 		<span class="ts-filter-label">Show All</span>
 	</button>
+	<div id="ts-allweb-filter-backdrop" class="ts-filter-backdrop" style="display: none;"></div>
 	<div class="ts-allweb-filter-menu" id="ts-allweb-filter-menu" style="display: none;"></div>
 </div>
 
@@ -571,6 +572,7 @@ document.querySelectorAll('.ts-option-tags').forEach(tagEl => {
 
 // Step 2: Create the filter menu with "Show All" + unique tags
 const menuContainer = document.getElementById('ts-allweb-filter-menu');
+const backdrop = document.getElementById('ts-allweb-filter-backdrop');
 menuContainer.innerHTML = ''; // Clear any previous content
 
 const tagsList = ['Show All', ...[...allTags].sort()];
@@ -590,7 +592,7 @@ tagsList.forEach(tag => {
 		if (labelEl) labelEl.textContent = tag;
 
 		// Step 5: Close the menu
-		menuContainer.style.display = 'none';
+		closeAllMenus();
 	});
 	menuContainer.appendChild(btn);
 });
@@ -598,19 +600,40 @@ tagsList.forEach(tag => {
 // Step 6: Toggle the filter menu on filter button click
 const filterBtn = document.querySelector('.ts-filter-btn');
 filterBtn.addEventListener('click', e => {
-	e.stopPropagation(); // Prevent closing when clicking the button
+	e.stopPropagation(); // Prevent immediate outside-close
 	const isOpen = menuContainer.style.display === 'block';
-	closeAllMenus();
-	menuContainer.style.display = isOpen ? 'none' : 'block';
+	closeAllMenus(); // Ensure any existing menu is closed first
+
+	if (!isOpen) {
+		backdrop.style.display = 'block';
+		menuContainer.style.display = 'block';
+		menuContainer.style.animation = 'filterMenuSlideUp 0.3s ease-out forwards';
+	}
 });
 
-// Step 7: Hide filter menu when clicking outside
-document.addEventListener('click', closeAllMenus);
+// Step 7: Backdrop click closes the menu
+backdrop.addEventListener('click', closeAllMenus);
 
+// Step 8: Global outside click also closes the menu
+document.addEventListener('click', function (e) {
+	if (!menuContainer.contains(e.target) && !filterBtn.contains(e.target)) {
+		closeAllMenus();
+	}
+});
+
+// Step 9: Hide filter menu with slideDown animation
 function closeAllMenus() {
-	menuContainer.style.display = 'none';
+	if (menuContainer.style.display === 'block') {
+		menuContainer.style.animation = 'filterMenuSlideDown 0.25s ease-in forwards';
+		backdrop.style.display = 'none';
+
+		menuContainer.addEventListener('animationend', () => {
+			menuContainer.style.display = 'none';
+		}, { once: true });
+	}
 }
 </script>
+
 
 
 
