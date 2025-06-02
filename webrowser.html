@@ -50,28 +50,28 @@
     
 		<div id="ts-engine-select">
 			<div id="ts-selected-engine" class="ts-search-engine-icon" onclick="toggleDropdown()">
-				<img id="ts-selected-icon" src="images/icons/google.svg" alt="Google Icon">
+				<img id="ts-selected-icon" src="images/webrowser/engines/google.svg" alt="Google Icon">
 				<div class="ts-selected-engine-helper">Tap here</div>
 			</div>
 
 			<div id="ts-search-engine-dropdown" class="ts-search-engine-dropdown">
-				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('google', 'images/icons/google.svg')">
-					<img src="images/icons/google.svg" alt="Google Icon"> Google
+				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('google', 'images/webrowser/engines/google.svg')">
+					<img src="images/webrowser/engines/google.svg" alt="Google Icon"> Google
 				</div>
-				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('bing', 'images/icons/bing.svg')">
-					<img src="images/icons/bing.svg" alt="Bing Icon"> Bing
+				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('bing', 'images/webrowser/engines/bing.svg')">
+					<img src="images/webrowser/engines/bing.svg" alt="Bing Icon"> Bing
 				</div>
-				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('yahoo', 'images/icons/yahoo.svg')">
-					<img src="images/icons/yahoo.svg" alt="Yahoo Icon"> Yahoo
+				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('yahoo', 'images/webrowser/engines/yahoo.svg')">
+					<img src="images/webrowser/engines/yahoo.svg" alt="Yahoo Icon"> Yahoo
 				</div>
-				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('duckduckgo', 'images/icons/duckduckgo.svg')">
-					<img src="images/icons/duckduckgo.svg" alt="DuckDuckGo Icon"> DuckDuckGo
+				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('duckduckgo', 'images/webrowser/engines/duckduckgo.svg')">
+					<img src="images/webrowser/engines/duckduckgo.svg" alt="DuckDuckGo Icon"> DuckDuckGo
 				</div>
-				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('youtube', 'images/icons/youtube.svg')">
-					<img src="images/icons/youtube.svg" alt="YouTube Icon"> YouTube
+				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('youtube', 'images/webrowser/engines/youtube.svg')">
+					<img src="images/webrowser/engines/youtube.svg" alt="YouTube Icon"> YouTube
 				</div>
-				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('wikipedia', 'images/icons/wikipedia.svg')">
-					<img src="images/icons/wikipedia.svg" alt="Wikipedia Icon"> Wikipedia
+				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('wikipedia', 'images/webrowser/engines/wikipedia.svg')">
+					<img src="images/webrowser/engines/wikipedia.svg" alt="Wikipedia Icon"> Wikipedia
 				</div>
 			</div>
 		</div>
@@ -102,12 +102,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Get the saved preference from localStorage
   let preferredEngine = localStorage.getItem('preferredEngine') || 'google';
   const engineIconMap = {
-    google: 'images/icons/google.svg',
-    bing: 'images/icons/bing.svg',
-    yahoo: 'images/icons/yahoo.svg',
-    duckduckgo: 'images/icons/duckduckgo.svg',
-    youtube: 'images/icons/youtube.svg',
-    wikipedia: 'images/icons/wikipedia.svg'
+    google: 'images/webrowser/engines/google.svg',
+    bing: 'images/webrowser/engines/bing.svg',
+    yahoo: 'images/webrowser/engines/yahoo.svg',
+    duckduckgo: 'images/webrowser/engines/duckduckgo.svg',
+    youtube: 'images/webrowser/engines/youtube.svg',
+    wikipedia: 'images/webrowser/engines/wikipedia.svg'
   };
 
   // Set the default icon based on the stored preference
@@ -254,7 +254,7 @@ function createLinkElement(linkData) {
   const imgSrc = linkData.img || `https://www.google.com/s2/favicons?domain=${new URL(linkData.url).hostname}`;
   const img = document.createElement('img');
   img.src = imgSrc;
-  img.onerror = () => { img.src = 'images/icons/default-link.svg'; }; // Fallback if image fails to load
+  img.onerror = () => { img.src = 'images/icons/placeholder.svg'; }; // Fallback if image fails to load
 
   const title = document.createElement('h3');
   title.textContent = linkData.name;
@@ -358,7 +358,7 @@ document.addEventListener('click', (event) => {
 				"title": "Google",
 				"link": "https://www.google.com",
 				"image": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-				"tags": "Browser, Search engines"
+				"tags": "Search Engine"
 			},
 			{
 				"title": "ChatGPT",
@@ -406,13 +406,13 @@ document.addEventListener('click', (event) => {
 				"title": "Bing",
 				"link": "https://www.bing.com",
 				"image": "https://www.bing.com/sa/simg/favicon-2x.ico",
-				"tags": "Browser, Search engines"
+				"tags": "Search Engine"
 			},
 			{
 				"title": "Reddit",
 				"link": "https://www.reddit.com",
 				"image": "https://www.redditstatic.com/desktop2x/img/favicon/apple-icon-180x180.png",
-				"tags": "Social, Forums"
+				"tags": "Forums, Social Media"
 			},
 			{
 				"title": "LinkedIn",
@@ -425,6 +425,78 @@ document.addEventListener('click', (event) => {
 				"link": "https://www.espncricinfo.com",
 				"image": "https://www.espncricinfo.com/apple-touch-icon.png",
 				"tags": "Sports, Cricket"
+			},
+			{
+				"title": "Instagram",
+				"link": "https://www.instagram.com",
+				"image": "images/nm/nm-placeholder.svg",
+				"tags": "Social Media, Photo Sharing"
+			},
+			{
+				"title": "Facebook",
+				"link": "https://www.facebook.com",
+				"image": "images/nm/nm-placeholder.svg",
+				"tags": "Social Media"
+			},
+			{
+				"title": "WhatsApp Web",
+				"link": "https://web.whatsapp.com/",
+				"image": "images/nm/nm-placeholder.svg",
+				"tags": "Messaging, Communication"
+			},
+			{
+				"title": "X (formerly Twitter)",
+				"link": "https://x.com",
+				"image": "https://abs.twimg.com/responsive-web/client-web/icon-ios.77d25eba.png",
+				"tags": "Social Media, News"
+			},
+			{
+				"title": "Times of India",
+				"link": "https://timesofindia.com",
+				"image": "https://timesofindia.indiatimes.com/icons/toifavicon.ico",
+				"tags": "News, Media"
+			},
+			{
+				"title": "Flipkart",
+				"link": "https://www.flipkart.com",
+				"image": "https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/logo_lite-cbb357.png",
+				"tags": "Shopping, E-commerce"
+			},
+			{
+				"title": "Hotstar",
+				"link": "https://www.hotstar.com",
+				"image": "https://secure-media.hotstar.com/web-assets/prod/jhs_favicon.ico",
+				"tags": "Streaming, Entertainment"
+			},
+			{
+				"title": "Quora",
+				"link": "https://www.quora.com",
+				"image": "https://qsf.cf2.quoracdn.net/-4-images.favicon-new.ico-26-07ecf7cd341b6919.ico",
+				"tags": "Q&A, Knowledge"
+			},
+			{
+				"title": "MSN",
+				"link": "https://www.msn.com",
+				"image": "images/nm/nm-placeholder.svg",
+				"tags": "News"
+			},
+			{
+				"title": "XXXX",
+				"link": "XXXX",
+				"image": "images/nm/nm-placeholder.svg",
+				"tags": "XXXX"
+			},
+			{
+				"title": "XXXX",
+				"link": "XXXX",
+				"image": "images/nm/nm-placeholder.svg",
+				"tags": "XXXX"
+			},
+			{
+				"title": "XXXX",
+				"link": "XXXX",
+				"image": "images/nm/nm-placeholder.svg",
+				"tags": "XXXX"
 			}
 		]
 	}
