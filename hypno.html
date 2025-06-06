@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TKA - Self Hypnosis</title>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <meta name="theme-color" content="#1A1A1A">
+
+    <!-- Link to the stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+
+<section id="tak-page-loader">
+	<div class="tak-spinner"></div>
+	<p>Loading...</p>
+	
+	<script>
+		window.addEventListener('load', function () {
+			const loader = document.getElementById('tak-page-loader');
+			if (loader) {
+				loader.classList.add('fade-out');
+				setTimeout(() => {
+					loader.style.display = 'none';
+				}, 500); // match the CSS transition duration (0.5s)
+			}
+		});
+	</script>
+</section>
+
+
+<section class="tak-header">
+	<h1 class="tak-pagename"> Self - Hypnosis </h1>
+</section>
+
+
+<section id="hypno-section">
+  <style>
+    #hypno-section {
+	  padding: 100px 10px 100px 10px;
+    }
+
+    .hypno-filter-scroll {
+		display: flex;
+		overflow-x: auto;
+		gap: 0.5rem;
+		margin-bottom: 1rem;
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		background: var(--bg1);
+		padding: 130px 0px 20px 0px;
+		z-index: 9;
+    }
+	.hypno-filter-scroll::before {
+		content: "\3000\3000\3000\3000\3000\3000\3000\3000\3000";
+	}
+	
+	.hypno-filter-scroll::after {
+		content: "\3000\3000\3000\3000\3000\3000\3000\3000\3000\3000\3000\3000\3000";
+	}
+	
+	.hypno-filter-scroll {
+		-ms-overflow-style: none;  /* IE and Edge */
+		scrollbar-width: none;    /* Firefox */
+	}
+
+	.hypno-filter-scroll::-webkit-scrollbar {
+		display: none;   /* Chrome, Safari and Opera */
+	}
+	
+	
+
+    .hypno-pill {
+      flex-shrink: 0;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      background: var(--bg2);
+      color: var(--font1);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+	
+
+    .hypno-pill.active {
+      background: var(--accent1);
+    }
+
+    .hypno-card {
+      background: var(--bg3);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 10px var(--shadow1);
+    }
+
+    .hypno-title {
+      color: var(--font1);
+	  font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .hypno-purpose {
+      font-size: 0.95rem;
+      color: var(--font2);
+      margin-bottom: 0.5rem;
+    }
+
+    .hypno-tags {
+      margin: 0.5rem 0;
+    }
+
+    .hypno-tags span {
+      background: var(--bg2);
+      color: var(--font2);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      margin-right: 0.4rem;
+    }
+
+
+    .hypno-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hypno-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--bg1);
+      border: none;
+      border-radius: 30px;
+      padding: 0.5rem 1rem;
+      color: var(--font1);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .hypno-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--accent1);
+    }
+	
+	.pulse-indicator {
+		width: 7px;
+		height: 7px;
+		background-color: green;
+		border-radius: 50%;
+		margin-left: auto;
+		opacity: 0;
+		position: absolute;
+		right: 3px;
+		top: 3px;
+		transition: opacity 0.3s ease-in-out;
+	}
+	
+.playing .pulse-indicator {
+	opacity: 1;
+	animation: pulse 1s infinite;
+}
+
+
+.active-bg .pulse-indicator {
+  opacity: 1;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+0% {
+  transform: scale(1);
+  box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.5);
+}
+70% {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+}
+100% {
+  transform: scale(1);
+  box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+}
+}
+
+    audio {
+      width: 100%;
+      margin-top: 0.5rem;
+      border-radius: 8px;
+    }
+
+    .hypno-modal {
+      position: fixed;
+      top: 0;
+	  left: 0;
+      width: 100%;
+	  height: 100%;
+      background: rgba(0,0,0,0.7);
+	  backdrop-filter: blur(10px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .hypno-modal-content {
+      background: var(--bg2);
+      color: var(--font1);
+      max-height: 60%;
+      width: 90%;
+      padding: 1rem;
+      border-radius: 12px;
+      overflow-y: auto;
+      position: fixed;
+	  bottom: 110px;
+    }
+
+    .hypno-modal-content p {
+      margin-bottom: 4rem;
+	  color: var(--font1);
+    }
+
+    .hypno-modal-done {
+      position: fixed;
+      bottom: 100px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      background: var(--accent1);
+      color: var(--font1);
+      border: none;
+      padding: 1rem;
+      font-weight: bold;
+      border-radius: 0 0 12px 12px;
+      cursor: pointer;
+    }
+  </style>
+
+  <!-- Filters -->
+  <div class="hypno-filter-scroll" id="hypno-filters">
+    <div class="hypno-pill active" onclick="hypno_filter('all', this)">All</div>
+    <div class="hypno-pill" onclick="hypno_filter('confidence', this)">Confidence</div>
+    <div class="hypno-pill" onclick="hypno_filter('sleep', this)">Sleep</div>
+    <div class="hypno-pill" onclick="hypno_filter('focus', this)">Focus</div>
+    <div class="hypno-pill" onclick="hypno_filter('calm', this)">Calm</div>
+    <div class="hypno-pill" onclick="hypno_filter('motivation', this)">Motivation</div>
+  </div>
+
+<!-- Card List : Start -->
+<div id="hypno-list">
+
+	<div class="hypno-card" data-tags="confidence calm motivation">
+		<div class="hypno-title">Daily Self-Belief Boost</div>
+		<div class="hypno-purpose">Build your inner confidences...</div>
+		<div class="hypno-tags">
+			<span>#confidence</span><span>#calm</span><span>#motivation</span>
+		</div>
+
+		<div class="hypno-buttons">
+			<button class="hypno-btn" onclick="hypno_toggleLoop(this, 'audio1')">
+				<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="m274-200 34 34q12 12 11.5 28T308-110q-12 12-28.5 12.5T251-109L148-212q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l103-103q12-12 28.5-11.5T308-370q11 12 11.5 28T308-314l-34 34h406v-120q0-17 11.5-28.5T720-440q17 0 28.5 11.5T760-400v120q0 33-23.5 56.5T680-200H274Zm412-480H280v120q0 17-11.5 28.5T240-520q-17 0-28.5-11.5T200-560v-120q0-33 23.5-56.5T280-760h406l-34-34q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T709-851l103 103q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L709-589q-12 12-28.5 11.5T652-590q-11-12-11.5-28t11.5-28l34-34Z"/>
+				</svg>
+				<span class="loop-text">Loop</span>
+				<span class="pulse-indicator"></span>
+			</button>
+
+			<button class="hypno-btn" onclick="hypno_toggleLike(this)">
+				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M840-640q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14H280v-520l240-238q15-15 35.5-17.5T595-888q19 10 28 28t4 37l-45 183h258Zm-480 34v406h360l120-280v-80H480l54-220-174 174ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640h120v80H160v360h120v80H160Zm200-80v-406 406Z"/>
+				</svg>
+				<span>Like</span>
+			</button>
+
+			<button class="hypno-btn" onclick="hypno_openModal(`You are strong and capable. Every breath you take draws in certainty. Every word you hear plants the seeds of power deep in your subconscious.\n\nYou are strong and capable. Every breath you take draws in certainty. Every word you hear plants the seeds of power deep in your subconscious.`)">
+				<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M218-320q-42 0-75.5-27T100-416L71-550h-4q-17 2-29.5-9T23-587q-2-17 9.5-29T61-630q62-5 108-7.5t84-2.5q65 0 105 6t72 21q14 7 26.5 10t23.5 3q11 0 21.5-3t24.5-9q33-15 76-21.5t114-6.5q46 0 97 2.5t87 6.5q17 2 28 14t9 29q-2 17-14 28t-29 9h-4l-30 136q-9 42-42 68.5T743-320h-89q-42 0-74-25.5T538-411l-27-107h-61l-27 107q-11 41-43 66t-73 25h-89Zm-40-112q3 14 14 23t25 9h89q14 0 25-8.5t14-21.5l31-121q-27-5-61-6.5t-62-1.5q-23 0-49.5.5T154-556l24 124Zm437 2q3 13 14 21.5t25 8.5h89q14 0 25-9t14-23l26-125q-20-1-46-1.5t-46-.5q-30 0-66.5 1.5T584-551l31 121Z"/>
+				</svg>
+				<span>Read</span>
+			</button>
+		</div>
+		<audio id="audio1" controls src="media/hyp-sounds/calm.mp3"></audio>
+    </div>
+	
+	
+		<div class="hypno-card" data-tags="confidence calm motivation">
+		<div class="hypno-title">Daily Self-Belief Boost</div>
+		<div class="hypno-purpose">Build your inner confidences...</div>
+		<div class="hypno-tags">
+			<span>#confidence</span><span>#calm</span><span>#motivation</span>
+		</div>
+
+		<div class="hypno-buttons">
+			<button class="hypno-btn" onclick="hypno_toggleLoop(this, 'audio1')">
+				<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="m274-200 34 34q12 12 11.5 28T308-110q-12 12-28.5 12.5T251-109L148-212q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l103-103q12-12 28.5-11.5T308-370q11 12 11.5 28T308-314l-34 34h406v-120q0-17 11.5-28.5T720-440q17 0 28.5 11.5T760-400v120q0 33-23.5 56.5T680-200H274Zm412-480H280v120q0 17-11.5 28.5T240-520q-17 0-28.5-11.5T200-560v-120q0-33 23.5-56.5T280-760h406l-34-34q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T709-851l103 103q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L709-589q-12 12-28.5 11.5T652-590q-11-12-11.5-28t11.5-28l34-34Z"/>
+				</svg>
+				<span class="loop-text">Loop</span>
+				<span class="pulse-indicator"></span>
+			</button>
+
+			<button class="hypno-btn" onclick="hypno_toggleLike(this)">
+				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M840-640q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14H280v-520l240-238q15-15 35.5-17.5T595-888q19 10 28 28t4 37l-45 183h258Zm-480 34v406h360l120-280v-80H480l54-220-174 174ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640h120v80H160v360h120v80H160Zm200-80v-406 406Z"/>
+				</svg>
+				<span>Like</span>
+			</button>
+
+			<button class="hypno-btn" onclick="hypno_openModal(`You are strong and capable. Every breath you take draws in certainty. Every word you hear plants the seeds of power deep in your subconscious.\n\nYou are strong and capable. Every breath you take draws in certainty. Every word you hear plants the seeds of power deep in your subconscious.`)">
+				<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M218-320q-42 0-75.5-27T100-416L71-550h-4q-17 2-29.5-9T23-587q-2-17 9.5-29T61-630q62-5 108-7.5t84-2.5q65 0 105 6t72 21q14 7 26.5 10t23.5 3q11 0 21.5-3t24.5-9q33-15 76-21.5t114-6.5q46 0 97 2.5t87 6.5q17 2 28 14t9 29q-2 17-14 28t-29 9h-4l-30 136q-9 42-42 68.5T743-320h-89q-42 0-74-25.5T538-411l-27-107h-61l-27 107q-11 41-43 66t-73 25h-89Zm-40-112q3 14 14 23t25 9h89q14 0 25-8.5t14-21.5l31-121q-27-5-61-6.5t-62-1.5q-23 0-49.5.5T154-556l24 124Zm437 2q3 13 14 21.5t25 8.5h89q14 0 25-9t14-23l26-125q-20-1-46-1.5t-46-.5q-30 0-66.5 1.5T584-551l31 121Z"/>
+				</svg>
+				<span>Read</span>
+			</button>
+		</div>
+		<audio id="audio1" controls src="media/hyp-sounds/calm.mp3"></audio>
+    </div>
+	
+	
+</div>
+<!-- Card list : End -->
+
+  <!-- Modal -->
+  <div class="hypno-modal" id="hypno-modal">
+    <div class="hypno-modal-content">
+      <p id="hypno-modal-text"></p>
+      <button class="hypno-modal-done" onclick="hypno_closeModal()">Done</button>
+    </div>
+  </div>
+
+  <script>
+    function hypno_toggleLoop(btn, audioId) {
+      const audio = document.getElementById(audioId);
+      if (!audio) return showTakSnackbar("Audio not found.");
+      audio.loop = !audio.loop;
+      const loopText = btn.querySelector(".loop-text");
+      loopText.textContent = audio.loop ? "Loop Off" : "Loop";
+      showTakSnackbar(audio.loop ? "Loop enabled" : "Loop disabled");
+    }
+
+    function hypno_toggleLike(btn) {
+      const icon = btn.querySelector(".like-icon path");
+      btn.classList.toggle("liked");
+      const liked = btn.classList.contains("liked");
+
+      icon.setAttribute("d",
+        liked
+          ? "M840-640q32 0 56 24t24 56v80q0 7-1.5 15t-4.5 15L794-168q-9 20-30 34t-44 14H400q-33 0-56.5-23.5T320-200v-407q0-16 6.5-30.5T344-663l217-216q15-14 35.5-17t39.5 7q19 10 27.5 28t3.5 37l-45 184h218ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640q33 0 56.5 23.5T240-560v360q0 33-23.5 56.5T160-120Z" // filled
+          : "M840-640q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14H280v-520l240-238q15-15 35.5-17.5T595-888q19 10 28 28t4 37l-45 183h258Zm-480 34v406h360l120-280v-80H480l54-220-174 174ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640h120v80H160v360h120v80H160Zm200-80v-406 406Z" // outline
+      );
+      showTakSnackbar(liked ? "Liked!" : "Unliked");
+    }
+
+    function hypno_openModal(text) {
+      document.getElementById("hypno-modal-text").innerText = text;
+      document.getElementById("hypno-modal").style.display = "flex";
+    }
+
+    function hypno_closeModal() {
+      document.getElementById("hypno-modal").style.display = "none";
+    }
+
+    function hypno_filter(tag, element) {
+      document.querySelectorAll(".hypno-pill").forEach(pill => pill.classList.remove("active"));
+      element.classList.add("active");
+      document.querySelectorAll("#hypno-list .hypno-card").forEach(card => {
+        const tags = card.dataset.tags.split(" ");
+        card.style.display = (tag === "all" || tags.includes(tag)) ? "" : "none";
+      });
+    }
+  </script>
+  
+  
+
+</section>
+
+
+
+
+
+
+
+
+<!-- Snackbar (hidden initially) -->
+	<div id="tak-snackbar" class="tak-snackbar">Welcome!</div>
+
+<script>
+// Snackbar function
+function showTakSnackbar(message = "Welcome!") {
+  const snackbar = document.getElementById("tak-snackbar");
+  snackbar.textContent = message;
+  snackbar.style.display = "block";
+  snackbar.style.opacity = "1";
+
+  setTimeout(() => {
+    snackbar.style.opacity = "0";
+    setTimeout(() => {
+      snackbar.style.display = "none";
+    }, 300);
+  }, 2000);
+}
+</script>
+
+
+<!-- Confirm Dialog (hidden initially) -->
+<div id="SECTION-confirm-dialog" class="tak-dialog" style="display: none;">
+	<div class="tak-dialog-box">
+		<p>Are you sure you want to delete this note?</p>
+		<div class="tak-dialog-actions">
+			<button class="tak-dialog-skip" id="SECTION-dialog-skip">Skip</button>
+			<button class="tak-dialog-continue" id="SECTION-dialog-continue">Continue</button>
+		</div>
+	</div>
+</div>
+
+<!-- ///////////////// -->
+<!-- Footer Spacer -->
+<!-- ///////////////// -->
+<div class="footerSpacer">
+</div>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const images = document.querySelectorAll("img");
+
+    images.forEach(img => {
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = "images/nm/nm-placeholder.svg";
+      };
+    });
+  });
+</script>
+
+<!-- ///////////////// -->
+<!-- Bottom Menu -->
+<!-- ///////////////// -->
+<section>
+<!-- SBM Trigger -->
+<svg id="SBM-Icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+    <path d="M86-191v-126h788v126H86Zm0-226v-126h788v126H86Zm0-226v-126h788v126H86Z"/>
+</svg>
+
+<!-- SBM container (empty, the content is injected here) -->
+<div id="SBM-container"></div>
+</section>
+
+
+<script>
+window.addEventListener("load", function () {		
+    // Load SBM
+    fetch('sbm.html')
+        .then(response => response.text())
+        .then(data => {
+            const sidebarContainer = document.getElementById('SBM-container');
+            sidebarContainer.innerHTML = data;
+
+            // Make sure sidebar is hidden after load
+            const overlaySBM = document.getElementById("SBM-section");
+            if (overlaySBM) {
+                overlaySBM.style.transform = "translateY(100%)";
+            }
+
+            // Reattach event listeners after the SBM is loaded
+            const closeButton = document.getElementById("closeSBM");
+            if (closeButton) {
+                closeButton.addEventListener("click", closeSBM);
+            }
+
+            // Get reference to the icon that triggers the sidebar opening
+            const SBMIcon = document.getElementById("SBM-Icon");
+
+            // Function to open the sidebar
+            function openSBM() {
+                if (overlaySBM) {
+                    overlaySBM.style.transform = "translateY(0)";
+                }
+            }
+
+            // Function to close the sidebar
+            function closeSBM() {
+                if (overlaySBM) {
+                    overlaySBM.style.transform = "translateY(100%)";
+                }
+            }
+
+            // Event listener for opening the SBM when the icon is clicked
+            if (SBMIcon) {
+                SBMIcon.addEventListener("click", openSBM);
+            }
+        })
+        .catch(error => {
+            console.error("Error loading SBM:", error);
+        });
+});
+</script>
+
+
+
+
+
+
+<!-- ///////////////// -->
+<!-- User Selected Accent Color -->
+<!-- ///////////////// -->
+<style id="theme-accent-style">
+  :root {
+	--accent1: #FD7E14; /* Default fallback accent */
+  }
+</style>
+<script>
+	(function theme_applyAccentFromStorage() {
+	const savedAccent = localStorage.getItem('theme_accent');
+	const accentStyle = document.getElementById('theme-accent-style');
+
+	if (savedAccent && accentStyle) {
+	  accentStyle.textContent = `:root { --accent1: ${savedAccent}; }`;
+	}
+	})();
+</script>
+
+
+
+<!-- ///////////////// -->
+<!-- Theme Toggle -->
+<!-- ///////////////// -->
+<section>
+<button id="theme-toggle">
+    <!-- Default dark icon (SVG) -->
+    <svg id="dark-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+      <path d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/>
+    </svg>
+
+    <!-- Light Icon (hidden by default) -->
+    <svg id="light-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="display: none;">
+      <path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/>
+    </svg>
+</button>
+</section>
+
+<!-- ///////////////// -->
+<!-- Set Theme - Based on Local Storage -->
+<!-- ///////////////// -->
+<script>
+  // Wait for the DOM to be fully loaded before running the script
+  document.addEventListener("DOMContentLoaded", function() {
+    const themeLink = document.createElement("link");
+    themeLink.rel = "stylesheet";
+    themeLink.id = "theme-link";
+    
+    // Check if a theme preference is saved in localStorage
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
+    } else if (savedTheme === "light") {
+      themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
+    } else {
+      themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
+      localStorage.setItem('theme', 'dark');  // Save preference
+    }
+
+    // Append the theme <link> tag to the <head> of the document
+    document.head.appendChild(themeLink);
+
+    // Initialize icons based on saved theme preference
+    const darkIcon = document.getElementById('dark-icon');
+    const lightIcon = document.getElementById('light-icon');
+
+    if (savedTheme === "dark") {
+      lightIcon.style.display = 'none';
+      darkIcon.style.display = 'block';
+    } else {
+      lightIcon.style.display = 'block';
+      darkIcon.style.display = 'none';
+    }
+
+    // Toggle theme when button is clicked
+    const themeToggleButton = document.getElementById('theme-toggle');
+
+    themeToggleButton.addEventListener('click', () => {
+      const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
+      if (currentTheme === 'dark') {
+        themeLink.href = 'light-theme.css';  // Switch to light theme
+        localStorage.setItem('theme', 'light');  // Save preference
+        lightIcon.style.display = 'block';  // Show light icon
+        darkIcon.style.display = 'none';   // Hide dark icon
+      } else {
+        themeLink.href = 'dark-theme.css';   // Switch to dark theme
+        localStorage.setItem('theme', 'dark');  // Save preference
+        lightIcon.style.display = 'none';   // Hide light icon
+        darkIcon.style.display = 'block';   // Show dark icon
+      }
+    });
+  });
+</script>
+
+
+
+<!-- ///////////////// -->
+<!-- Fullscreen Toggle -->
+<!-- ///////////////// -->
+<section>
+  <button id="fullscreen-toggle" class="fullscreen-button">
+  <!-- Icon for entering fullscreen (initially displayed) -->
+  <svg id="fullscreen-enter-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+    <path d="M86-86v-260h126v134h134v126H86Zm529 0v-126h133v-134h126v260H615ZM86-615v-259h260v126H212v133H86Zm662 0v-133H615v-126h259v259H748Z"/>
+  </svg>
+
+  <!-- Icon for exiting fullscreen (hidden initially) -->
+  <svg id="fullscreen-exit-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="display: none;">
+    <path d="M220-86v-134H86v-126h260v260H220Zm395 0v-260h259v126H741v134H615ZM86-615v-126h134v-133h126v259H86Zm529 0v-259h126v133h133v126H615Z"/>
+  </svg>
+</button>
+</section>
+<script>
+  // Fullscreen Toggle Logic
+const fullscreenButton = document.getElementById('fullscreen-toggle');
+fullscreenButton.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+    document.getElementById('fullscreen-enter-icon').style.display = 'none';
+    document.getElementById('fullscreen-exit-icon').style.display = 'block';
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+      document.getElementById('fullscreen-enter-icon').style.display = 'block';
+      document.getElementById('fullscreen-exit-icon').style.display = 'none';
+    }
+  }
+});
+
+</script>
+
+
+<!-- ///////////////// -->
+<!-- Prevent Right Click Context Menu -->
+<!-- ///////////////// -->
+<script>
+  document.addEventListener('contextmenu', function(event) {
+    const target = event.target;
+
+    // Allow default context menu on input, textarea, or contenteditable elements
+    if (
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.isContentEditable
+    ) {
+      return; // allow context menu
+    }
+
+    event.preventDefault(); // otherwise, block it
+  });
+</script>
+
+
+<!-- ///////////////// -->
+<!-- Capacitor Functions -->
+<!-- ///////////////// -->
+<script type="module" src="capacitorFunctions.js"></script>
+
+
+</body>
+</html>
