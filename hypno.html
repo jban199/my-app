@@ -476,7 +476,6 @@
     .hypno_control-btn {
       background: none;
       border: none;
-      color: white;
       padding: 10px;
       display: flex;
       align-items: center;
@@ -485,9 +484,13 @@
       width: 44px;
       height: 44px;
     }
+	
+	.hypno_control-btn svg {
+		fill: var(--font1);
+	}
 
     .hypno_control-btn:active {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: var(--bg1);
     }
 
     .hypno_play-btn {
@@ -512,7 +515,7 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--bg1);
       border-radius: 20px;
       padding: 5px;
     }
@@ -520,7 +523,6 @@
     .hypno_speed-btn {
       background: none;
       border: none;
-      color: white;
       font-size: 1rem;
       width: 30px;
       height: 30px;
@@ -531,8 +533,12 @@
     }
 
     .hypno_speed-btn:active {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: var(--bg3);
     }
+	
+	.hypno_speed-btn svg {
+		fill: var(--font1);
+	}
 
     .hypno_speed-display {
       font-size: 0.9rem;
