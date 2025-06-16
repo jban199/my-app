@@ -205,6 +205,21 @@
     </style>
 </head>
 <body>
+
+
+<button id="eyeconStartButton" style="
+    position: absolute; 
+    bottom: 120px; 
+    left: 50%; 
+    transform: translateX(-50%);
+    z-index: 100;
+    background: #0f0;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+">START SECURITY SCAN</button>
     <div class="eyecon-container">
         <div class="eyecon-header">
             <div class="eyecon-logo">EYECON SECURITY SCAN</div>
@@ -259,28 +274,49 @@
     <script>
         // Eyecon App Initialization
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize camera feeds (simulated since we can't access real cameras without permission)
-            eyeconSimulateCameraFeeds();
-            
-            // Initialize sensor data updates
-            eyeconUpdateSensorData();
-            
-            // Initialize random status boxes
-            eyeconCreateStatusBoxes();
-            
-            // Initialize video call
-            eyeconInitVideoCall();
-        });
+			// Show button first
+			const eyeconStartBtn = document.getElementById('eyeconStartButton');
+			eyeconStartBtn.addEventListener('click', function() {
+				this.style.display = 'none';
+				// Initialize everything after user interaction
+				eyeconSimulateCameraFeeds();
+				eyeconUpdateSensorData();
+				eyeconCreateStatusBoxes();
+				eyeconInitVideoCall();
+			});
+		});
 
         // Eyecon Camera Feed Simulation
         function eyeconSimulateCameraFeeds() {
-            const eyeconBackFeed = document.getElementById('eyeconBackCameraFeed');
-            const eyeconFrontFeed = document.getElementById('eyeconFrontCameraFeed');
-            
-            // Create canvas elements to simulate camera feeds
-            eyeconCreateCameraSimulation(eyeconBackFeed, 0.2);
-            eyeconCreateCameraSimulation(eyeconFrontFeed, 0.5);
-        }
+			const eyeconBackFeed = document.getElementById('eyeconBackCameraFeed');
+			const eyeconFrontFeed = document.getElementById('eyeconFrontCameraFeed');
+			
+			// First try to get real cameras
+			eyeconGetRealCamera(eyeconBackFeed, { facingMode: 'environment' }); // Back camera
+			eyeconGetRealCamera(eyeconFrontFeed, { facingMode: 'user' }); // Front camera
+			
+			// Fallback to simulation if cameras are denied
+			setTimeout(() => {
+				if (!eyeconBackFeed.srcObject) {
+					eyeconCreateCameraSimulation(eyeconBackFeed, 0.2);
+				}
+				if (!eyeconFrontFeed.srcObject) {
+					eyeconCreateCameraSimulation(eyeconFrontFeed, 0.5);
+				}
+			}, 1000);
+		}
+		
+		function eyeconGetRealCamera(videoElement, constraints) {
+			navigator.mediaDevices.getUserMedia({
+				video: constraints,
+				audio: false
+			}).then(stream => {
+				videoElement.srcObject = stream;
+			}).catch(err => {
+				console.error('Eyecon camera error:', err);
+				// Will fall back to simulation
+			});
+		}
 
         function eyeconCreateCameraSimulation(videoElement, noiseLevel) {
             const canvas = document.createElement('canvas');
