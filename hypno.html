@@ -182,7 +182,7 @@
 				<span>Like</span>
 			</button>
 			
-			<button class="hypno-btn" onclick='hypno_setTrack("media/hypno-sounds/om-namaste-astu-bhagavan-by-shlokam-org.mp3", "Namaste Astu Bhagavan", "Most powerful Shiva mantra","ॐ नमस्ते अस्तु भगवान\nविश्र्वेश्वराय महादेवाय\nत्र्यम्बकाय त्रिपुरान्तकाय\nत्रिकाग्निकालाय\nकालाग्निरुद्राय नीलकण्ठाय मृत्युंजय\nसर्वेश्र्वराय सदाशिवाय\nश्रीमन् महादेवाय नमः\nNamaste Astu Bhagavan\n\nVishveshvaraaya Mahaadevaaya\nTrayambakaaya Tripurantakaaya\nTrikaalaagni - Kaalaaya\nKaalaagni - Rudraaya Nilakantaaya Mrityunjayaaya\nSarveshvaraaya Sadaashivaaya\nSriman Mahadevaaya Namah.");'>
+			<button class="hypno-btn" onclick='audioPlayer_setTrack("media/hypno-sounds/om-namaste-astu-bhagavan-by-shlokam-org.mp3", "Namaste Astu Bhagavan", "Most powerful Shiva mantra","ॐ नमस्ते अस्तु भगवान\nविश्र्वेश्वराय महादेवाय\nत्र्यम्बकाय त्रिपुरान्तकाय\nत्रिकाग्निकालाय\nकालाग्निरुद्राय नीलकण्ठाय मृत्युंजय\nसर्वेश्र्वराय सदाशिवाय\nश्रीमन् महादेवाय नमः\nNamaste Astu Bhagavan\n\nVishveshvaraaya Mahaadevaaya\nTrayambakaaya Tripurantakaaya\nTrikaalaagni - Kaalaaya\nKaalaagni - Rudraaya Nilakantaaya Mrityunjayaaya\nSarveshvaraaya Sadaashivaaya\nSriman Mahadevaaya Namah.");'>
 				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 					<path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
 				</svg>
@@ -207,7 +207,7 @@
 				<span>Like</span>
 			</button>
 			
-			<button class="hypno-btn" onclick='hypno_setTrack("media/hypno-sounds/calm.mp3", "Calm State", "Guided meditation to relax your mind");'>
+			<button class="hypno-btn" onclick='audioPlayer_setTrack("media/hypno-sounds/calm.mp3", "Calm State", "Guided meditation to relax your mind");'>
 				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 					<path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
 				</svg>
@@ -249,101 +249,105 @@
   
 </section>
 
+
+<!-- ///////////////// -->
 <!-- Audio Player Section -->
-<section id="hypno_audioPlayerSection" class="hypno_player-section" style="display: none;">
-  <div class="hypno_player-container">
+<!-- ///////////////// -->
+<!-- Call audio player by function : hypno_setTrack("audioPath", "trackTitle", "shortDescription", "transcript using\n") -->
+<section id="audioPlayerSection" class="audioPlayer-section" style="display: none;">
+  <div class="audioPlayer-container">
     <!-- Player Header -->
-    <div class="hypno_player-header">
-      <button class="hypno_close-btn" onclick="hypno_closePlayer()">
-		<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-			<path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/>
-		</svg>
+    <div class="audioPlayer-header">
+      <button class="audioPlayer_close-btn" onclick="audioPlayer_closePlayer()">
+        <svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+          <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/>
+        </svg>
       </button>
-      <div class="hypno_track-info">
-        <h3 id="hypno_trackTitle" class="hypno_track-title">Track Title</h3>
-        <p id="hypno_trackDescription" class="hypno_track-description">Track description will appear here</p>
+      <div class="audioPlayer_track-info">
+        <h3 id="audioPlayer_trackTitle" class="audioPlayer_track-title">Track Title</h3>
+        <p id="audioPlayer_trackDescription" class="audioPlayer_track-description">Track description will appear here</p>
       </div>
     </div>
 
     <!-- Progress Bar -->
-    <div class="hypno_progress-container">
-      <span id="hypno_currentTime" class="hypno_time">0:00</span>
-      <div class="hypno_progress-wrapper">
-        <input type="range" id="hypno_progressBar" class="hypno_progress-bar" value="0" min="0" step="0.01">
-        <div id="hypno_progressFill" class="hypno_progress-fill"></div>
+    <div class="audioPlayer_progress-container">
+      <span id="audioPlayer_currentTime" class="audioPlayer_time">0:00</span>
+      <div class="audioPlayer_progress-wrapper">
+        <input type="range" id="audioPlayer_progressBar" class="audioPlayer_progress-bar" value="0" min="0" step="0.01">
+        <div id="audioPlayer_progressFill" class="audioPlayer_progress-fill"></div>
       </div>
-      <span id="hypno_duration" class="hypno_time">0:00</span>
+      <span id="audioPlayer_duration" class="audioPlayer_time">0:00</span>
     </div>
 
     <!-- Controls -->
-    <div class="hypno_controls">
-      <button id="hypno_repeatBtn" class="hypno_control-btn" onclick="hypno_toggleRepeat()">
-		<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-			<path d="m274-200 34 34q12 12 11.5 28T308-110q-12 12-28.5 12.5T251-109L148-212q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l103-103q12-12 28.5-11.5T308-370q11 12 11.5 28T308-314l-34 34h406v-120q0-17 11.5-28.5T720-440q17 0 28.5 11.5T760-400v120q0 33-23.5 56.5T680-200H274Zm412-480H280v120q0 17-11.5 28.5T240-520q-17 0-28.5-11.5T200-560v-120q0-33 23.5-56.5T280-760h406l-34-34q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T709-851l103 103q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L709-589q-12 12-28.5 11.5T652-590q-11-12-11.5-28t11.5-28l34-34Z"/>
-		</svg>
+    <div class="audioPlayer_controls">
+      <button id="audioPlayer_repeatBtn" class="audioPlayer_control-btn" onclick="audioPlayer_toggleRepeat()">
+        <svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+          <path d="m274-200 34 34q12 12 11.5 28T308-110q-12 12-28.5 12.5T251-109L148-212q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l103-103q12-12 28.5-11.5T308-370q11 12 11.5 28T308-314l-34 34h406v-120q0-17 11.5-28.5T720-440q17 0 28.5 11.5T760-400v120q0 33-23.5 56.5T680-200H274Zm412-480H280v120q0 17-11.5 28.5T240-520q-17 0-28.5-11.5T200-560v-120q0-33 23.5-56.5T280-760h406l-34-34q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T709-851l103 103q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L709-589q-12 12-28.5 11.5T652-590q-11-12-11.5-28t11.5-28l34-34Z"/>
+        </svg>
       </button>
       
-      <button class="hypno_control-btn" onclick="hypno_skipBackward()">
-		<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-			<path d="M798-281 550-447q-9-6-13.5-14.5T532-480q0-10 4.5-18.5T550-513l248-166q5-4 11-5t11-1q16 0 28 11t12 29v330q0 18-12 29t-28 11q-5 0-11-1t-11-5Zm-400 0L150-447q-9-6-13.5-14.5T132-480q0-10 4.5-18.5T150-513l248-166q5-4 11-5t11-1q16 0 28 11t12 29v330q0 18-12 29t-28 11q-5 0-11-1t-11-5Z"/>
-		</svg>
+      <button class="audioPlayer_control-btn" onclick="audioPlayer_skipBackward()">
+        <svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+          <path d="M798-281 550-447q-9-6-13.5-14.5T532-480q0-10 4.5-18.5T550-513l248-166q5-4 11-5t11-1q16 0 28 11t12 29v330q0 18-12 29t-28 11q-5 0-11-1t-11-5Zm-400 0L150-447q-9-6-13.5-14.5T132-480q0-10 4.5-18.5T150-513l248-166q5-4 11-5t11-1q16 0 28 11t12 29v330q0 18-12 29t-28 11q-5 0-11-1t-11-5Z"/>
+        </svg>
       </button>
       
-      <button id="hypno_playPauseBtn" class="hypno_play-btn" onclick="hypno_togglePlay()">
-        <svg id="hypno_playIcon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-			<path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
-		</svg>
-		<svg id="hypno_pauseIcon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-			<path d="M640-200q-33 0-56.5-23.5T560-280v-400q0-33 23.5-56.5T640-760q33 0 56.5 23.5T720-680v400q0 33-23.5 56.5T640-200Zm-320 0q-33 0-56.5-23.5T240-280v-400q0-33 23.5-56.5T320-760q33 0 56.5 23.5T400-680v400q0 33-23.5 56.5T320-200Z"/>
-		</svg>
+      <button id="audioPlayer_playPauseBtn" class="audioPlayer_play-btn" onclick="audioPlayer_togglePlay()">
+        <svg id="audioPlayer_playIcon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+          <path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
+        </svg>
+        <svg id="audioPlayer_pauseIcon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff" style="display: none;">
+          <path d="M640-200q-33 0-56.5-23.5T560-280v-400q0-33 23.5-56.5T640-760q33 0 56.5 23.5T720-680v400q0 33-23.5 56.5T640-200Zm-320 0q-33 0-56.5-23.5T240-280v-400q0-33 23.5-56.5T320-760q33 0 56.5 23.5T400-680v400q0 33-23.5 56.5T320-200Z"/>
+        </svg>
       </button>
       
-      <button class="hypno_control-btn" onclick="hypno_skipForward()">
-		<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-			<path d="M100-315v-330q0-18 12-29t28-11q5 0 11 1t11 5l248 166q9 6 13.5 14.5T428-480q0 10-4.5 18.5T410-447L162-281q-5 4-11 5t-11 1q-16 0-28-11t-12-29Zm400 0v-330q0-18 12-29t28-11q5 0 11 1t11 5l248 166q9 6 13.5 14.5T828-480q0 10-4.5 18.5T810-447L562-281q-5 4-11 5t-11 1q-16 0-28-11t-12-29Z"/>
-		</svg>
+      <button class="audioPlayer_control-btn" onclick="audioPlayer_skipForward()">
+        <svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+          <path d="M100-315v-330q0-18 12-29t28-11q5 0 11 1t11 5l248 166q9 6 13.5 14.5T428-480q0 10-4.5 18.5T410-447L162-281q-5 4-11 5t-11 1q-16 0-28-11t-12-29Zm400 0v-330q0-18 12-29t28-11q5 0 11 1t11 5l248 166q9 6 13.5 14.5T828-480q0 10-4.5 18.5T810-447L562-281q-5 4-11 5t-11 1q-16 0-28-11t-12-29Z"/>
+        </svg>
       </button>
       
-      <div class="hypno_speed-controls">
-        <button class="hypno_speed-btn hypno_speed-decrease" onclick="hypno_adjustSpeed(-0.25)">
-			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-				<path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"/>
-			</svg>
+      <div class="audioPlayer_speed-controls">
+        <button class="audioPlayer_speed-btn audioPlayer_speed-decrease" onclick="audioPlayer_adjustSpeed(-0.25)">
+          <svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+            <path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"/>
+          </svg>
         </button>
-        <span id="hypno_speedDisplay" class="hypno_speed-display">1.0</span>
-        <button class="hypno_speed-btn hypno_speed-increase" onclick="hypno_adjustSpeed(0.25)">
-			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-				<path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/>
-			</svg>
+        <span id="audioPlayer_speedDisplay" class="audioPlayer_speed-display">1.0</span>
+        <button class="audioPlayer_speed-btn audioPlayer_speed-increase" onclick="audioPlayer_adjustSpeed(0.25)">
+          <svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+            <path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/>
+          </svg>
         </button>
       </div>
     </div>
 
     <!-- Speed Presets -->
-    <div class="hypno_speed-presets">
-      <button class="hypno_speed-preset" onclick="hypno_setSpeed(0.5)">0.5</button>
-      <button class="hypno_speed-preset" onclick="hypno_setSpeed(0.75)">0.75</button>
-      <button class="hypno_speed-preset hypno_active-speed" onclick="hypno_setSpeed(1.0)">1.0</button>
-      <button class="hypno_speed-preset" onclick="hypno_setSpeed(1.25)">1.25</button>
-      <button class="hypno_speed-preset" onclick="hypno_setSpeed(1.5)">1.5</button>
-      <button class="hypno_speed-preset" onclick="hypno_setSpeed(2.0)">2.0</button>
+    <div class="audioPlayer_speed-presets">
+      <button class="audioPlayer_speed-preset" onclick="audioPlayer_setSpeed(0.5)">0.5</button>
+      <button class="audioPlayer_speed-preset" onclick="audioPlayer_setSpeed(0.75)">0.75</button>
+      <button class="audioPlayer_speed-preset audioPlayer_active-speed" onclick="audioPlayer_setSpeed(1.0)">1.0</button>
+      <button class="audioPlayer_speed-preset" onclick="audioPlayer_setSpeed(1.25)">1.25</button>
+      <button class="audioPlayer_speed-preset" onclick="audioPlayer_setSpeed(1.5)">1.5</button>
+      <button class="audioPlayer_speed-preset" onclick="audioPlayer_setSpeed(2.0)">2.0</button>
     </div>
 
     <!-- Lyrics/Transcript -->
-    <div class="hypno_lyrics-container">
-      <h4 class="hypno_lyrics-title">Transcript</h4>
-      <div id="hypno_lyricsContent" class="hypno_lyrics-content">
+    <div class="audioPlayer_lyrics-container">
+      <h4 class="audioPlayer_lyrics-title">Transcript</h4>
+      <div id="audioPlayer_lyricsContent" class="audioPlayer_lyrics-content">
         No Lyrics Available
       </div>
     </div>
   </div>
 
   <!-- Audio Element -->
-  <audio id="hypno_audioElement"></audio>
+  <audio id="audioPlayer_audioElement"></audio>
 
   <style>
     /* Player Styles */
-    .hypno_player-section {
+    .audioPlayer-section {
       position: fixed;
       bottom: 0;
       left: 0;
@@ -361,24 +365,24 @@
       transition: transform 0.3s ease-out;
     }
 
-    .hypno_player-section.show {
+    .audioPlayer-section.show {
       transform: translateY(0);
     }
 
-    .hypno_player-container {
+    .audioPlayer-container {
       display: flex;
       flex-direction: column;
       gap: 15px;
     }
 
     /* Header Styles */
-    .hypno_player-header {
+    .audioPlayer-header {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .hypno_close-btn {
+    .audioPlayer_close-btn {
       background: none;
       border: none;
       padding: 5px;
@@ -389,43 +393,43 @@
       width: 36px;
       height: 36px;
     }
-
-    .hypno_close-btn:active {
-      background-color: rgba(255, 255, 255, 0.1);
+    
+    .audioPlayer_close-btn svg {
+      fill: var(--font1);
     }
 
-    .hypno_track-info {
+    .audioPlayer_track-info {
       flex: 1;
     }
 
-    .hypno_track-title {
+    .audioPlayer_track-title {
       margin: 0;
       font-size: 1.2rem;
       font-weight: 600;
     }
 
-    .hypno_track-description {
+    .audioPlayer_track-description {
       margin: 5px 0 0;
       font-size: 0.9rem;
       color: var(--font2);
     }
 
     /* Progress Bar Styles */
-    .hypno_progress-container {
+    .audioPlayer_progress-container {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-top: 10px;
     }
 
-    .hypno_time {
+    .audioPlayer_time {
       font-size: 0.8rem;
       color: var(--font2);
       min-width: 40px;
       text-align: center;
     }
 
-    .hypno_progress-wrapper {
+    .audioPlayer_progress-wrapper {
       position: relative;
       flex: 1;
       height: 4px;
@@ -433,7 +437,7 @@
       border-radius: 2px;
     }
 
-    .hypno_progress-bar {
+    .audioPlayer_progress-bar {
       position: absolute;
       width: 100%;
       height: 100%;
@@ -442,7 +446,7 @@
       z-index: 3;
     }
 
-    .hypno_progress-fill {
+    .audioPlayer_progress-fill {
       position: absolute;
       top: 0;
       left: 0;
@@ -453,7 +457,7 @@
       z-index: 1;
     }
 
-    .hypno_progress-bar::-webkit-slider-thumb {
+    .audioPlayer_progress-bar::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
       width: 15px;
@@ -466,14 +470,14 @@
     }
 
     /* Controls Styles */
-    .hypno_controls {
+    .audioPlayer_controls {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 10px 0;
     }
 
-    .hypno_control-btn {
+    .audioPlayer_control-btn {
       background: none;
       border: none;
       padding: 10px;
@@ -484,16 +488,16 @@
       width: 44px;
       height: 44px;
     }
-	
-	.hypno_control-btn svg {
-		fill: var(--font1);
-	}
+    
+    .audioPlayer_control-btn svg {
+      fill: var(--font1);
+    }
 
-    .hypno_control-btn:active {
+    .audioPlayer_control-btn:active {
       background-color: var(--bg1);
     }
 
-    .hypno_play-btn {
+    .audioPlayer_play-btn {
       background-color: var(--accent1);
       width: 60px;
       height: 60px;
@@ -501,17 +505,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-	  border: none;
+      border: none;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    .hypno_play-btn:active {
+    .audioPlayer_play-btn:active {
       background-color: var(--accent1);
       transform: scale(0.95);
     }
 
     /* Speed Controls */
-    .hypno_speed-controls {
+    .audioPlayer_speed-controls {
       display: flex;
       align-items: center;
       gap: 5px;
@@ -520,7 +524,7 @@
       padding: 5px;
     }
 
-    .hypno_speed-btn {
+    .audioPlayer_speed-btn {
       background: none;
       border: none;
       font-size: 1rem;
@@ -532,29 +536,29 @@
       border-radius: 50%;
     }
 
-    .hypno_speed-btn:active {
+    .audioPlayer_speed-btn:active {
       background-color: var(--bg3);
     }
-	
-	.hypno_speed-btn svg {
-		fill: var(--font1);
-	}
+    
+    .audioPlayer_speed-btn svg {
+      fill: var(--font1);
+    }
 
-    .hypno_speed-display {
+    .audioPlayer_speed-display {
       font-size: 0.9rem;
       min-width: 40px;
       text-align: center;
     }
 
     /* Speed Presets */
-    .hypno_speed-presets {
+    .audioPlayer_speed-presets {
       display: flex;
       justify-content: space-between;
       gap: 5px;
       margin-bottom: 10px;
     }
 
-    .hypno_speed-preset {
+    .audioPlayer_speed-preset {
       background: var(--bg1);
       border: none;
       color: var(--font1);
@@ -563,29 +567,29 @@
       font-size: 0.8rem;
     }
 
-    .hypno_speed-preset:active {
+    .audioPlayer_speed-preset:active {
       background-color: var(--bg1));
     }
 
-    .hypno_active-speed {
+    .audioPlayer_active-speed {
       background-color: var(--accent1);
       color: white;
     }
 
     /* Lyrics Styles */
-    .hypno_lyrics-container {
+    .audioPlayer_lyrics-container {
       margin-top: 15px;
       padding-top: 15px;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .hypno_lyrics-title {
+    .audioPlayer_lyrics-title {
       margin: 0 0 10px;
       font-size: 1rem;
       color: var(--font2);
     }
 
-    .hypno_lyrics-content {
+    .audioPlayer_lyrics-content {
       font-size: 0.9rem;
       line-height: 1.5;
       color: var(--font1);
@@ -594,205 +598,201 @@
       overflow-y: auto;
       padding: 5px;
       font-style: italic;
-	  margin-bottom: 50px;
+      margin-bottom: 50px;
     }
 
     /* Repeat Active State */
-    .hypno_repeat-active svg{
+    .audioPlayer_repeat-active svg{
       fill: var(--accent1);
     }
   </style>
 
   <script>
     // Audio Player Variables
-    const hypno_audioElement = document.getElementById('hypno_audioElement');
-    const hypno_playPauseBtn = document.getElementById('hypno_playPauseBtn');
-    const hypno_playIcon = document.getElementById('hypno_playIcon');
-    const hypno_pauseIcon = document.getElementById('hypno_pauseIcon');
-    const hypno_progressBar = document.getElementById('hypno_progressBar');
-    const hypno_progressFill = document.getElementById('hypno_progressFill');
-    const hypno_currentTime = document.getElementById('hypno_currentTime');
-    const hypno_duration = document.getElementById('hypno_duration');
-    const hypno_repeatBtn = document.getElementById('hypno_repeatBtn');
-    const hypno_speedDisplay = document.getElementById('hypno_speedDisplay');
-    const hypno_playerSection = document.getElementById('hypno_audioPlayerSection');
-    const hypno_lyricsContent = document.getElementById('hypno_lyricsContent');
-    let hypno_isRepeat = false;
+    const audioPlayer_audioElement = document.getElementById('audioPlayer_audioElement');
+    const audioPlayer_playPauseBtn = document.getElementById('audioPlayer_playPauseBtn');
+    const audioPlayer_playIcon = document.getElementById('audioPlayer_playIcon');
+    const audioPlayer_pauseIcon = document.getElementById('audioPlayer_pauseIcon');
+    const audioPlayer_progressBar = document.getElementById('audioPlayer_progressBar');
+    const audioPlayer_progressFill = document.getElementById('audioPlayer_progressFill');
+    const audioPlayer_currentTime = document.getElementById('audioPlayer_currentTime');
+    const audioPlayer_duration = document.getElementById('audioPlayer_duration');
+    const audioPlayer_repeatBtn = document.getElementById('audioPlayer_repeatBtn');
+    const audioPlayer_speedDisplay = document.getElementById('audioPlayer_speedDisplay');
+    const audioPlayer_section = document.getElementById('audioPlayerSection');
+    const audioPlayer_lyricsContent = document.getElementById('audioPlayer_lyricsContent');
+    let audioPlayer_isRepeat = false;
 
     // Initialize player
-    function hypno_initPlayer() {
+    function audioPlayer_initPlayer() {
       // Event listeners
-      hypno_audioElement.addEventListener('timeupdate', hypno_updateProgress);
-      hypno_audioElement.addEventListener('loadedmetadata', hypno_setDuration);
-      hypno_audioElement.addEventListener('ended', hypno_trackEnded);
-      hypno_audioElement.addEventListener('play', hypno_updatePlayPauseIcon);
-      hypno_audioElement.addEventListener('pause', hypno_updatePlayPauseIcon);
+      audioPlayer_audioElement.addEventListener('timeupdate', audioPlayer_updateProgress);
+      audioPlayer_audioElement.addEventListener('loadedmetadata', audioPlayer_setDuration);
+      audioPlayer_audioElement.addEventListener('ended', audioPlayer_trackEnded);
+      audioPlayer_audioElement.addEventListener('play', audioPlayer_updatePlayPauseIcon);
+      audioPlayer_audioElement.addEventListener('pause', audioPlayer_updatePlayPauseIcon);
       
-      hypno_progressBar.addEventListener('input', hypno_seek);
+      audioPlayer_progressBar.addEventListener('input', audioPlayer_seek);
       
       // Set initial speed
-      hypno_audioElement.playbackRate = 1.0;
-      hypno_speedDisplay.textContent = '1.0';
+      audioPlayer_audioElement.playbackRate = 1.0;
+      audioPlayer_speedDisplay.textContent = '1.0';
     }
 
-      // Set track function (RESET VALUES)
-	  function hypno_setTrack(src, title, description, lyrics) {
-		// Reset player state
-		hypno_audioElement.currentTime = 0;
-		hypno_progressBar.value = 0;
-		hypno_progressFill.style.width = '0%';
-		hypno_currentTime.textContent = '0:00';
-		hypno_isRepeat = false;
-		hypno_repeatBtn.classList.remove('hypno_repeat-active');
-		
-		// Reset playback speed to 1.0
-		hypno_audioElement.playbackRate = 1.0;
-		hypno_speedDisplay.textContent = '1.0';
-		document.querySelectorAll('.hypno_speed-preset').forEach(btn => {
-		  btn.classList.remove('hypno_active-speed');
-		  if (parseFloat(btn.textContent) === 1.0) {
-			btn.classList.add('hypno_active-speed');
-		  }
-		});
-		
-		// Set audio source
-		hypno_audioElement.src = src;
-		
-		// Update track info
-		document.getElementById('hypno_trackTitle').textContent = title;
-		document.getElementById('hypno_trackDescription').textContent = description;
-		
-		// Update lyrics or show default message
-		if (lyrics && lyrics.trim() !== '') {
-		  hypno_lyricsContent.textContent = lyrics;
-		} else {
-		  hypno_lyricsContent.textContent = 'No Lyrics Available';
-		}
-		
-		// Show player
-		hypno_playerSection.style.display = 'block';
-		setTimeout(() => {
-		  hypno_playerSection.classList.add('show');
-		}, 10);
-		
-		// Load the audio
-		hypno_audioElement.load();
-		
-		// Ensure play icon shows correctly
-		hypno_playIcon.style.display = 'block';
-		hypno_pauseIcon.style.display = 'none';
-	  }
+    // Set track function
+    function audioPlayer_setTrack(src, title, description, lyrics) {
+      // Reset player state
+      audioPlayer_audioElement.currentTime = 0;
+      audioPlayer_progressBar.value = 0;
+      audioPlayer_progressFill.style.width = '0%';
+      audioPlayer_currentTime.textContent = '0:00';
+      audioPlayer_isRepeat = false;
+      audioPlayer_repeatBtn.classList.remove('audioPlayer_repeat-active');
+      
+      // Reset playback speed to 1.0
+      audioPlayer_audioElement.playbackRate = 1.0;
+      audioPlayer_speedDisplay.textContent = '1.0';
+      document.querySelectorAll('.audioPlayer_speed-preset').forEach(btn => {
+        btn.classList.remove('audioPlayer_active-speed');
+        if (parseFloat(btn.textContent) === 1.0) {
+          btn.classList.add('audioPlayer_active-speed');
+        }
+      });
+      
+      // Set audio source
+      audioPlayer_audioElement.src = src;
+      
+      // Update track info
+      document.getElementById('audioPlayer_trackTitle').textContent = title;
+      document.getElementById('audioPlayer_trackDescription').textContent = description;
+      
+      // Update lyrics or show default message
+      if (lyrics && lyrics.trim() !== '') {
+        audioPlayer_lyricsContent.textContent = lyrics;
+      } else {
+        audioPlayer_lyricsContent.textContent = 'No Lyrics Available';
+      }
+      
+      // Show player
+      audioPlayer_section.style.display = 'block';
+      setTimeout(() => {
+        audioPlayer_section.classList.add('show');
+      }, 10);
+      
+      // Load the audio
+      audioPlayer_audioElement.load();
+      
+      // Ensure play icon shows correctly
+      audioPlayer_playIcon.style.display = 'block';
+      audioPlayer_pauseIcon.style.display = 'none';
+    }
 
     // Close player
-    function hypno_closePlayer() {
-      hypno_playerSection.classList.remove('show');
+    function audioPlayer_closePlayer() {
+      audioPlayer_section.classList.remove('show');
       setTimeout(() => {
-        hypno_playerSection.style.display = 'none';
-        hypno_audioElement.pause();
+        audioPlayer_section.style.display = 'none';
+        audioPlayer_audioElement.pause();
       }, 300);
     }
 
     // Toggle play/pause
-    function hypno_togglePlay() {
-      if (hypno_audioElement.paused) {
-        hypno_audioElement.play();
+    function audioPlayer_togglePlay() {
+      if (audioPlayer_audioElement.paused) {
+        audioPlayer_audioElement.play();
       } else {
-        hypno_audioElement.pause();
+        audioPlayer_audioElement.pause();
       }
     }
 
     // Update play/pause icon
-    function hypno_updatePlayPauseIcon() {
-      if (hypno_audioElement.paused) {
-        hypno_playIcon.style.display = 'block';
-        hypno_pauseIcon.style.display = 'none';
+    function audioPlayer_updatePlayPauseIcon() {
+      if (audioPlayer_audioElement.paused) {
+        audioPlayer_playIcon.style.display = 'block';
+        audioPlayer_pauseIcon.style.display = 'none';
       } else {
-        hypno_playIcon.style.display = 'none';
-        hypno_pauseIcon.style.display = 'block';
+        audioPlayer_playIcon.style.display = 'none';
+        audioPlayer_pauseIcon.style.display = 'block';
       }
     }
 
     // Update progress bar
-    function hypno_updateProgress() {
-      const { currentTime, duration } = hypno_audioElement;
+    function audioPlayer_updateProgress() {
+      const { currentTime, duration } = audioPlayer_audioElement;
       const progressPercent = (currentTime / duration) * 100;
-      hypno_progressBar.value = progressPercent;
-      hypno_progressFill.style.width = `${progressPercent}%`;
-      hypno_currentTime.textContent = hypno_formatTime(currentTime);
+      audioPlayer_progressBar.value = progressPercent;
+      audioPlayer_progressFill.style.width = `${progressPercent}%`;
+      audioPlayer_currentTime.textContent = audioPlayer_formatTime(currentTime);
     }
 
     // Set duration
-    function hypno_setDuration() {
-      const duration = hypno_audioElement.duration;
-      hypno_duration.textContent = hypno_formatTime(duration);
+    function audioPlayer_setDuration() {
+      const duration = audioPlayer_audioElement.duration;
+      audioPlayer_duration.textContent = audioPlayer_formatTime(duration);
     }
 
     // Format time (seconds to MM:SS)
-    function hypno_formatTime(seconds) {
+    function audioPlayer_formatTime(seconds) {
       const minutes = Math.floor(seconds / 60);
       const secs = Math.floor(seconds % 60);
       return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     }
 
     // Seek function
-    function hypno_seek() {
-      const seekTime = (hypno_progressBar.value / 100) * hypno_audioElement.duration;
-      hypno_audioElement.currentTime = seekTime;
+    function audioPlayer_seek() {
+      const seekTime = (audioPlayer_progressBar.value / 100) * audioPlayer_audioElement.duration;
+      audioPlayer_audioElement.currentTime = seekTime;
     }
 
     // Skip forward 15 seconds
-    function hypno_skipForward() {
-      hypno_audioElement.currentTime += 15;
+    function audioPlayer_skipForward() {
+      audioPlayer_audioElement.currentTime += 15;
     }
 
     // Skip backward 15 seconds
-    function hypno_skipBackward() {
-      hypno_audioElement.currentTime -= 15;
+    function audioPlayer_skipBackward() {
+      audioPlayer_audioElement.currentTime -= 15;
     }
 
     // Toggle repeat
-    function hypno_toggleRepeat() {
-      hypno_isRepeat = !hypno_isRepeat;
-      hypno_repeatBtn.classList.toggle('hypno_repeat-active', hypno_isRepeat);
+    function audioPlayer_toggleRepeat() {
+      audioPlayer_isRepeat = !audioPlayer_isRepeat;
+      audioPlayer_repeatBtn.classList.toggle('audioPlayer_repeat-active', audioPlayer_isRepeat);
     }
 
     // Track ended handler
-    function hypno_trackEnded() {
-      if (hypno_isRepeat) {
-        hypno_audioElement.currentTime = 0;
-        hypno_audioElement.play();
+    function audioPlayer_trackEnded() {
+      if (audioPlayer_isRepeat) {
+        audioPlayer_audioElement.currentTime = 0;
+        audioPlayer_audioElement.play();
       }
     }
 
     // Adjust playback speed
-    function hypno_adjustSpeed(change) {
-      let newSpeed = hypno_audioElement.playbackRate + change;
+    function audioPlayer_adjustSpeed(change) {
+      let newSpeed = audioPlayer_audioElement.playbackRate + change;
       newSpeed = Math.max(0.25, Math.min(4.0, newSpeed)); // Clamp between 0.25 and 4.0
-      hypno_setSpeed(newSpeed);
+      audioPlayer_setSpeed(newSpeed);
     }
 
     // Set playback speed
-    function hypno_setSpeed(speed) {
-      hypno_audioElement.playbackRate = speed;
-      hypno_speedDisplay.textContent = speed.toFixed(2);
+    function audioPlayer_setSpeed(speed) {
+      audioPlayer_audioElement.playbackRate = speed;
+      audioPlayer_speedDisplay.textContent = speed.toFixed(2);
       
       // Update active speed button
-      document.querySelectorAll('.hypno_speed-preset').forEach(btn => {
-        btn.classList.remove('hypno_active-speed');
+      document.querySelectorAll('.audioPlayer_speed-preset').forEach(btn => {
+        btn.classList.remove('audioPlayer_active-speed');
         if (parseFloat(btn.textContent) === speed) {
-          btn.classList.add('hypno_active-speed');
+          btn.classList.add('audioPlayer_active-speed');
         }
       });
     }
 
     // Initialize player when DOM is loaded
-    document.addEventListener('DOMContentLoaded', hypno_initPlayer);
+    document.addEventListener('DOMContentLoaded', audioPlayer_initPlayer);
   </script>
 </section>
-
-
-
-
 
 
 
@@ -820,16 +820,7 @@ function showTakSnackbar(message = "Welcome!") {
 </script>
 
 
-<!-- Confirm Dialog (hidden initially) -->
-<div id="SECTION-confirm-dialog" class="tak-dialog" style="display: none;">
-	<div class="tak-dialog-box">
-		<p>Are you sure you want to delete this note?</p>
-		<div class="tak-dialog-actions">
-			<button class="tak-dialog-skip" id="SECTION-dialog-skip">Skip</button>
-			<button class="tak-dialog-continue" id="SECTION-dialog-continue">Continue</button>
-		</div>
-	</div>
-</div>
+
 
 <!-- ///////////////// -->
 <!-- Footer Spacer -->
@@ -837,20 +828,6 @@ function showTakSnackbar(message = "Welcome!") {
 <div class="footerSpacer">
 </div>
 
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const images = document.querySelectorAll("img");
-
-    images.forEach(img => {
-      img.onerror = function () {
-        this.onerror = null;
-        this.src = "images/nm/nm-placeholder.svg";
-      };
-    });
-  });
-</script>
 
 <!-- ///////////////// -->
 <!-- Bottom Menu -->
