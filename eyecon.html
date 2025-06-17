@@ -49,156 +49,166 @@
   <style>
     #eyecon-section {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
-      color: #00ffcc;
-      padding: 1rem;
-      min-height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .eyecon-video-container {
+      background: #0d0d0d;
+      color: #00ffc8;
+      padding: 0.5rem;
+      max-height: 70vh;
+      height: 70vh;
+      box-sizing: border-box;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
+      grid-template-rows: 1fr 1fr;
+      gap: 0.4rem;
     }
 
-    .eyecon-cam-feed, .eyecon-fcam-feed {
-      width: 100%;
-      aspect-ratio: 3/4;
+    .eyecon-box {
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
       background: #000;
-      border: 2px solid #00ffcc44;
-      border-radius: 10px;
+      border: 1px solid #00ffc833;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .eyecon-cam {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
     }
 
-    .eyecon-talking-video {
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-      width: 120px;
-      height: 160px;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 2px solid #ff00ff;
-      box-shadow: 0 0 20px #ff00ff88;
-    }
-
-    .eyecon-data {
+    .eyecon-stats {
+      padding: 0.4rem;
+      font-size: 0.7rem;
+      line-height: 1.2;
       background: #111;
-      padding: 1rem;
-      border-radius: 12px;
-      border: 1px solid #00ffcc33;
-      font-size: 0.9rem;
+      color: #0ff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
     }
 
     .eyecon-label {
-      color: #999;
-      font-size: 0.8rem;
+      color: #aaa;
+      font-weight: 400;
+      font-size: 0.65rem;
+      margin-right: 0.2rem;
     }
 
-    .eyecon-flex {
+    .eyecon-line {
       display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.3rem;
+      flex-wrap: wrap;
     }
 
-    @media (max-width: 768px) {
-      .eyecon-video-container {
-        grid-template-columns: 1fr;
+    .eyecon-talker-box video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 600px) {
+      #eyecon-section {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
       }
     }
   </style>
 
-  <div class="eyecon-video-container">
-    <video id="eyecon-backcam" class="eyecon-cam-feed" autoplay muted playsinline></video>
-    <video id="eyecon-frontcam" class="eyecon-fcam-feed" autoplay muted playsinline></video>
+  <!-- Rear Camera -->
+  <div class="eyecon-box">
+    <video id="eyecon-backcam" class="eyecon-cam" autoplay muted playsinline></video>
   </div>
 
-  <div class="eyecon-data eyecon-flex">
-    <div>
-      <span class="eyecon-label">Latitude:</span> <span id="eyecon-lat">--</span><br />
-      <span class="eyecon-label">Longitude:</span> <span id="eyecon-lon">--</span>
-    </div>
-    <div>
-      <span class="eyecon-label">X:</span> <span id="eyecon-x">--</span><br />
-      <span class="eyecon-label">Y:</span> <span id="eyecon-y">--</span><br />
-      <span class="eyecon-label">Z:</span> <span id="eyecon-z">--</span>
-    </div>
+  <!-- Front Camera -->
+  <div class="eyecon-box">
+    <video id="eyecon-frontcam" class="eyecon-cam" autoplay muted playsinline></video>
   </div>
 
-  <div class="eyecon-talking-video">
+  <!-- Talker Video -->
+  <div class="eyecon-box eyecon-talker-box">
     <video id="eyecon-talker" autoplay muted loop playsinline>
-      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
+      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
     </video>
   </div>
 
+  <!-- Stats -->
+  <div class="eyecon-box eyecon-stats">
+    <div class="eyecon-line"><span class="eyecon-label">Lat:</span><span id="eyecon-lat">--</span></div>
+    <div class="eyecon-line"><span class="eyecon-label">Long:</span><span id="eyecon-lon">--</span></div>
+    <div class="eyecon-line"><span class="eyecon-label">Datetime:</span><span id="eyecon-time">--</span></div>
+    <div class="eyecon-line">
+      <span class="eyecon-label">X:</span><span id="eyecon-x">--</span>
+      <span class="eyecon-label">Y:</span><span id="eyecon-y">--</span>
+      <span class="eyecon-label">Z:</span><span id="eyecon-z">--</span>
+    </div>
+    <div class="eyecon-line"><span class="eyecon-label">Status:</span><span id="eyecon-status">Analyzing...</span></div>
+  </div>
+
   <script>
-    async function eyecon_startCamera(videoElement, facingMode = "environment") {
+    async function eyecon_startCamera(videoEl, facing = "environment") {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: facingMode },
-          audio: false
+          video: { facingMode: { exact: facing } }, audio: false
         });
-        videoElement.srcObject = stream;
+        videoEl.srcObject = stream;
       } catch (err) {
-        console.error("eyecon camera error:", err);
+        console.warn(`eyecon camera error (${facing}):`, err);
       }
     }
 
-    function eyecon_getLocation() {
+    function eyecon_updateLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.watchPosition(pos => {
           document.getElementById("eyecon-lat").textContent = pos.coords.latitude.toFixed(6);
           document.getElementById("eyecon-lon").textContent = pos.coords.longitude.toFixed(6);
-        }, err => {
-          console.warn("eyecon geolocation error:", err);
-        }, {
-          enableHighAccuracy: true,
-          maximumAge: 10000
         });
-      } else {
-        document.getElementById("eyecon-lat").textContent = "N/A";
-        document.getElementById("eyecon-lon").textContent = "N/A";
       }
     }
 
-    function eyecon_trackMotion() {
-      if (window.DeviceMotionEvent) {
-        window.addEventListener("devicemotion", (event) => {
-          const x = event.accelerationIncludingGravity.x || 0;
-          const y = event.accelerationIncludingGravity.y || 0;
-          const z = event.accelerationIncludingGravity.z || 0;
-
-          document.getElementById("eyecon-x").textContent = x.toFixed(2);
-          document.getElementById("eyecon-y").textContent = y.toFixed(2);
-          document.getElementById("eyecon-z").textContent = z.toFixed(2);
-        });
-      } else {
-        document.getElementById("eyecon-x").textContent = "N/A";
-        document.getElementById("eyecon-y").textContent = "N/A";
-        document.getElementById("eyecon-z").textContent = "N/A";
-      }
+    function eyecon_updateMotion() {
+      window.addEventListener("devicemotion", e => {
+        const x = e.accelerationIncludingGravity?.x ?? 0;
+        const y = e.accelerationIncludingGravity?.y ?? 0;
+        const z = e.accelerationIncludingGravity?.z ?? 0;
+        document.getElementById("eyecon-x").textContent = x.toFixed(2);
+        document.getElementById("eyecon-y").textContent = y.toFixed(2);
+        document.getElementById("eyecon-z").textContent = z.toFixed(2);
+      });
     }
 
-    // Initialize all
+    function eyecon_updateTime() {
+      setInterval(() => {
+        const now = new Date();
+        const formatted = now.toLocaleDateString("en-GB") + ' ' +
+                          now.toTimeString().split(' ')[0];
+        document.getElementById("eyecon-time").textContent = formatted;
+      }, 1000);
+    }
+
+    function eyecon_randomStatus() {
+      const statuses = ["Analyzing...", "Scanning...", "Uploading...", "Decrypting...", "Mapping..."];
+      setInterval(() => {
+        const txt = statuses[Math.floor(Math.random() * statuses.length)];
+        document.getElementById("eyecon-status").textContent = txt;
+      }, 3000);
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
       eyecon_startCamera(document.getElementById("eyecon-backcam"), "environment");
       eyecon_startCamera(document.getElementById("eyecon-frontcam"), "user");
-      eyecon_getLocation();
-      eyecon_trackMotion();
+      eyecon_updateLocation();
+      eyecon_updateMotion();
+      eyecon_updateTime();
+      eyecon_randomStatus();
     });
   </script>
 </section>
 
 
 
-<section class="tak-header">
-	<h1 class="tak-pagename"> EyeCon </h1>
-</section>
+
 
 
 <!-- Snackbar (hidden initially) -->
