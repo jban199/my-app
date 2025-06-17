@@ -282,7 +282,7 @@
         <div class="eyecon-scanlines"></div>
     </div>
 
-    <script>
+<script>
     // Eyecon App State
     const eyeconState = {
         camerasActive: false,
@@ -290,29 +290,50 @@
         statusBoxInterval: null
     };
 
-    // Initialize on button click
-    document.getElementById('eyecon-start-btn').addEventListener('click', async function() {
-        try {
-            await eyeconInitializeApp();
-        } catch (error) {
-            showError("Failed to initialize: " + error.message);
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize button only if it exists
+        const startBtn = document.getElementById('eyecon-start-btn');
+        if (startBtn) {
+            startBtn.addEventListener('click', async function() {
+                try {
+                    await eyeconInitializeApp();
+                } catch (error) {
+                    showError("Failed to initialize: " + error.message);
+                }
+            });
+        } else {
+            console.error("Start button not found");
         }
     });
 
     function showError(message) {
         const errorEl = document.getElementById('eyecon-error-msg');
-        errorEl.textContent = message;
-        errorEl.style.display = 'block';
-        setTimeout(() => errorEl.style.display = 'none', 5000);
+        if (errorEl) {
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+            setTimeout(() => {
+                if (errorEl) errorEl.style.display = 'none';
+            }, 5000);
+        }
+    }
+
+    function safeSetText(elementId, text) {
+        const el = document.getElementById(elementId);
+        if (el) el.textContent = text;
     }
 
     async function eyeconInitializeApp() {
-        // Hide button and show UI
-        document.getElementById('eyecon-start-btn').style.display = 'none';
-        document.querySelector('.eyecon-container').style.display = 'grid';
+        // Hide button if it exists
+        const startBtn = document.getElementById('eyecon-start-btn');
+        if (startBtn) startBtn.style.display = 'none';
+        
+        // Show container if it exists
+        const container = document.querySelector('.eyecon-container');
+        if (container) container.style.display = 'grid';
         
         // Update status
-        document.getElementById('eyecon-status').textContent = 'INITIALIZING...';
+        safeSetText('eyecon-status', 'INITIALIZING...');
         
         // Initialize all components
         await eyeconStartCameras();
@@ -320,11 +341,15 @@
         eyeconStartSensorUpdates();
     }
 
-    // Camera Handling
     async function eyeconStartCameras() {
         const backCam = document.getElementById('eyecon-back-feed');
         const frontCam = document.getElementById('eyecon-front-feed');
         
+        if (!backCam || !frontCam) {
+            showError("Camera elements not found");
+            return;
+        }
+
         try {
             // Modern camera constraints
             const constraints = {
@@ -364,7 +389,7 @@
             // Check if we got at least one camera
             if (backStream || frontStream) {
                 eyeconState.camerasActive = true;
-                document.getElementById('eyecon-status').textContent = 'ACTIVE SCAN';
+                safeSetText('eyecon-status', 'ACTIVE SCAN');
                 eyeconStartStatusBoxes();
             } else {
                 throw new Error("No cameras available");
@@ -373,7 +398,7 @@
         } catch (err) {
             console.error("Camera error:", err);
             showError("Camera access denied - running in simulation mode");
-            document.getElementById('eyecon-status').textContent = 'SIMULATION MODE';
+            safeSetText('eyecon-status', 'SIMULATION MODE');
             eyeconSimulateCameras();
         }
     }
@@ -382,6 +407,8 @@
         const backCam = document.getElementById('eyecon-back-feed');
         const frontCam = document.getElementById('eyecon-front-feed');
         
+        if (!backCam || !frontCam) return;
+
         // Create canvas simulation
         eyeconCreateCameraSimulation(backCam, 0.2);
         eyeconCreateCameraSimulation(frontCam, 0.5);
@@ -430,7 +457,6 @@
         drawFrame();
     }
 
-    // Status Boxes
     function eyeconStartStatusBoxes() {
         if (!eyeconState.camerasActive) return;
         
@@ -454,8 +480,14 @@
             
             // Position in active camera views
             const activeCameras = [];
-            if (eyeconState.backCamActive) activeCameras.push(document.querySelector('.eyecon-back-camera'));
-            if (eyeconState.frontCamActive) activeCameras.push(document.querySelector('.eyecon-front-camera'));
+            if (eyeconState.backCamActive) {
+                const backCam = document.querySelector('.eyecon-back-camera');
+                if (backCam) activeCameras.push(backCam);
+            }
+            if (eyeconState.frontCamActive) {
+                const frontCam = document.querySelector('.eyecon-front-camera');
+                if (frontCam) activeCameras.push(frontCam);
+            }
             
             if (activeCameras.length === 0) return;
             
@@ -504,28 +536,29 @@
         }, 3000);
     }
 
-    // Agent Video Feed
     function eyeconInitAgentFeed() {
         const agentFeed = document.getElementById('eyecon-agent-feed');
+        if (!agentFeed) return;
         
         // Use a sample video (in real app would be real feed)
-        agentFeed.src = 'media/SampleVideo_720x480_1mb.mp4';
+        agentFeed.src = 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
         agentFeed.volume = 0.2;
         
         // Simulate connection issues
         setInterval(() => {
-            if (Math.random() > 0.9) {
+            if (agentFeed && Math.random() > 0.9) {
                 agentFeed.style.opacity = '0.3';
                 agentFeed.style.filter = 'grayscale(100%)';
                 setTimeout(() => {
-                    agentFeed.style.opacity = '1';
-                    agentFeed.style.filter = 'none';
+                    if (agentFeed) {
+                        agentFeed.style.opacity = '1';
+                        agentFeed.style.filter = 'none';
+                    }
                 }, 500 + Math.random() * 1500);
             }
         }, 10000);
     }
 
-    // Sensor Data Updates
     function eyeconStartSensorUpdates() {
         const statusMessages = [
             "ACTIVE SCAN",
@@ -539,20 +572,17 @@
             // Update GPS with small variations
             const latBase = 37.7749;
             const longBase = -122.4194;
-            document.getElementById('eyecon-lat').textContent = 
-                (latBase + (Math.random() * 0.01 - 0.005)).toFixed(4) + '° N';
-            document.getElementById('eyecon-long').textContent = 
-                (longBase + (Math.random() * 0.01 - 0.005)).toFixed(4) + '° W';
+            safeSetText('eyecon-lat', (latBase + (Math.random() * 0.01 - 0.005)).toFixed(4) + '° N');
+            safeSetText('eyecon-long', (longBase + (Math.random() * 0.01 - 0.005)).toFixed(4) + '° W');
             
             // Update accelerometer
-            document.getElementById('eyecon-x').textContent = (Math.random() * 2 - 1).toFixed(3);
-            document.getElementById('eyecon-y').textContent = (Math.random() * 2 - 1).toFixed(3);
-            document.getElementById('eyecon-z').textContent = (Math.random() * 2 - 1).toFixed(3);
+            safeSetText('eyecon-x', (Math.random() * 2 - 1).toFixed(3));
+            safeSetText('eyecon-y', (Math.random() * 2 - 1).toFixed(3));
+            safeSetText('eyecon-z', (Math.random() * 2 - 1).toFixed(3));
             
             // Random status change
             if (Math.random() > 0.8) {
-                document.getElementById('eyecon-status').textContent = 
-                    statusMessages[Math.floor(Math.random() * statusMessages.length)];
+                safeSetText('eyecon-status', statusMessages[Math.floor(Math.random() * statusMessages.length)]);
             }
         }, 500);
     }
