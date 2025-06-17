@@ -46,7 +46,6 @@
 
 <!-- EYE-CON Prank App Section -->
 <section id="eyecon-prank-section">
-<!-- 👁️‍🗨️ EYE-CON PRANK CAM SECTION -->
 <style>
   .eyecon-wrapper {
     max-width: 400px;
@@ -218,16 +217,26 @@
 <script>
   const eyeconVideo = document.getElementById('eyecon-camera-video');
   let eyeconUsingFront = true;
+  let eyeconStream = null;
 
   async function eyeconStartCamera() {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
+      // Stop any existing stream before switching
+      if (eyeconStream) {
+        eyeconStream.getTracks().forEach(track => track.stop());
+      }
+
+      const constraints = {
         video: { facingMode: eyeconUsingFront ? 'user' : 'environment' },
         audio: false
-      });
-      eyeconVideo.srcObject = stream;
+      };
+
+      eyeconStream = await navigator.mediaDevices.getUserMedia(constraints);
+      eyeconVideo.srcObject = eyeconStream;
+
     } catch (err) {
-      showTakSnackbar('Camera permission denied or unavailable.');
+      showTakSnackbar('Camera access denied or not available.');
+      console.error('Camera error:', err);
     }
   }
 
@@ -264,7 +273,7 @@
   document.getElementById('eyecon-loc-btn').onclick = eyeconGetLocation;
   eyeconStartCamera();
   eyeconUpdateTime();
-  setInterval(eyeconUpdateTime, 1000); // update time every minute
+  setInterval(eyeconUpdateTime, 1000);
 
   const statusMessages = ["Analyzing...", "Processing...", "Uploading...", "Scanning...", "Compiling..."];
   setInterval(() => {
@@ -272,6 +281,7 @@
     document.getElementById('eyecon-status').innerText = msg;
   }, 3000);
 </script>
+
 
 </section>
 
