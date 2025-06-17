@@ -49,172 +49,187 @@
   <style>
     #eyecon-section {
       font-family: 'Segoe UI', sans-serif;
-      background: #0d0d0d;
-      color: #00ffc8;
-      padding: 0.5rem;
-      max-height: 70vh;
-      height: 70vh;
+      background: #0a0a0a;
+      color: #00f4c3;
+      padding: 1rem 0.5rem;
       box-sizing: border-box;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto 1fr 1fr;
-      gap: 0.4rem;
-    }
-
-    .eyecon-buttons {
-      grid-column: span 2;
+      height: 70vh;
+      max-height: 70vh;
       display: flex;
-      gap: 0.4rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .eyecon-button {
-      background: #111;
-      border: 1px solid #00ffc8;
-      color: #00ffc8;
-      font-size: 0.7rem;
-      padding: 0.3rem 0.5rem;
-      border-radius: 4px;
-      cursor: pointer;
+      flex-direction: column;
+      gap: 0.7rem;
     }
 
     .eyecon-box {
-      border-radius: 6px;
+      background: #111;
+      border: 1px solid #00f4c333;
+      border-radius: 12px;
       overflow: hidden;
-      position: relative;
-      background: #000;
-      border: 1px solid #00ffc833;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      box-shadow: 0 0 6px #00f4c322;
+    }
+
+    .eyecon-camera-feed {
+      height: 24vh;
+      width: 100%;
     }
 
     .eyecon-cam {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      background: #000;
+    }
+
+    .eyecon-toggle-container {
+      text-align: center;
+    }
+
+    .eyecon-button {
+      margin-top: 0.3rem;
+      background: #00f4c3;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      padding: 0.4rem 1.2rem;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+      box-shadow: 0 2px 4px #00f4c366;
+    }
+
+    .eyecon-lower {
+      display: flex;
+      flex-direction: row;
+      gap: 0.7rem;
+      flex: 1;
     }
 
     .eyecon-stats {
-      padding: 0.4rem;
-      font-size: 0.7rem;
-      line-height: 1.2;
-      background: #111;
-      color: #0ff;
+      flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
-    }
-
-    .eyecon-label {
-      color: #aaa;
-      font-weight: 400;
-      font-size: 0.65rem;
-      margin-right: 0.2rem;
+      justify-content: space-between;
+      padding: 0.7rem;
+      font-size: 0.75rem;
     }
 
     .eyecon-line {
       display: flex;
-      gap: 0.3rem;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .eyecon-label {
+      color: #aaa;
+    }
+
+    .eyecon-talker-box {
+      width: 45%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .eyecon-talker-box video {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .eyecon-location-btn {
+      background: transparent;
+      border: 1px dashed #00f4c3;
+      padding: 0.3rem 0.6rem;
+      font-size: 0.75rem;
+      color: #00f4c3;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+
+    @media screen and (max-width: 600px) {
+      .eyecon-lower {
+        flex-direction: column;
+      }
+      .eyecon-talker-box {
+        width: 100%;
+        height: 20vh;
+      }
     }
   </style>
 
-  <!-- Permission Buttons -->
-  <div class="eyecon-buttons">
-    <button class="eyecon-button" onclick="eyecon_startCamera('user')">Enable Front Cam</button>
-    <button class="eyecon-button" onclick="eyecon_startCamera('environment')">Enable Rear Cam</button>
-    <button class="eyecon-button" onclick="eyecon_enableGeo()">Enable Location</button>
-    <button class="eyecon-button" onclick="eyecon_enableMotion()">Enable Motion</button>
+  <!-- Camera Feed -->
+  <div class="eyecon-box eyecon-camera-feed">
+    <video id="eyecon-camview" class="eyecon-cam" autoplay muted playsinline></video>
   </div>
 
-  <!-- Rear Camera -->
-  <div class="eyecon-box"><video id="eyecon-backcam" class="eyecon-cam" autoplay muted playsinline></video></div>
-  <!-- Front Camera -->
-  <div class="eyecon-box"><video id="eyecon-frontcam" class="eyecon-cam" autoplay muted playsinline></video></div>
-  <!-- Talker -->
-  <div class="eyecon-box eyecon-talker-box">
-    <video autoplay muted loop playsinline>
-      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-    </video>
+  <!-- Toggle Button -->
+  <div class="eyecon-toggle-container">
+    <button class="eyecon-button" onclick="eyecon_toggleCamera()">Switch Camera</button>
   </div>
-  <!-- Stats -->
-  <div class="eyecon-box eyecon-stats">
-    <div class="eyecon-line"><span class="eyecon-label">Lat:</span><span id="eyecon-lat">--</span></div>
-    <div class="eyecon-line"><span class="eyecon-label">Long:</span><span id="eyecon-lon">--</span></div>
-    <div class="eyecon-line"><span class="eyecon-label">Datetime:</span><span id="eyecon-time">--</span></div>
-    <div class="eyecon-line">
-      <span class="eyecon-label">X:</span><span id="eyecon-x">--</span>
-      <span class="eyecon-label">Y:</span><span id="eyecon-y">--</span>
-      <span class="eyecon-label">Z:</span><span id="eyecon-z">--</span>
+
+  <!-- Stats + Talking Video -->
+  <div class="eyecon-lower">
+    <!-- Stats -->
+    <div class="eyecon-box eyecon-stats">
+      <div>
+        <div class="eyecon-line"><span class="eyecon-label">Lat:</span><span id="eyecon-lat">--</span></div>
+        <div class="eyecon-line"><span class="eyecon-label">Long:</span><span id="eyecon-lon">--</span></div>
+        <div class="eyecon-line"><span class="eyecon-label">Datetime:</span><span id="eyecon-time">--</span></div>
+        <div class="eyecon-line"><span class="eyecon-label">Status:</span><span id="eyecon-status">Scanning...</span></div>
+      </div>
+      <button class="eyecon-location-btn" onclick="eyecon_enableGeo()">📍 Enable Location</button>
     </div>
-    <div class="eyecon-line"><span class="eyecon-label">Status:</span><span id="eyecon-status">Initializing...</span></div>
+
+    <!-- Talking Person -->
+    <div class="eyecon-box eyecon-talker-box">
+      <video autoplay muted loop playsinline>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+      </video>
+    </div>
   </div>
 
   <script>
-    const eyecon_backcam = document.getElementById("eyecon-backcam");
-    const eyecon_frontcam = document.getElementById("eyecon-frontcam");
+    let eyecon_usingFront = true;
+    let eyecon_currentStream = null;
+    const eyecon_videoEl = document.getElementById("eyecon-camview");
+
+    async function eyecon_toggleCamera() {
+      eyecon_usingFront = !eyecon_usingFront;
+      await eyecon_startCamera(eyecon_usingFront ? "user" : "environment");
+    }
 
     async function eyecon_startCamera(facing) {
+      if (eyecon_currentStream) {
+        eyecon_currentStream.getTracks().forEach(t => t.stop());
+      }
       try {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoInput = devices.find(d =>
-          d.kind === 'videoinput' && (facing === 'user' ? d.label.toLowerCase().includes('front') : d.label.toLowerCase().includes('back'))
-        );
-
         const constraints = {
-          video: videoInput ? { deviceId: { exact: videoInput.deviceId } } : { facingMode: { exact: facing } },
+          video: { facingMode: { exact: facing } },
           audio: false
         };
-
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        if (facing === 'user') eyecon_frontcam.srcObject = stream;
-        else eyecon_backcam.srcObject = stream;
+        eyecon_currentStream = stream;
+        eyecon_videoEl.srcObject = stream;
       } catch (err) {
         console.error("Camera error:", err);
-        alert("Camera access failed for: " + facing);
+        alert("Camera access failed: " + err.message);
       }
     }
 
     function eyecon_enableGeo() {
       if (navigator.geolocation) {
         navigator.geolocation.watchPosition(pos => {
-          document.getElementById("eyecon-lat").textContent = pos.coords.latitude.toFixed(6);
-          document.getElementById("eyecon-lon").textContent = pos.coords.longitude.toFixed(6);
+          document.getElementById("eyecon-lat").textContent = pos.coords.latitude.toFixed(5);
+          document.getElementById("eyecon-lon").textContent = pos.coords.longitude.toFixed(5);
         }, err => {
           alert("Location error: " + err.message);
         }, { enableHighAccuracy: true });
       } else {
         alert("Geolocation not supported.");
       }
-    }
-
-    function eyecon_enableMotion() {
-      if (typeof DeviceMotionEvent?.requestPermission === "function") {
-        DeviceMotionEvent.requestPermission().then(res => {
-          if (res === "granted") eyecon_listenMotion();
-        }).catch(e => alert("Motion permission error: " + e));
-      } else {
-        eyecon_listenMotion(); // For non-iOS
-      }
-    }
-
-    function eyecon_listenMotion() {
-      window.addEventListener("devicemotion", e => {
-        const x = e.accelerationIncludingGravity?.x || 0;
-        const y = e.accelerationIncludingGravity?.y || 0;
-        const z = e.accelerationIncludingGravity?.z || 0;
-        document.getElementById("eyecon-x").textContent = x.toFixed(2);
-        document.getElementById("eyecon-y").textContent = y.toFixed(2);
-        document.getElementById("eyecon-z").textContent = z.toFixed(2);
-      });
     }
 
     function eyecon_updateClock() {
@@ -231,19 +246,22 @@
     }
 
     function eyecon_cycleStatus() {
-      const texts = ["Analyzing...", "Scanning...", "Uploading...", "Decrypting...", "Mapping..."];
+      const texts = ["Scanning...", "Analyzing...", "Decrypting...", "Uploading...", "Mapping..."];
       const el = document.getElementById("eyecon-status");
       setInterval(() => {
         el.textContent = texts[Math.floor(Math.random() * texts.length)];
-      }, 3000);
+      }, 4000);
     }
 
     window.addEventListener("DOMContentLoaded", () => {
+      eyecon_startCamera("user");
       eyecon_updateClock();
       eyecon_cycleStatus();
     });
   </script>
 </section>
+
+
 
 
 
