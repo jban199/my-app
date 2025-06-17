@@ -290,50 +290,85 @@
         statusBoxInterval: null
     };
 
-    // Wait for DOM to be fully loaded
+    // DOM Elements Cache
+    const eyeconElements = {
+        startBtn: null,
+        container: null,
+        backCam: null,
+        frontCam: null,
+        agentFeed: null,
+        statusEl: null,
+        latEl: null,
+        longEl: null,
+        xEl: null,
+        yEl: null,
+        zEl: null,
+        errorEl: null
+    };
+
+    // Initialize when DOM is ready
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize button only if it exists
-        const startBtn = document.getElementById('eyecon-start-btn');
-        if (startBtn) {
-            startBtn.addEventListener('click', async function() {
-                try {
-                    await eyeconInitializeApp();
-                } catch (error) {
-                    showError("Failed to initialize: " + error.message);
-                }
-            });
-        } else {
-            console.error("Start button not found");
+        // Cache all DOM elements
+        eyeconElements.startBtn = document.getElementById('eyecon-start-btn');
+        eyeconElements.container = document.querySelector('.eyecon-container');
+        eyeconElements.backCam = document.getElementById('eyecon-back-feed');
+        eyeconElements.frontCam = document.getElementById('eyecon-front-feed');
+        eyeconElements.agentFeed = document.getElementById('eyecon-agent-feed');
+        eyeconElements.statusEl = document.getElementById('eyecon-status');
+        eyeconElements.latEl = document.getElementById('eyecon-lat');
+        eyeconElements.longEl = document.getElementById('eyecon-long');
+        eyeconElements.xEl = document.getElementById('eyecon-x');
+        eyeconElements.yEl = document.getElementById('eyecon-y');
+        eyeconElements.zEl = document.getElementById('eyecon-z');
+        eyeconElements.errorEl = document.getElementById('eyecon-error-msg');
+
+        // Verify all required elements exist
+        if (!eyeconElements.startBtn) {
+            console.error('Start button not found');
+            return;
         }
+
+        if (!eyeconElements.backCam || !eyeconElements.frontCam) {
+            console.error('Camera elements not found');
+            showError('Camera UI elements missing');
+            return;
+        }
+
+        // Initialize button
+        eyeconElements.startBtn.addEventListener('click', async function() {
+            try {
+                await eyeconInitializeApp();
+            } catch (error) {
+                showError("Failed to initialize: " + error.message);
+            }
+        });
     });
 
     function showError(message) {
-        const errorEl = document.getElementById('eyecon-error-msg');
-        if (errorEl) {
-            errorEl.textContent = message;
-            errorEl.style.display = 'block';
+        if (eyeconElements.errorEl) {
+            eyeconElements.errorEl.textContent = message;
+            eyeconElements.errorEl.style.display = 'block';
             setTimeout(() => {
-                if (errorEl) errorEl.style.display = 'none';
+                if (eyeconElements.errorEl) {
+                    eyeconElements.errorEl.style.display = 'none';
+                }
             }, 5000);
+        } else {
+            console.error('Error element not found:', message);
         }
     }
 
-    function safeSetText(elementId, text) {
-        const el = document.getElementById(elementId);
-        if (el) el.textContent = text;
+    function safeSetText(element, text) {
+        if (element) element.textContent = text;
     }
 
     async function eyeconInitializeApp() {
-        // Hide button if it exists
-        const startBtn = document.getElementById('eyecon-start-btn');
-        if (startBtn) startBtn.style.display = 'none';
-        
-        // Show container if it exists
-        const container = document.querySelector('.eyecon-container');
-        if (container) container.style.display = 'grid';
+        // Hide button and show UI
+        if (eyeconElements.startBtn) eyeconElements.startBtn.style.display = 'none';
+        if (eyeconElements.container) eyeconElements.container.style.display = 'grid';
         
         // Update status
-        safeSetText('eyecon-status', 'INITIALIZING...');
+        safeSetText(eyeconElements.statusEl, 'INITIALIZING...');
         
         // Initialize all components
         await eyeconStartCameras();
@@ -342,11 +377,9 @@
     }
 
     async function eyeconStartCameras() {
-        const backCam = document.getElementById('eyecon-back-feed');
-        const frontCam = document.getElementById('eyecon-front-feed');
-        
-        if (!backCam || !frontCam) {
+        if (!eyeconElements.backCam || !eyeconElements.frontCam) {
             showError("Camera elements not found");
+            eyeconSimulateCameras();
             return;
         }
 
@@ -375,21 +408,21 @@
 
             // Assign available streams
             if (backStream) {
-                backCam.srcObject = backStream;
-                await backCam.play().catch(e => console.warn("Back camera play error:", e));
+                eyeconElements.backCam.srcObject = backStream;
+                await eyeconElements.backCam.play().catch(e => console.warn("Back camera play error:", e));
                 eyeconState.backCamActive = true;
             }
             
             if (frontStream) {
-                frontCam.srcObject = frontStream;
-                await frontCam.play().catch(e => console.warn("Front camera play error:", e));
+                eyeconElements.frontCam.srcObject = frontStream;
+                await eyeconElements.frontCam.play().catch(e => console.warn("Front camera play error:", e));
                 eyeconState.frontCamActive = true;
             }
 
             // Check if we got at least one camera
             if (backStream || frontStream) {
                 eyeconState.camerasActive = true;
-                safeSetText('eyecon-status', 'ACTIVE SCAN');
+                safeSetText(eyeconElements.statusEl, 'ACTIVE SCAN');
                 eyeconStartStatusBoxes();
             } else {
                 throw new Error("No cameras available");
@@ -398,20 +431,20 @@
         } catch (err) {
             console.error("Camera error:", err);
             showError("Camera access denied - running in simulation mode");
-            safeSetText('eyecon-status', 'SIMULATION MODE');
+            safeSetText(eyeconElements.statusEl, 'SIMULATION MODE');
             eyeconSimulateCameras();
         }
     }
 
     function eyeconSimulateCameras() {
-        const backCam = document.getElementById('eyecon-back-feed');
-        const frontCam = document.getElementById('eyecon-front-feed');
-        
-        if (!backCam || !frontCam) return;
+        if (!eyeconElements.backCam || !eyeconElements.frontCam) {
+            console.error("Camera elements missing for simulation");
+            return;
+        }
 
         // Create canvas simulation
-        eyeconCreateCameraSimulation(backCam, 0.2);
-        eyeconCreateCameraSimulation(frontCam, 0.5);
+        eyeconCreateCameraSimulation(eyeconElements.backCam, 0.2);
+        eyeconCreateCameraSimulation(eyeconElements.frontCam, 0.5);
     }
 
     function eyeconCreateCameraSimulation(videoElement, noiseLevel) {
@@ -481,12 +514,12 @@
             // Position in active camera views
             const activeCameras = [];
             if (eyeconState.backCamActive) {
-                const backCam = document.querySelector('.eyecon-back-camera');
-                if (backCam) activeCameras.push(backCam);
+                const backCamContainer = document.querySelector('.eyecon-back-camera');
+                if (backCamContainer) activeCameras.push(backCamContainer);
             }
             if (eyeconState.frontCamActive) {
-                const frontCam = document.querySelector('.eyecon-front-camera');
-                if (frontCam) activeCameras.push(frontCam);
+                const frontCamContainer = document.querySelector('.eyecon-front-camera');
+                if (frontCamContainer) activeCameras.push(frontCamContainer);
             }
             
             if (activeCameras.length === 0) return;
@@ -537,22 +570,24 @@
     }
 
     function eyeconInitAgentFeed() {
-        const agentFeed = document.getElementById('eyecon-agent-feed');
-        if (!agentFeed) return;
+        if (!eyeconElements.agentFeed) {
+            console.error("Agent feed element not found");
+            return;
+        }
         
         // Use a sample video (in real app would be real feed)
-        agentFeed.src = 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
-        agentFeed.volume = 0.2;
+        eyeconElements.agentFeed.src = 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
+        eyeconElements.agentFeed.volume = 0.2;
         
         // Simulate connection issues
         setInterval(() => {
-            if (agentFeed && Math.random() > 0.9) {
-                agentFeed.style.opacity = '0.3';
-                agentFeed.style.filter = 'grayscale(100%)';
+            if (eyeconElements.agentFeed && Math.random() > 0.9) {
+                eyeconElements.agentFeed.style.opacity = '0.3';
+                eyeconElements.agentFeed.style.filter = 'grayscale(100%)';
                 setTimeout(() => {
-                    if (agentFeed) {
-                        agentFeed.style.opacity = '1';
-                        agentFeed.style.filter = 'none';
+                    if (eyeconElements.agentFeed) {
+                        eyeconElements.agentFeed.style.opacity = '1';
+                        eyeconElements.agentFeed.style.filter = 'none';
                     }
                 }, 500 + Math.random() * 1500);
             }
@@ -572,17 +607,17 @@
             // Update GPS with small variations
             const latBase = 37.7749;
             const longBase = -122.4194;
-            safeSetText('eyecon-lat', (latBase + (Math.random() * 0.01 - 0.005)).toFixed(4) + '° N');
-            safeSetText('eyecon-long', (longBase + (Math.random() * 0.01 - 0.005)).toFixed(4) + '° W');
+            safeSetText(eyeconElements.latEl, (latBase + (Math.random() * 0.01 - 0.005)).toFixed(4) + '° N');
+            safeSetText(eyeconElements.longEl, (longBase + (Math.random() * 0.01 - 0.005)).toFixed(4) + '° W');
             
             // Update accelerometer
-            safeSetText('eyecon-x', (Math.random() * 2 - 1).toFixed(3));
-            safeSetText('eyecon-y', (Math.random() * 2 - 1).toFixed(3));
-            safeSetText('eyecon-z', (Math.random() * 2 - 1).toFixed(3));
+            safeSetText(eyeconElements.xEl, (Math.random() * 2 - 1).toFixed(3));
+            safeSetText(eyeconElements.yEl, (Math.random() * 2 - 1).toFixed(3));
+            safeSetText(eyeconElements.zEl, (Math.random() * 2 - 1).toFixed(3));
             
             // Random status change
             if (Math.random() > 0.8) {
-                safeSetText('eyecon-status', statusMessages[Math.floor(Math.random() * statusMessages.length)]);
+                safeSetText(eyeconElements.statusEl, statusMessages[Math.floor(Math.random() * statusMessages.length)]);
             }
         }, 500);
     }
@@ -594,12 +629,12 @@
         }
         
         // Stop all camera streams
-        ['eyecon-back-feed', 'eyecon-front-feed'].forEach(id => {
-            const video = document.getElementById(id);
-            if (video && video.srcObject) {
-                video.srcObject.getTracks().forEach(track => track.stop());
-            }
-        });
+        if (eyeconElements.backCam && eyeconElements.backCam.srcObject) {
+            eyeconElements.backCam.srcObject.getTracks().forEach(track => track.stop());
+        }
+        if (eyeconElements.frontCam && eyeconElements.frontCam.srcObject) {
+            eyeconElements.frontCam.srcObject.getTracks().forEach(track => track.stop());
+        }
     });
 </script>
 </body>
