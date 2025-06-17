@@ -45,221 +45,224 @@
 
 
 <!-- EYE-CON Prank App Section -->
-<section id="eyecon-section">
-  <style>
-    #eyecon-section {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0a0a0a;
-      color: #00f4c3;
-      padding: 1rem 0.5rem;
-      box-sizing: border-box;
-      height: 70vh;
-      max-height: 70vh;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-    }
+<section id="eyecon-prank-section">
+<!-- 👁️‍🗨️ EYE-CON PRANK CAM SECTION -->
+<style>
+  .eyecon-wrapper {
+    max-width: 400px;
+    margin: auto;
+    background: #111;
+    border-radius: 12px;
+    padding: 10px;
+    color: #eee;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 70vh;
+    box-shadow: 0 0 20px #0008;
+  }
 
-    .eyecon-box {
-      background: #111;
-      border: 1px solid #00f4c333;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 6px #00f4c322;
-    }
+  .eyecon-video-area {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #000;
+    position: relative;
+  }
 
-    .eyecon-camera-feed {
-      height: 24vh;
-      width: 100%;
-    }
+  .eyecon-video {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
 
-    .eyecon-cam {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      background: #000;
-    }
+  .eyecon-toggle-btn {
+    margin: 4px auto 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #0ff;
+    color: #000;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+  }
 
-    .eyecon-toggle-container {
-      text-align: center;
-    }
+  .eyecon-bottom-row {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
 
-    .eyecon-button {
-      margin-top: 0.3rem;
-      background: #00f4c3;
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      padding: 0.4rem 1.2rem;
-      font-weight: bold;
-      font-size: 0.85rem;
-      cursor: pointer;
-      box-shadow: 0 2px 4px #00f4c366;
-    }
+  .eyecon-person {
+    flex: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+  }
 
-    .eyecon-lower {
-      display: flex;
-      flex-direction: row;
-      gap: 0.7rem;
-      flex: 1;
-    }
+  .eyecon-person video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-    .eyecon-stats {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 0.7rem;
-      font-size: 0.75rem;
-    }
+  .eyecon-stats {
+    flex: 1;
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 13px;
+    gap: 4px;
+  }
 
-    .eyecon-line {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-    }
+  .eyecon-stats .eyecon-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #ccc;
+  }
 
-    .eyecon-label {
-      color: #aaa;
-    }
+  .eyecon-stats .eyecon-row svg {
+    fill: #0ff;
+    width: 18px;
+    height: 18px;
+  }
 
-    .eyecon-talker-box {
-      width: 45%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  .eyecon-location-btn {
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #0ff;
+    color: #000;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    border: none;
+    width: 100%;
+  }
 
-    .eyecon-talker-box video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 12px;
-    }
+  .eyecon-location-btn svg {
+    fill: #000;
+    width: 18px;
+    height: 18px;
+  }
+</style>
 
-    .eyecon-location-btn {
-      background: transparent;
-      border: 1px dashed #00f4c3;
-      padding: 0.3rem 0.6rem;
-      font-size: 0.75rem;
-      color: #00f4c3;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 0.5rem;
-      text-align: center;
-    }
-
-    @media screen and (max-width: 600px) {
-      .eyecon-lower {
-        flex-direction: column;
-      }
-      .eyecon-talker-box {
-        width: 100%;
-        height: 20vh;
-      }
-    }
-  </style>
-
-  <!-- Camera Feed -->
-  <div class="eyecon-box eyecon-camera-feed">
-    <video id="eyecon-camview" class="eyecon-cam" autoplay muted playsinline></video>
+<div class="eyecon-wrapper">
+  <div class="eyecon-video-area">
+    <video id="eyecon-camera-video" class="eyecon-video" autoplay playsinline muted></video>
   </div>
 
-  <!-- Toggle Button -->
-  <div class="eyecon-toggle-container">
-    <button class="eyecon-button" onclick="eyecon_toggleCamera()">Switch Camera</button>
-  </div>
+  <button id="eyecon-toggle-btn" class="eyecon-toggle-btn">
+    <!-- Switch Camera Icon -->
+    <svg viewBox="0 -960 960 960" height="20" width="20"><path d="M320-280q-33 0-56.5-23.5T240-360v-240q0-33 23.5-56.5T320-680h40l28-28q6-6 13.5-9t15.5-3h126q8 0 15.5 3t13.5 9l28 28h40q33 0 56.5 23.5T720-600v240q0 33-23.5 56.5T640-280H320Zm160-120q33 0 56.5-23.5T560-480q0-33-23.5-56.5T480-560q-33 0-56.5 23.5T400-480q0 33 23.5 56.5T480-400Z"/></svg>
+    Switch Camera
+  </button>
 
-  <!-- Stats + Talking Video -->
-  <div class="eyecon-lower">
-    <!-- Stats -->
-    <div class="eyecon-box eyecon-stats">
-      <div>
-        <div class="eyecon-line"><span class="eyecon-label">Lat:</span><span id="eyecon-lat">--</span></div>
-        <div class="eyecon-line"><span class="eyecon-label">Long:</span><span id="eyecon-lon">--</span></div>
-        <div class="eyecon-line"><span class="eyecon-label">Datetime:</span><span id="eyecon-time">--</span></div>
-        <div class="eyecon-line"><span class="eyecon-label">Status:</span><span id="eyecon-status">Scanning...</span></div>
+  <div class="eyecon-bottom-row">
+    <div class="eyecon-person">
+      <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay muted loop playsinline></video>
+    </div>
+    <div class="eyecon-stats">
+      <div class="eyecon-row">
+        <svg viewBox="0 -960 960 960"><path d="M160-760q-17 0-28.5-11.5T120-800q0-17 11.5-28.5T160-840h640q17 0 28.5 11.5T840-800q0 17-11.5 28.5T800-760H160Z"/></svg>
+        <span id="eyecon-lat">Lat: —</span>
       </div>
-      <button class="eyecon-location-btn" onclick="eyecon_enableGeo()">📍 Enable Location</button>
-    </div>
-
-    <!-- Talking Person -->
-    <div class="eyecon-box eyecon-talker-box">
-      <video autoplay muted loop playsinline>
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
-      </video>
+      <div class="eyecon-row">
+        <svg viewBox="0 -960 960 960"><path d="M280-280v-400q0-17 11.5-28.5T320-720q17 0 28.5 11.5T360-680v400q0 17-11.5 28.5T320-240q-17 0-28.5-11.5T280-280Z"/></svg>
+        <span id="eyecon-long">Long: —</span>
+      </div>
+      <div class="eyecon-row">
+        <svg viewBox="0 -960 960 960"><path d="M520-496v-144q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v159q0 8 3 15.5t9 13.5l132 132q11 11 28 11t28-11q11-11 11-28t-11-28L520-496Z"/></svg>
+        <span id="eyecon-time">Time: --:--</span>
+      </div>
+      <div class="eyecon-row">
+        <svg viewBox="0 -960 960 960"><path d="M320-360v-66q0-8 3-15.5t9-13.5l209-208q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T663-540L455-332q-6 6-13.5 9t-15.5 3h-66q-17 0-28.5-11.5T320-360Z"/></svg>
+        <span id="eyecon-status">Status: Scanning...</span>
+      </div>
+      <button class="eyecon-location-btn" id="eyecon-loc-btn">
+        <!-- Location Icon -->
+        <svg viewBox="0 -960 960 960"><path d="M480-107q-14 0-28-5t-25-15q-65-60-115-117t-83.5-110.5q-33.5-53.5-51-103T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 45-17.5 94.5t-51 103Q698-301 648-244T533-127q-11 10-25 15t-28 5Zm0-373q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Z"/></svg>
+        Enable Location
+      </button>
     </div>
   </div>
+</div>
 
-  <script>
-    let eyecon_usingFront = true;
-    let eyecon_currentStream = null;
-    const eyecon_videoEl = document.getElementById("eyecon-camview");
+<script>
+  const eyeconVideo = document.getElementById('eyecon-camera-video');
+  let eyeconUsingFront = true;
 
-    async function eyecon_toggleCamera() {
-      eyecon_usingFront = !eyecon_usingFront;
-      await eyecon_startCamera(eyecon_usingFront ? "user" : "environment");
+  async function eyeconStartCamera() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: eyeconUsingFront ? 'user' : 'environment' },
+        audio: false
+      });
+      eyeconVideo.srcObject = stream;
+    } catch (err) {
+      showTakSnackbar('Camera permission denied or unavailable.');
     }
+  }
 
-    async function eyecon_startCamera(facing) {
-      if (eyecon_currentStream) {
-        eyecon_currentStream.getTracks().forEach(t => t.stop());
+  document.getElementById('eyecon-toggle-btn').onclick = () => {
+    eyeconUsingFront = !eyeconUsingFront;
+    eyeconStartCamera();
+  };
+
+  async function eyeconGetLocation() {
+    try {
+      const perm = await navigator.permissions.query({ name: 'geolocation' });
+      if (perm.state === 'denied') {
+        showTakSnackbar('Location permission denied');
+        return;
       }
-      try {
-        const constraints = {
-          video: { facingMode: { exact: facing } },
-          audio: false
-        };
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        eyecon_currentStream = stream;
-        eyecon_videoEl.srcObject = stream;
-      } catch (err) {
-        console.error("Camera error:", err);
-        alert("Camera access failed: " + err.message);
-      }
-    }
 
-    function eyecon_enableGeo() {
-      if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(pos => {
-          document.getElementById("eyecon-lat").textContent = pos.coords.latitude.toFixed(5);
-          document.getElementById("eyecon-lon").textContent = pos.coords.longitude.toFixed(5);
-        }, err => {
-          alert("Location error: " + err.message);
-        }, { enableHighAccuracy: true });
-      } else {
-        alert("Geolocation not supported.");
-      }
+      navigator.geolocation.getCurrentPosition(pos => {
+        document.getElementById('eyecon-lat').innerText = 'Lat: ' + pos.coords.latitude.toFixed(4);
+        document.getElementById('eyecon-long').innerText = 'Long: ' + pos.coords.longitude.toFixed(4);
+      }, () => {
+        showTakSnackbar('Unable to fetch location.');
+      });
+    } catch (e) {
+      showTakSnackbar('Location not supported.');
     }
+  }
 
-    function eyecon_updateClock() {
-      setInterval(() => {
-        const now = new Date();
-        const d = String(now.getDate()).padStart(2, '0');
-        const m = String(now.getMonth() + 1).padStart(2, '0');
-        const y = now.getFullYear();
-        const h = String(now.getHours()).padStart(2, '0');
-        const min = String(now.getMinutes()).padStart(2, '0');
-        const s = String(now.getSeconds()).padStart(2, '0');
-        document.getElementById("eyecon-time").textContent = `${d}-${m}-${y} ${h}:${min}:${s}`;
-      }, 1000);
-    }
+  function eyeconUpdateTime() {
+    const now = new Date();
+    const timeStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+    document.getElementById('eyecon-time').innerText = 'Time: ' + timeStr;
+  }
 
-    function eyecon_cycleStatus() {
-      const texts = ["Scanning...", "Analyzing...", "Decrypting...", "Uploading...", "Mapping..."];
-      const el = document.getElementById("eyecon-status");
-      setInterval(() => {
-        el.textContent = texts[Math.floor(Math.random() * texts.length)];
-      }, 4000);
-    }
+  document.getElementById('eyecon-loc-btn').onclick = eyeconGetLocation;
+  eyeconStartCamera();
+  eyeconUpdateTime();
+  setInterval(eyeconUpdateTime, 60000); // update time every minute
 
-    window.addEventListener("DOMContentLoaded", () => {
-      eyecon_startCamera("user");
-      eyecon_updateClock();
-      eyecon_cycleStatus();
-    });
-  </script>
+  const statusMessages = ["Analyzing...", "Processing...", "Uploading...", "Scanning...", "Compiling..."];
+  setInterval(() => {
+    const msg = statusMessages[Math.floor(Math.random() * statusMessages.length)];
+    document.getElementById('eyecon-status').innerText = "Status: " + msg;
+  }, 3000);
+</script>
+
 </section>
+
+
 
 
 
