@@ -3,32 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eyecon Security Scan</title>
+    <title>EYECON SECURITY SCAN v2.4.8</title>
     <style>
         /* Eyecon Base Styles */
-        .eyecon-container {
-            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
             background-color: #000;
             color: #0f0;
-            width: 100%;
-            height: 100vh;
+            font-family: 'Courier New', monospace;
             overflow: hidden;
-            position: relative;
-            display: grid;
+            height: 100vh;
+        }
+
+        .eyecon-container {
+            display: none;
             grid-template-rows: 1fr 1fr auto;
             grid-template-columns: 1fr;
             gap: 8px;
             padding: 8px;
-            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            position: relative;
         }
 
-        /* Eyecon Camera Views */
+        /* Camera Views */
         .eyecon-camera-view {
             position: relative;
-            border: 2px solid #333;
+            border: 2px solid #0f0;
             border-radius: 8px;
             overflow: hidden;
-            background-color: #111;
+            background: #111;
         }
 
         .eyecon-back-camera {
@@ -43,20 +52,26 @@
             position: absolute;
             top: 8px;
             left: 8px;
-            background-color: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             padding: 4px 8px;
             border-radius: 4px;
             font-size: 12px;
-            font-weight: bold;
+            z-index: 2;
         }
 
         .eyecon-camera-feed {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
+            transform: scaleX(-1); /* Mirror front camera */
         }
 
-        /* Eyecon Video Call */
+        .eyecon-back-camera .eyecon-camera-feed {
+            transform: scaleX(1); /* Don't mirror back camera */
+        }
+
+        /* Video Call */
         .eyecon-video-call {
             position: absolute;
             bottom: 16px;
@@ -66,19 +81,8 @@
             border: 2px solid #0f0;
             border-radius: 8px;
             overflow: hidden;
-            background-color: #000;
             z-index: 10;
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
-        }
-
-        .eyecon-video-call-label {
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
         }
 
         .eyecon-video-call-feed {
@@ -87,27 +91,27 @@
             object-fit: cover;
         }
 
-        /* Eyecon Data Panel */
+        /* Data Panel */
         .eyecon-data-panel {
             grid-area: 3 / 1 / 4 / 2;
-            background-color: #111;
-            border: 1px solid #333;
+            background: #111;
+            border: 1px solid #0f0;
             border-radius: 8px;
             padding: 12px;
-            font-size: 14px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
+            font-size: 14px;
         }
 
         .eyecon-data-item {
-            margin-bottom: 6px;
+            display: flex;
         }
 
         .eyecon-data-label {
             color: #0f0;
-            font-weight: bold;
             margin-right: 6px;
+            font-weight: bold;
         }
 
         .eyecon-data-value {
@@ -115,10 +119,10 @@
             font-family: 'Courier New', monospace;
         }
 
-        /* Eyecon Status Box */
+        /* Status Box */
         .eyecon-status-box {
             position: absolute;
-            background-color: rgba(0, 255, 0, 0.2);
+            background: rgba(0, 255, 0, 0.2);
             border: 2px solid #0f0;
             border-radius: 50%;
             width: 100px;
@@ -128,10 +132,10 @@
             justify-content: center;
             text-align: center;
             padding: 10px;
-            font-size: 14px;
             font-weight: bold;
             animation: eyecon-pulse 2s infinite;
             z-index: 5;
+            pointer-events: none;
         }
 
         @keyframes eyecon-pulse {
@@ -149,7 +153,7 @@
             100% { transform: rotateX(0deg); }
         }
 
-        /* Eyecon Header */
+        /* UI Elements */
         .eyecon-header {
             position: absolute;
             top: 8px;
@@ -162,30 +166,15 @@
         .eyecon-logo {
             font-size: 18px;
             font-weight: bold;
-            color: #0f0;
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
             letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
         }
 
         .eyecon-version {
             font-size: 10px;
             color: #555;
-            margin-top: 2px;
         }
 
-        /* Eyecon Footer */
-        .eyecon-footer {
-            position: absolute;
-            bottom: 8px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 10px;
-            color: #555;
-            z-index: 20;
-        }
-
-        /* Eyecon Scan Lines */
         .eyecon-scanlines {
             position: absolute;
             top: 0;
@@ -202,24 +191,46 @@
             pointer-events: none;
             z-index: 15;
         }
+
+        /* Start Button */
+        #eyecon-start-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #0f0;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.7);
+        }
+
+        /* Error Message */
+        .eyecon-error {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 0, 0, 0.7);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+            z-index: 200;
+            max-width: 80%;
+        }
     </style>
 </head>
 <body>
+    <button id="eyecon-start-btn">INITIALIZE EYECON SCAN</button>
+    <div class="eyecon-error" id="eyecon-error-msg"></div>
 
-
-<button id="eyeconStartButton" style="
-    position: absolute; 
-    bottom: 120px; 
-    left: 50%; 
-    transform: translateX(-50%);
-    z-index: 100;
-    background: #0f0;
-    color: black;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-weight: bold;
-">START SECURITY SCAN</button>
     <div class="eyecon-container">
         <div class="eyecon-header">
             <div class="eyecon-logo">EYECON SECURITY SCAN</div>
@@ -272,232 +283,294 @@
     </div>
 
     <script>
-        // Eyecon App Initialization
-        document.addEventListener('DOMContentLoaded', function() {
-			// Show button first
-			const eyeconStartBtn = document.getElementById('eyeconStartButton');
-			eyeconStartBtn.addEventListener('click', function() {
-				this.style.display = 'none';
-				// Initialize everything after user interaction
-				eyeconSimulateCameraFeeds();
-				eyeconUpdateSensorData();
-				eyeconCreateStatusBoxes();
-				eyeconInitVideoCall();
-			});
-		});
+    // Eyecon App State
+    const eyeconState = {
+        camerasActive: false,
+        statusBoxes: [],
+        statusBoxInterval: null
+    };
 
-        // Eyecon Camera Feed Simulation
-        function eyeconSimulateCameraFeeds() {
-			const eyeconBackFeed = document.getElementById('eyeconBackCameraFeed');
-			const eyeconFrontFeed = document.getElementById('eyeconFrontCameraFeed');
-			
-			// First try to get real cameras
-			eyeconGetRealCamera(eyeconBackFeed, { facingMode: 'environment' }); // Back camera
-			eyeconGetRealCamera(eyeconFrontFeed, { facingMode: 'user' }); // Front camera
-			
-			// Fallback to simulation if cameras are denied
-			setTimeout(() => {
-				if (!eyeconBackFeed.srcObject) {
-					eyeconCreateCameraSimulation(eyeconBackFeed, 0.2);
-				}
-				if (!eyeconFrontFeed.srcObject) {
-					eyeconCreateCameraSimulation(eyeconFrontFeed, 0.5);
-				}
-			}, 1000);
-		}
-		
-		function eyeconGetRealCamera(videoElement, constraints) {
-			navigator.mediaDevices.getUserMedia({
-				video: constraints,
-				audio: false
-			}).then(stream => {
-				videoElement.srcObject = stream;
-			}).catch(err => {
-				console.error('Eyecon camera error:', err);
-				// Will fall back to simulation
-			});
-		}
+    // Initialize on button click
+    document.getElementById('eyecon-start-btn').addEventListener('click', async function() {
+        try {
+            await eyeconInitializeApp();
+        } catch (error) {
+            showError("Failed to initialize: " + error.message);
+        }
+    });
 
-        function eyeconCreateCameraSimulation(videoElement, noiseLevel) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 640;
-            canvas.height = 480;
-            const ctx = canvas.getContext('2d');
-            
-            function eyeconDrawFrame() {
-                // Create random noise
-                const imageData = ctx.createImageData(canvas.width, canvas.height);
-                for (let i = 0; i < imageData.data.length; i += 4) {
-                    const val = Math.random() > noiseLevel ? 
-                        Math.floor(Math.random() * 100) : 
-                        Math.floor(Math.random() * 50 + 150);
-                    
-                    imageData.data[i] = val;     // R
-                    imageData.data[i+1] = val;  // G
-                    imageData.data[i+2] = val;   // B
-                    imageData.data[i+3] = 255;  // A
+    function showError(message) {
+        const errorEl = document.getElementById('eyecon-error-msg');
+        errorEl.textContent = message;
+        errorEl.style.display = 'block';
+        setTimeout(() => errorEl.style.display = 'none', 5000);
+    }
+
+    async function eyeconInitializeApp() {
+        // Hide button and show UI
+        document.getElementById('eyecon-start-btn').style.display = 'none';
+        document.querySelector('.eyecon-container').style.display = 'grid';
+        
+        // Update status
+        document.getElementById('eyecon-status').textContent = 'INITIALIZING...';
+        
+        // Initialize all components
+        await eyeconStartCameras();
+        eyeconInitAgentFeed();
+        eyeconStartSensorUpdates();
+    }
+
+    // Camera Handling
+    async function eyeconStartCameras() {
+        const backCam = document.getElementById('eyecon-back-feed');
+        const frontCam = document.getElementById('eyecon-front-feed');
+        
+        try {
+            // Modern camera constraints
+            const constraints = {
+                video: {
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 },
+                    frameRate: { ideal: 30 }
                 }
-                ctx.putImageData(imageData, 0, 0);
+            };
+
+            // Get both camera streams
+            const [backStream, frontStream] = await Promise.all([
+                navigator.mediaDevices.getUserMedia({
+                    ...constraints,
+                    video: { ...constraints.video, facingMode: 'environment' }
+                }).catch(() => null),
                 
-                // Occasionally add some "objects" to the feed
-                if (Math.random() > 0.95) {
-                    const size = Math.random() * 100 + 50;
-                    const x = Math.random() * (canvas.width - size);
-                    const y = Math.random() * (canvas.height - size);
-                    const color = `rgb(${Math.floor(Math.random() * 100 + 155)}, 
-                                      ${Math.floor(Math.random() * 50)}, 
-                                      ${Math.floor(Math.random() * 50)})`;
-                    
-                    ctx.fillStyle = color;
-                    if (Math.random() > 0.5) {
-                        ctx.beginPath();
-                        ctx.arc(x + size/2, y + size/2, size/2, 0, Math.PI * 2);
-                        ctx.fill();
-                    } else {
-                        ctx.fillRect(x, y, size, size);
-                    }
-                }
-                
-                // Convert canvas to video stream
-                videoElement.srcObject = canvas.captureStream(15);
-                requestAnimationFrame(eyeconDrawFrame);
+                navigator.mediaDevices.getUserMedia({
+                    ...constraints,
+                    video: { ...constraints.video, facingMode: 'user' }
+                }).catch(() => null)
+            ]);
+
+            // Assign available streams
+            if (backStream) {
+                backCam.srcObject = backStream;
+                await backCam.play().catch(e => console.warn("Back camera play error:", e));
+                eyeconState.backCamActive = true;
             }
             
-            eyeconDrawFrame();
-        }
+            if (frontStream) {
+                frontCam.srcObject = frontStream;
+                await frontCam.play().catch(e => console.warn("Front camera play error:", e));
+                eyeconState.frontCamActive = true;
+            }
 
-        // Eyecon Sensor Data Updates
-        function eyeconUpdateSensorData() {
-            const eyeconLat = document.getElementById('eyeconLatValue');
-            const eyeconLong = document.getElementById('eyeconLongValue');
-            const eyeconX = document.getElementById('eyeconXValue');
-            const eyeconY = document.getElementById('eyeconYValue');
-            const eyeconZ = document.getElementById('eyeconZValue');
-            const eyeconStatus = document.getElementById('eyeconStatusValue');
-            
-            const eyeconStatusMessages = [
-                "ACTIVE SCAN",
-                "ANALYZING",
-                "UPLOADING",
-                "CALIBRATING",
-                "SECURE CONNECTION",
-                "DATABASE SYNC"
-            ];
-            
-            setInterval(function() {
-                // Simulate GPS coordinates with small variations
-                const latBase = 37.7749;
-                const longBase = -122.4194;
-                eyeconLat.textContent = (latBase + (Math.random() * 0.01 - 0.005)).toFixed(4) + '° N';
-                eyeconLong.textContent = (longBase + (Math.random() * 0.01 - 0.005)).toFixed(4) + '° W';
-                
-                // Simulate accelerometer data
-                eyeconX.textContent = (Math.random() * 2 - 1).toFixed(3);
-                eyeconY.textContent = (Math.random() * 2 - 1).toFixed(3);
-                eyeconZ.textContent = (Math.random() * 2 - 1).toFixed(3);
-                
-                // Randomly change status
-                if (Math.random() > 0.8) {
-                    eyeconStatus.textContent = eyeconStatusMessages[
-                        Math.floor(Math.random() * eyeconStatusMessages.length)
-                    ];
-                }
-            }, 500);
-        }
-
-        // Eyecon Status Box Creation
-        function eyeconCreateStatusBoxes() {
-            const eyeconContainer = document.querySelector('.eyecon-container');
-            const eyeconStatusMessages = [
-                "ANALYZING...",
-                "UPLOADING...",
-                "CALCULATING...",
-                "SCANNING...",
-                "PROCESSING...",
-                "DECRYPTING...",
-                "VERIFYING..."
-            ];
-            
-            function eyeconCreateBox() {
-                const box = document.createElement('div');
-                box.className = 'eyecon-status-box';
-                
-                const text = document.createElement('div');
-                text.className = 'eyecon-status-text';
-                text.textContent = eyeconStatusMessages[
-                    Math.floor(Math.random() * eyeconStatusMessages.length)
-                ];
-                box.appendChild(text);
-                
-                // Random position within camera views
-                const backCamera = document.querySelector('.eyecon-back-camera');
-                const frontCamera = document.querySelector('.eyecon-front-camera');
-                const targetArea = Math.random() > 0.5 ? backCamera : frontCamera;
-                
-                const rect = targetArea.getBoundingClientRect();
-                const left = rect.left + Math.random() * (rect.width - 100);
-                const top = rect.top + Math.random() * (rect.height - 100);
-                
-                box.style.left = `${left}px`;
-                box.style.top = `${top}px`;
-                
-                eyeconContainer.appendChild(box);
-                
-                // Change text periodically
-                const eyeconTextInterval = setInterval(function() {
-                    text.style.animation = 'none';
-                    void text.offsetWidth; // Trigger reflow
-                    text.style.animation = 'eyecon-text-flip 0.5s';
-                    text.textContent = eyeconStatusMessages[
-                        Math.floor(Math.random() * eyeconStatusMessages.length)
-                    ];
-                }, 2000 + Math.random() * 3000);
-                
-                // Remove box after some time
-                setTimeout(function() {
-                    box.style.opacity = '0';
-                    box.style.transition = 'opacity 0.5s';
-                    setTimeout(function() {
-                        clearInterval(eyeconTextInterval);
-                        box.remove();
-                    }, 500);
-                }, 5000 + Math.random() * 10000);
+            // Check if we got at least one camera
+            if (backStream || frontStream) {
+                eyeconState.camerasActive = true;
+                document.getElementById('eyecon-status').textContent = 'ACTIVE SCAN';
+                eyeconStartStatusBoxes();
+            } else {
+                throw new Error("No cameras available");
             }
             
-            // Create initial boxes
-            for (let i = 0; i < 2; i++) {
-                setTimeout(eyeconCreateBox, i * 3000);
+        } catch (err) {
+            console.error("Camera error:", err);
+            showError("Camera access denied - running in simulation mode");
+            document.getElementById('eyecon-status').textContent = 'SIMULATION MODE';
+            eyeconSimulateCameras();
+        }
+    }
+
+    function eyeconSimulateCameras() {
+        const backCam = document.getElementById('eyecon-back-feed');
+        const frontCam = document.getElementById('eyecon-front-feed');
+        
+        // Create canvas simulation
+        eyeconCreateCameraSimulation(backCam, 0.2);
+        eyeconCreateCameraSimulation(frontCam, 0.5);
+    }
+
+    function eyeconCreateCameraSimulation(videoElement, noiseLevel) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 640;
+        canvas.height = 480;
+        const ctx = canvas.getContext('2d');
+        
+        function drawFrame() {
+            // Create noise
+            const imageData = ctx.createImageData(canvas.width, canvas.height);
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                const val = Math.random() > noiseLevel ? 
+                    Math.floor(Math.random() * 100) : 
+                    Math.floor(Math.random() * 50 + 150);
+                
+                imageData.data[i] = val;
+                imageData.data[i+1] = val;
+                imageData.data[i+2] = val;
+                imageData.data[i+3] = 255;
+            }
+            ctx.putImageData(imageData, 0, 0);
+            
+            // Occasionally add objects
+            if (Math.random() > 0.97) {
+                const size = Math.random() * 100 + 50;
+                const x = Math.random() * (canvas.width - size);
+                const y = Math.random() * (canvas.height - size);
+                const color = `rgb(${Math.floor(Math.random() * 100 + 155)}, 
+                              ${Math.floor(Math.random() * 50)}, 
+                              ${Math.floor(Math.random() * 50)})`;
+                
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x + size/2, y + size/2, size/2, 0, Math.PI * 2);
+                ctx.fill();
             }
             
-            // Keep creating new boxes
-            setInterval(function() {
-                if (Math.random() > 0.3) {
-                    eyeconCreateBox();
-                }
-            }, 4000);
+            videoElement.srcObject = canvas.captureStream(15);
+            requestAnimationFrame(drawFrame);
         }
+        
+        drawFrame();
+    }
 
-        // Eyecon Video Call Initialization
-        function eyeconInitVideoCall() {
-            const eyeconVideoCallFeed = document.getElementById('eyeconVideoCallFeed');
+    // Status Boxes
+    function eyeconStartStatusBoxes() {
+        if (!eyeconState.camerasActive) return;
+        
+        const messages = [
+            "ANALYZING...",
+            "UPLOADING...",
+            "SCANNING...",
+            "PROCESSING...",
+            "DECRYPTING...",
+            "VERIFYING..."
+        ];
+        
+        function createBox() {
+            const box = document.createElement('div');
+            box.className = 'eyecon-status-box';
             
-            // Use a placeholder video (in a real app, you'd use a real video)
-            eyeconVideoCallFeed.src = 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
-            eyeconVideoCallFeed.muted = false;
-            eyeconVideoCallFeed.volume = 0.3;
+            const text = document.createElement('div');
+            text.className = 'eyecon-status-text';
+            text.textContent = messages[Math.floor(Math.random() * messages.length)];
+            box.appendChild(text);
             
-            // Simulate occasional connection issues
-            setInterval(function() {
-                if (Math.random() > 0.9) {
-                    eyeconVideoCallFeed.style.opacity = '0.3';
-                    eyeconVideoCallFeed.style.filter = 'grayscale(100%)';
-                    setTimeout(function() {
-                        eyeconVideoCallFeed.style.opacity = '1';
-                        eyeconVideoCallFeed.style.filter = 'none';
-                    }, 500 + Math.random() * 1500);
-                }
-            }, 10000);
+            // Position in active camera views
+            const activeCameras = [];
+            if (eyeconState.backCamActive) activeCameras.push(document.querySelector('.eyecon-back-camera'));
+            if (eyeconState.frontCamActive) activeCameras.push(document.querySelector('.eyecon-front-camera'));
+            
+            if (activeCameras.length === 0) return;
+            
+            const targetCam = activeCameras[Math.floor(Math.random() * activeCameras.length)];
+            const camRect = targetCam.getBoundingClientRect();
+            
+            const left = camRect.left + Math.random() * (camRect.width - 100);
+            const top = camRect.top + Math.random() * (camRect.height - 100);
+            
+            box.style.left = `${left}px`;
+            box.style.top = `${top}px`;
+            
+            document.body.appendChild(box);
+            eyeconState.statusBoxes.push(box);
+            
+            // Change text periodically
+            const interval = setInterval(() => {
+                text.style.animation = 'none';
+                void text.offsetWidth;
+                text.style.animation = 'eyecon-text-flip 0.5s';
+                text.textContent = messages[Math.floor(Math.random() * messages.length)];
+            }, 2000 + Math.random() * 3000);
+            
+            // Remove after time
+            setTimeout(() => {
+                box.style.opacity = '0';
+                box.style.transition = 'opacity 0.5s';
+                setTimeout(() => {
+                    clearInterval(interval);
+                    box.remove();
+                    eyeconState.statusBoxes = eyeconState.statusBoxes.filter(b => b !== box);
+                }, 500);
+            }, 5000 + Math.random() * 10000);
         }
-    </script>
+        
+        // Initial boxes
+        for (let i = 0; i < 2; i++) {
+            setTimeout(createBox, i * 2000);
+        }
+        
+        // Ongoing creation
+        eyeconState.statusBoxInterval = setInterval(() => {
+            if (eyeconState.camerasActive && Math.random() > 0.3) {
+                createBox();
+            }
+        }, 3000);
+    }
+
+    // Agent Video Feed
+    function eyeconInitAgentFeed() {
+        const agentFeed = document.getElementById('eyecon-agent-feed');
+        
+        // Use a sample video (in real app would be real feed)
+        agentFeed.src = 'media/SampleVideo_720x480_1mb.mp4';
+        agentFeed.volume = 0.2;
+        
+        // Simulate connection issues
+        setInterval(() => {
+            if (Math.random() > 0.9) {
+                agentFeed.style.opacity = '0.3';
+                agentFeed.style.filter = 'grayscale(100%)';
+                setTimeout(() => {
+                    agentFeed.style.opacity = '1';
+                    agentFeed.style.filter = 'none';
+                }, 500 + Math.random() * 1500);
+            }
+        }, 10000);
+    }
+
+    // Sensor Data Updates
+    function eyeconStartSensorUpdates() {
+        const statusMessages = [
+            "ACTIVE SCAN",
+            "ANALYZING",
+            "UPLOADING",
+            "CALIBRATING",
+            "SECURE CONNECTION"
+        ];
+        
+        setInterval(() => {
+            // Update GPS with small variations
+            const latBase = 37.7749;
+            const longBase = -122.4194;
+            document.getElementById('eyecon-lat').textContent = 
+                (latBase + (Math.random() * 0.01 - 0.005)).toFixed(4) + '° N';
+            document.getElementById('eyecon-long').textContent = 
+                (longBase + (Math.random() * 0.01 - 0.005)).toFixed(4) + '° W';
+            
+            // Update accelerometer
+            document.getElementById('eyecon-x').textContent = (Math.random() * 2 - 1).toFixed(3);
+            document.getElementById('eyecon-y').textContent = (Math.random() * 2 - 1).toFixed(3);
+            document.getElementById('eyecon-z').textContent = (Math.random() * 2 - 1).toFixed(3);
+            
+            // Random status change
+            if (Math.random() > 0.8) {
+                document.getElementById('eyecon-status').textContent = 
+                    statusMessages[Math.floor(Math.random() * statusMessages.length)];
+            }
+        }, 500);
+    }
+
+    // Cleanup on exit
+    window.addEventListener('beforeunload', function() {
+        if (eyeconState.statusBoxInterval) {
+            clearInterval(eyeconState.statusBoxInterval);
+        }
+        
+        // Stop all camera streams
+        ['eyecon-back-feed', 'eyecon-front-feed'].forEach(id => {
+            const video = document.getElementById(id);
+            if (video && video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+            }
+        });
+    });
+</script>
 </body>
 </html>
