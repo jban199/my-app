@@ -241,7 +241,7 @@ window.ts_webData = [
 		title: "ZEE5",
 		description: "",
 		link: "https://www.zee5.com/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/zee5.png",
 		tags: "Entertainment"
 	},
 	{
@@ -255,49 +255,49 @@ window.ts_webData = [
 		title: "Online MP3 Cutter",
 		description: "",
 		link: "https://mp3cut.net/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/123apps.svg",
 		tags: "Tools"
 	},
 	{
 		title: "Online Audio Joiner",
 		description: "",
 		link: "https://audio-joiner.com/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/123apps.svg",
 		tags: "Tools"
 	},
 	{
 		title: "Hearing Test",
 		description: "",
 		link: "https://www.echalk.co.uk/Science/biology/hearing/HowOldIsYourHearing/resource.html",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/echalk.png",
 		tags: "Health"
 	},
 	{
 		title: "A Soft Murmur",
 		description: "",
 		link: "https://asoftmurmur.com/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/asoftmurmur.png",
 		tags: "Tools"
 	},
 	{
 		title: "myNoise",
 		description: "",
 		link: "https://mynoise.net/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/mynoise.png",
 		tags: "Tools"
 	},
 	{
 		title: "Defonic",
 		description: "",
 		link: "https://defonic.com/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/defonic.png",
 		tags: "Tools"
 	},
 	{
 		title: "ElevenLabs",
 		description: "",
 		link: "https://elevenlabs.io/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/elevenlabs.svg",
 		tags: "Tools"
 	},
 	{
