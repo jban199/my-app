@@ -168,174 +168,55 @@
 <!-- Card List : Start -->
 <div id="hypno-list">
 
-	<div class="hypno-card" data-tags="mantra">
-		<div class="hypno-title">Namaste Astu Bhagavan</div>
-		<div class="hypno-purpose">Shiva mantra</div>
-		<div class="hypno-tags">
-			<span>#mantra</span>
-		</div>
+	<!-- Load the data file first -->
+	<script src="hypnoData.js"></script>
 
-		<div class="hypno-buttons">
-			<button class="hypno-btn" onclick="hypno_toggleLike(this)">
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M840-640q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14H280v-520l240-238q15-15 35.5-17.5T595-888q19 10 28 28t4 37l-45 183h258Zm-480 34v406h360l120-280v-80H480l54-220-174 174ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640h120v80H160v360h120v80H160Zm200-80v-406 406Z"/>
-				</svg>
-				<span>Like</span>
-			</button>
-			
-			<button class="hypno-btn" onclick='audioPlayer_setTrack("media/hypno-sounds/om-namaste-astu-bhagavan-by-shlokam-org.mp3", "Namaste Astu Bhagavan", "Most powerful Shiva mantra","ॐ नमस्ते अस्तु भगवान\nविश्र्वेश्वराय महादेवाय\nत्र्यम्बकाय त्रिपुरान्तकाय\nत्रिकाग्निकालाय\nकालाग्निरुद्राय नीलकण्ठाय मृत्युंजय\nसर्वेश्र्वराय सदाशिवाय\nश्रीमन् महादेवाय नमः\n\nOm Namaste Astu Bhagavan\nVishveshvaraaya Mahaadevaaya\nTrayambakaaya Tripurantakaaya\nTrikaalaagni - Kaalaaya\nKaalaagni - Rudraaya Nilakantaaya Mrityunjayaaya\nSarveshvaraaya Sadaashivaaya\nSriman Mahadevaaya Namah.");'>
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
-				</svg>
-				<span>Play</span>
-			</button>
-		</div>
-    </div>
-	
-	
-	<div class="hypno-card" data-tags="calm">
-		<div class="hypno-title">Deep Calm & Mental Clarity</div>
-		<div class="hypno-purpose">English Female</div>
-		<div class="hypno-tags">
-			<span>#calm</span><span>#relax</span>
-		</div>
+	<!-- Then load your card-generation logic -->
+	<script>
+	  function createHypnoCard(data) {
+		const card = document.createElement('div');
+		card.className = 'hypno-card';
+		card.setAttribute('data-tags', data.filterTags.join(' '));
 
-		<div class="hypno-buttons">
+		card.innerHTML = `
+		  <div class="hypno-title">${data.cardTitle}</div>
+		  <div class="hypno-purpose">${data.cardPurpose}</div>
+		  <div class="hypno-tags">
+			${data.cardTags.map(tag => `<span>${tag}</span>`).join('')}
+		  </div>
+		  <div class="hypno-buttons">
 			<button class="hypno-btn" onclick="hypno_toggleLike(this)">
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M840-640q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14H280v-520l240-238q15-15 35.5-17.5T595-888q19 10 28 28t4 37l-45 183h258Zm-480 34v406h360l120-280v-80H480l54-220-174 174ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640h120v80H160v360h120v80H160Zm200-80v-406 406Z"/>
-				</svg>
-				<span>Like</span>
+			  <svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M840-640q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14H280v-520l240-238q15-15 35.5-17.5T595-888q19 10 28 28t4 37l-45 183h258Zm-480 34v406h360l120-280v-80H480l54-220-174 174ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640h120v80H160v360h120v80H160Zm200-80v-406 406Z"/>
+			  </svg>
+			  <span>Like</span>
 			</button>
-			
-			<button class="hypno-btn" onclick='audioPlayer_setTrack("media/hypno-sounds/Deep_calm-ver3-Rachel-11labs.mp3", "Deep Calm & Mental Clarity", "English Female", "Take a slow, deep breath in... and gently release it...\nWith every exhale, your mind grows quieter... your body sinks deeper into relaxation...\nYou are safe... you are at peace...\nAll stress fades away... replaced by a warm, soothing calm...\nYour thoughts slow down... your focus sharpens...\nYou are here... present... and completely relaxed...");'>
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
-				</svg>
-				<span>Play</span>
-			</button>
-		</div>
-    </div>
-	
-	<div class="hypno-card" data-tags="sleep">
-		<div class="hypno-title">Effortless Sleep & Rejuvenation</div>
-		<div class="hypno-purpose">English Female</div>
-		<div class="hypno-tags">
-			<span>#habit</span><span>#decipline</span>
-		</div>
 
-		<div class="hypno-buttons">
-			<button class="hypno-btn" onclick="hypno_toggleLike(this)">
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M840-640q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14H280v-520l240-238q15-15 35.5-17.5T595-888q19 10 28 28t4 37l-45 183h258Zm-480 34v406h360l120-280v-80H480l54-220-174 174ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640h120v80H160v360h120v80H160Zm200-80v-406 406Z"/>
-				</svg>
-				<span>Like</span>
+			<button class="hypno-btn" onclick='audioPlayer_setTrack(
+			  "${data.playerFilepath}",
+			  "${data.playerTitle}",
+			  "${data.playerPurpose}",
+			  \`${data.playerTransscript}\`
+			)'>
+			  <svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
+			  </svg>
+			  <span>Play</span>
 			</button>
-			
-			<button class="hypno-btn" onclick='audioPlayer_setTrack("media/hypno-sounds/Deep_calm-ver3-Rachel-11labs.mp3", "Effortless Sleep & Rejuvenation", "English Female", "As night falls, your body welcomes rest...\nYour eyelids grow heavy... your muscles unwind...\nSleep comes easily... and every hour restores you deeply...\nYou dream peacefully... and wake up refreshed...\nYour energy is full... your mind is clear...\nYou love the feeling of waking up renewed...");'>
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
-				</svg>
-				<span>Play</span>
-			</button>
-		</div>
-    </div>
-	
-	<div class="hypno-card" data-tags="decipline">
-		<div class="hypno-title">Early Rising with Excitement</div>
-		<div class="hypno-purpose">English Female</div>
-		<div class="hypno-tags">
-			<span>#habit</span><span>#decipline</span>
-		</div>
+		  </div>
+		`;
+		return card;
+	  }
 
-		<div class="hypno-buttons">
-			<button class="hypno-btn" onclick="hypno_toggleLike(this)">
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M840-640q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14H280v-520l240-238q15-15 35.5-17.5T595-888q19 10 28 28t4 37l-45 183h258Zm-480 34v406h360l120-280v-80H480l54-220-174 174ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640h120v80H160v360h120v80H160Zm200-80v-406 406Z"/>
-				</svg>
-				<span>Like</span>
-			</button>
-			
-			<button class="hypno-btn" onclick='audioPlayer_setTrack("media/hypno-sounds/Deep_calm-ver3-Rachel-11labs.mp3", "Early Rising with Excitement", "English Female", "You naturally wake up early... feeling energized...\nYour eyes open with purpose... your body is light and ready...\nMornings are your time... for growth... for victory...\nYou embrace the silence of dawn... and charge forward with passion...\nEvery sunrise fuels your motivation...\nYou are an early riser... and you love it...");'>
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
-				</svg>
-				<span>Play</span>
-			</button>
-		</div>
-    </div>
-	
-	<div class="hypno-card" data-tags="decipline">
-		<div class="hypno-title">Unstoppable Motivation (Anti-Laziness)</div>
-		<div class="hypno-purpose">English Female</div>
-		<div class="hypno-tags">
-			<span>#habit</span><span>#decipline</span>
-		</div>
+	  window.addEventListener('DOMContentLoaded', () => {
+		const container = document.getElementById('hypno-list');
+		hypnoDataList.forEach(item => {
+		  const card = createHypnoCard(item);
+		  container.appendChild(card);
+		});
+	  });
+	</script>
 
-		<div class="hypno-buttons">
-			<button class="hypno-btn" onclick="hypno_toggleLike(this)">
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M840-640q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14H280v-520l240-238q15-15 35.5-17.5T595-888q19 10 28 28t4 37l-45 183h258Zm-480 34v406h360l120-280v-80H480l54-220-174 174ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640h120v80H160v360h120v80H160Zm200-80v-406 406Z"/>
-				</svg>
-				<span>Like</span>
-			</button>
-			
-			<button class="hypno-btn" onclick='audioPlayer_setTrack("media/hypno-sounds/Deep_calm-ver3-Rachel-11labs.mp3", "Unstoppable Motivation (Anti-Laziness)", "English Female", "Action is your default... movement is effortless...\nYou focus... you begin... and you finish...\nProcrastination has no power over you...\nYour discipline grows stronger every day...\nYou crave progress... you thrive on achievement...\nNothing can stop you now...");'>
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
-				</svg>
-				<span>Play</span>
-			</button>
-		</div>
-    </div>
-	
-	<div class="hypno-card" data-tags="confidence">
-		<div class="hypno-title">Unshakable Confidence & Power</div>
-		<div class="hypno-purpose">English Female</div>
-		<div class="hypno-tags">
-			<span>#confidence</span>
-		</div>
-
-		<div class="hypno-buttons">
-			<button class="hypno-btn" onclick="hypno_toggleLike(this)">
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M840-640q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14H280v-520l240-238q15-15 35.5-17.5T595-888q19 10 28 28t4 37l-45 183h258Zm-480 34v406h360l120-280v-80H480l54-220-174 174ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640h120v80H160v360h120v80H160Zm200-80v-406 406Z"/>
-				</svg>
-				<span>Like</span>
-			</button>
-			
-			<button class="hypno-btn" onclick='audioPlayer_setTrack("media/hypno-sounds/Deep_calm-ver3-Rachel-11labs.mp3", "Unshakable Confidence & Power", "English Female", "You trust yourself completely...\nChallenges make you stronger... obstacles make you wiser...\nYou speak with clarity... you act with certainty...\nFear dissolves in your presence...\nYou are unstoppable... you are magnetic...\nThe world responds to your confidence...");'>
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
-				</svg>
-				<span>Play</span>
-			</button>
-		</div>
-    </div>
-	
-	<div class="hypno-card" data-tags="decipline">
-		<div class="hypno-title">Gratitude & Abundance</div>
-		<div class="hypno-purpose">English Female</div>
-		<div class="hypno-tags">
-			<span>#gratitude</span><span>#decipline</span>
-		</div>
-
-		<div class="hypno-buttons">
-			<button class="hypno-btn" onclick="hypno_toggleLike(this)">
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M840-640q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14H280v-520l240-238q15-15 35.5-17.5T595-888q19 10 28 28t4 37l-45 183h258Zm-480 34v406h360l120-280v-80H480l54-220-174 174ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640h120v80H160v360h120v80H160Zm200-80v-406 406Z"/>
-				</svg>
-				<span>Like</span>
-			</button>
-			
-			<button class="hypno-btn" onclick='audioPlayer_setTrack("media/hypno-sounds/Deep_calm-ver3-Rachel-11labs.mp3", "Gratitude & Abundance", "English Female", "You attract positivity effortlessly...\nGood things flow to you... because you expect them...\nYou are grateful for every small joy... and every big victory...\nYour life is expanding... in happiness... in success... in peace...\nYou deserve it all... and you receive it now...");'>
-				<svg class="like-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/>
-				</svg>
-				<span>Play</span>
-			</button>
-		</div>
-    </div>
 	
 	
 </div>
