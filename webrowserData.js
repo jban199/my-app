@@ -151,20 +151,20 @@ window.ts_webData = [
 		title: "Drik Panchang",
 		description: "",
 		link: "https://www.drikpanchang.com/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/drikpanchang.webp",
 		tags: "Astrology"
 	},
 	{
 		title: "Temp Mail",
 		description: "",
 		link: "https://temp-mail.org/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/temp-mail.png",
 		tags: "Tools"
 	},
 	{
 		title: "Diffchecker",
 		link: "https://www.diffchecker.com/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/diffchecker.svg",
 		tags: "Tools"
 	},
 	{
@@ -185,14 +185,14 @@ window.ts_webData = [
 		title: "Alliance Broadband Payment",
 		description: "",
 		link: "https://pay2abs.alliancebroadband.in/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/alliance.png",
 		tags: "Recharge"
 	},
 	{
 		title: "VI - Vodafone Idea",
 		description: "",
 		link: "https://www.myvi.in/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/vi.svg",
 		tags: "Recharge"
 	},
 	{
@@ -206,21 +206,21 @@ window.ts_webData = [
 		title: "SpeedoMeter",
 		description: "",
 		link: "https://speedometer.live/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/speedometer.png",
 		tags: "Tools"
 	},
 	{
 		title: "DuckDuckGo",
 		description: "",
 		link: "https://duckduckgo.com/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/duckduckgo.png",
 		tags: "Search Engine"
 	},
 	{
 		title: "Speedtest by Ookla",
 		description: "",
 		link: "https://www.speedtest.net/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/speedtest-ookla.png",
 		tags: "Tools"
 	},
 	{
@@ -234,7 +234,7 @@ window.ts_webData = [
 		title: "Amazon MX Player",
 		description: "",
 		link: "https://www.mxplayer.in/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/mxplayer.png",
 		tags: "Entertainment"
 	},
 	{
