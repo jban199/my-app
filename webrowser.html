@@ -350,170 +350,13 @@ document.addEventListener('click', (event) => {
 	<div class="ts-allweb-filter-menu" id="ts-allweb-filter-menu" style="display: none;"></div>
 </div>
 
-<section class="ts-options-list">
-	<script type="application/json" class="ts-card-json">
-	{
-		"content": [
-			{
-				"title": "Google",
-				"link": "https://www.google.com",
-				"image": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-				"tags": "Search Engine"
-			},
-			{
-				"title": "ChatGPT",
-				"link": "https://chat.openai.com",
-				"image": "https://chat.openai.com/apple-touch-icon.png",
-				"tags": "AI, Productivity"
-			},
-			{
-				"title": "Wikipedia",
-				"link": "https://www.wikipedia.org",
-				"image": "https://www.wikipedia.org/static/apple-touch/wikipedia.png",
-				"tags": "Education, Reference"
-			},
-			{
-				"title": "Cricbuzz",
-				"link": "https://www.cricbuzz.com",
-				"image": "https://www.cricbuzz.com/images/cb_logo.svg",
-				"tags": "Sports, Cricket"
-			},
-			{
-				"title" : "GitHub",
-				"link" : "https://github.com",
-				"image" : "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-				"tags" : ""
-			},
-			{
-				"title": "Amazon India",
-				"link": "https://www.amazon.in",
-				"image": "https://www.amazon.in/favicon.ico",
-				"tags": "E-commerce, Shopping"
-			},
-			{
-				"title": "Hindustan Times",
-				"link": "https://www.hindustantimes.com",
-				"image": "https://www.hindustantimes.com/res/images/ht-logo.svg",
-				"tags": "News"
-			},
-			{
-				"title": "YouTube",
-				"link": "https://www.youtube.com",
-				"image": "https://www.youtube.com/s/desktop/6b4e0b8b/img/favicon_144x144.png",
-				"tags": "Video, Entertainment"
-			},
-			{
-				"title": "Bing",
-				"link": "https://www.bing.com",
-				"image": "https://www.bing.com/sa/simg/favicon-2x.ico",
-				"tags": "Search Engine"
-			},
-			{
-				"title": "Reddit",
-				"link": "https://www.reddit.com",
-				"image": "https://www.redditstatic.com/desktop2x/img/favicon/apple-icon-180x180.png",
-				"tags": "Forums, Social Media"
-			},
-			{
-				"title": "LinkedIn",
-				"link": "https://www.linkedin.com",
-				"image": "https://static.licdn.com/scds/common/u/images/logos/favicons/v1/favicon.ico",
-				"tags": "Professional, Networking"
-			},
-			{
-				"title": "ESPNcricinfo",
-				"link": "https://www.espncricinfo.com",
-				"image": "https://www.espncricinfo.com/apple-touch-icon.png",
-				"tags": "Sports, Cricket"
-			},
-			{
-				"title": "Instagram",
-				"link": "https://www.instagram.com",
-				"image": "images/nm/nm-placeholder.svg",
-				"tags": "Social Media, Photo Sharing"
-			},
-			{
-				"title": "Facebook",
-				"link": "https://www.facebook.com",
-				"image": "images/nm/nm-placeholder.svg",
-				"tags": "Social Media"
-			},
-			{
-				"title": "WhatsApp Web",
-				"link": "https://web.whatsapp.com/",
-				"image": "images/nm/nm-placeholder.svg",
-				"tags": "Messaging, Communication"
-			},
-			{
-				"title": "X (formerly Twitter)",
-				"link": "https://x.com",
-				"image": "https://abs.twimg.com/responsive-web/client-web/icon-ios.77d25eba.png",
-				"tags": "Social Media, News"
-			},
-			{
-				"title": "Times of India",
-				"link": "https://timesofindia.com",
-				"image": "https://timesofindia.indiatimes.com/icons/toifavicon.ico",
-				"tags": "News, Media"
-			},
-			{
-				"title": "Flipkart",
-				"link": "https://www.flipkart.com",
-				"image": "https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/logo_lite-cbb357.png",
-				"tags": "Shopping, E-commerce"
-			},
-			{
-				"title": "Hotstar",
-				"link": "https://www.hotstar.com",
-				"image": "https://secure-media.hotstar.com/web-assets/prod/jhs_favicon.ico",
-				"tags": "Streaming, Entertainment"
-			},
-			{
-				"title": "Quora",
-				"link": "https://www.quora.com",
-				"image": "https://qsf.cf2.quoracdn.net/-4-images.favicon-new.ico-26-07ecf7cd341b6919.ico",
-				"tags": "Q&A, Knowledge"
-			},
-			{
-				"title": "MSN",
-				"link": "https://www.msn.com",
-				"image": "images/nm/nm-placeholder.svg",
-				"tags": "News"
-			},
-			{
-				"title": "XXXX",
-				"link": "XXXX",
-				"image": "images/nm/nm-placeholder.svg",
-				"tags": "XXXX"
-			},
-			{
-				"title": "XXXX",
-				"link": "XXXX",
-				"image": "images/nm/nm-placeholder.svg",
-				"tags": "XXXX"
-			},
-			{
-				"title": "XXXX",
-				"link": "XXXX",
-				"image": "images/nm/nm-placeholder.svg",
-				"tags": "XXXX"
-			}
-		]
-	}
-	</script>
+<section class="ts-options-list"></section>
 	
+<script src="webrowserData.js"></script>
 <script>
 document.querySelectorAll('.ts-options-list').forEach(section => {
-	const jsonEl = section.querySelector('.ts-card-json');
-	if (!jsonEl) return;
-
-	let data;
-	try {
-		data = JSON.parse(jsonEl.textContent).content;
-	} catch (e) {
-		console.error('Invalid JSON in ts-card-json', e);
-		return;
-	}
+	const data = window.ts_webData;
+	if (!Array.isArray(data)) return;
 
 	data.forEach(item => {
 		const wrapper = document.createElement('div');
@@ -534,6 +377,10 @@ document.querySelectorAll('.ts-options-list').forEach(section => {
 		const title = document.createElement('p');
 		title.className = 'ts-option-title';
 		title.textContent = item.title;
+		
+		const description = document.createElement('p');
+		description.className = 'ts-option-description';
+		description.textContent = item.description;
 
 		const link = document.createElement('p');
 		link.className = 'ts-option-link';
@@ -543,7 +390,7 @@ document.querySelectorAll('.ts-options-list').forEach(section => {
 		tags.className = 'ts-option-tags';
 		tags.textContent = item.tags || '';
 
-		info.append(title, link, tags);
+		info.append(title, description, link, tags);
 		anchor.append(img, info);
 		wrapper.appendChild(anchor);
 
@@ -552,7 +399,7 @@ document.querySelectorAll('.ts-options-list').forEach(section => {
 		menuBtn.className = 'ts-option-more-btn';
 		menuBtn.innerHTML = `
 			<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"></path>
+				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/>
 			</svg>
 		`;
 
@@ -569,13 +416,13 @@ document.querySelectorAll('.ts-options-list').forEach(section => {
 			</button>
 			<button class="ts-allweb-share-btn">
 				<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm480-280q17 0 28.5-11.5T720-760q0-17-11.5-28.5T680-800q-17 0-28.5 11.5T640-760q0 17 11.5 28.5T680-720Zm0 520ZM200-480Zm480-280Z">
+					<path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm480-280q17 0 28.5-11.5T720-760q0-17-11.5-28.5T680-800q-17 0-28.5 11.5T640-760q0 17 11.5 28.5T680-720Zm0 520ZM200-480Zm480-280Z"/>
 				</svg>
 				Share
 			</button>
 			<button class="ts-allweb-copy-btn">
 				<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-					<path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-520q0-17 11.5-28.5T160-720q17 0 28.5 11.5T200-680v520h400q17 0 28.5 11.5T640-120q0 17-11.5 28.5T600-80H200Zm160-240v-480 480Z">
+					<path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-520q0-17 11.5-28.5T160-720q17 0 28.5 11.5T200-680v520h400q17 0 28.5 11.5T640-120q0 17-11.5 28.5T600-80H200Zm160-240v-480 480Z"/>
 				</svg>
 				Copy link
 			</button>
@@ -622,13 +469,13 @@ document.querySelectorAll('.ts-options-list').forEach(section => {
 
 // Close all open menus on click outside
 document.addEventListener('click', closeAllMenus);
-
 function closeAllMenus() {
 	document.querySelectorAll('.ts-allweb-options-menu').forEach(menu => {
 		menu.style.display = 'none';
 	});
 }
 </script>
+
 
 
 <script>
@@ -706,12 +553,6 @@ function closeAllMenus() {
 }
 </script>
 
-
-
-
-
-
-</section>
 
 
 
