@@ -78,7 +78,7 @@ window.ts_webData = [
 		tags: "Professional, Networking"
 	},
 	{
-		title: "ESPNcricinfo",
+		title: "ESPN Cric Info",
 		description: "",
 		link: "https://www.espncricinfo.com",
 		image: "images/webrowser/sites/espncricinfo.ico",
@@ -88,63 +88,63 @@ window.ts_webData = [
 		title: "Instagram",
 		description: "",
 		link: "https://www.instagram.com",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/instagram.png",
 		tags: "Social Media, Photo Sharing"
 	},
 	{
 		title: "Facebook",
 		description: "",
 		link: "https://www.facebook.com",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/facebook.png",
 		tags: "Social Media"
 	},
 	{
 		title: "WhatsApp Web",
 		description: "",
 		link: "https://web.whatsapp.com/",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/whatsapp.png",
 		tags: "Messaging, Communication"
 	},
 	{
 		title: "X (formerly Twitter)",
 		description: "",
 		link: "https://x.com",
-		image: "https://abs.twimg.com/responsive-web/client-web/icon-ios.77d25eba.png",
+		image: "images/webrowser/sites/xtwitter.png",
 		tags: "Social Media, News"
 	},
 	{
 		title: "Times of India",
 		description: "",
 		link: "https://timesofindia.com",
-		image: "https://timesofindia.indiatimes.com/icons/toifavicon.ico",
+		image: "images/webrowser/sites/timesofindia.png",
 		tags: "News, Media"
 	},
 	{
 		title: "Flipkart",
 		description: "",
 		link: "https://www.flipkart.com",
-		image: "https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/logo_lite-cbb357.png",
+		image: "images/webrowser/sites/flipkart.png",
 		tags: "Shopping, E-commerce"
 	},
 	{
 		title: "Hotstar",
 		description: "",
 		link: "https://www.hotstar.com",
-		image: "https://secure-media.hotstar.com/web-assets/prod/jhs_favicon.ico",
+		image: "images/webrowser/sites/hotstar.ico",
 		tags: "Streaming, Entertainment"
 	},
 	{
 		title: "Quora",
 		description: "",
 		link: "https://www.quora.com",
-		image: "https://qsf.cf2.quoracdn.net/-4-images.favicon-new.ico-26-07ecf7cd341b6919.ico",
+		image: "images/webrowser/sites/quora.ico",
 		tags: "Q&A, Knowledge"
 	},
 	{
 		title: "MSN",
 		description: "",
 		link: "https://www.msn.com",
-		image: "images/webrowser/sites/placeholder.svg",
+		image: "images/webrowser/sites/msn.svg",
 		tags: "News"
 	},
 	{
