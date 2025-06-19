@@ -824,11 +824,22 @@ p {
 	margin: 0px;
 }
 
+.ts-option-description {
+	color: var(--font2);
+	margin: 0px;
+	font-size: 12px;
+	text-wrap: auto;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;       /* Limit to 2 lines */
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .ts-option-link {
 	color: var(--font2);
 	margin: 0px;
 	font-size: 12px;
-
 }
 
 .ts-option-tags {
