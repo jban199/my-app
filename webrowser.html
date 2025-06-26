@@ -54,24 +54,26 @@
 				<div class="ts-selected-engine-helper">Tap here</div>
 			</div>
 
-			<div id="ts-search-engine-dropdown" class="ts-search-engine-dropdown">
-				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('google', 'images/webrowser/engines/google.svg')">
-					<img src="images/webrowser/engines/google.svg" alt="Google Icon"> Google
-				</div>
-				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('bing', 'images/webrowser/engines/bing.svg')">
-					<img src="images/webrowser/engines/bing.svg" alt="Bing Icon"> Bing
-				</div>
-				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('yahoo', 'images/webrowser/engines/yahoo.svg')">
-					<img src="images/webrowser/engines/yahoo.svg" alt="Yahoo Icon"> Yahoo
-				</div>
-				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('duckduckgo', 'images/webrowser/engines/duckduckgo.svg')">
-					<img src="images/webrowser/engines/duckduckgo.svg" alt="DuckDuckGo Icon"> DuckDuckGo
-				</div>
-				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('youtube', 'images/webrowser/engines/youtube.svg')">
-					<img src="images/webrowser/engines/youtube.svg" alt="YouTube Icon"> YouTube
-				</div>
-				<div class="ts-search-engine-dropdown-item" onclick="selectEngine('wikipedia', 'images/webrowser/engines/wikipedia.svg')">
-					<img src="images/webrowser/engines/wikipedia.svg" alt="Wikipedia Icon"> Wikipedia
+			<div id="ts-search-engine-dropdown-overlay" class="menuOverlay" onclick="toggleDropdown()">
+				<div id="ts-search-engine-dropdown" class="ts-search-engine-dropdown" onclick="toggleDropdown()">
+					<div class="ts-search-engine-dropdown-item" onclick="selectEngine('google', 'images/webrowser/engines/google.svg')">
+						<img src="images/webrowser/engines/google.svg" alt="Google Icon"> Google
+					</div>
+					<div class="ts-search-engine-dropdown-item" onclick="selectEngine('bing', 'images/webrowser/engines/bing.svg')">
+						<img src="images/webrowser/engines/bing.svg" alt="Bing Icon"> Bing
+					</div>
+					<div class="ts-search-engine-dropdown-item" onclick="selectEngine('yahoo', 'images/webrowser/engines/yahoo.svg')">
+						<img src="images/webrowser/engines/yahoo.svg" alt="Yahoo Icon"> Yahoo
+					</div>
+					<div class="ts-search-engine-dropdown-item" onclick="selectEngine('duckduckgo', 'images/webrowser/engines/duckduckgo.svg')">
+						<img src="images/webrowser/engines/duckduckgo.svg" alt="DuckDuckGo Icon"> DuckDuckGo
+					</div>
+					<div class="ts-search-engine-dropdown-item" onclick="selectEngine('youtube', 'images/webrowser/engines/youtube.svg')">
+						<img src="images/webrowser/engines/youtube.svg" alt="YouTube Icon"> YouTube
+					</div>
+					<div class="ts-search-engine-dropdown-item" onclick="selectEngine('wikipedia', 'images/webrowser/engines/wikipedia.svg')">
+						<img src="images/webrowser/engines/wikipedia.svg" alt="Wikipedia Icon"> Wikipedia
+					</div>
 				</div>
 			</div>
 		</div>
@@ -81,9 +83,10 @@
 <script>
 // Function to toggle dropdown visibility
 function toggleDropdown() {
-  const searchEngineDropdown = document.getElementById('ts-search-engine-dropdown');
+  const searchEngineDropdown = document.getElementById('ts-search-engine-dropdown-overlay');
   searchEngineDropdown.classList.toggle('show');
 }
+
 
 // Function to select a search engine
 function selectEngine(engine, icon) {
@@ -338,7 +341,7 @@ document.addEventListener('click', (event) => {
 </section>
 
 
-<div class="ts-sectionname">
+<div class="ts-sectionname ts-sticky">
 	All Websites
 	<button class="ts-filter-btn">
 		<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
