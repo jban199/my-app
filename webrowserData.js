@@ -301,6 +301,146 @@ window.ts_webData = [
 		tags: "Tools"
 	},
 	{
+		title: "Moglix",
+		description: "Online store for industrial tools and equipment",
+		link: "https://www.moglix.com/",
+		image: "images/webrowser/sites/moglix.png",
+		tags: "Shopping, E-commerce"
+	},
+	{
+		title: "IndustryBuying",
+		description: "Online marketplace for Industrial Goods, Business Supplies, MRO Products, Tools, Equipment and many more at Wholesale Price.",
+		link: "https://www.industrybuying.com/",
+		image: "images/webrowser/sites/industrybuying.png",
+		tags: "Shopping, E-commerce"
+	},
+	{
+		title: "Myntra",
+		description: "",
+		link: "https://www.myntra.com/",
+		image: "images/webrowser/sites/myntra-2.png",
+		tags: "Shopping, E-commerce"
+	},
+	{
+		title: "IndiaMart",
+		description: "",
+		link: "https://www.indiamart.com/",
+		image: "images/webrowser/sites/indiamart.png",
+		tags: "Shopping, E-commerce"
+	},
+	{
+		title: "OLX India",
+		description: "Free classifieds in India, Buy and Sell for free anywhere near you.",
+		link: "https://www.olx.in/",
+		image: "images/webrowser/sites/olx.svg",
+		tags: "Shopping, E-commerce"
+	},
+	{
+		title: "Blinkit",
+		description: "",
+		link: "https://blinkit.com/",
+		image: "images/webrowser/sites/blinkit.ico",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
+		title: "XXXX",
+		description: "",
+		link: "XXXX",
+		image: "images/webrowser/sites/placeholder.svg",
+		tags: "XXXX"
+	},
+	{
 		title: "XXXX",
 		description: "",
 		link: "XXXX",
