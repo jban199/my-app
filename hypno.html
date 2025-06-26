@@ -93,12 +93,33 @@
     }
 
     .hypno-card {
-      background: var(--bg3);
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 0 10px var(--shadow1);
+		background: var(--bg3);
+		border-radius: 12px;
+		padding: 1rem;
+		margin-bottom: 2rem;
+		box-shadow: 0 0 10px var(--shadow1);
+		position: relative;
+		overflow: hidden;
     }
+	
+	.hypno-card::before {
+		content: "";
+		position: absolute;
+		inset: 0; /* shorthand for top/right/bottom/left: 0 */
+		background-image: url('images/icon-512x512.png');
+		background-repeat: no-repeat;
+		background-size: cover;
+		opacity: 0.1;
+		filter: grayscale(100%);
+		border-radius: 12px;
+		pointer-events: none; /* allows clicks to pass through */
+		z-index: 0;
+	}
+
+	.hypno-card > * {
+		position: relative;
+		z-index: 1;
+	}
 
     .hypno-title {
       color: var(--font1);
@@ -140,6 +161,7 @@
       border: none;
       border-radius: 30px;
       padding: 0.5rem 1rem;
+	  box-shadow: 0px 1px 0px 1px var(--shadow1);
       color: var(--font1);
       font-weight: 500;
       cursor: pointer;
