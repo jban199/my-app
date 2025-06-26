@@ -340,105 +340,105 @@ window.ts_webData = [
 		description: "",
 		link: "https://blinkit.com/",
 		image: "images/webrowser/sites/blinkit.ico",
-		tags: "XXXX"
+		tags: "Online Grocery, E-commerce"
 	},
 	{
-		title: "XXXX",
+		title: "Zomato",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://www.zomato.com/",
+		image: "images/webrowser/sites/zomato.svg",
+		tags: "Food Ordering, E-commerce"
 	},
 	{
-		title: "XXXX",
+		title: "Swiggy",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://www.swiggy.com/",
+		image: "images/webrowser/sites/swiggy.svg",
+		tags: "Food Ordering, E-commerce"
 	},
 	{
-		title: "XXXX",
+		title: "Sony LIV",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://www.sonyliv.com/",
+		image: "images/webrowser/sites/sonyliv.png",
+		tags: "Entertaiment"
 	},
 	{
-		title: "XXXX",
+		title: "AstroTalk",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://astrotalk.com/",
+		image: "images/webrowser/sites/astrotalk.ico",
+		tags: "Faith"
 	},
 	{
-		title: "XXXX",
+		title: "Zepto",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://www.zeptonow.com/",
+		image: "images/webrowser/sites/zepto.svg",
+		tags: "Online Grocery, E-commerce"
 	},
 	{
-		title: "XXXX",
-		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		title: "Wedding Wire",
+		description: "Wedding guide: wedding planners, venues, catering, photographers, dresses and suits.",
+		link: "https://www.weddingwire.in/",
+		image: "images/webrowser/sites/weddingwire.jpg",
+		tags: ""
 	},
 	{
-		title: "XXXX",
+		title: "Porter",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://porter.in/",
+		image: "images/webrowser/sites/porter.svg",
+		tags: "Logistics"
 	},
 	{
-		title: "XXXX",
+		title: "SBI - State Bank of India",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://www.onlinesbi.sbi/",
+		image: "images/webrowser/sites/sbi.svg",
+		tags: "Banking"
 	},
 	{
-		title: "XXXX",
+		title: "Axis Bank",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://www.axisbank.com/",
+		image: "images/webrowser/sites/axis.png",
+		tags: "Banking"
 	},
 	{
-		title: "XXXX",
+		title: "PNB - Punjab National Bank",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://www.pnbindia.in/",
+		image: "images/webrowser/sites/pnb.png",
+		tags: "Banking"
 	},
 	{
-		title: "XXXX",
+		title: "Naukri",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://www.naukri.com/",
+		image: "images/webrowser/sites/naukri.png",
+		tags: "Job"
 	},
 	{
-		title: "XXXX",
+		title: "AmbitionBox",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://www.ambitionbox.com/",
+		image: "images/webrowser/sites/ambitionbox.png",
+		tags: "Job"
 	},
 	{
-		title: "XXXX",
+		title: "Indeed",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://in.indeed.com/",
+		image: "images/webrowser/sites/indeed.svg",
+		tags: "Job"
 	},
 	{
-		title: "XXXX",
+		title: "BSNL",
 		description: "",
-		link: "XXXX",
-		image: "images/webrowser/sites/placeholder.svg",
-		tags: "XXXX"
+		link: "https://portal.bsnl.in/",
+		image: "images/webrowser/sites/bsnl.png",
+		tags: "Recharge"
 	},
 	{
 		title: "XXXX",
