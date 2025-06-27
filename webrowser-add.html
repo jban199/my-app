@@ -134,23 +134,23 @@
 		<button id="web-add-link-cancel-btn" onclick="closeAddLink()">Cancel</button>
 		<button id="web-add-link-save-btn">Save</button>
 	</div>
-	
-	<script>
-	
-	
-	function closeAddLink() {
-		location.replace('webrowser.html'); // full reload
-	  }
-	  
 
-	
-	// Link Management Module
+
+<!-- Include config first -->
+<script src="dbConfig.js"></script>
+<script>
+function closeAddLink() {
+	location.replace('webrowser.html'); // full reload
+  }
+  
+// Link Management Module
 let webDb;
-const webDbName = "TAKAppDB";
+const webDbName = window.ts_DB_NAME;
 const webStoreName = "CustomSites";
+const webDbVersion = window.ts_DB_VERSION;
 let currentEditingLinkId = null;
 
-const webOpenRequest = indexedDB.open(webDbName);
+const webOpenRequest = indexedDB.open(webDbName, webDbVersion);
 
 webOpenRequest.onupgradeneeded = (e) => {
   webDb = e.target.result;
@@ -281,7 +281,7 @@ function openAddLinkModal(linkData = null) {
   }
 }
 	
-	</script>
+</script>
 </section>
 
 
@@ -407,6 +407,12 @@ function showTakSnackbar(message = "Welcome!") {
     event.preventDefault(); // otherwise, block it
   });
 </script>
+
+
+<!-- ///////////////// -->
+<!-- Capacitor Functions -->
+<!-- ///////////////// -->
+<script type="module" src="capacitorFunctions.js"></script>
 
 
 </body>
