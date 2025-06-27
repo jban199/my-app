@@ -164,9 +164,13 @@
 
   </style>
 
+
+  <!-- Include config first -->
+  <script src="dbConfig.js"></script>
   <script>
-    const docDbName = "TAKAppDB";
+    const docDbName = window.ts_DB_NAME;
     const docStoreName = "UserDocs";
+	const docVersion = window.ts_DB_VERSION;
     let docDb;
     let currentDocToDelete = null;
 
@@ -204,7 +208,7 @@
     }
 
     function openDocDb() {
-      const request = indexedDB.open(docDbName);
+      const request = indexedDB.open(docDbName, docVersion);
 
       request.onupgradeneeded = (event) => {
         const db = event.target.result;
