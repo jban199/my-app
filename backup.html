@@ -80,14 +80,15 @@
 	</section>
 
 
-
+<!-- Include config first -->
+<script src="dbConfig.js"></script>
 <script>
     // ======================
     // CONFIGURATION SECTION
     // ======================
     const DB_CONFIG = {
-        name: "TAKAppDB",
-        version: 4,
+        name: window.ts_DB_NAME,
+        version: window.ts_DB_VERSION,
         stores: [
             { name: "CustomSites", keyPath: "id", autoIncrement: true },
             { name: "UserNotes", keyPath: "id", autoIncrement: true },
