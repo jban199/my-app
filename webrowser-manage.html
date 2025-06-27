@@ -254,16 +254,20 @@
 	</div>
 
 	
-
+<!-- Include config first -->
+<script src="dbConfig.js"></script>	
 <script>
 function closeManageLink() {
   location.replace('webrowser.html'); // full reload
 }
 
 let webDb;
+const webDbName = window.ts_DB_NAME;
+const webStoreName = "CustomSites";
+const webDbVersion = window.ts_DB_VERSION;
 let sitePendingDeleteId = null;
 
-const webDbRequest = indexedDB.open("TAKAppDB");
+const webDbRequest = indexedDB.open(webDbName, webDbVersion);
 
 webDbRequest.onsuccess = () => {
   webDb = webDbRequest.result;
@@ -545,6 +549,12 @@ function showTakSnackbar(message = "Welcome!") {
     event.preventDefault(); // otherwise, block it
   });
 </script>
+
+
+<!-- ///////////////// -->
+<!-- Capacitor Functions -->
+<!-- ///////////////// -->
+<script type="module" src="capacitorFunctions.js"></script>
 
 
 </body>
