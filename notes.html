@@ -1,4 +1,4 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -87,16 +87,18 @@
 	</div>
 
 
-
+<!-- Include config first -->
+<script src="dbConfig.js"></script>
 <script>
 let db;
-const dbName = "TAKAppDB";
+const dbName = window.ts_DB_NAME;
 const storeName = "UserNotes";
+const dbVersion = window.ts_DB_VERSION;
 let currentEditingId = null;
 let notePendingDeleteId = null;
 let currentOpenMenu = null;
 
-const openRequest = indexedDB.open(dbName);
+const openRequest = indexedDB.open(dbName,dbVersion);
 
 openRequest.onupgradeneeded = (e) => {
   db = e.target.result;
