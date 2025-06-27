@@ -177,15 +177,18 @@ document.getElementById('ts-search-btn').addEventListener('click', () => {
 	</script>
   </div>
 	<!-- Links will be inserted here dynamically -->
-	
-<script>
 
+
+<!-- Include config first -->
+<script src="dbConfig.js"></script>
+<script>
 let webDb;
-const webDbName = "TAKAppDB";
+const webDbName = window.ts_DB_NAME;
 const webStoreName = "CustomSites";
+const webDbVersion = window.ts_DB_VERSION;
 let currentEditingLinkId = null;
 
-const webOpenRequest = indexedDB.open(webDbName);
+const webOpenRequest = indexedDB.open(webDbName, webDbVersion);
 
 webOpenRequest.onupgradeneeded = (e) => {
   webDb = e.target.result;
