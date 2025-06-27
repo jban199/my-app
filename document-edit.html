@@ -168,6 +168,10 @@
         <button id="doc-save-btn">Save Changes</button>
     </div>
 
+
+
+<!-- Include config first -->
+<script src="dbConfig.js"></script>
 <script>
 // Store the current document ID being edited
 let currentDocId = null;
@@ -177,12 +181,13 @@ function closeDocEdit() {
 }
 
 let docDb;
-const docDbName = "TAKAppDB";
+const docDbName = window.ts_DB_NAME;
 const docStoreName = "UserDocs";
+const docVersion = window.ts_DB_VERSION;
 const saveBtn = document.getElementById("doc-save-btn");
 saveBtn.disabled = true;
 
-const request = indexedDB.open(docDbName, 4);
+const request = indexedDB.open(docDbName, docVersion);
 
 request.onupgradeneeded = (event) => {
     const db = event.target.result;
