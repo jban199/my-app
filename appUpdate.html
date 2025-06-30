@@ -92,7 +92,7 @@
 		
 	<script>
 		function appUpdateDownload() {
-			fetch('https://jban199.github.io/my-app/media/hypno-sounds/om-namaste-astu-bhagavan-by-shlokam-orgo.mp3')
+			fetch('https://jban199.github.io/my-app/appUpdate/om-namaste-astu-bhagavan-by-shlokam-orgo.mp3')
 			.then(response => {
 			  if (!response.ok) throw new Error("Network response was not ok");
 			  return response.blob();
@@ -101,7 +101,7 @@
 			  const url = URL.createObjectURL(blob);
 			  const a = document.createElement('a');
 			  a.href = url;
-			  a.download = 'trikagni-ver1.mp3'; // this is the filename the user will see
+			  a.download = 'om-namaste-astu-bhagavan-by-shlokam-orgo.mp3'; // this is the filename the user will see
 			  document.body.appendChild(a);
 			  a.click();
 			  a.remove();
