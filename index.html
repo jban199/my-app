@@ -366,44 +366,6 @@
 	</script>
 </section>
 
-<section id="ts-update-section" style="display:none; padding:16px; border:1px solid #ccc; margin:16px; border-radius:8px; background:#f5f5f5;">
-  <h3>🔄 App Update Available</h3>
-  <p><strong>Your version:</strong> <span id="ts-current-version">...</span></p>
-  <p><strong>Latest version:</strong> <span id="ts-latest-version">...</span></p>
-  <p><strong>What's new:</strong></p>
-  <pre id="ts-changelog" style="background:#eee; padding:10px; border-radius:6px;"></pre>
-  <a id="ts-apk-download" href="#" download style="display:inline-block; margin-top:10px; padding:10px 16px; background:#007bff; color:#fff; border-radius:4px; text-decoration:none;">⬇️ Download Latest APK</a>
-</section>
-
-<script type="module">
-  import { App } from 'https://cdn.jsdelivr.net/npm/@capacitor/app@5.0.6/dist/index.js';
-
-  async function ts_checkForUpdate() {
-    if (!navigator.onLine) return;
-
-    try {
-      const appInfo = await App.getInfo();
-      const currentVersion = appInfo.version || 'Unknown';
-      const res = await fetch('https://jban199.github.io/my-app/version.json'); // change this to your real URL
-      const data = await res.json();
-
-      if (currentVersion !== data.latestVersion) {
-        document.getElementById('ts-current-version').textContent = currentVersion;
-        document.getElementById('ts-latest-version').textContent = data.latestVersion;
-        document.getElementById('ts-changelog').textContent = data.changelog || 'No changelog provided.';
-        document.getElementById('ts-apk-download').href = data.apkUrl || '#';
-        document.getElementById('ts-update-section').style.display = 'block';
-      }
-    } catch (err) {
-      console.error('Update check failed:', err);
-    }
-  }
-
-  window.addEventListener('DOMContentLoaded', ts_checkForUpdate);
-</script>
-
-
-
 	<div class="home-widget-row">
 		<!-- Widget: Date & Time -->
 		<div id="home-widget-datetime" class="">
