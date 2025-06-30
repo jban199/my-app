@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TKA - Phonebook-Add</title>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <meta name="theme-color" content="#1A1A1A">
+
+    <!-- Link to the stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+
+<style>
+#pb-add {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	background: var(--bg1);
+	display: flex;
+	flex-direction: column;
+	z-index: 9999;
+}
+
+.pb-add-header {
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	align-items: center;
+	padding: 50px 10px 10px 10px;
+	box-shadow: 0px 2px 10px var(--shadow1);
+	font-size: 20px;
+	font-weight: bold;
+	color: var(--font1);
+}
+
+#pb-add-back-btn {
+	height: 45px;
+	width: 45px;
+	border: none;
+	background: none;
+	
+}
+
+#pb-add-back-btn svg {
+	height: 32px;
+	width: 32px;
+	fill: var(--accent1)
+}
+
+.pb-add-body {
+	display: flex;
+	flex-direction: column;
+	align-items: top;
+	padding: 50px 20px;
+}
+
+.pb-add-body label {
+	color: var(--font2);
+	margin-bottom: 5px;
+}
+
+.pb-add-body input {
+	border-radius: 10px;
+    padding: 20px 10px;
+    background: var(--bg2);
+    border: none;
+	margin-bottom: 30px;
+	color: var(--font1);
+}
+
+.pb-add-footer {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	align-items: center;
+	justify-content: end;
+	padding: 20px 10px;
+	position: fixed;
+    bottom: 0px;
+    right: 0px;
+}
+
+#pb-add-cancel-btn {
+	border-radius: 30px;
+    background: var(--bg1);
+    border: none;
+    padding: 10px 20px;
+    color: var(--accent1);
+}
+
+#pb-add-save-btn {
+	border-radius: 30px;
+    background: var(--accent1);
+    border: none;
+    padding: 10px 20px;
+    color: var(--font1);
+}
+</style>
+</head>
+<body>
+
+
+<!-- ///////////////// -->
+<!-- Add Number Modal -->
+<!-- ///////////////// -->
+<section id="pb-add">
+	<div class="pb-add-header">
+		<button id="pb-add-back-btn" onclick="closeAddModal()">
+			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z"/>
+			</svg>
+		</button>
+		Add Contact
+	</div>
+	<div class="pb-add-body">
+		
+		<label for="pb-add-name">Name</label>
+		<input type="text" id="pb-add-name" placeholder="John Doe">
+		
+		<label for="pb-add-description">Description (optional)</label>
+		<input type="text" id="pb-add-description" placeholder="Office number, Tollfree">
+		
+		<label for="pb-add-number">Number (include Area Code)</label>
+		<input type="tel" id="pb-add-number" pattern="[0-9]{2}-[0-9]{4}-[0-9]{3}-[0-9]{3}" placeholder="+91 9876 543 210">
+		
+	</div>
+	<div class="pb-add-footer">
+		<button id="pb-add-cancel-btn" onclick="closeAddModal()">Cancel</button>
+		<button id="pb-add-save-btn">Save</button>
+	</div>
+
+
+<!-- Include config first -->
+<script src="dbConfig.js"></script>
+<script>
+function closeAddModal() {
+	location.replace('phonebook.html'); // full reload
+  }
+  
+// Link Management Module
+let currentDb;
+const currentDbName = window.ts_DB_NAME;
+const currentStoreName = "CustomNumbers";
+const currentDbVersion = window.ts_DB_VERSION;
+let currentEditingId = null;
+
+const webOpenRequest = indexedDB.open(currentDbName, currentDbVersion);
+
+webOpenRequest.onupgradeneeded = (e) => {
+  currentDb = e.target.result;
+  const objectStore = currentDb.createObjectStore(currentStoreName, { 
+    keyPath: "id", 
+    autoIncrement: true 
+  });
+  
+  objectStore.createIndex("name", "name", { unique: false });
+  objectStore.createIndex("description", "description", { unique: false });
+  objectStore.createIndex("number", "number", { unique: false });
+  objectStore.createIndex("position", "position", { unique: false });
+};
+
+webOpenRequest.onsuccess = (e) => {
+  currentDb = e.target.result;
+};
+
+webOpenRequest.onerror = (e) => {
+  console.error("Error opening IndexedDB", e);
+  showTakSnackbar("Error opening database");
+};
+
+// Save link function
+function saveLink() {
+  const name = document.getElementById("pb-add-name").value.trim();
+  const number = document.getElementById("pb-add-number").value.trim();
+  const description = document.getElementById("pb-add-description").value.trim();
+
+  if (!name || !number) {
+    showTakSnackbar("Name and Number are required");
+    return;
+  }
+
+
+  const transaction = currentDb.transaction([currentStoreName], "readwrite");
+  const store = transaction.objectStore(currentStoreName);
+
+  // Get current count to set position (for future reordering)
+  const countRequest = store.count();
+  
+  countRequest.onsuccess = () => {
+    const linkData = { 
+      name, 
+      description,
+      number,
+      position: countRequest.result // This will be the next available position
+    };
+
+    if (currentEditingId !== null) {
+      // For editing, keep the same position
+      linkData.id = currentEditingId;
+      store.put(linkData);
+      currentEditingId = null;
+      showTakSnackbar("Number updated");
+    } else {
+      store.add(linkData);
+      showTakSnackbar("Number saved");
+    }
+
+    transaction.oncomplete = () => {
+      closeAddModal();
+      clearForm();
+
+    };
+
+    transaction.onerror = (e) => {
+      console.error("Error saving number", e);
+      showTakSnackbar("Error saving number");
+    };
+  };
+}
+
+
+// Clear the form
+function clearForm() {
+  document.getElementById("pb-add-name").value = "";
+  document.getElementById("pb-add-number").value = "";
+  document.getElementById("pb-add-description").value = "";
+}
+
+// Initialize the save button
+document.addEventListener('DOMContentLoaded', () => {
+  const saveBtn = document.getElementById("pb-add-save-btn");
+  if (saveBtn) {
+    saveBtn.addEventListener('click', saveLink);
+  }
+});
+
+// Modified openAddModal function to handle editing
+function openAddModal(linkData = null) {
+  const modal = document.getElementById('pb-add');
+  if (modal) {
+    if (linkData) {
+      // Editing existing link
+      currentEditingId = linkData.id;
+      document.getElementById("pb-add-name").value = linkData.name;
+      document.getElementById("pb-add-number").value = linkData.number;
+      document.getElementById("pb-add-description").value = linkData.description || "";
+    } else {
+      // Adding new link
+      currentEditingId = null;
+      clearForm();
+    }
+    modal.style.display = 'block';
+  }
+}
+	
+</script>
+</section>
+
+
+
+
+
+<!-- Snackbar (hidden initially) -->
+	<div id="tak-snackbar" class="tak-snackbar">Welcome!</div>
+
+<script>
+// Snackbar function
+function showTakSnackbar(message = "Welcome!") {
+  const snackbar = document.getElementById("tak-snackbar");
+  snackbar.textContent = message;
+  snackbar.style.display = "block";
+  snackbar.style.opacity = "1";
+
+  setTimeout(() => {
+    snackbar.style.opacity = "0";
+    setTimeout(() => {
+      snackbar.style.display = "none";
+    }, 300);
+  }, 2000);
+}
+</script>
+
+
+
+
+<!-- ///////////////// -->
+<!-- User Selected Accent Color -->
+<!-- ///////////////// -->
+<style id="theme-accent-style">
+  :root {
+	--accent1: #FD7E14; /* Default fallback accent */
+  }
+</style>
+<script>
+	(function theme_applyAccentFromStorage() {
+	const savedAccent = localStorage.getItem('theme_accent');
+	const accentStyle = document.getElementById('theme-accent-style');
+
+	if (savedAccent && accentStyle) {
+	  accentStyle.textContent = `:root { --accent1: ${savedAccent}; }`;
+	}
+	})();
+</script>
+
+
+<!-- ///////////////// -->
+<!-- Set Theme - Based on Local Storage -->
+<!-- ///////////////// -->
+<script>
+  // Wait for the DOM to be fully loaded before running the script
+  document.addEventListener("DOMContentLoaded", function() {
+    const themeLink = document.createElement("link");
+    themeLink.rel = "stylesheet";
+    themeLink.id = "theme-link";
+    
+    // Check if a theme preference is saved in localStorage
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
+    } else if (savedTheme === "light") {
+      themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
+    } else {
+      themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
+      localStorage.setItem('theme', 'dark');  // Save preference
+    }
+
+    // Append the theme <link> tag to the <head> of the document
+    document.head.appendChild(themeLink);
+
+    // Initialize icons based on saved theme preference
+    const darkIcon = document.getElementById('dark-icon');
+    const lightIcon = document.getElementById('light-icon');
+
+    if (savedTheme === "dark") {
+      lightIcon.style.display = 'none';
+      darkIcon.style.display = 'block';
+    } else {
+      lightIcon.style.display = 'block';
+      darkIcon.style.display = 'none';
+    }
+
+    // Toggle theme when button is clicked
+    const themeToggleButton = document.getElementById('theme-toggle');
+
+    themeToggleButton.addEventListener('click', () => {
+      const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
+      if (currentTheme === 'dark') {
+        themeLink.href = 'light-theme.css';  // Switch to light theme
+        localStorage.setItem('theme', 'light');  // Save preference
+        lightIcon.style.display = 'block';  // Show light icon
+        darkIcon.style.display = 'none';   // Hide dark icon
+      } else {
+        themeLink.href = 'dark-theme.css';   // Switch to dark theme
+        localStorage.setItem('theme', 'dark');  // Save preference
+        lightIcon.style.display = 'none';   // Hide light icon
+        darkIcon.style.display = 'block';   // Show dark icon
+      }
+    });
+  });
+</script>
+
+<!-- ///////////////// -->
+<!-- Prevent Right Click Context Menu -->
+<!-- ///////////////// -->
+<script>
+  document.addEventListener('contextmenu', function(event) {
+    const target = event.target;
+
+    // Allow default context menu on input, textarea, or contenteditable elements
+    if (
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.isContentEditable
+    ) {
+      return; // allow context menu
+    }
+
+    event.preventDefault(); // otherwise, block it
+  });
+</script>
+
+
+<!-- ///////////////// -->
+<!-- Capacitor Functions -->
+<!-- ///////////////// -->
+<script type="module" src="capacitorFunctions.js"></script>
+
+
+</body>
+</html>

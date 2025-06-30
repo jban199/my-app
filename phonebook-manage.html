@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TKA - Phonebook-Manage</title>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <meta name="theme-color" content="#1A1A1A">
+
+    <!-- Link to the stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+<style>
+#pb-mgmt-modal {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	background: var(--bg1);
+	display: flex;
+	flex-direction: column;
+	z-index: 9999;
+}
+
+.pb-mgmt-modal-header {
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	align-items: center;
+	padding: 50px 10px 10px 10px;
+	box-shadow: 0px 2px 10px var(--shadow1);
+	font-size: 20px;
+	font-weight: bold;
+	color: var(--font1);
+}
+
+#pb-mgmt-modal-back-btn {
+	height: 45px;
+	width: 45px;
+	border: none;
+	background: none;
+	
+}
+
+#pb-mgmt-modal-back-btn svg {
+	height: 32px;
+	width: 32px;
+	fill: var(--accent1)
+}
+
+.pb-mgmt-modal-body {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	align-items: top;
+	padding: 350px 10px 250px 10px;
+	overflow: scroll;
+}
+
+.pb-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+	background: var(--bg3);
+    border-radius: 10px;
+    max-width: 400px;
+	position: relative;
+}
+
+.pb-card::before {
+	content: "";
+	position: absolute;
+	inset: 0; /* shorthand for top/right/bottom/left: 0 */
+	background-image: url('images/icon-512x512.png');
+	background-repeat: repeat;
+	background-size: auto;
+	opacity: 0.2;
+	filter: grayscale(100%);
+	border-radius: 12px;
+	pointer-events: none; /* allows clicks to pass through */
+	z-index: 0;
+}
+
+.pb-card > * {
+	position: relative;
+	z-index: 1;
+}
+
+.pb-card-photo {
+	height: 32px;
+	width: 32px;
+}
+
+.pb-card-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+	width: 220px;
+}
+
+.pb-card-name {
+    margin: 0;
+    padding: 0;
+	color: var(--font1);
+}
+
+.pb-card-desc {
+    margin: 0;
+    padding: 0;
+	color: var(--font2);
+	font-size: 12px;
+}
+
+.pb-card-phone {
+    margin: 0;
+    padding: 0;
+	color: var(--font2);
+}
+
+.pb-mgmt-list-more-btn {
+	background: none;
+	border: none;
+}
+
+
+.pb-mgmt-list-more-btn svg {
+	fill: var(--accent1);
+}
+
+.pb-mgmt-options-menu {
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    background-color: var(--bg2);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px var(--shadow1);
+    z-index: 2000;
+    padding: 5px 0;
+    min-width: 150px;
+}
+
+.pb-mgmt-options-menu button {
+	display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 15px;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--font1);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.pb-mgmt-option-list-btn-icon {
+	width: 18px;
+    height: 18px;
+    fill: var(--accent1);
+    flex-shrink: 0;
+}
+
+
+/* Confirm Delete Dialog Overlay */
+.pb-mgmt-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000d0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+/* Confirm Dialog Box */
+.pb-mgmt-dialog-box {
+  background-color: var(--bg1);
+  color: var(--font1);
+  padding: 20px 30px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 8px var(--shadow1);
+  max-width: 300px;
+  text-align: center;
+  width: 200px;
+}
+
+.pb-mgmt-dialog-box p {
+	color: var(--font1);
+}
+
+/* Confirm Dialog Buttons */
+.pb-mgmt-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.pb-mgmt-dialog-actions button {
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0px 2px 3px var(--shadow2);
+  transition: background-color 0.2s ease;
+}
+
+#pb-mgmt-dialog-skip {
+  background-color: var(--bg2);
+  color: var(--font1);
+}
+
+
+#pb-mgmt-dialog-continue {
+  background-color: var(--accent1);
+  color: var(--bg1);
+}
+
+</style>
+</head>
+<body>
+
+
+
+<!-- ///////////////// -->
+<!-- Manage Links Modal -->
+<!-- ///////////////// -->
+<section id="pb-mgmt-modal">
+	<div class="pb-mgmt-modal-header">
+		<button id="pb-mgmt-modal-back-btn" onclick="closeManage()">
+			<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+				<path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z"/>
+			</svg>
+		</button>
+		Manage Contacts
+	</div>
+	
+
+	<div class="pb-mgmt-modal-body" id="pbMgmtList">
+	  <!-- Dynamic items inserted here -->
+	</div>
+	
+	
+	<!-- ///////////////// -->
+	<!-- Confirm Delete Dialog -->
+	<!-- ///////////////// -->
+	<div id="pb-mgmt-confirm-dialog" class="pb-mgmt-dialog" style="display: none;">
+		<div class="pb-mgmt-dialog-box">
+			<p>Are you sure you want to delete this site?</p>
+			<div class="pb-mgmt-dialog-actions">
+				<button id="pb-mgmt-dialog-skip">Skip</button>
+				<button id="pb-mgmt-dialog-continue">Continue</button>
+			</div>
+		</div>
+	</div>
+
+	
+<!-- Include config first -->
+<script src="dbConfig.js"></script>	
+<script>
+function closeManage() {
+  location.replace('phonebook.html'); // full reload
+}
+
+let currentDb;
+const currentDbName = window.ts_DB_NAME;
+const currentStoreName = "CustomNumbers";
+const currentDbVersion = window.ts_DB_VERSION;
+let sitePendingDeleteId = null;
+
+const currentDbRequest = indexedDB.open(currentDbName, currentDbVersion);
+
+currentDbRequest.onsuccess = () => {
+  currentDb = currentDbRequest.result;
+  ts_render();
+};
+
+function ts_render() {
+  const tx = currentDb.transaction(currentStoreName, "readonly");
+  const store = tx.objectStore(currentStoreName);
+
+  const request = store.getAll();
+  request.onsuccess = () => {
+    const sites = request.result.sort((a, b) => (a.position || 0) - (b.position || 0));
+    const list = document.getElementById("pbMgmtList");
+    list.innerHTML = "";
+
+    sites.forEach(site => {
+      const item = document.createElement("div");
+      item.className = "pb-card";
+
+      item.innerHTML = `
+			<img class="pb-card-photo" src="images/phonebook/placeholder.svg">
+			<div class="pb-card-info">
+				<p class="pb-card-name">${site.name}</p>
+				<p class="pb-card-desc">${site.description}</p>
+				<p class="pb-card-phone">${site.number}</p>
+			</div>
+		
+		
+        <button class="pb-mgmt-list-more-btn" aria-label="More options">
+          <svg class="pb-mgmt-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px">
+            <path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/>
+          </svg>
+        </button>
+        <div class="pb-mgmt-options-menu" style="display:none;">
+
+			<button onclick="ts_edit(${site.id})">
+				<svg class="pb-mgmt-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M200-200h57l391-391-57-57-391 391v57Zm-40 80q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm600-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
+				</svg>
+				Edit
+			</button>
+			
+			<button onclick="ts_delete(${site.id})">
+				<svg class="pb-mgmt-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M280-120q-33 0-56.5-23.5T200-200v-520q-17 0-28.5-11.5T160-760q0-17 11.5-28.5T200-800h160q0-17 11.5-28.5T400-840h160q17 0 28.5 11.5T600-800h160q17 0 28.5 11.5T800-760q0 17-11.5 28.5T760-720v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM400-280q17 0 28.5-11.5T440-320v-280q0-17-11.5-28.5T400-640q-17 0-28.5 11.5T360-600v280q0 17 11.5 28.5T400-280Zm160 0q17 0 28.5-11.5T600-320v-280q0-17-11.5-28.5T560-640q-17 0-28.5 11.5T520-600v280q0 17 11.5 28.5T560-280ZM280-720v520-520Z"/>
+				</svg>
+				Delete
+			</button>
+			
+			<button onclick="ts_share('${site.url}')">
+				<svg class="pb-mgmt-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm480-280q17 0 28.5-11.5T720-760q0-17-11.5-28.5T680-800q-17 0-28.5 11.5T640-760q0 17 11.5 28.5T680-720Zm0 520ZM200-480Zm480-280Z">
+				</svg>
+				Share
+			</button>
+			
+			<button onclick="ts_copy('${site.number}')">
+				<svg class="pb-mgmt-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-520q0-17 11.5-28.5T160-720q17 0 28.5 11.5T200-680v520h400q17 0 28.5 11.5T640-120q0 17-11.5 28.5T600-80H200Zm160-240v-480 480Z">
+				</svg>
+				Copy Number
+			</button>
+			
+			<button onclick="ts_move(${site.id}, 'up')">
+				<svg class="pb-mgmt-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M800-120H160q-17 0-28.5-11.5T120-160q0-17 11.5-28.5T160-200h640q17 0 28.5 11.5T840-160q0 17-11.5 28.5T800-120ZM440-527l-36 36q-11 11-27.5 11T348-492q-11-11-11-28t11-28l104-104q12-12 28-12t28 12l104 104q11 11 11.5 27.5T612-492q-11 11-28 11t-28-11l-36-35v207q0 17-11.5 28.5T480-280q-17 0-28.5-11.5T440-320v-207Zm360-233H160q-17 0-28.5-11.5T120-800q0-17 11.5-28.5T160-840h640q17 0 28.5 11.5T840-800q0 17-11.5 28.5T800-760Z"/>
+				</svg>
+				Move up
+			</button>
+			
+			<button onclick="ts_move(${site.id}, 'down')">
+				<svg class="pb-mgmt-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M160-760q-17 0-28.5-11.5T120-800q0-17 11.5-28.5T160-840h640q17 0 28.5 11.5T840-800q0 17-11.5 28.5T800-760H160Zm292 452L348-412q-11-11-11.5-27.5T348-468q11-11 28-11t28 11l36 35v-207q0-17 11.5-28.5T480-680q17 0 28.5 11.5T520-640v207l36-36q11-11 27.5-11t28.5 12q11 11 11 28t-11 28L508-308q-12 12-28 12t-28-12ZM160-120q-17 0-28.5-11.5T120-160q0-17 11.5-28.5T160-200h640q17 0 28.5 11.5T840-160q0 17-11.5 28.5T800-120H160Z"/>
+				</svg>
+				Move down
+			</button>
+        </div>
+      `;
+
+      // Toggle menu
+      const menuBtn = item.querySelector(".pb-mgmt-list-more-btn");
+      const menu = item.querySelector(".pb-mgmt-options-menu");
+
+      menuBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        document.querySelectorAll(".pb-mgmt-options-menu").forEach(m => m.style.display = "none");
+        menu.style.display = "block";
+      });
+
+      document.addEventListener("click", () => menu.style.display = "none");
+
+      list.appendChild(item);
+    });
+  };
+}
+
+function ts_edit(id) {
+  // Redirect to the edit page, passing the ID via URL
+  window.location.href = `phonebook-edit.html?id=${id}`;
+}
+
+function ts_delete(id) {
+  sitePendingDeleteId = id;
+  document.getElementById("pb-mgmt-confirm-dialog").style.display = "flex";
+}
+
+document.getElementById("pb-mgmt-dialog-skip").onclick = () => {
+  sitePendingDeleteId = null;
+  document.getElementById("pb-mgmt-confirm-dialog").style.display = "none";
+};
+
+document.getElementById("pb-mgmt-dialog-continue").onclick = () => {
+  if (sitePendingDeleteId !== null) {
+    const tx = currentDb.transaction(currentStoreName, "readwrite");
+    const store = tx.objectStore(currentStoreName);
+    store.delete(sitePendingDeleteId);
+    tx.oncomplete = () => ts_render();
+  }
+  sitePendingDeleteId = null;
+  document.getElementById("pb-mgmt-confirm-dialog").style.display = "none";
+  showTakSnackbar("Contact deleted");
+};
+
+function ts_share(url) {
+  if (navigator.share) {
+    navigator.share({ title: "Shared Link", url }).catch(console.error);
+  } else {
+    showTakSnackbar("Share not supported.");
+  }
+}
+
+function ts_copy(number) {
+  navigator.clipboard.writeText(number)
+    .then(() => showTakSnackbar("Number copied"))
+    .catch(() => showTakSnackbar("Failed to copy"));
+}
+
+function ts_move(id, direction) {
+  const tx = currentDb.transaction(currentStoreName, "readwrite");
+  const store = tx.objectStore(currentStoreName);
+  store.getAll().onsuccess = (e) => {
+    const items = e.target.result.sort((a, b) => (a.position || 0) - (b.position || 0));
+    const index = items.findIndex(item => item.id === id);
+    const swapIndex = direction === "up" ? index - 1 : index + 1;
+
+    if (swapIndex < 0 || swapIndex >= items.length) return;
+
+    [items[index].position, items[swapIndex].position] = [items[swapIndex].position, items[index].position];
+    items.forEach(item => store.put(item));
+    tx.oncomplete = () => ts_render();
+  };
+}
+
+</script>
+
+</section>
+
+
+
+
+
+
+<!-- Snackbar (hidden initially) -->
+	<div id="tak-snackbar" class="tak-snackbar">Welcome!</div>
+
+<script>
+// Snackbar function
+function showTakSnackbar(message = "Welcome!") {
+  const snackbar = document.getElementById("tak-snackbar");
+  snackbar.textContent = message;
+  snackbar.style.display = "block";
+  snackbar.style.opacity = "1";
+
+  setTimeout(() => {
+    snackbar.style.opacity = "0";
+    setTimeout(() => {
+      snackbar.style.display = "none";
+    }, 300);
+  }, 2000);
+}
+</script>
+
+
+<!-- ///////////////// -->
+<!-- User Selected Accent Color -->
+<!-- ///////////////// -->
+<style id="theme-accent-style">
+  :root {
+	--accent1: #FD7E14; /* Default fallback accent */
+  }
+</style>
+<script>
+	(function theme_applyAccentFromStorage() {
+	const savedAccent = localStorage.getItem('theme_accent');
+	const accentStyle = document.getElementById('theme-accent-style');
+
+	if (savedAccent && accentStyle) {
+	  accentStyle.textContent = `:root { --accent1: ${savedAccent}; }`;
+	}
+	})();
+</script>
+
+
+<!-- ///////////////// -->
+<!-- Set Theme - Based on Local Storage -->
+<!-- ///////////////// -->
+<script>
+  // Wait for the DOM to be fully loaded before running the script
+  document.addEventListener("DOMContentLoaded", function() {
+    const themeLink = document.createElement("link");
+    themeLink.rel = "stylesheet";
+    themeLink.id = "theme-link";
+    
+    // Check if a theme preference is saved in localStorage
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
+    } else if (savedTheme === "light") {
+      themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
+    } else {
+      themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
+      localStorage.setItem('theme', 'dark');  // Save preference
+    }
+
+    // Append the theme <link> tag to the <head> of the document
+    document.head.appendChild(themeLink);
+
+    // Initialize icons based on saved theme preference
+    const darkIcon = document.getElementById('dark-icon');
+    const lightIcon = document.getElementById('light-icon');
+
+    if (savedTheme === "dark") {
+      lightIcon.style.display = 'none';
+      darkIcon.style.display = 'block';
+    } else {
+      lightIcon.style.display = 'block';
+      darkIcon.style.display = 'none';
+    }
+
+    // Toggle theme when button is clicked
+    const themeToggleButton = document.getElementById('theme-toggle');
+
+    themeToggleButton.addEventListener('click', () => {
+      const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
+      if (currentTheme === 'dark') {
+        themeLink.href = 'light-theme.css';  // Switch to light theme
+        localStorage.setItem('theme', 'light');  // Save preference
+        lightIcon.style.display = 'block';  // Show light icon
+        darkIcon.style.display = 'none';   // Hide dark icon
+      } else {
+        themeLink.href = 'dark-theme.css';   // Switch to dark theme
+        localStorage.setItem('theme', 'dark');  // Save preference
+        lightIcon.style.display = 'none';   // Hide light icon
+        darkIcon.style.display = 'block';   // Show dark icon
+      }
+    });
+  });
+</script>
+
+<!-- ///////////////// -->
+<!-- Prevent Right Click Context Menu -->
+<!-- ///////////////// -->
+<script>
+  document.addEventListener('contextmenu', function(event) {
+    const target = event.target;
+
+    // Allow default context menu on input, textarea, or contenteditable elements
+    if (
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.isContentEditable
+    ) {
+      return; // allow context menu
+    }
+
+    event.preventDefault(); // otherwise, block it
+  });
+</script>
+
+
+<!-- ///////////////// -->
+<!-- Capacitor Functions -->
+<!-- ///////////////// -->
+<script type="module" src="capacitorFunctions.js"></script>
+
+
+</body>
+</html>
