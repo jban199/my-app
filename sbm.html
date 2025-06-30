@@ -1,6 +1,133 @@
 
 <!-- SBM Menu -->
 <section id="SBM-section" style="transform: translateX(0px);">
+
+<style>
+#SBM-Icon {
+	fill: var(--accent1);
+    background-image: linear-gradient(0deg, var(--gradient1), var(--gradient2));
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    width: 35px;
+    position: fixed;
+	box-shadow: 0px 0px 5px var(--shadow1);
+	box-sizing: border-box;
+    bottom: 20px;
+	left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+#closeSBM {
+    background-color: var(--bg3);
+	background-image: linear-gradient(0deg, var(--gradient1), var(--gradient2));
+	border: none;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#closeSBM svg {
+	fill: var(--accent1);
+}
+
+
+#SBM-section {
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	width: 95%;
+	background-image: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+	border-radius: 20px 20px 0px 0px;
+	-webkit-backdrop-filter: blur(20px);
+	backdrop-filter: blur(20px);
+	box-shadow: 0px -2px 25px var(--shadow1);
+	transform: translateY(100%);
+	transition: transform 0.3s ease-in-out;
+	font-weight: normal;
+	padding: 10px 10px 75px 10px;
+	z-index: 9999;
+}
+
+
+.SBM-options {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 10px;
+	padding: 10px 0px;
+}
+
+.SBM-toggle {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 10px;
+	padding: 10px 0px;
+}
+
+.SBM-pages {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 10px;
+	padding: 10px 0px;
+}
+
+
+.SBM-icons {
+	width: 24px;
+	height: 24px;
+	fill: var(--accent1);
+	margin: 5px;
+}
+
+.SBM-OPT-button {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	text-decoration: none;
+	color: var(--font1);
+	font-size: 12px;
+	background: rgba(0,0,0,0.5);
+	padding: 10px;
+	border-radius: 20px;
+	margin-bottom: 5px;
+}
+
+
+.SBM-PGS-button {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	color: var(--font1);
+	font-size: 10px;
+	background: rgba(0,0,0,0.5);
+	padding: 5px 0px;
+	border-radius: 8px;
+	margin-bottom: 5px;
+}
+
+
+.divider {
+	width: 100%;
+	height: 1px;
+	background: #ffffff80;
+}
+</style>
 	<div class="SBM-options">
 		<a class="SBM-OPT-button" href="#">
 			<svg class="SBM-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
