@@ -942,6 +942,22 @@ p {
 	fill: var(--font1);
 }
 
+
+.pb-custom-actions {
+	display: flex;
+	flex-direction: row;
+	gap: 80px;
+}
+
+.pb-custom-actions button {
+	border-radius: 30px;
+    background: var(--bg2);
+    border: none;
+    padding: 10px 20px;
+    color: var(--accent1);
+    margin-bottom: 20px;
+}
+
 .pb-card {
     display: flex;
     align-items: center;
