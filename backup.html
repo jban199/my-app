@@ -92,49 +92,49 @@
         stores: [
             { name: "CustomSites", keyPath: "id", autoIncrement: true },
             { name: "UserNotes", keyPath: "id", autoIncrement: true },
-            { name: "UserDocs", keyPath: "id", autoIncrement: true }
+            { name: "UserDocs", keyPath: "id", autoIncrement: true },
+			{ name: "CustomNumbers", keyPath: "id", autoIncrement: true }
         ]
     };
 
     // ======================
     // GLOBAL VARIABLES
     // ======================
-    let db;
+    let dbReadyPromise;
 
     // ======================
     // CORE FUNCTIONS
     // ======================
 
     function initDB() {
-        const request = indexedDB.open(DB_CONFIG.name, DB_CONFIG.version);
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(DB_CONFIG.name, DB_CONFIG.version);
 
-        request.onupgradeneeded = function(e) {
-            db = e.target.result;
-            DB_CONFIG.stores.forEach(store => {
-                if (!db.objectStoreNames.contains(store.name)) {
-                    db.createObjectStore(store.name, { 
-                        keyPath: store.keyPath, 
-                        autoIncrement: store.autoIncrement 
-                    });
-                }
-            });
-        };
+            request.onupgradeneeded = function(e) {
+                const db = e.target.result;
+                DB_CONFIG.stores.forEach(store => {
+                    if (!db.objectStoreNames.contains(store.name)) {
+                        db.createObjectStore(store.name, {
+                            keyPath: store.keyPath,
+                            autoIncrement: store.autoIncrement
+                        });
+                    }
+                });
+            };
 
-        request.onsuccess = function(e) {
-            db = e.target.result;
-        };
-        
-        request.onerror = function(e) {
-            showTakSnackbar("Database initialization failed");
-        };
+            request.onsuccess = function(e) {
+                resolve(e.target.result);
+            };
+
+            request.onerror = function(e) {
+                showTakSnackbar("Database initialization failed");
+                reject(e);
+            };
+        });
     }
 
-    function generateBackup() {
-        if (!db) {
-            showTakSnackbar("Database not ready");
-            return;
-        }
-
+    async function generateBackup() {
+        const db = await dbReadyPromise;
         const output = {};
         const storeNames = DB_CONFIG.stores.map(store => store.name);
         const tx = db.transaction(storeNames, "readonly");
@@ -153,21 +153,17 @@
             });
         });
 
-        Promise.all(storePromises).then(() => {
-            const backupOutput = document.getElementById("backupOutput");
-            if (backupOutput) {
-                backupOutput.value = JSON.stringify(output, null, 2);
-                showTakSnackbar("Backup generated successfully");
-            }
-        });
+        await Promise.all(storePromises);
+
+        const backupOutput = document.getElementById("backupOutput");
+        if (backupOutput) {
+            backupOutput.value = JSON.stringify(output, null, 2);
+            showTakSnackbar("Backup generated successfully");
+        }
     }
 
-    function validateRestore() {
-        if (!db) {
-            showTakSnackbar("Database not ready");
-            return;
-        }
-
+    async function validateRestore() {
+        const db = await dbReadyPromise;
         const restoreInput = document.getElementById("restoreInput");
         if (!restoreInput || !restoreInput.value.trim()) {
             showTakSnackbar("Please paste backup data first");
@@ -177,23 +173,14 @@
         let parsed;
         try {
             parsed = JSON.parse(restoreInput.value);
-            
-            const validStores = DB_CONFIG.stores.filter(
-                store => parsed.hasOwnProperty(store.name)
-            );
-            
-            if (validStores.length === 0) {
-                throw new Error("Invalid backup format");
-            }
+            const validStores = DB_CONFIG.stores.filter(store => parsed.hasOwnProperty(store.name));
+            if (validStores.length === 0) throw new Error("Invalid backup format");
         } catch (e) {
             showTakSnackbar("Invalid backup data");
             return;
         }
 
-        const storesToProcess = DB_CONFIG.stores.filter(
-            store => parsed.hasOwnProperty(store.name)
-        );
-        
+        const storesToProcess = DB_CONFIG.stores.filter(store => parsed.hasOwnProperty(store.name));
         const storeNames = storesToProcess.map(store => store.name);
         const tx = db.transaction(storeNames, "readwrite");
 
@@ -202,9 +189,8 @@
 
         storesToProcess.forEach(store => {
             const objectStore = tx.objectStore(store.name);
-            
             const clearRequest = objectStore.clear();
-            
+
             clearRequest.onsuccess = () => {
                 if (Array.isArray(parsed[store.name])) {
                     parsed[store.name].forEach(item => {
@@ -214,7 +200,7 @@
                     });
                 }
             };
-            
+
             clearRequest.onerror = () => errorCount++;
         });
 
@@ -249,7 +235,7 @@
             showTakSnackbar("Failed to copy backup");
         });
     }
-    
+
     function clearBackup() {
         const backupOutput = document.getElementById("backupOutput");
         if (backupOutput) {
@@ -257,7 +243,7 @@
             showTakSnackbar("Backup cleared");
         }
     }
-    
+
     function pasteRestore() {
         navigator.clipboard.readText().then(text => {
             const restoreInput = document.getElementById("restoreInput");
@@ -269,7 +255,7 @@
             showTakSnackbar("Failed to paste backup");
         });
     }
-    
+
     function clearRestore() {
         const restoreInput = document.getElementById("restoreInput");
         if (restoreInput) {
@@ -282,9 +268,8 @@
     // INITIALIZATION
     // ======================
     window.addEventListener("load", function() {
-        initDB();
-        
-        // Set up button event listeners
+        dbReadyPromise = initDB();
+
         document.getElementById("generateBackupBtn")?.addEventListener("click", generateBackup);
         document.getElementById("copyBackupBtn")?.addEventListener("click", copyBackup);
         document.getElementById("clearBackupBtn")?.addEventListener("click", clearBackup);
@@ -292,8 +277,8 @@
         document.getElementById("pasteRestoreBtn")?.addEventListener("click", pasteRestore);
         document.getElementById("clearRestoreBtn")?.addEventListener("click", clearRestore);
     });
-
 </script>
+
 
 
 
