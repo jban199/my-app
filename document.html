@@ -45,7 +45,9 @@
 <!-- Document List Section -->
 <!-- ////////////////////// -->
 <section id="doc-list-section">
-	<center><button class="doc-add-btn" onclick="window.location.href='document-add.html';">Add new Document</button></center>
+	<div class="doc-add-btn-container">
+		<button class="doc-add-btn" onclick="window.location.href='document-add.html';">Add new Document</button>
+	</div>
   <div class="doc-list-container" id="doc-list-container"></div>
 
   <!-- Confirm Delete Dialog (hidden initially) -->
@@ -65,6 +67,20 @@
       max-width: 700px;
       margin: auto;
     }
+	
+	.doc-add-btn-container {
+		position: fixed;
+		width: 100%;
+		top: 110px;
+		left: 0px;
+		background: var(--bg1);
+		padding: 20px 0px 0px 0px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 2;
+		box-shadow: 0px 10px 20px var(--bg1);
+	}
 	
 	.doc-add-btn {
 		border-radius: 30px;
