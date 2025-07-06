@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Red Fort",
+    "areaName": "Delhi",
+    "lat": 28.6562,
+    "long": 77.2410
+  },
+  {
+    "name": "Gateway of India",
+    "areaName": "Mumbai",
+    "lat": 18.921984,
+    "long": 72.834654
+  },
+  {
+    "name": "Charminar",
+    "areaName": "Hyderabad",
+    "lat": 17.3616,
+    "long": 78.4747
+  }
+]
