@@ -706,16 +706,33 @@
 	<!-- ///////////////////// -->
 	<!-- ///////////////////// -->
 
+
+<!-- ///////////////////// -->
+<!-- App Update Availability -->
+<!-- ///////////////////// -->
 <section>
-	<style>
-		.home-appUpdateFrame {
-			height: 250px;
-			width: 100%;
-			border: none;
-		}
-	</style>
-	<iframe class="home-appUpdateFrame" src="appUpdate.html" ></iframe>
+  <style>
+    .home-appUpdateFrame {
+      height: 250px;
+      width: 100%;
+      border: none;
+      display: none; /* Hidden by default */
+    }
+  </style>
+  <iframe id="homeAppUpdateFrame" class="home-appUpdateFrame"></iframe>
+
+  <script>
+    const updateIframe = document.getElementById('homeAppUpdateFrame');
+
+    if (navigator.onLine) {
+      const timestamp = new Date().getTime();
+      updateIframe.src = `appUpdate.html?t=${timestamp}`;
+      updateIframe.style.display = 'block'; // Show iframe if online
+    }
+  </script>
 </section>
+
+
 
 <script>
 const locationBtn = document.getElementById('home-location-permission-btn');
