@@ -41,43 +41,48 @@
 </section>
 	
 
-	<section class="bkup-container">
-		<div class="bkup-container-description">
-			<svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h447q16 0 30.5 6t25.5 17l114 114q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T760-120H200Zm280-120q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM280-560h280q17 0 28.5-11.5T600-600v-80q0-17-11.5-28.5T560-720H280q-17 0-28.5 11.5T240-680v80q0 17 11.5 28.5T280-560Z"/>
-			</svg>
-			Backup
-		</div>
-		<textarea id="backupOutput" class="bkup-Display" placeholder="Your backup data will appear here..."></textarea>
-		<svg class="bkup-Display-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
-		</svg>
-		<p class="bkup-container-userInstruction">Take backup of your current data. Keep it some place safe to that you may restore your current data later on. This app stores your data in the browser itself. They may get deleted when you clear your browser's cache, cookies.</p>
-		<div class="bkup-container-actionBtns">
-			<button id="bkup-actionBtn-generateBtn" class="bkup-container-actionBtns-primary" onclick="generateBackup()">Generate</button>
-			<button id="bkup-actionBtn-copyBtn" class="bkup-container-actionBtns-secondary" onclick="copyBackup()">Copy</button>
-			<button id="bkup-actionBtn-clearBackupBtn" class="bkup-container-actionBtns-secondary" onclick="clearBackup()">Clear</button>
-		</div>
-	</section>
+<section class="bkup-container">
+    <div class="bkup-container-description">
+        <svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+            <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h447q16 0 30.5 6t25.5 17l114 114q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T760-120H200Zm280-120q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM280-560h280q17 0 28.5-11.5T600-600v-80q0-17-11.5-28.5T560-720H280q-17 0-28.5 11.5T240-680v80q0 17 11.5 28.5T280-560Z"/>
+        </svg>
+        Backup
+    </div>
+    <textarea id="backupOutput" class="bkup-Display" placeholder="Your backup data will appear here..."></textarea>
+    <svg class="bkup-Display-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+        <path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
+    </svg>
+    <p class="bkup-container-userInstruction">
+        Take backup of your current data. Keep it some place safe so that you may restore your current data later on. 
+        This app stores your data in the browser itself. They may get deleted when you clear your browser's cache, cookies.
+    </p>
+    <div class="bkup-container-actionBtns">
+        <button id="generateBackupBtn" class="bkup-container-actionBtns-primary">Generate</button>
+        <button id="clearBackupBtn" class="bkup-container-actionBtns-secondary">Clear</button>
+    </div>
+</section>
 
-	<section class="bkup-container">
-		<div class="bkup-container-description">
-			<svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
-			</svg>
-			Restore
-		</div>
-		<textarea id="restoreInput" class="bkup-Display" placeholder="Paste your data here..."></textarea>
-		<svg class="bkup-Display-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
-		</svg>
-		<p class="bkup-container-userInstruction">Take backup of your current data before you Validate. This action will wipe out all your previously stored data.</p>
-		<div class="bkup-container-actionBtns">
-			<button id="bkup-actionBtn-pasteBtn" class="bkup-container-actionBtns-secondary" onclick="pasteRestore()">Paste</button>
-			<button id="bkup-actionBtn-validateBtn" class="bkup-container-actionBtns-primary" onclick="validateRestore()">Validate</button>
-			<button id="bkup-actionBtn-clearRestoreBtn" class="bkup-container-actionBtns-secondary" onclick="clearRestore()">Clear</button>
-		</div>
-	</section>
+<section class="bkup-container">
+    <div class="bkup-container-description">
+        <svg class="bkup-container-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+            <path d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
+        </svg>
+        Restore
+    </div>
+    <textarea id="restoreInput" class="bkup-Display" placeholder="Your restore data will appear here after loading a file..."></textarea>
+    <svg class="bkup-Display-drag-handle-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+        <path d="m480-313 156-155q11-11 27.5-11.5T692-468q11 11 11 28t-11 28L508-228q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-412q-11-11-11.5-27.5T268-468q11-11 28-11t28 11l156 155Zm0-240 156-155q11-11 27.5-11.5T692-708q11 11 11 28t-11 28L508-468q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L268-652q-11-11-11.5-27.5T268-708q11-11 28-11t28 11l156 155Z"></path>
+    </svg>
+    <p class="bkup-container-userInstruction">
+        Take backup of your current data before you Validate. This action will wipe out all your previously stored data.
+    </p>
+    <div class="bkup-container-actionBtns">
+        <input type="file" id="uploadRestoreFile" accept=".txt,.json" class="bkup-container-actionBtns-secondary" />
+        <button id="validateRestoreBtn" class="bkup-container-actionBtns-primary">Validate</button>
+        <button id="clearRestoreBtn" class="bkup-container-actionBtns-secondary">Clear</button>
+    </div>
+</section>
+
 
 
 <!-- Include config first -->
@@ -93,7 +98,7 @@
             { name: "CustomSites", keyPath: "id", autoIncrement: true },
             { name: "UserNotes", keyPath: "id", autoIncrement: true },
             { name: "UserDocs", keyPath: "id", autoIncrement: true },
-			{ name: "CustomNumbers", keyPath: "id", autoIncrement: true }
+            { name: "CustomNumbers", keyPath: "id", autoIncrement: true }
         ]
     };
 
@@ -155,18 +160,38 @@
 
         await Promise.all(storePromises);
 
+        const jsonData = JSON.stringify(output, null, 2);
+
+        // Put data in textarea for reference
         const backupOutput = document.getElementById("backupOutput");
         if (backupOutput) {
-            backupOutput.value = JSON.stringify(output, null, 2);
-            showTakSnackbar("Backup generated successfully");
+            backupOutput.value = jsonData;
         }
+
+        // Generate timestamped filename: backup-YYYY-MM-DD-HH-mm.txt
+        const now = new Date();
+        const pad = (n) => n.toString().padStart(2, "0");
+        const fileName = `backup-${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-${pad(now.getHours())}-${pad(now.getMinutes())}.txt`;
+
+        // Create and trigger download
+        const blob = new Blob([jsonData], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        showTakSnackbar(`Backup downloaded as ${fileName}`);
     }
 
     async function validateRestore() {
         const db = await dbReadyPromise;
         const restoreInput = document.getElementById("restoreInput");
         if (!restoreInput || !restoreInput.value.trim()) {
-            showTakSnackbar("Please paste backup data first");
+            showTakSnackbar("Please load backup file first");
             return;
         }
 
@@ -222,18 +247,27 @@
     // HELPER FUNCTIONS
     // ======================
 
-    function copyBackup() {
-        const backupOutput = document.getElementById("backupOutput");
-        if (!backupOutput || !backupOutput.value.trim()) {
-            showTakSnackbar("No backup data to copy");
+    // UPLOAD backup file
+    function uploadRestoreFile(event) {
+        const file = event.target.files[0];
+        if (!file) {
+            showTakSnackbar("No file selected");
             return;
         }
 
-        navigator.clipboard.writeText(backupOutput.value).then(() => {
-            showTakSnackbar("Backup copied to clipboard");
-        }).catch(() => {
-            showTakSnackbar("Failed to copy backup");
-        });
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const restoreInput = document.getElementById("restoreInput");
+            if (restoreInput) {
+                restoreInput.value = e.target.result;
+                showTakSnackbar("Backup file loaded");
+            }
+        };
+        reader.onerror = () => {
+            showTakSnackbar("Failed to read file");
+        };
+
+        reader.readAsText(file);
     }
 
     function clearBackup() {
@@ -242,18 +276,6 @@
             backupOutput.value = "";
             showTakSnackbar("Backup cleared");
         }
-    }
-
-    function pasteRestore() {
-        navigator.clipboard.readText().then(text => {
-            const restoreInput = document.getElementById("restoreInput");
-            if (restoreInput) {
-                restoreInput.value = text;
-                showTakSnackbar("Backup data pasted");
-            }
-        }).catch(() => {
-            showTakSnackbar("Failed to paste backup");
-        });
     }
 
     function clearRestore() {
@@ -271,13 +293,13 @@
         dbReadyPromise = initDB();
 
         document.getElementById("generateBackupBtn")?.addEventListener("click", generateBackup);
-        document.getElementById("copyBackupBtn")?.addEventListener("click", copyBackup);
         document.getElementById("clearBackupBtn")?.addEventListener("click", clearBackup);
         document.getElementById("validateRestoreBtn")?.addEventListener("click", validateRestore);
-        document.getElementById("pasteRestoreBtn")?.addEventListener("click", pasteRestore);
+        document.getElementById("uploadRestoreFile")?.addEventListener("change", uploadRestoreFile);
         document.getElementById("clearRestoreBtn")?.addEventListener("click", clearRestore);
     });
 </script>
+
 
 
 
