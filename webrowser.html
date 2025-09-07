@@ -360,61 +360,64 @@ document.addEventListener('click', (event) => {
 	
 <script src="webrowserData.js"></script>
 <script>
+// ======================
+// OPTIONS LIST SECTION
+// ======================
 document.querySelectorAll('.ts-options-list').forEach(section => {
-	const data = window.ts_webData;
-	if (!Array.isArray(data)) return;
+    const data = window.ts_webData;
+    if (!Array.isArray(data)) return;
 
-	data.forEach(item => {
-		const wrapper = document.createElement('div');
-		wrapper.className = 'ts-option-wide';
+    data.forEach(item => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'ts-option-wide';
 
-		const anchor = document.createElement('a');
-		anchor.className = 'ts-option-details';
-		anchor.href = item.link;
-		anchor.target = '_self';
+        const anchor = document.createElement('a');
+        anchor.className = 'ts-option-details';
+        anchor.href = item.link;
+        anchor.target = '_self';
 
-		const img = document.createElement('img');
-		img.className = 'ts-option-img';
-		img.src = item.image;
+        const img = document.createElement('img');
+        img.className = 'ts-option-img';
+        img.src = item.image;
 
-		const info = document.createElement('div');
-		info.className = 'ts-option-link-info';
+        const info = document.createElement('div');
+        info.className = 'ts-option-link-info';
 
-		const title = document.createElement('p');
-		title.className = 'ts-option-title';
-		title.textContent = item.title;
-		
-		const description = document.createElement('p');
-		description.className = 'ts-option-description';
-		description.textContent = item.description;
+        const title = document.createElement('p');
+        title.className = 'ts-option-title';
+        title.textContent = item.title;
+        
+        const description = document.createElement('p');
+        description.className = 'ts-option-description';
+        description.textContent = item.description;
 
-		const link = document.createElement('p');
-		link.className = 'ts-option-link';
-		link.textContent = item.link;
+        const link = document.createElement('p');
+        link.className = 'ts-option-link';
+        link.textContent = item.link;
 
-		const tags = document.createElement('p');
-		tags.className = 'ts-option-tags';
-		tags.textContent = item.tags || '';
+        const tags = document.createElement('p');
+        tags.className = 'ts-option-tags';
+        tags.textContent = item.tags || '';
 
-		info.append(title, description, link, tags);
-		anchor.append(img, info);
-		wrapper.appendChild(anchor);
+        info.append(title, description, link, tags);
+        anchor.append(img, info);
+        wrapper.appendChild(anchor);
 
-		// Menu Button
-		const menuBtn = document.createElement('button');
-		menuBtn.className = 'ts-option-more-btn';
-		menuBtn.innerHTML = `
-			<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/>
-			</svg>
-		`;
+        // Menu Button
+        const menuBtn = document.createElement('button');
+        menuBtn.className = 'ts-option-more-btn';
+        menuBtn.innerHTML = `
+            <svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+                <path d="M160-240q-17 0-28.5-11.5T120-280q0-17 11.5-28.5T160-320h440q17 0 28.5 11.5T640-280q0 17-11.5 28.5T600-240H160Zm596-68L612-452q-12-12-12-28t12-28l144-144q11-11 28-11t28 11q11 11 11 28t-11 28L696-480l116 116q11 11 11 28t-11 28q-11 11-28 11t-28-11ZM160-440q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h320q17 0 28.5 11.5T520-480q0 17-11.5 28.5T480-440H160Zm0-200q-17 0-28.5-11.5T120-680q0-17 11.5-28.5T160-720h440q17 0 28.5 11.5T640-680q0 17-11.5 28.5T600-640H160Z"/>
+            </svg>
+        `;
 
-		// Menu
-		const menu = document.createElement('div');
-		menu.className = 'ts-allweb-options-menu';
-		menu.style.display = 'none';
-		menu.innerHTML = `
-			<button class="ts-allweb-edit-btn">
+        // Menu
+        const menu = document.createElement('div');
+        menu.className = 'ts-allweb-options-menu';
+        menu.style.display = 'none';
+        menu.innerHTML = `
+            <button class="ts-allweb-edit-btn">
 				<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 					<path d="M640-760v280l68 68q6 6 9 13.5t3 15.5v23q0 17-11.5 28.5T680-320H520v234q0 17-11.5 28.5T480-46q-17 0-28.5-11.5T440-86v-234H280q-17 0-28.5-11.5T240-360v-23q0-8 3-15.5t9-13.5l68-68v-280q-17 0-28.5-11.5T280-800q0-17 11.5-28.5T320-840h320q17 0 28.5 11.5T680-800q0 17-11.5 28.5T640-760ZM354-400h252l-46-46v-314H400v314l-46 46Zm126 0Z"/>
 				</svg>
@@ -432,132 +435,146 @@ document.querySelectorAll('.ts-options-list').forEach(section => {
 				</svg>
 				Copy link
 			</button>
-		`;
+			<button class="ts-allweb-close-btn">
+				<svg class="ts-allweb-option-list-btn-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/>
+				</svg>
+				Close
+			</button>
+        `;
 
-		// Toggle menu
-		menuBtn.addEventListener('click', e => {
-			e.stopPropagation();
-			closeAllMenus();
-			menu.style.display = 'block';
-		});
+        // Toggle menu
+        menuBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            closeAllOptionMenus();
+            menu.style.display = 'flex';
+        });
 
-		// Share
-		menu.querySelector('.ts-allweb-share-btn').addEventListener('click', e => {
-			e.stopPropagation();
-			if (navigator.share) {
-				navigator.share({
-					title: item.title,
-					text: `Check this out: ${item.title}`,
-					url: item.link
-				})
-				.then(() => showTakSnackbar("Shared successfully!"))
-				.catch(() => showTakSnackbar("Sharing cancelled or failed."));
-			} else {
-				showTakSnackbar("Sharing not supported in this browser.");
-			}
-			menu.style.display = 'none';
-		});
+        // Share
+        menu.querySelector('.ts-allweb-share-btn').addEventListener('click', e => {
+            e.stopPropagation();
+            if (navigator.share) {
+                navigator.share({
+                    title: item.title,
+                    text: `Check this out: ${item.title}`,
+                    url: item.link
+                })
+                .then(() => showTakSnackbar("Shared successfully!"))
+                .catch(() => showTakSnackbar("Sharing cancelled or failed."));
+            } else {
+                showTakSnackbar("Sharing not supported in this browser.");
+            }
+            closeAllOptionMenus();
+        });
 
-		// Copy link
-		menu.querySelector('.ts-allweb-copy-btn').addEventListener('click', e => {
-			e.stopPropagation();
-			navigator.clipboard.writeText(item.link)
-				.then(() => showTakSnackbar("Copied!"))
-				.catch(() => showTakSnackbar("Failed to copy."));
-			menu.style.display = 'none';
-		});
+        // Copy link
+        menu.querySelector('.ts-allweb-copy-btn').addEventListener('click', e => {
+            e.stopPropagation();
+            navigator.clipboard.writeText(item.link)
+                .then(() => showTakSnackbar("Copied!"))
+                .catch(() => showTakSnackbar("Failed to copy."));
+            closeAllOptionMenus();
+        });
 
-		// Append all
-		wrapper.append(menuBtn, menu);
-		section.appendChild(wrapper);
-	});
+        // Close button
+        menu.querySelector('.ts-allweb-close-btn').addEventListener('click', e => {
+            e.stopPropagation();
+            closeAllOptionMenus();
+        });
+
+        // Append all
+        wrapper.append(menuBtn, menu);
+        section.appendChild(wrapper);
+    });
 });
 
-// Close all open menus on click outside
-document.addEventListener('click', closeAllMenus);
-function closeAllMenus() {
-	document.querySelectorAll('.ts-allweb-options-menu').forEach(menu => {
-		menu.style.display = 'none';
-	});
+// Close all option menus
+function closeAllOptionMenus() {
+    document.querySelectorAll('.ts-allweb-options-menu').forEach(menu => {
+        menu.style.display = 'none';
+    });
 }
-</script>
+document.addEventListener('click', closeAllOptionMenus);
 
 
-
-<script>
+// ======================
+// FILTER MENU SECTION
+// ======================
 // Step 1: Extract unique tags from JSON data
 const allTags = new Set();
 document.querySelectorAll('.ts-option-tags').forEach(tagEl => {
-	const tagText = tagEl.textContent.trim();
-	tagText.split(',').forEach(tag => {
-		const cleanTag = tag.trim();
-		if (cleanTag) allTags.add(cleanTag);
-	});
+    const tagText = tagEl.textContent.trim();
+    tagText.split(',').forEach(tag => {
+        const cleanTag = tag.trim();
+        if (cleanTag) allTags.add(cleanTag);
+    });
 });
+
 
 // Step 2: Create the filter menu with "Show All" + unique tags
 const menuContainer = document.getElementById('ts-allweb-filter-menu');
 const backdrop = document.getElementById('ts-allweb-filter-backdrop');
-menuContainer.innerHTML = ''; // Clear any previous content
+menuContainer.innerHTML = '';
 
 const tagsList = ['Show All', ...[...allTags].sort()];
 tagsList.forEach(tag => {
-	const btn = document.createElement('button');
-	btn.textContent = tag;
+    const btn = document.createElement('button');
+    btn.textContent = tag;
 
-	btn.addEventListener('click', () => {
-		// Step 3: Show/hide cards based on selected tag
-		document.querySelectorAll('.ts-option-wide').forEach(card => {
-			const tagsText = card.querySelector('.ts-option-tags')?.textContent || '';
-			card.style.display = (tag === 'Show All' || tagsText.includes(tag)) ? '' : 'none';
-		});
+    btn.addEventListener('click', () => {
+        // Step 3: Show/hide cards based on selected tag
+        document.querySelectorAll('.ts-option-wide').forEach(card => {
+            const tagsText = card.querySelector('.ts-option-tags')?.textContent || '';
+            card.style.display = (tag === 'Show All' || tagsText.includes(tag)) ? '' : 'none';
+        });
 
-		// Step 4: Update the filter button label
-		const labelEl = document.querySelector('.ts-filter-label');
-		if (labelEl) labelEl.textContent = tag;
+        // Step 4: Update the filter button label
+        const labelEl = document.querySelector('.ts-filter-label');
+        if (labelEl) labelEl.textContent = tag;
 
-		// Step 5: Close the menu
-		closeAllMenus();
-	});
-	menuContainer.appendChild(btn);
+        // Step 5: Close the filter menu
+        closeFilterMenu();
+    });
+    menuContainer.appendChild(btn);
 });
 
 // Step 6: Toggle the filter menu on filter button click
 const filterBtn = document.querySelector('.ts-filter-btn');
 filterBtn.addEventListener('click', e => {
-	e.stopPropagation(); // Prevent immediate outside-close
-	const isOpen = menuContainer.style.display === 'block';
-	closeAllMenus(); // Ensure any existing menu is closed first
+    e.stopPropagation();
+    const isOpen = menuContainer.style.display === 'block';
+    closeFilterMenu();
 
-	if (!isOpen) {
-		backdrop.style.display = 'block';
-		menuContainer.style.display = 'block';
-		menuContainer.style.animation = 'filterMenuSlideUp 0.3s ease-out forwards';
-	}
+    if (!isOpen) {
+        backdrop.style.display = 'block';
+        menuContainer.style.display = 'block';
+        menuContainer.style.animation = 'filterMenuSlideUp 0.3s ease-out forwards';
+    }
 });
 
-// Step 7: Backdrop click closes the menu
-backdrop.addEventListener('click', closeAllMenus);
+// Step 7: Backdrop click closes the filter menu
+backdrop.addEventListener('click', closeFilterMenu);
 
-// Step 8: Global outside click also closes the menu
+// Step 8: Global outside click also closes the filter menu
 document.addEventListener('click', function (e) {
-	if (!menuContainer.contains(e.target) && !filterBtn.contains(e.target)) {
-		closeAllMenus();
-	}
+    if (!menuContainer.contains(e.target) && !filterBtn.contains(e.target)) {
+        closeFilterMenu();
+    }
 });
 
 // Step 9: Hide filter menu with slideDown animation
-function closeAllMenus() {
-	if (menuContainer.style.display === 'block') {
-		menuContainer.style.animation = 'filterMenuSlideDown 0.25s ease-in forwards';
-		backdrop.style.display = 'none';
+function closeFilterMenu() {
+    if (menuContainer.style.display === 'block') {
+        menuContainer.style.animation = 'filterMenuSlideDown 0.25s ease-in forwards';
+        backdrop.style.display = 'none';
 
-		menuContainer.addEventListener('animationend', () => {
-			menuContainer.style.display = 'none';
-		}, { once: true });
-	}
+        menuContainer.addEventListener('animationend', () => {
+            menuContainer.style.display = 'none';
+        }, { once: true });
+    }
 }
 </script>
+
 
 
 
