@@ -36,13 +36,57 @@
 </section>
 
 
-<section class="tak-header">
-	<h1 class="tak-pagename"> Self - Hypnosis </h1>
+<section class="page-header">
+	<h1 class="pagename"> Self - Hypnosis </h1>
+	<style>
+	.page-header {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 35px 0px 5px 0px;
+		align-items: center;
+		box-shadow: 0px 3px 5px #00000040;
+		border-radius: 0px 0px 30px 30px;
+		position: sticky;
+		top: 0px;
+		z-index: 10;
+	}
+	
+	
+	.pagename {
+		color: #ffffff;
+	}
+	
+	.tak-snackbar {
+		position: fixed;
+		top: 150px;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: #000000a0;
+		backdrop-filter: blur(11px);
+		color: #ffffff;
+		padding: 10px 20px;
+		border-radius: 30px;
+		box-shadow: 0px 0px 20px #00000080;
+		font-weight: bold;
+		z-index: 9999;
+		transition: opacity 0.3s ease-in-out;
+		opacity: 0;
+		width: max-content;
+		max-width: 80vw;
+	}
+	</style>
 </section>
 
 
 <section id="hypno-section">
   <style>
+  
+	body {
+		background-image: linear-gradient(180deg, #009688, #607D8B, #000000);
+		background-attachment: fixed;
+	}
+	
     #hypno-section {
 	  padding: 300px 10px 100px 10px;
     }
@@ -56,7 +100,8 @@
 		top: 0px;
 		left: 0px;
 		width: 100%;
-		background: var(--bg1);
+		background: none;
+		backdrop-filter: blur(50px);
 		padding: 130px 0px 20px 0px;
 		z-index: 9;
     }
@@ -81,23 +126,23 @@
       flex-shrink: 0;
       padding: 0.5rem 1rem;
       border-radius: 999px;
-      background: var(--bg2);
-      color: var(--font1);
+      background: #ffffff20;
+      color: #ffffff;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s ease;
     }
 	
     .hypno-pill.active {
-      background: var(--accent1);
+      background: #00000040;
     }
 
     .hypno-card {
-		background: var(--bg3);
+		background: #ffffff10;
 		border-radius: 12px;
 		padding: 1rem;
 		margin-bottom: 2rem;
-		box-shadow: 0 0 10px var(--shadow1);
+		box-shadow: 0 0 10px #00000060;
 		position: relative;
 		overflow: hidden;
     }
@@ -109,7 +154,7 @@
 		background-image: url('images/icon-512x512.png');
 		background-repeat: no-repeat;
 		background-size: cover;
-		opacity: 0.2;
+		opacity: 0.1;
 		filter: sepia(100%);
 		border-radius: 12px;
 		pointer-events: none; /* allows clicks to pass through */
@@ -122,14 +167,14 @@
 	}
 
     .hypno-title {
-      color: var(--font1);
+      color: #ffffff;
 	  font-size: 1.2rem;
       font-weight: bold;
     }
 
     .hypno-purpose {
       font-size: 0.95rem;
-      color: var(--font2);
+      color: #ffffff80;
       margin-bottom: 0.5rem;
     }
 
@@ -138,8 +183,8 @@
     }
 
     .hypno-tags span {
-      background: var(--bg2);
-      color: var(--font2);
+      background: #ffffff80;
+      color: #000000a0;
       font-size: 0.75rem;
       padding: 0.2rem 0.5rem;
       border-radius: 6px;
@@ -157,12 +202,11 @@
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      background: var(--bg1);
+      background: #00000080;
       border: none;
       border-radius: 30px;
       padding: 0.5rem 1rem;
-	  box-shadow: 0px 1px 0px 1px var(--shadow1);
-      color: var(--font1);
+	  color: #ffffff;
       font-weight: 500;
       cursor: pointer;
       transition: background 0.2s;
@@ -171,7 +215,7 @@
     .hypno-btn svg {
       width: 20px;
       height: 20px;
-      fill: var(--accent1);
+      fill: #ffffff;
     }
   </style>
 
@@ -375,7 +419,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: var(--bg2);
+      backdrop-filter: blur(50px);
       color: var(--font1);
       box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
       z-index: 1000;
@@ -418,7 +462,7 @@
     }
     
     .audioPlayer_close-btn svg {
-      fill: var(--font1);
+      fill: #ffffff;
     }
 
     .audioPlayer_track-info {
@@ -434,7 +478,7 @@
     .audioPlayer_track-description {
       margin: 5px 0 0;
       font-size: 0.9rem;
-      color: var(--font2);
+      color: #ffffffa0;
     }
 
     /* Progress Bar Styles */
@@ -447,7 +491,7 @@
 
     .audioPlayer_time {
       font-size: 0.8rem;
-      color: var(--font2);
+      color: #ffffff;
       min-width: 40px;
       text-align: center;
     }
@@ -456,7 +500,7 @@
       position: relative;
       flex: 1;
       height: 4px;
-      background: var(--bg1);
+      background: #ffffff40;
       border-radius: 2px;
     }
 
@@ -474,7 +518,7 @@
       top: 0;
       left: 0;
       height: 100%;
-      background: var(--accent1);
+      background: #ff0000;
       border-radius: 2px;
       width: 0%;
       z-index: 1;
@@ -513,15 +557,15 @@
     }
     
     .audioPlayer_control-btn svg {
-      fill: var(--font1);
+      fill: #ffffff;
     }
 
     .audioPlayer_control-btn:active {
-      background-color: var(--bg1);
+      background-color: #00000020;
     }
 
     .audioPlayer_play-btn {
-      background-color: var(--accent1);
+      background-color: #00000080;
       width: 60px;
       height: 60px;
       border-radius: 50%;
@@ -533,7 +577,7 @@
     }
 
     .audioPlayer_play-btn:active {
-      background-color: var(--accent1);
+      background-color: #000000a0;
       transform: scale(0.95);
     }
 
@@ -542,7 +586,7 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      background: var(--bg1);
+      background: #00000080;
       border-radius: 20px;
       padding: 5px;
     }
@@ -560,11 +604,11 @@
     }
 
     .audioPlayer_speed-btn:active {
-      background-color: var(--bg3);
+      background-color: #000000a0;
     }
     
     .audioPlayer_speed-btn svg {
-      fill: var(--font1);
+      fill: #ffffff;
     }
 
     .audioPlayer_speed-display {
@@ -582,21 +626,21 @@
     }
 
     .audioPlayer_speed-preset {
-      background: var(--bg1);
+      background: #ffffff20;
       border: none;
-      color: var(--font1);
+      color: #ffffff;
       padding: 15px 10px;
       border-radius: 15px;
       font-size: 0.8rem;
     }
 
     .audioPlayer_speed-preset:active {
-      background-color: var(--bg1));
+      background-color: #000000a0;
     }
 
     .audioPlayer_active-speed {
-      background-color: var(--accent1);
-      color: white;
+      background-color: #00000080;
+      color: #ffffff;
     }
 
     /* Lyrics Styles */
@@ -609,13 +653,13 @@
     .audioPlayer_lyrics-title {
       margin: 0 0 10px;
       font-size: 1rem;
-      color: var(--font2);
+      color: #00000080;
     }
 
     .audioPlayer_lyrics-content {
       font-size: 0.9rem;
       line-height: 1.5;
-      color: var(--font1);
+      color: #ffffff;
       white-space: pre-line;
       max-height: 200px;
       overflow-y: auto;
@@ -626,7 +670,7 @@
 
     /* Repeat Active State */
     .audioPlayer_repeat-active svg{
-      fill: var(--accent1);
+      fill: #ff0000;
     }
   </style>
 
