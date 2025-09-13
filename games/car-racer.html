@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Car Runner Game</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #222;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      overflow: hidden;
+    }
+    canvas {
+      background: #555;
+      border: 4px solid #333;
+      border-radius: 8px;
+      touch-action: none; /* Prevent scrolling on swipe */
+    }
+    #restartBtn {
+      position: absolute;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #ff4444;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      display: none;
+    }
+    #rotateWarning {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 22px;
+      z-index: 1000;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
+  <button id="restartBtn">Restart</button>
+  <div id="rotateWarning">Please rotate your device back to portrait mode 📱</div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const restartBtn = document.getElementById("restartBtn");
+    const rotateWarning = document.getElementById("rotateWarning");
+
+    // Game state
+    let car = { x: 180, y: 500, width: 40, height: 80, color: "deepskyblue" };
+    let obstacles = [];
+    let speed = 4;
+    let score = 0;
+    let gameOver = false;
+    let animationId;
+
+    // Swipe detection
+    let touchStartX = null;
+
+    canvas.addEventListener("touchstart", e => {
+      touchStartX = e.touches[0].clientX;
+    });
+
+    canvas.addEventListener("touchend", e => {
+      if (gameOver || touchStartX === null) return;
+      let touchEndX = e.changedTouches[0].clientX;
+      let dx = touchEndX - touchStartX;
+      if (dx > 50 && car.x < canvas.width - car.width - 20) {
+        car.x += 90; // move right
+      } else if (dx < -50 && car.x > 20) {
+        car.x -= 90; // move left
+      }
+      touchStartX = null;
+    });
+
+    // Portrait warning
+    function checkOrientation() {
+      if (window.innerWidth > window.innerHeight) {
+        rotateWarning.style.display = "flex";
+      } else {
+        rotateWarning.style.display = "none";
+      }
+    }
+    window.addEventListener("resize", checkOrientation);
+    checkOrientation();
+
+    // Draw road
+    function drawRoad() {
+      ctx.fillStyle = "#444";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 4;
+      ctx.setLineDash([20, 20]);
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 0);
+      ctx.lineTo(canvas.width / 2, canvas.height);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Draw car
+    function drawCar() {
+      ctx.fillStyle = car.color;
+      ctx.fillRect(car.x, car.y, car.width, car.height);
+    }
+
+    // Draw obstacles
+    function drawObstacles() {
+      ctx.fillStyle = "tomato";
+      obstacles.forEach(o => ctx.fillRect(o.x, o.y, o.width, o.height));
+    }
+
+    // Update state
+    function update() {
+      if (Math.random() < 0.03) {
+        const lane = Math.floor(Math.random() * 4);
+        obstacles.push({ x: 20 + lane * 90, y: -80, width: 50, height: 80 });
+      }
+
+      obstacles.forEach(o => o.y += speed);
+      obstacles = obstacles.filter(o => o.y < canvas.height);
+
+      obstacles.forEach(o => {
+        if (o.x < car.x + car.width &&
+            o.x + o.width > car.x &&
+            o.y < car.y + car.height &&
+            o.y + o.height > car.y) {
+          endGame();
+        }
+      });
+
+      score++;
+    }
+
+    // Draw score
+    function drawScore() {
+      ctx.fillStyle = "white";
+      ctx.font = "18px Arial";
+      ctx.fillText("Score: " + score, 10, 20);
+    }
+
+    // Game loop
+    function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawRoad();
+      drawCar();
+      drawObstacles();
+      drawScore();
+      update();
+      if (!gameOver) animationId = requestAnimationFrame(gameLoop);
+    }
+
+    function endGame() {
+      gameOver = true;
+      cancelAnimationFrame(animationId);
+      ctx.fillStyle = "black";
+      ctx.font = "36px Arial";
+      ctx.fillText("GAME OVER", 100, 300);
+      restartBtn.style.display = "block";
+    }
+
+    function resetGame() {
+      car.x = 180;
+      car.y = 500;
+      obstacles = [];
+      score = 0;
+      gameOver = false;
+      restartBtn.style.display = "none";
+      gameLoop();
+    }
+
+    restartBtn.addEventListener("click", resetGame);
+
+    // Start game
+    gameLoop();
+  </script>
+</body>
+</html>
