@@ -870,6 +870,85 @@
 
 
 
+<!-- ///////////////// -->
+<!-- User Selected Accent Color -->
+<!-- ///////////////// -->
+<style id="theme-accent-style">
+  :root {
+	--accent1: #FD7E14; /* Default fallback accent */
+  }
+</style>
+<script>
+	(function theme_applyAccentFromStorage() {
+	const savedAccent = localStorage.getItem('theme_accent');
+	const accentStyle = document.getElementById('theme-accent-style');
+
+	if (savedAccent && accentStyle) {
+	  accentStyle.textContent = `:root { --accent1: ${savedAccent}; }`;
+	}
+	})();
+</script>
+
+
+
+
+<!-- ///////////////// -->
+<!-- Set Theme - Based on Local Storage -->
+<!-- ///////////////// -->
+<script>
+  // Wait for the DOM to be fully loaded before running the script
+  document.addEventListener("DOMContentLoaded", function() {
+    const themeLink = document.createElement("link");
+    themeLink.rel = "stylesheet";
+    themeLink.id = "theme-link";
+    
+    // Check if a theme preference is saved in localStorage
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
+    } else if (savedTheme === "light") {
+      themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
+    } else {
+      themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
+      localStorage.setItem('theme', 'dark');  // Save preference
+    }
+
+    // Append the theme <link> tag to the <head> of the document
+    document.head.appendChild(themeLink);
+
+    // Initialize icons based on saved theme preference
+    const darkIcon = document.getElementById('dark-icon');
+    const lightIcon = document.getElementById('light-icon');
+
+    if (savedTheme === "dark") {
+      lightIcon.style.display = 'none';
+      darkIcon.style.display = 'block';
+    } else {
+      lightIcon.style.display = 'block';
+      darkIcon.style.display = 'none';
+    }
+
+    // Toggle theme when button is clicked
+    const themeToggleButton = document.getElementById('theme-toggle');
+
+    themeToggleButton.addEventListener('click', () => {
+      const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
+      if (currentTheme === 'dark') {
+        themeLink.href = 'light-theme.css';  // Switch to light theme
+        localStorage.setItem('theme', 'light');  // Save preference
+        lightIcon.style.display = 'block';  // Show light icon
+        darkIcon.style.display = 'none';   // Hide dark icon
+      } else {
+        themeLink.href = 'dark-theme.css';   // Switch to dark theme
+        localStorage.setItem('theme', 'dark');  // Save preference
+        lightIcon.style.display = 'none';   // Hide light icon
+        darkIcon.style.display = 'block';   // Show dark icon
+      }
+    });
+  });
+</script>
+
 
 
 
