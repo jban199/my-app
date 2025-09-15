@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bubble Pop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #1a2980, #26d0ce);
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+        
+        #game-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        header {
+            padding: 15px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        #score-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        #game-area {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2));
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s;
+        }
+        
+        .bubble.popped {
+            transform: translate(-50%, -50%) scale(1.5);
+            opacity: 0;
+            transition: all 0.3s ease-out;
+        }
+        
+        #start-screen, #game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 20;
+        }
+        
+        #game-over {
+            display: none;
+        }
+        
+        .screen-content {
+            text-align: center;
+            padding: 20px;
+            max-width: 90%;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        
+        button {
+            background: linear-gradient(to bottom, #ff6b6b, #ff3838);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s;
+        }
+        
+        button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .control-btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+        }
+        
+        #timer {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 15px;
+            border-radius: 20px;
+            z-index: 10;
+        }
+        
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            #score-display {
+                font-size: 2rem;
+            }
+            
+            button {
+                padding: 20px 40px;
+                font-size: 1.5rem;
+            }
+            
+            .control-btn {
+                padding: 15px 30px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <h1>Bubble Pop</h1>
+            <div id="score-display">Score: 0</div>
+        </header>
+        
+        <div id="timer">60s</div>
+        
+        <div id="game-area"></div>
+        
+        <div id="controls">
+            <button class="control-btn" id="pause-btn">Pause</button>
+            <button class="control-btn" id="restart-btn">Restart</button>
+        </div>
+        
+        <div id="start-screen">
+            <div class="screen-content">
+                <h2>Bubble Pop</h2>
+                <p>Tap on the bubbles to pop them and earn points!</p>
+                <p>Bigger bubbles are worth more points, but disappear faster!</p>
+                <button id="start-btn">Start Game</button>
+            </div>
+        </div>
+        
+        <div id="game-over">
+            <div class="screen-content">
+                <h2>Game Over</h2>
+                <p>Your final score: <span id="final-score">0</span></p>
+                <p>High score: <span id="high-score">0</span></p>
+                <button id="play-again-btn">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Game elements
+            const gameArea = document.getElementById('game-area');
+            const scoreDisplay = document.getElementById('score-display');
+            const timerDisplay = document.getElementById('timer');
+            const startScreen = document.getElementById('start-screen');
+            const gameOverScreen = document.getElementById('game-over');
+            const finalScoreDisplay = document.getElementById('final-score');
+            const highScoreDisplay = document.getElementById('high-score');
+            const startBtn = document.getElementById('start-btn');
+            const playAgainBtn = document.getElementById('play-again-btn');
+            const pauseBtn = document.getElementById('pause-btn');
+            const restartBtn = document.getElementById('restart-btn');
+            
+            // Game state
+            let score = 0;
+            let timer = 60;
+            let gameInterval;
+            let timerInterval;
+            let bubbles = [];
+            let gameRunning = false;
+            let gamePaused = false;
+            let highScore = localStorage.getItem('bubblePopHighScore') || 0;
+            highScoreDisplay.textContent = highScore;
+            
+            // Bubble colors (as HSL for easy variation)
+            const bubbleColors = [
+                'hsla(0, 100%, 70%, 0.7)',
+                'hsla(30, 100%, 70%, 0.7)',
+                'hsla(60, 100%, 70%, 0.7)',
+                'hsla(120, 100%, 70%, 0.7)',
+                'hsla(240, 100%, 70%, 0.7)',
+                'hsla(280, 100%, 70%, 0.7)',
+                'hsla(330, 100%, 70%, 0.7)'
+            ];
+            
+            // Initialize game
+            function initGame() {
+                score = 0;
+                timer = 60;
+                scoreDisplay.textContent = `Score: ${score}`;
+                timerDisplay.textContent = `${timer}s`;
+                gameArea.innerHTML = '';
+                bubbles = [];
+                gameRunning = true;
+                gamePaused = false;
+                
+                // Start game loops
+                startGameLoops();
+                
+                // Hide start screen, show game
+                startScreen.style.display = 'none';
+                gameOverScreen.style.display = 'none';
+            }
+            
+            // Start game loops
+            function startGameLoops() {
+                // Create bubbles on an interval
+                gameInterval = setInterval(createBubble, 800);
+                
+                // Update timer
+                timerInterval = setInterval(() => {
+                    if (!gamePaused) {
+                        timer--;
+                        timerDisplay.textContent = `${timer}s`;
+                        
+                        if (timer <= 0) {
+                            endGame();
+                        }
+                    }
+                }, 1000);
+            }
+            
+            // Create a bubble
+            function createBubble() {
+                if (!gameRunning || gamePaused) return;
+                
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                
+                // Random size (30-80px)
+                const size = Math.random() * 50 + 30;
+                
+                // Random position within game area
+                const maxX = gameArea.offsetWidth - size;
+                const maxY = gameArea.offsetHeight - size;
+                const posX = Math.random() * maxX;
+                const posY = Math.random() * maxY;
+                
+                // Set bubble properties
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${posX}px`;
+                bubble.style.top = `${posY}px`;
+                
+                // Random color
+                const color = bubbleColors[Math.floor(Math.random() * bubbleColors.length)];
+                bubble.style.backgroundColor = color;
+                
+                // Add to game area
+                gameArea.appendChild(bubble);
+                
+                // Store bubble data
+                const bubbleObj = {
+                    element: bubble,
+                    size: size,
+                    points: Math.ceil(100/size), // Smaller bubbles = more points
+                    lifetime: Math.max(2000, 6000 - size * 50), // Smaller bubbles stay longer
+                    born: Date.now()
+                };
+                
+                bubbles.push(bubbleObj);
+                
+                // Remove bubble after its lifetime
+                setTimeout(() => {
+                    if (bubble.parentNode && gameRunning) {
+                        bubble.remove();
+                        bubbles = bubbles.filter(b => b.element !== bubble);
+                    }
+                }, bubbleObj.lifetime);
+                
+                // Add click/touch event to pop bubble
+                bubble.addEventListener('click', () => popBubble(bubbleObj));
+                bubble.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    popBubble(bubbleObj);
+                }, { passive: false });
+            }
+            
+            // Pop a bubble
+            function popBubble(bubble) {
+                if (!gameRunning || gamePaused) return;
+                
+                // Add popped class for animation
+                bubble.element.classList.add('popped');
+                
+                // Update score
+                score += bubble.points;
+                scoreDisplay.textContent = `Score: ${score}`;
+                
+                // Remove bubble after animation
+                setTimeout(() => {
+                    if (bubble.element.parentNode) {
+                        bubble.element.remove();
+                    }
+                    bubbles = bubbles.filter(b => b.element !== bubble.element);
+                }, 300);
+            }
+            
+            // End the game
+            function endGame() {
+                gameRunning = false;
+                clearInterval(gameInterval);
+                clearInterval(timerInterval);
+                
+                // Update high score if needed
+                if (score > highScore) {
+                    highScore = score;
+                    localStorage.setItem('bubblePopHighScore', highScore);
+                    highScoreDisplay.textContent = highScore;
+                }
+                
+                // Show game over screen
+                finalScoreDisplay.textContent = score;
+                gameOverScreen.style.display = 'flex';
+            }
+            
+            // Pause the game
+            function pauseGame() {
+                if (!gameRunning) return;
+                
+                gamePaused = !gamePaused;
+                pauseBtn.textContent = gamePaused ? 'Resume' : 'Pause';
+                
+                if (gamePaused) {
+                    clearInterval(gameInterval);
+                    clearInterval(timerInterval);
+                } else {
+                    startGameLoops();
+                }
+            }
+            
+            // Event listeners
+            startBtn.addEventListener('click', initGame);
+            playAgainBtn.addEventListener('click', initGame);
+            pauseBtn.addEventListener('click', pauseGame);
+            restartBtn.addEventListener('click', initGame);
+            
+            // Prevent scroll on touch devices
+            document.addEventListener('touchmove', function(e) {
+                if (gameRunning) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        });
+    </script>
+</body>
+</html>
