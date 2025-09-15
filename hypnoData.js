@@ -24,6 +24,24 @@ const hypnoDataList = [
 	Sarveshvaraaya Sadaashivaaya
 	Sriman Mahadevaaya Namah.`
   },
+    {
+    filterTags: ['mantra'],
+    cardTags: ['#mantra'],
+    cardTitle: 'Karpura Gauram',
+    cardPurpose: 'Shiva mantra',
+    playerTitle: 'Karpura Gauram',
+    playerPurpose: 'Praise to Lord Shiva',
+    playerFilepath: 'media/hypno-sounds/karpura-gauram.mp3',
+    playerTransscript: `कर्पूरगौरं करुणावतारं
+संसारसारम् भुजगेन्द्रहारम् ।
+सदावसन्तं हृदयारविन्दे
+भवं भवानीसहितं नमामि ॥
+
+karpūragauraṃ karuṇāvatāraṃ
+saṃsārasāram bhujagendrahāram .
+sadāvasantaṃ hṛdayāravinde
+bhavaṃ bhavānīsahitaṃ namāmi ..`
+  },
   {
     filterTags: ['calm'],
     cardTags: ['#calm', '#relax'],
