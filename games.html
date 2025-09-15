@@ -45,60 +45,48 @@
 <style>
 .games-section {
   padding: 20px;
-  background: var(--bg, #111);
-  color: #fff;
-  font-family: system-ui, sans-serif;
-}
-
-.games-heading {
-  font-size: 1.5rem;
-  margin-bottom: 16px;
-  text-align: center;
 }
 
 .games-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 
 .game-card {
-  background: #1c1c1c;
+  background: var(--bg2);
   border-radius: 16px;
   overflow: hidden;
+  padding: 5px;
   box-shadow: 0 4px 14px rgba(0,0,0,0.4);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
-  flex-direction: column;
-}
-
-.game-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  flex-direction: row;
+  gap: 5px;
 }
 
 .game-img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
+  width: 100px;
+  height: auto;
+  object-fit: contain;
 }
 
 .game-info {
-  padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
 .game-title {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  line-height: 0.2;
   font-weight: 600;
+  color: var(--font1);
 }
 
 .game-desc {
   font-size: 0.9rem;
-  color: #ccc;
-  line-height: 1.4;
+  color: var(--font2);
+  line-height: 1.2;
   flex-grow: 1;
 }
 
@@ -119,10 +107,9 @@
 </style>
 
 
-  <h2 class="games-heading">My Games</h2>
   <div class="games-grid">
     
-    <!-- Card 1 -->
+    
     <div class="game-card">
       <img src="games/car-racer-game-icon.svg" alt="Game 1" class="game-img">
       <div class="game-info">
@@ -132,13 +119,33 @@
       </div>
     </div>
 
-    <!-- Card 2 -->
+    
     <div class="game-card">
-      <img src="https://via.placeholder.com/300x160" alt="Game 2" class="game-img">
+      <img src="games/bubble-pop-game-icon.svg" alt="Game 2" class="game-img">
       <div class="game-info">
-        <h3 class="game-title">Space Shooter</h3>
-        <p class="game-desc">Blast enemy ships and collect power-ups in deep space.</p>
-        <a href="game2.html" class="game-link">Play Now</a>
+        <h3 class="game-title">Bubble Pop</h3>
+        <p class="game-desc">Pop the bubbles before they disappear.</p>
+        <a href="games/bubble-pop.html" class="game-link">Play Now</a>
+      </div>
+    </div>
+	
+	
+	<div class="game-card">
+      <img src="games/memory-match-game-icon.svg" alt="Game 2" class="game-img">
+      <div class="game-info">
+        <h3 class="game-title">Memory Match</h3>
+        <p class="game-desc">Match the cards as quickly as possible.</p>
+        <a href="games/memory-match.html" class="game-link">Play Now</a>
+      </div>
+    </div>
+	
+	
+	<div class="game-card">
+      <img src="games/dino-game-icon.svg" alt="Game 2" class="game-img">
+      <div class="game-info">
+        <h3 class="game-title">Dino</h3>
+        <p class="game-desc">This dino is scared of cactus.</p>
+        <a href="games/dino.html" class="game-link">Play Now</a>
       </div>
     </div>
 
