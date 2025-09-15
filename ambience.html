@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TKA - Ambience Maker</title>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <meta name="theme-color" content="#1A1A1A">
+
+    <!-- Link to the stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+
+<section id="tak-page-loader">
+	<div class="tak-spinner"></div>
+	<p>Loading...</p>
+	
+	<script>
+		window.addEventListener('load', function () {
+			const loader = document.getElementById('tak-page-loader');
+			if (loader) {
+				loader.classList.add('fade-out');
+				setTimeout(() => {
+					loader.style.display = 'none';
+				}, 500); // match the CSS transition duration (0.5s)
+			}
+		});
+	</script>
+</section>
+
+
+<section class="tak-header">
+	<h1 class="tak-pagename"> Ambience Maker </h1>
+	
+	<style>
+		body {
+			background-image: linear-gradient(#1e2832, #3c281e);
+			background-attachment: fixed;
+		}
+		
+		.tak-header {
+			background: #ffffff20;
+			backdrop-filter: blur(30px);
+		}
+		
+		.tak-pagename {
+			color: #9e9e9e;
+		}
+	</style>
+</section>
+
+
+<section id="amb-container">
+  <p class="amb-instruction">Click on the sound cards to play it. Click again to stop. You can play multiple sounds at a time.</p>
+
+  <div class="amb-list">
+    <div class="amb-item" data-main="ambience/main-rain.ogg" data-glue="ambience/glue-rain.ogg">
+      <img src="ambience/rain.svg" class="amb-icon" alt="Rain">
+      <span class="amb-label">Rain</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+
+    <div class="amb-item" data-main="ambience/main-thunder.ogg" data-glue="ambience/glue-thunder.ogg">
+      <img src="ambience/thunder.svg" class="amb-icon" alt="Thunder">
+      <span class="amb-label">Thunder</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+
+    <div class="amb-item" data-main="ambience/main-waves.ogg" data-glue="ambience/glue-waves.ogg">
+      <img src="ambience/waves.svg" class="amb-icon" alt="Waves">
+      <span class="amb-label">Waves</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+		<div class="amb-item" data-main="ambience/main-wind.ogg" data-glue="ambience/glue-wind.ogg">
+      <img src="ambience/wind.svg" class="amb-icon" alt="Wind">
+      <span class="amb-label">Wind</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="ambience/main-fire.ogg"  data-glue="ambience/glue-fire.ogg">
+      <img src="ambience/fire.svg" class="amb-icon" alt="Fire">
+      <span class="amb-label">Fire</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="ambience/main-birds.ogg"  data-glue="ambience/glue-birds.ogg">
+      <img src="ambience/birds.svg" class="amb-icon" alt="Birds">
+      <span class="amb-label">Birds</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="ambience/main-crickets.ogg"  data-glue="ambience/glue-crickets.ogg">
+      <img src="ambience/grass.svg" class="amb-icon" alt="Crickets">
+      <span class="amb-label">Crickets</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="ambience/main-people.ogg"  data-glue="ambience/glue-people.ogg">
+      <img src="ambience/coffee.svg" class="amb-icon" alt="Coffee shop">
+      <span class="amb-label">Coffee Shop</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="ambience/main-sbowl.ogg"  data-glue="ambience/glue-sbowl.ogg">
+      <img src="ambience/sbowl.svg" class="amb-icon" alt="Singing bowl">
+      <span class="amb-label">Singing Bowl</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="ambience/main-whitenoise.ogg"  data-glue="ambience/glue-whitenoise.ogg">
+      <img src="ambience/tv.svg" class="amb-icon" alt="White noise">
+      <span class="amb-label">White Noise</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	
+		<div class="amb-item" data-main="" data-glue="ambience/glue-raintrees.ogg">
+      <img src="ambience/raintrees.svg" class="amb-icon" alt="Rain on trees">
+      <span class="amb-label">Rain on Trees</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-raintinroof.ogg">
+      <img src="ambience/raintinroof.svg" class="amb-icon" alt="Rain on tin roof">
+      <span class="amb-label">Rain on Tin Roof</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-raincabin.ogg">
+      <img src="ambience/raincabin.svg" class="amb-icon" alt="Rain on cabin">
+      <span class="amb-label">Rain on Cabin</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-stream.ogg">
+      <img src="ambience/stream.svg" class="amb-icon" alt="Stream">
+      <span class="amb-label">Stream</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-waterfall.ogg">
+      <img src="ambience/waterfall.svg" class="amb-icon" alt="Waterfall">
+      <span class="amb-label">Waterfall</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-cicadas.ogg">
+      <img src="ambience/cicadas.svg" class="amb-icon" alt="Cicadas">
+      <span class="amb-label">Cicadas</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-chimesmetal.ogg">
+      <img src="ambience/chimesmetal.svg" class="amb-icon" alt="Metal chimes">
+      <span class="amb-label">Metal Chimes</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-city.ogg">
+      <img src="ambience/city.svg" class="amb-icon" alt="City">
+      <span class="amb-label">City</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-fanlow.ogg">
+      <img src="ambience/fanlow.svg" class="amb-icon" alt="Fan on low">
+      <span class="amb-label">Fan on Low</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-fanhigh.ogg">
+      <img src="ambience/fanhigh.svg" class="amb-icon" alt="Fan on high">
+      <span class="amb-label">Fan on High</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-aircon.ogg">
+      <img src="ambience/aircon.svg" class="amb-icon" alt="Air conditioning">
+      <span class="amb-label">Air Conditioning</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-frogs.ogg">
+      <img src="ambience/frogs.svg" class="amb-icon" alt="Frogs">
+      <span class="amb-label">Frogs</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-vinyl.ogg">
+      <img src="ambience/vinyl.svg" class="amb-icon" alt="Record player">
+      <span class="amb-label">Record Player</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-brownnoise.ogg">
+      <img src="ambience/brownnoise.svg" class="amb-icon" alt="Brown noise">
+      <span class="amb-label">Brown Noise</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+	<div class="amb-item" data-main="" data-glue="ambience/glue-pinknoise.ogg">
+      <img src="ambience/pinknoise.svg" class="amb-icon" alt="Pink noise">
+      <span class="amb-label">Pink Noise</span>
+      <input type="range" min="0" max="1" step="0.02" value="0.5" class="amb-slider" disabled>
+    </div>
+	
+  </div>
+
+  <button id="amb-pause-all" class="disable">Pause All</button>
+
+  <style>
+    #amb-container {
+      padding: 16px;
+    }
+
+    .amb-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .amb-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 24px 12px;
+      border-radius: 14px;
+      color: var(--font1);
+      background: #ffffff20;
+	  backdrop-filter: blur(30px);
+      box-shadow: 0 2px 4px #00000080;
+    }
+
+    .amb-instruction {
+      text-align: center;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      color: var(--font2);
+    }
+
+    .amb-icon {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      filter: grayscale(100%);
+      transition: filter 0.3s ease;
+    }
+    .amb-item.active .amb-icon {
+      filter: grayscale(0%);
+    }
+
+    .amb-label {
+      flex: 1;
+      font-size: 1rem;
+    }
+
+    .amb-slider {
+      width: 100px;
+    }
+
+    #amb-pause-all {
+      height: 35px;
+      width: 125px;
+      border: none;
+      border-radius: 30px;
+      background: var(--accent1);
+      color: var(--font1);
+      font-size: 1.2rem;
+      position: fixed;
+      bottom: 20px;
+      left: 10px;
+      transition: opacity 0.3s ease;
+    }
+    #amb-pause-all.disable {
+      opacity: 0.5;
+	  filter: grayscale(1);
+      pointer-events: none;
+    }
+  </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const items = Array.from(document.querySelectorAll(".amb-item"));
+  const pauseAllBtn = document.getElementById("amb-pause-all");
+  let lastActive = []; // saved items + volumes when Pause All was pressed
+
+  // Helper: show snackbar if available
+  function notify(msg) {
+    if (typeof showTakSnackbar === "function") showTakSnackbar(msg);
+    else console.log("snack:", msg);
+  }
+
+  // Ensure audio objects exist for an item (lazy creation)
+  function ensureAudios(item) {
+    if (!item._audios) item._audios = { main: null, glue: null };
+    const mainSrc = item.dataset.main;
+    const glueSrc = item.dataset.glue;
+
+    if (mainSrc && !item._audios.main) {
+      const a = new Audio(mainSrc);
+      a.loop = true;
+      a.addEventListener("error", () => notify("Failed to load: " + mainSrc));
+      item._audios.main = a;
+    }
+    if (glueSrc && !item._audios.glue) {
+      const g = new Audio(glueSrc);
+      g.loop = true;
+      g.addEventListener("error", () => notify("Failed to load: " + glueSrc));
+      item._audios.glue = g;
+    }
+  }
+
+  // Play both audios for the item (volume default 0.5 if not provided)
+  function playItem(item, volume = 0.5) {
+    ensureAudios(item);
+    const vol = (typeof volume === "number") ? volume : 0.5;
+
+    try { if (item._audios.main) { item._audios.main.volume = vol; item._audios.main.play(); } } catch(e){/*ignore*/ }
+    try { if (item._audios.glue) { item._audios.glue.volume = vol; item._audios.glue.play(); } } catch(e){/*ignore*/ }
+
+    item.classList.add("active");
+    const slider = item.querySelector(".amb-slider");
+    slider.value = vol;
+    slider.disabled = false;
+    notify(item.querySelector(".amb-label").textContent + " playing");
+  }
+
+  // Stop both audios for the item; resetTime controls whether we reset currentTime
+  function stopItem(item, resetTime = true) {
+    if (item._audios && item._audios.main) { item._audios.main.pause(); if (resetTime) item._audios.main.currentTime = 0; }
+    if (item._audios && item._audios.glue) { item._audios.glue.pause(); if (resetTime) item._audios.glue.currentTime = 0; }
+    item.classList.remove("active");
+    const slider = item.querySelector(".amb-slider");
+    slider.disabled = true;
+    notify(item.querySelector(".amb-label").textContent + " stopped");
+  }
+
+  // Update Pause All button enabled/disabled state
+  function updatePauseAllState() {
+    // If currently in Resume mode, keep enabled
+    if (pauseAllBtn.textContent === "Resume") {
+      pauseAllBtn.classList.remove("disable");
+      return;
+    }
+    const activeCount = document.querySelectorAll(".amb-item.active").length;
+    if (activeCount === 0) pauseAllBtn.classList.add("disable");
+    else pauseAllBtn.classList.remove("disable");
+  }
+
+  // Wire up each item
+  items.forEach(item => {
+    // prepare placeholder audios object
+    item._audios = { main: null, glue: null };
+
+    const slider = item.querySelector(".amb-slider");
+
+    // slider controls both audios' volumes
+    slider.addEventListener("input", (ev) => {
+      const vol = parseFloat(ev.target.value);
+      if (item._audios && item._audios.main) item._audios.main.volume = vol;
+      if (item._audios && item._audios.glue) item._audios.glue.volume = vol;
+    });
+
+    // click toggles the item; ignore clicks on the slider itself
+    item.addEventListener("click", (e) => {
+      if (e.target && e.target.classList && e.target.classList.contains("amb-slider")) return;
+
+      // If we were in Resume mode, switching to manual play should cancel stored resume list
+      if (pauseAllBtn.textContent === "Resume") {
+        pauseAllBtn.textContent = "Pause All";
+        lastActive = [];
+      }
+
+      if (item.classList.contains("active")) {
+        // stop and reset
+        stopItem(item, true);
+      } else {
+        // start both audios (skip missing ones). Start at 50% volume as requested.
+        playItem(item, 0.5);
+      }
+
+      updatePauseAllState();
+    });
+  });
+
+  // Pause/Resume all behaviour
+  pauseAllBtn.addEventListener("click", () => {
+    // If button shows Pause All -> pause all active items and save them
+    if (pauseAllBtn.textContent === "Pause All") {
+      // if already disabled do nothing
+      if (pauseAllBtn.classList.contains("disable")) return;
+
+      lastActive = [];
+      document.querySelectorAll(".amb-item.active").forEach(item => {
+        const slider = item.querySelector(".amb-slider");
+        const vol = parseFloat(slider.value || 0.5);
+
+        // Save reference and volume for resume
+        lastActive.push({ item, volume: vol });
+
+        // pause but DO NOT reset currentTime so resume continues where left off
+        if (item._audios && item._audios.main) item._audios.main.pause();
+        if (item._audios && item._audios.glue) item._audios.glue.pause();
+
+        item.classList.remove("active");
+        slider.disabled = true;
+      });
+
+      pauseAllBtn.textContent = "Resume";
+      pauseAllBtn.classList.remove("disable"); // keep it clickable
+      notify("All sounds paused");
+      return;
+    }
+
+    // If button shows Resume -> resume previously saved active items
+    if (pauseAllBtn.textContent === "Resume") {
+      if (!lastActive || lastActive.length === 0) {
+        // nothing to resume
+        notify("No sounds to resume");
+        pauseAllBtn.textContent = "Pause All";
+        updatePauseAllState();
+        return;
+      }
+
+      // Resume each saved item (play from paused position)
+      lastActive.forEach(entry => {
+        const item = entry.item;
+        const vol = (typeof entry.volume === "number") ? entry.volume : 0.5;
+        ensureAudios(item); // audios should exist already, but ensure safety
+
+        if (item._audios && item._audios.main) {
+          item._audios.main.volume = vol;
+          try { item._audios.main.play(); } catch (e) { /* ignore */ }
+        }
+        if (item._audios && item._audios.glue) {
+          item._audios.glue.volume = vol;
+          try { item._audios.glue.play(); } catch (e) { /* ignore */ }
+        }
+
+        item.classList.add("active");
+        const slider = item.querySelector(".amb-slider");
+        slider.value = vol;
+        slider.disabled = false;
+      });
+
+      lastActive = [];
+      pauseAllBtn.textContent = "Pause All";
+      notify("Resumed previous sounds");
+      updatePauseAllState();
+      return;
+    }
+  });
+
+  // initial state
+  updatePauseAllState();
+});
+</script>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- Snackbar (hidden initially) -->
+	<div id="tak-snackbar" class="tak-snackbar">Welcome!</div>
+
+<script>
+// Snackbar function
+function showTakSnackbar(message = "Welcome!") {
+  const snackbar = document.getElementById("tak-snackbar");
+  snackbar.textContent = message;
+  snackbar.style.display = "block";
+  snackbar.style.opacity = "1";
+
+  setTimeout(() => {
+    snackbar.style.opacity = "0";
+    setTimeout(() => {
+      snackbar.style.display = "none";
+    }, 300);
+  }, 2000);
+}
+</script>
+
+
+<!-- Confirm Dialog (hidden initially) -->
+<div id="SECTION-confirm-dialog" class="tak-dialog" style="display: none;">
+	<div class="tak-dialog-box">
+		<p>Are you sure you want to delete this note?</p>
+		<div class="tak-dialog-actions">
+			<button class="tak-dialog-skip" id="SECTION-dialog-skip">Skip</button>
+			<button class="tak-dialog-continue" id="SECTION-dialog-continue">Continue</button>
+		</div>
+	</div>
+</div>
+
+<!-- ///////////////// -->
+<!-- Footer Spacer -->
+<!-- ///////////////// -->
+<div class="footerSpacer">
+</div>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const images = document.querySelectorAll("img");
+
+    images.forEach(img => {
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = "images/nm/nm-placeholder.svg";
+      };
+    });
+  });
+</script>
+
+<!-- ///////////////// -->
+<!-- Bottom Menu -->
+<!-- ///////////////// -->
+<section>
+<!-- SBM Trigger -->
+<svg id="SBM-Icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+    <path d="M86-191v-126h788v126H86Zm0-226v-126h788v126H86Zm0-226v-126h788v126H86Z"/>
+</svg>
+
+<!-- SBM container (empty, the content is injected here) -->
+<div id="SBM-container"></div>
+</section>
+
+
+<script>
+window.addEventListener("load", function () {		
+    // Load SBM
+    fetch('sbm.html')
+        .then(response => response.text())
+        .then(data => {
+            const sidebarContainer = document.getElementById('SBM-container');
+            sidebarContainer.innerHTML = data;
+
+            // Make sure sidebar is hidden after load
+            const overlaySBM = document.getElementById("SBM-section");
+            if (overlaySBM) {
+                overlaySBM.style.transform = "translateY(100%)";
+            }
+
+            // Reattach event listeners after the SBM is loaded
+            const closeButton = document.getElementById("closeSBM");
+            if (closeButton) {
+                closeButton.addEventListener("click", closeSBM);
+            }
+
+            // Get reference to the icon that triggers the sidebar opening
+            const SBMIcon = document.getElementById("SBM-Icon");
+
+            // Function to open the sidebar
+            function openSBM() {
+                if (overlaySBM) {
+                    overlaySBM.style.transform = "translateY(0)";
+                }
+            }
+
+            // Function to close the sidebar
+            function closeSBM() {
+                if (overlaySBM) {
+                    overlaySBM.style.transform = "translateY(100%)";
+                }
+            }
+
+            // Event listener for opening the SBM when the icon is clicked
+            if (SBMIcon) {
+                SBMIcon.addEventListener("click", openSBM);
+            }
+        })
+        .catch(error => {
+            console.error("Error loading SBM:", error);
+        });
+});
+</script>
+
+
+
+
+
+
+<!-- ///////////////// -->
+<!-- User Selected Accent Color -->
+<!-- ///////////////// -->
+<style id="theme-accent-style">
+  :root {
+	--accent1: #FD7E14; /* Default fallback accent */
+  }
+</style>
+<script>
+	(function theme_applyAccentFromStorage() {
+	const savedAccent = localStorage.getItem('theme_accent');
+	const accentStyle = document.getElementById('theme-accent-style');
+
+	if (savedAccent && accentStyle) {
+	  accentStyle.textContent = `:root { --accent1: ${savedAccent}; }`;
+	}
+	})();
+</script>
+
+
+
+<!-- ///////////////// -->
+<!-- Theme Toggle -->
+<!-- ///////////////// -->
+<section>
+<button id="theme-toggle">
+    <!-- Default dark icon (SVG) -->
+    <svg id="dark-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+      <path d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/>
+    </svg>
+
+    <!-- Light Icon (hidden by default) -->
+    <svg id="light-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="display: none;">
+      <path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/>
+    </svg>
+</button>
+</section>
+
+<!-- ///////////////// -->
+<!-- Set Theme - Based on Local Storage -->
+<!-- ///////////////// -->
+<script>
+  // Wait for the DOM to be fully loaded before running the script
+  document.addEventListener("DOMContentLoaded", function() {
+    const themeLink = document.createElement("link");
+    themeLink.rel = "stylesheet";
+    themeLink.id = "theme-link";
+    
+    // Check if a theme preference is saved in localStorage
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      themeLink.href = "dark-theme.css";  // If dark theme is saved, load dark-theme.css
+    } else if (savedTheme === "light") {
+      themeLink.href = "light-theme.css"; // If light theme is saved, load light-theme.css
+    } else {
+      themeLink.href = "dark-theme.css";  // Default to dark theme if no preference is saved
+      localStorage.setItem('theme', 'dark');  // Save preference
+    }
+
+    // Append the theme <link> tag to the <head> of the document
+    document.head.appendChild(themeLink);
+
+    // Initialize icons based on saved theme preference
+    const darkIcon = document.getElementById('dark-icon');
+    const lightIcon = document.getElementById('light-icon');
+
+    if (savedTheme === "dark") {
+      lightIcon.style.display = 'none';
+      darkIcon.style.display = 'block';
+    } else {
+      lightIcon.style.display = 'block';
+      darkIcon.style.display = 'none';
+    }
+
+    // Toggle theme when button is clicked
+    const themeToggleButton = document.getElementById('theme-toggle');
+
+    themeToggleButton.addEventListener('click', () => {
+      const currentTheme = themeLink.href.includes('dark-theme.css') ? 'dark' : 'light';
+      if (currentTheme === 'dark') {
+        themeLink.href = 'light-theme.css';  // Switch to light theme
+        localStorage.setItem('theme', 'light');  // Save preference
+        lightIcon.style.display = 'block';  // Show light icon
+        darkIcon.style.display = 'none';   // Hide dark icon
+      } else {
+        themeLink.href = 'dark-theme.css';   // Switch to dark theme
+        localStorage.setItem('theme', 'dark');  // Save preference
+        lightIcon.style.display = 'none';   // Hide light icon
+        darkIcon.style.display = 'block';   // Show dark icon
+      }
+    });
+  });
+</script>
+
+
+
+<!-- ///////////////// -->
+<!-- Fullscreen Toggle -->
+<!-- ///////////////// -->
+<section>
+  <button id="fullscreen-toggle" class="fullscreen-button">
+  <!-- Icon for entering fullscreen (initially displayed) -->
+  <svg id="fullscreen-enter-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+    <path d="M86-86v-260h126v134h134v126H86Zm529 0v-126h133v-134h126v260H615ZM86-615v-259h260v126H212v133H86Zm662 0v-133H615v-126h259v259H748Z"/>
+  </svg>
+
+  <!-- Icon for exiting fullscreen (hidden initially) -->
+  <svg id="fullscreen-exit-icon" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f" style="display: none;">
+    <path d="M220-86v-134H86v-126h260v260H220Zm395 0v-260h259v126H741v134H615ZM86-615v-126h134v-133h126v259H86Zm529 0v-259h126v133h133v126H615Z"/>
+  </svg>
+</button>
+</section>
+<script>
+  // Fullscreen Toggle Logic
+const fullscreenButton = document.getElementById('fullscreen-toggle');
+fullscreenButton.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+    document.getElementById('fullscreen-enter-icon').style.display = 'none';
+    document.getElementById('fullscreen-exit-icon').style.display = 'block';
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+      document.getElementById('fullscreen-enter-icon').style.display = 'block';
+      document.getElementById('fullscreen-exit-icon').style.display = 'none';
+    }
+  }
+});
+
+</script>
+
+
+<!-- ///////////////// -->
+<!-- Prevent Right Click Context Menu -->
+<!-- ///////////////// -->
+<script>
+  document.addEventListener('contextmenu', function(event) {
+    const target = event.target;
+
+    // Allow default context menu on input, textarea, or contenteditable elements
+    if (
+      target.tagName === 'INPUT' ||
+      target.tagName === 'TEXTAREA' ||
+      target.isContentEditable
+    ) {
+      return; // allow context menu
+    }
+
+    event.preventDefault(); // otherwise, block it
+  });
+</script>
+
+
+<!-- ///////////////// -->
+<!-- Capacitor Functions -->
+<!-- ///////////////// -->
+<script type="module" src="capacitorFunctions.js"></script>
+
+
+</body>
+</html>
