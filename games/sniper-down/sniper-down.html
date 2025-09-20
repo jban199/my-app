@@ -28,7 +28,7 @@
 
     /* Instruction screen */
     #instruction-screen {
-      background: linear-gradient(180deg, #ff7e5f, #feb47b);
+      background: linear-gradient(180deg, #00437d, #000000);
       color: #fff;
     }
     #instruction-screen h1 {
@@ -156,29 +156,34 @@
 
     /* Game screen */
     #game-screen {
-      background: linear-gradient(180deg, #66a6ff, #004e92);
+      background: linear-gradient(180deg, #00437d, #000000);
       position: relative;
       overflow: hidden;
     }
     #hud {
       position: absolute;
-      top: 1vh;
-      left: 1vw;
-	  width: 90vw;
+      top: 0;
+      left: 0;
+	  width: 96%;
       color: #fff;
       font-size: 5vw;
       background: rgba(0,0,0,0.4);
       padding: 1vh 2vw;
-      border-radius: 1vh;
 	  display: flex;
 	  align-items: center;
-	  justify-content: center;
+	  justify-content: space-evenly;
     }
 	
 	#hud svg {
 		fill: #ffffff80;
 		margin-left: 25px;
 		margin-right: 5px;
+	}
+	
+	.hud-items {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 	}
 
     .launcher {
@@ -368,22 +373,30 @@
 
   <!-- Game Screen -->
   <div id="game-screen" class="screen">
-    <div id="hud">
+
+	<div id="hud">
+		<div class="hud-items">
 		<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 			<path d="m305-704 112-145q12-16 28.5-23.5T480-880q18 0 34.5 7.5T543-849l112 145 170 57q26 8 41 29.5t15 47.5q0 12-3.5 24T866-523L756-367l4 164q1 35-23 59t-56 24q-2 0-22-3l-179-50-179 50q-5 2-11 2.5t-11 .5q-32 0-56-24t-23-59l4-165L95-523q-8-11-11.5-23T80-570q0-25 14.5-46.5T135-647l170-57Z"/>
 		</svg> 
 		<span id="score">0</span>
+		</div>
 		
+		<div class="hud-items">
 		<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 			<path d="M240-800q12-12 28.5-12t28.5 12l63 64q12 12 12 28t-12 28q-12 12-28.5 12T303-680l-64-63q-12-12-11.5-28.5T240-800Zm280-116q17 0 28.5 11.5T560-876v90q0 17-11.5 28.5T520-746q-17 0-28.5-11.5T480-786v-90q0-17 11.5-28.5T520-916Zm160 556q12-12 28.5-12t28.5 12l63 64q12 12 12 28t-12 28q-12 12-28.5 12T743-240l-64-63q-12-12-11.5-28.5T680-360Zm120-440q12 12 12 28.5T800-743l-64 64q-12 12-28 11.5T680-680q-12-12-12-28.5t12-28.5l63-63q12-12 28.5-12t28.5 12Zm116 280q0 17-11.5 28.5T876-480h-90q-17 0-28.5-11.5T746-520q0-17 11.5-28.5T786-560h90q17 0 28.5 11.5T916-520ZM205-92 92-205q-12-12-12-28t12-28l363-364q35-35 85-35t85 35q35 35 35 85t-35 85L261-92q-12 12-28 12t-28-12Zm279-335 84-85q12-12 12-28t-12-28q-12-12-28-12t-28 12l-85 85 57 56Z"/>
 		</svg>
 		<span id="ammo">20</span>
+		</div>
 		
+		<div class="hud-items">
 		<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
 			<path d="M360-840v-80h240v80H360Zm80 440h80v-240h-80v240Zm40 320q-74 0-139.5-28.5T226-186q-49-49-77.5-114.5T120-440q0-74 28.5-139.5T226-694q49-49 114.5-77.5T480-800q62 0 119 20t107 58l56-56 56 56-56 56q38 50 58 107t20 119q0 74-28.5 139.5T734-186q-49 49-114.5 77.5T480-80Zm0-80q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 116 82 198t198 82Zm0-280Z"/>
 		</svg>
 		<span id="time">60</span>
+		</div>
 	</div>
+
     <img src="player_sniper.png" class="launcher" id="launcher">
   </div>
 
