@@ -358,7 +358,7 @@
       const gameWidth = game.clientWidth;
       const gameHeight = game.clientHeight;
 
-      obj.style.top = (Math.random() * gameHeight * 0.5) + "px";
+      obj.style.top = (8 * window.innerHeight / 100 + Math.random() * gameHeight * 0.25) + "px";
       obj.style.left = fromLeft ? "0px" : gameWidth + "px";
       obj.dataset.direction = fromLeft ? "right" : "left";
 
