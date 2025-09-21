@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+		
+		/* Instruction Screen */
+		#instruction-screen {
+			background: linear-gradient(180deg, #00437d, #000000);
+			color: #fff;
+			height: 100%;
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+            align-items: center;
+            text-align: center;
+		}
+		
+		#instruction-screen button {
+			font-size: 5vw;
+			padding: 2vh 4vh;
+			border: none;
+			border-radius: 2vh;
+			background: #fff;
+			color: #333;
+			font-weight: bold;
+			position: fixed;
+			bottom: 10%;
+			left: 0;
+			width: 80%;
+			margin: 0% 10%;
+		}
+
+		.instruction-gamecard {
+			display:flex;
+			align-items:center;
+			justify-content:center;
+			gap:1vw;
+			margin-bottom:2vh;
+		}
+
+		.instruction-gamecard-gameicon {
+			width:10vw;
+			max-width:60px;
+		}
+
+		.instruction-gamecard-gamename {
+			font-size:7vw;
+			margin:0;
+		}
+
+		.instruction-game-story {
+			font-size:4vw;
+			max-width:90%;
+			margin:2vh auto;
+		}
+		
+		/* Level Screen */
+		#level-screen {
+            height: 100%;
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+            align-items: center;
+            text-align: center;
+			background: linear-gradient(180deg, #00437d, #000000);
+			display: none;
+        }
+		
+		#level-screen h2 {
+			color: #ffffff;
+			margin-bottom: 20px;
+        }
+		
+		#level-screen button {
+			font-size: 5vw;
+			padding: 2vh 4vh;
+			width: 80%;
+			margin: 5% 10%;
+			border: none;
+			border-radius: 2vh;
+			background: #fff;
+			color: #333;
+			font-weight: bold;
+        }
+		
+		
+		/* Game Screen */
+		#game-screen {
+            height: 100%;
+			width: 100%;
+            align-items: center;
+            text-align: center;
+			display: none;
+        }
+
+        .hud-section {
+            height: 10vh;
+            background: #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+			display:flex;
+			align-items:center;
+			justify-content:space-between;
+			padding:1.2rem;
+			font-size:4.5vw;
+			color: #ffffff;
+        }
+		
+		.hud-left,.hud-right {
+			display:flex;
+			gap:1rem;
+			align-items:center;
+		}
+		
+		.hud-item strong {
+			font-size:1.2em;
+		}
+        
+		#toggleGuideLine {
+			padding: 5px;
+			border-radius: 10px;
+			border: none;
+			background: #ffffff40;
+			color: #ffffff;
+			display: flex;
+			flex-direction: row;
+			gap: 5px;
+			align-items: center;
+		}
+		
+		#toggleGuideLine svg {
+			fill: #ffffff;
+		}
+		
+
+        .arena-section {
+            height: 45vh;
+			background-color: #111;
+			background-image: url("foliage.jpg");
+			background-size: auto;
+			background-repeat: repeat;
+			background-position: center;
+        }
+        
+
+        .control-section {
+            height: 45vh;
+			background-color: #111;
+			position: relative;
+        }
+		
+		#player-position {
+			position: relative;
+			top: 50%;
+			transform: translate(0%, -50%);
+		}
+		
+		#player {
+			height: 80px;
+			width: 80px;
+			transform: rotate(0deg);
+		}
+		
+		#enemy-position {
+			position: absolute;
+			top: 42%;
+			left: 38%;
+		}
+		
+		#enemy {
+			height: 80px;
+			width:	80px;
+			transform: rotate(0deg);
+		}
+		
+		.control-btn {
+			height: 50px;
+			width: 50px;
+			background: #ffffff20;
+			color: white;
+			border-radius: 30px;
+			font-size: medium;
+			border: none;
+			position: absolute;
+		}
+		
+		#shootBtn {
+			height: 100px;
+			width: 100px;
+			background: #ffffff20;
+			color: white;
+			border-radius: 50px;
+			font-size: medium;
+			border: none;
+			position: absolute;
+			top: 35%;
+			left: 36%;
+		}
+		
+		
+		/* Result Screen */
+		#result-screen {
+			background: linear-gradient(180deg, #232526, #414345);
+			color: #fff;
+			height: 100%;
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+            align-items: center;
+            text-align: center;
+			display: none;
+		}
+		
+		#result-screen h2 {
+			font-size: 7vw;
+			margin-bottom: 3vh;
+		}
+		
+		#result-screen p {
+			font-size: 4.5vw;
+			margin: 1vh 0;
+		}
+		
+		#result-screen button {
+			font-size: 5vw;
+			padding: 2vh 4vh;
+			margin: 2vh;
+			border: none;
+			border-radius: 2vh;
+			background: #fff;
+			color: #333;
+			font-weight: bold;
+		}
+
+    </style>
+</head>
+<body>
+	
+	<section id="instruction-screen">
+		<!-- Game Icon + Name -->
+		<div class="instruction-gamecard">
+		  <img class="instruction-gamecard-gameicon" src="game-icon.png" alt="Game Icon">
+		  <h1 class="instruction-gamecard-gamename">Enemy At Six</h1>
+		</div>
+
+		<!-- Game Story -->
+		<p class="instruction-game-story">
+		  You are a pro-shooter with limited ammo and time as resources. Shoot down high value targets to get more score. 
+		  Focus on extra ammo or buy time to survive longer.
+		</p>
+		
+		<!-- Play Button -->
+		<button class="btn" onclick="chooseLevel()">Start</button>
+	</section>
+	
+	<section id="level-screen">
+		<h2>Select Difficulty</h2>
+		<button class="btn lvl-btn" data-sec="60" onclick="playGame()">Practice (5s response)</button>
+		<button class="btn lvl-btn" data-sec="3">Easy (3s response)</button>
+		<button class="btn lvl-btn" data-sec="2">Medium (2s response)</button>
+		<button class="btn lvl-btn" data-sec="1">Hard (1s response)</button>
+	</section>
+	
+	
+	<section id="game-screen">
+		<section class="hud-section">
+			<div class="hud-left hud-item">Kills: <strong id="kills">0</strong></div>
+			<div class="hud-right hud-item">Remaining: <strong id="resp">0</strong>s</div>
+			<button id="toggleGuideLine">
+				<svg height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+					<path d="M480-360q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Zm0 80q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Zm326-268Z"/>
+				</svg>
+				Guideline
+			</button>
+		</section>
+		
+		<section class="arena-section" id="arena">
+			<div id="player-position">
+				<img id="player" src="player.png">
+			</div>
+			
+			<div id="enemy-position">
+				<img id="enemy" src="enemy.png">
+			</div>
+			
+			<div id="bullet"></div>
+			<div class="muzzle-flash" id="flash"></div>
+			<div class="shock" id="shock"></div>
+		</section>
+		
+		<section class="control-section">
+			<button id="btn1" class="control-btn" style="top:14%;left:59%;" onclick="rotatePlayer(30)">1</button>
+			<button id="btn2" class="control-btn" style="top:26%;left:70%;" onclick="rotatePlayer(60)">2</button>
+			<button id="btn3" class="control-btn" style="top:43%;left:74%;" onclick="rotatePlayer(90)">3</button>
+			<button id="btn4" class="control-btn" style="top:59%;left:70%;" onclick="rotatePlayer(120)">4</button>
+			<button id="btn5" class="control-btn" style="top:71%;left:59%;" onclick="rotatePlayer(150)">5</button>
+			<button id="btn6" class="control-btn" style="top:76%;left:43%;" onclick="rotatePlayer(180)">6</button>
+			<button id="btn7" class="control-btn" style="top:71%;left:28%;" onclick="rotatePlayer(-150)">7</button>
+			<button id="btn8" class="control-btn" style="top:59%;left:17%;" onclick="rotatePlayer(-120)">8</button>
+			<button id="btn9" class="control-btn" style="top:43%;left:12%;" onclick="rotatePlayer(-90)">9</button>
+			<button id="btn10" class="control-btn" style="top:26%;left:17%;" onclick="rotatePlayer(-60)">10</button>
+			<button id="btn11" class="control-btn" style="top:14%;left:28%;" onclick="rotatePlayer(-30)">11</button>
+			<button id="btn12" class="control-btn" style="top:9%;left:43%;" onclick="rotatePlayer(0)">12</button>
+			<button id="shootBtn" onclick="correctAngle()">Shoot</button>
+		</section>
+	</section>
+	
+	<section id="result-screen">
+		<h2>Game Over</h2>
+		<p>Total Kills: <span id="final-score">0</span></p>
+		<p>Status: <span id="final-status">Unknown</span></p>
+		<button onclick="playGame()">Play Again</button>
+		<button onclick="goBack()">Exit game</button>
+	</section>
+	
+	<!-- Audio (optional files) -->
+	<audio id="bgAudio" src="backgroundscore.wav" loop preload="auto"></audio>
+	<audio id="shotAudio" src="shot.wav" preload="auto"></audio>
+	<audio id="hitAudio" src="hit.wav" preload="auto"></audio>
+	
+	
+	<script>
+		
+		let PLAYER_POSITION = 0;
+		let ENEMY_POSITION = 0;
+		let KILLCOUNT = 0;
+		
+		function goBack() {
+			document.getElementById("result-screen").style.display = "none";
+			document.getElementById("instruction-screen").style.display = "flex";
+			window.history.back();
+		}
+		
+		function chooseLevel() {
+			document.getElementById("instruction-screen").style.display = "none";
+			document.getElementById("level-screen").style.display = "flex";
+		}
+		
+		
+		function rotatePlayer(deg) {
+			const element = document.getElementById('player');
+			
+			// Get current rotation (default to 0 if not set)
+			const computedStyle = window.getComputedStyle(element);
+			const transformValue = computedStyle.transform || computedStyle.webkitTransform || computedStyle.mozTransform;
+			
+			let currentRotation = 0;
+			if (transformValue && transformValue !== 'none') {
+				const values = transformValue.split('(')[1].split(')')[0].split(',');
+				const a = values[0];
+				const b = values[1];
+				currentRotation = Math.round(Math.atan2(b, a) * (180/Math.PI));
+			}
+			
+			// Calculate new rotation
+			const newRotation = currentRotation + deg;
+			
+			// Apply new rotation
+			element.style.transform = `rotate(${newRotation}deg)`;
+		}
+		
+		
+
+		function enemySpawn() {
+			
+			const ENEMY_MAP = {
+				1: { deg:210, top:'14%', left:'55%' },
+				2: { deg:240, top:'20%', left:'66%' },
+				3: { deg:270, top:'27%', left:'70%' },
+				4: { deg:300, top:'35%', left:'65%' },
+				5: { deg:330, top:'40%', left:'55%' },
+				6: { deg:0,   top:'42%', left:'38%' },   // degree 360 equals 0
+				7: { deg:30,  top:'40%', left:'22%' },
+				8: { deg:60,  top:'34%', left:'12%' },
+				9: { deg:90,  top:'27%', left:'8%' },
+				10: { deg:120, top:'19%', left:'13%' },
+				11: { deg:150, top:'14%', left:'24%' },
+				12: { deg:180, top:'12%', left:'39%' }
+			};
+		
+			// choose random 1..12
+			const pos = Math.floor(Math.random()*12) + 1;
+			const spot = ENEMY_MAP[pos];
+			ENEMY_POSITION = pos;
+			
+			
+			const enemyPos = document.getElementById('enemy-position');
+			enemyPos.style.top = spot.top;
+			enemyPos.style.left = spot.left;
+			
+			
+			const enemyFace = document.getElementById('enemy');
+			enemyFace.style.transform = `rotate(${spot.deg}deg)`;
+			document.getElementById('enemy-position').style.display = "block";
+		}
+		
+		function correctAngle() {
+			const playerInfo = document.getElementById('player');
+			
+			// Get current rotation (default to 0 if not set)
+			const computedStyle = window.getComputedStyle(playerInfo);
+			const transformValue = computedStyle.transform || computedStyle.webkitTransform || computedStyle.mozTransform;
+			
+			let currentPlayerAngle = 0;
+			if (transformValue && transformValue !== 'none') {
+				const values = transformValue.split('(')[1].split(')')[0].split(',');
+				const a = values[0];
+				const b = values[1];
+				currentPlayerAngle = Math.round(Math.atan2(b, a) * (180/Math.PI));
+			}
+			
+			PLAYER_POSITION = playerDegPos(currentPlayerAngle);
+			
+			if (PLAYER_POSITION == ENEMY_POSITION) {
+				const hideEnemy = document.getElementById('enemy-position');
+				hideEnemy.style.display = 'none';
+				KILLCOUNT = KILLCOUNT + 1;
+				const updateHudKill = document.getElementById('kills');
+				updateHudKill.textContent = KILLCOUNT;
+				setTimeout(enemySpawn, 3000);
+			}
+			else {
+				document.getElementById("game-screen").style.display = "none";
+				document.getElementById("final-score").textContent = KILLCOUNT;
+				document.getElementById("final-status").textContent = "Civilian Casualty";
+				document.getElementById("result-screen").style.display = "flex";
+			}
+			
+		}
+		
+		
+		// Helper functions
+		function playerDegPos(deg) {
+			const map = {
+				0: 12,
+				30: 1,
+				60: 2,
+				90: 3,
+				120: 4,
+				150: 5,
+				180: 6,
+				'-150': 7,
+				'-120': 8,
+				'-90': 9,
+				'-60': 10,
+				'-30': 11,
+			};
+			return map[deg];
+		}
+		
+		function playGame() {
+			document.getElementById("level-screen").style.display = "none";
+			document.getElementById("result-screen").style.display = "none";
+			PLAYER_POSITION = 0;
+			ENEMY_POSITION = 0;
+			KILLCOUNT = 0;
+			document.getElementById("player").style.transform = `rotate(0deg)`;
+			document.getElementById("game-screen").style.display = "block";
+			enemySpawn();
+		}
+		
+		
+		
+		const toggleBtn = document.getElementById("toggleGuideLine");
+		const arena = document.getElementById("arena");
+
+		let guidelineOn = false;
+
+		toggleBtn.addEventListener("click", () => {
+		  guidelineOn = !guidelineOn;
+
+		  if (guidelineOn) {
+			arena.style.backgroundImage = 'url("arena.png"), url("foliage.jpg")';
+			arena.style.backgroundSize = "80%, auto";
+			arena.style.backgroundRepeat = "no-repeat, repeat";
+			arena.style.backgroundPosition = "center, center";
+		  } else {
+			arena.style.backgroundImage = 'url("foliage.jpg")';
+			arena.style.backgroundSize = "auto";
+			arena.style.backgroundRepeat = "repeat";
+			arena.style.backgroundPosition = "center";
+		  }
+		});
+
+	</script>
+	
+</body>
+</html>
