@@ -263,8 +263,7 @@
 
 		<!-- Game Story -->
 		<p class="instruction-game-story">
-		  You are a pro-shooter with limited ammo and time as resources. Shoot down high value targets to get more score. 
-		  Focus on extra ammo or buy time to survive longer.
+		  Use your clock direction skills to guide your agent on field to neutralize enemies. Guide clock direction in respect to your agents current direction and command kill. You must convey the message to your agent within limited response time and also to avoid civilian casualty. As soon as an enemy appears tap on the correct number (1 - 12) and press "Shoot" to convey the message to your field agent. Best of Luck!
 		</p>
 		
 		<!-- Play Button -->
@@ -413,6 +412,7 @@
 		}
 		
 		function correctAngle() {
+			shootAudio();
 			const playerInfo = document.getElementById('player');
 			
 			// Get current rotation (default to 0 if not set)
@@ -499,6 +499,11 @@
 			arena.style.backgroundPosition = "center";
 		  }
 		});
+		
+		function shootAudio() {
+		  const audioPlayer = document.getElementById('shotAudio');
+		  audioPlayer.play();
+		}
 
 	</script>
 	
