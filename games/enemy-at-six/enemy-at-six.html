@@ -249,7 +249,7 @@
 			color: #333;
 			font-weight: bold;
 		}
-
+		
     </style>
 </head>
 <body>
@@ -293,6 +293,7 @@
 		
 		<section class="arena-section" id="arena">
 			<div id="player-position">
+				<div class="muzzle-flash"></div>
 				<img id="player" src="player.png">
 			</div>
 			
@@ -507,5 +508,25 @@
 
 	</script>
 	
+	
+	<!-- ///////////////// -->
+	<!-- Prevent Right Click Context Menu -->
+	<!-- ///////////////// -->
+	<script>
+	document.addEventListener('contextmenu', function(event) {
+	const target = event.target;
+
+	// Allow default context menu on input, textarea, or contenteditable elements
+	if (
+		target.tagName === 'INPUT' ||
+		target.tagName === 'TEXTAREA' ||
+		target.isContentEditable
+		) {
+		return; // allow context menu
+	}
+
+	event.preventDefault(); // otherwise, block it
+	});
+	</script>
 </body>
 </html>
