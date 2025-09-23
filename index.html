@@ -460,7 +460,7 @@
 		
 		<!-- Widget: Calendar Events -->
 		<div id="home-widget-calendar-events" class="home-widget-card">
-			<h4>Calendar Events</h4>
+			<h4>Global Events</h4>
 
 			<div id="home-calendar-event-display">
 				<div id="home-calendar-event-date">--</div>
@@ -684,31 +684,7 @@
 					  });
 
 			</script>
-		<a class="home-QuickAccess-button" id="tak-app-share-btns" onclick="tak_app_share()">
-			<svg class="home-QuickAccess-button-icons" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-				<path d="M683.94-46Q621-46 577-89.75T533-196q0-5 2-19L288-358q-19 14-41.91 22-22.91 8-49.09 8-62.92 0-106.96-44.26Q46-416.53 46-479.76 46-543 90.04-587.5 134.08-632 197-632q26 0 50 8.5t44 23.5l243-141q-1-5-1-11v-11q0-62.92 44.06-106.96 44.06-44.04 107-44.04T791-869.94q44 44.06 44 107T790.96-656Q746.92-612 684-612q-28.36 0-53.18-9.5T586-648L347-511q2 8.05 2.5 15.52.5 7.48.5 15.98t-1 17q-1 8.5-3 16.5l238 137q20-18 45.45-28.5Q654.91-348 684-348q62.92 0 106.96 44.26Q835-259.47 835-196.24 835-133 790.94-89.5 746.88-46 683.94-46Z"/>
-			</svg>
-			Share this App
-		</a>
-			<script>
-				function tak_app_share() {
-				  const shareData = {
-					title: 'Trikagnikalaya App',
-					text: `Trikagnikalaya App\nPlease visit this web page and install it from your browser options (chrome, opera, edge, etc.) click on "Add to homescreen".`,
-					url: 'https://jban199.github.io/my-app/'
-				  };
 
-				  if (navigator.share) {
-					navigator.share(shareData)
-					  .then(() => showTakSnackbar('App shared successfully!'))
-					  .catch(() => showTakSnackbar('Sharing failed or was cancelled.'));
-				  } else {
-					showTakSnackbar('Sharing is not supported on this browser. Please copy the URL manually.');
-				  }
-				}
-
-				document.getElementById('tak-app-share-btn').addEventListener('click', tak_app_share);
-			</script>
 	</section>
 
 
@@ -1247,13 +1223,21 @@ homeUpdateRAMStatus();
 // Widget: Network Status
 function homeUpdateNetworkStatus() {
   try {
-    if ('connection' in navigator) {
-      const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const icon = document.getElementById('home-network-icon');
+    const label = document.getElementById('home-network-label');
 
-      function updateConnectionIcon() {
+    function updateStatus() {
+      if (!navigator.onLine) {
+        // Device truly offline
+        icon.innerHTML = '<path d="M748-560q0 38-11 75t-33 69q-8 11-21.5 11.5T658-415q-10-10-10-24t8-26q12-22 18-46t6-49q0-31-10-60t-28-54q-8-12-8-26t10-24q10-10 24-10t22 11q28 35 43 76.5t15 86.5ZM480-660q42 0 71 29t29 71v10q0 5-2 10-3 12-15.5 14.5T541-532l-89-89q-9-9-6-21t14-16q5-2 10-2h10Zm400 100q0 66-20 127t-59 114q-8 11-22 11t-24-10q-10-10-10-24t8-26q29-42 44-91t15-101q0-58-18.5-112T739-771q-9-11-9-25t10-24q10-10 24-9.5t23 11.5q45 55 69 121t24 137ZM763-84 520-327v167q0 17-11.5 28.5T480-120q-17 0-28.5-11.5T440-160v-247L280-566v6q0 31 10 60t28 54q8 12 8 26t-10 24q-10 10-24 10t-22-11q-27-35-42.5-76.5T212-560q0-17 2-33t7-33l-51-51q-11 29-16.5 58t-5.5 59q0 58 18.5 112t54.5 99q9 11 9 25t-10 24q-10 10-24 9.5T173-302q-45-55-69-121T80-560q0-44 9.5-86.5T118-729l-34-34q-11-11-11-27.5T84-819q12-12 28.5-12t28.5 12l679 679q12 12 11.5 28T819-84q-12 11-28 11.5T763-84Z"/>';
+        label.textContent = 'Offline';
+        return;
+      }
+
+      // Device is online → check connection type
+      if ('connection' in navigator) {
+        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
         const type = connection.type || 'unknown';
-        const icon = document.getElementById('home-network-icon');
-        const label = document.getElementById('home-network-label');
 
         if (type === 'wifi') {
           icon.innerHTML = '<path d="M480-120q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29Zm0-440q75 0 142.5 24T745-470q20 15 20.5 39.5T748-388q-17 17-42 17.5T661-384q-38-26-84-41t-97-15q-51 0-97 15t-84 41q-20 14-45 13t-42-18q-17-18-17-42.5t20-39.5q55-42 122.5-65.5T480-560Zm0-240q125 0 235.5 41T914-643q20 17 21 42t-17 43q-17 17-42 17.5T831-556q-72-59-161.5-91.5T480-680q-100 0-189.5 32.5T129-556q-20 16-45 15.5T42-558q-18-18-17-43t21-42q88-75 198.5-116T480-800Z"/>';
@@ -1262,19 +1246,22 @@ function homeUpdateNetworkStatus() {
           icon.innerHTML = '<path d="M260-160q-25 0-42.5-17.5T200-220v-120q0-25 17.5-42.5T260-400q25 0 42.5 17.5T320-340v120q0 25-17.5 42.5T260-160Zm240 0q-25 0-42.5-17.5T440-220v-320q0-25 17.5-42.5T500-600q25 0 42.5 17.5T560-540v320q0 25-17.5 42.5T500-160Zm240 0q-25 0-42.5-17.5T680-220v-520q0-25 17.5-42.5T740-800q25 0 42.5 17.5T800-740v520q0 25-17.5 42.5T740-160Z"/>';
           label.textContent = 'Cellular';
         } else {
-          icon.innerHTML = '<path d="M260-160q-25 0-42.5-17.5T200-220v-120q0-25 17.5-42.5T260-400q25 0 42.5 17.5T320-340v120q0 25-17.5 42.5T260-160Zm240 0q-25 0-42.5-17.5T440-220v-320q0-25 17.5-42.5T500-600q25 0 42.5 17.5T560-540v320q0 25-17.5 42.5T500-160Zm240 0q-25 0-42.5-17.5T680-220v-520q0-25 17.5-42.5T740-800q25 0 42.5 17.5T800-740v520q0 25-17.5 42.5T740-160Z"/>'; // fallback default
+          icon.innerHTML = '<path d="M423-177 61-539q-13-13-18.5-28T38-599q1-17 7-32t20-26q81-71 194.5-107T480-800q125 0 234 41t203 122q9 8 13.5 17.5T935-599q0 11-3.5 21T920-560q-28-36-69.5-58T760-640q-83 0-141.5 58.5T560-440q0 49 22 90.5t58 69.5L537-177q-12 12-26.5 18t-30.5 6q-16 0-30.5-6T423-177Zm337 17q-17 0-29.5-12.5T718-202q0-17 12.5-29.5T760-244q17 0 29.5 12.5T802-202q0 17-12.5 29.5T760-160Zm116-297q0 23-10 41t-38 46q-17 17-24.5 28t-9.5 25q-2 12-11.5 20.5T761-288q-13 0-22-9t-7-21q3-23 14-40t37-43q21-21 27-31.5t6-26.5q0-18-14-31.5T765-504q-15 0-29 7t-24 20q-7 9-17.5 13t-21.5-1q-11-5-16.5-15t.5-20q16-28 44.5-44t63.5-16q49 0 80 29t31 74Z"/>';
           label.textContent = 'Unknown';
         }
+
+        connection.addEventListener('change', updateStatus);
+      } else {
+        // Browser doesn’t support connection API
+        label.textContent = navigator.onLine ? 'Online' : 'Offline';
       }
-
-      updateConnectionIcon();
-      connection.addEventListener('change', updateConnectionIcon);
-
-    } else {
-      // Fallback if API not supported
-      document.getElementById('home-network-label').textContent = "Unknown";
-      document.getElementById('home-network-icon').src = "images/dashboard/network/cellular.svg";
     }
+
+    // Initial run + listen to online/offline events
+    updateStatus();
+    window.addEventListener('online', updateStatus);
+    window.addEventListener('offline', updateStatus);
+
   } catch (err) {
     console.warn("homeUpdateNetworkStatus error:", err);
   }
@@ -1288,35 +1275,14 @@ homeUpdateNetworkStatus();
 function homeUpdateCalendarEventsWidget() {
   try {
     const calendarevents = [
-		{ date: "January 1", name: "New Year's Day", desc: "Beginning of the Gregorian Calendar Year" },
-		{ date: "January 12", name: "Swami Vivekananda Jayanti", desc: "Birth anniversary of spiritual leader and philosopher Swami Vivekananda" },
-		{ date: "January 15", name: "Army Day", desc: "Marks the day Field Marshal K.M. Cariappa became the first Indian Army Chief" },
-		{ date: "January 23", name: "Netaji Subhas Chandra Bose Jayanti", desc: "Birth anniversary of Indian freedom fighter Netaji Bose" },
-		{ date: "January 26", name: "Republic Day", desc: "India's Constitution came into effect in 1950" },
-		{ date: "February 27", name: "Chandrashekhar Azad Jayanti", desc: "Fearless revolutionary who fought British rule with the Hindustan Socialist Republic Association" },
-		{ date: "February 14", name: "Valentine's Day", desc: "Global celebration of love and affection" },
-		{ date: "March 8", name: "International Women's Day", desc: "Celebrating women's achievements and rights" },
-		{ date: "March 20", name: "March Equinox", desc: "Equal day and night around the globe" },
-		{ date: "March 23", name: "Shaheed Diwas", desc: "Honors the martyrdom of Bhagat Singh, Rajguru, and Sukhdev in 1931" },
-		{ date: "April 14", name: "Ambedkar Jayanti", desc: "Birth anniversary of Dr. B.R. Ambedkar, chief architect of the Indian Constitution" },
-		{ date: "April 22", name: "Earth Day", desc: "Global awareness for environmental protection" },
-		{ date: "May 1", name: "Labour Day", desc: "International Workers' Day honoring laborers and working classes" },
-		{ date: "May 5", name: "Kabiguru Rabindranath Tagore Jayanti", desc: "Birth anniversary of Nobel laureate poet and composer Tagore" },
-		{ date: "June 5", name: "World Environment Day", desc: "Promotes global awareness and action for the environment" },
-		{ date: "June 21", name: "June Solstice", desc: "Longest day of the year in the Northern Hemisphere" },
-		{ date: "June 21", name: "International Day of Yoga", desc: "Promotes mental and physical wellness through yoga" },
-		{ date: "July 4", name: "Earth Aphelion", desc: "Point when Earth is farthest from the Sun" },
-		{ date: "July 22", name: "Bal Gangadhar Tilak Jayanti", desc: "Indian nationalist and reformer who gave the slogan 'Swaraj is my birthright'" },
-		{ date: "August 11", name: "Khudiram Bose Martyrdom Day", desc: "Remembers one of the youngest Indian revolutionaries to be martyred" },
-		{ date: "August 15", name: "Independence Day", desc: "Marks India's independence from British rule in 1947" },
-		{ date: "September 5", name: "Teachers' Day", desc: "Birth anniversary of Dr. Radhakrishnan, honoring educators" },
-		{ date: "September 22", name: "September Equinox", desc: "Equal day and night globally" },
-		{ date: "September 28", name: "Bhagat Singh Jayanti", desc: "Revolutionary who inspired generations with his courage and sacrifice" },
-		{ date: "October 2", name: "Gandhi Jayanti", desc: "Birth anniversary of Mahatma Gandhi, advocate of non-violence" },
-		{ date: "November 7", name: "Lala Lajpat Rai Jayanti", desc: "Prominent freedom fighter and part of the Lal-Bal-Pal trio" },
-		{ date: "November 14", name: "Children's Day", desc: "Birth anniversary of Nehru; celebrates children's rights and welfare" },
-		{ date: "December 21", name: "December Solstice", desc: "Shortest day in the Northern Hemisphere" },
-		{ date: "December 25", name: "Christmas", desc: "Celebration of the birth of Jesus Christ" }
+
+		{ date: "January 3", name: "Earth Perihelion", desc: "Earth is closest to the Sun. Usually Jan 3, but can also fall on Jan 4." },
+		{ date: "March 20", name: "March Equinox", desc: "Equal day and night globally. Usually Mar 20, but can also fall on Mar 19 or Mar 21." },
+		{ date: "June 21", name: "June Solstice", desc: "Longest day in Northern Hemisphere, shortest in Southern. Usually Jun 21, but can also fall on Jun 20 or Jun 22." },
+		{ date: "July 4", name: "Earth Aphelion", desc: "Earth is farthest from the Sun. Usually Jul 4, but can also fall on Jul 3 or Jul 5." },
+		{ date: "September 22", name: "September Equinox", desc: "Equal day and night globally. Usually Sep 22, but can also fall on Sep 21 or Sep 23." },
+		{ date: "December 21", name: "December Solstice", desc: "Shortest day in Northern Hemisphere, longest in Southern. Usually Dec 21, but can also fall on Dec 22." }
+
     ];
 
     // Helper: Convert MM-DD to comparable number
