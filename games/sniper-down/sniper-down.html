@@ -14,6 +14,17 @@
       overflow: hidden;
       font-family: Arial, sans-serif;
     }
+	
+	* {
+	  -webkit-tap-highlight-color: transparent;
+	  outline: none;
+	}
+	* {
+	  user-select: none; /* Prevents text selection */
+	  -webkit-user-select: none; /* For Safari */
+	  -moz-user-select: none; /* For Firefox */
+	  -ms-user-select: none; /* For older versions of Internet Explorer */
+	}
 
     /* Shared screens */
     .screen {
@@ -24,6 +35,7 @@
       align-items: center;
       flex-direction: column;
       text-align: center;
+	  padding-top: 20px;
     }
 
     /* Instruction screen */
@@ -168,7 +180,7 @@
       color: #fff;
       font-size: 5vw;
       background: rgba(0,0,0,0.4);
-      padding: 1vh 2vw;
+      padding: 5vh 2vw 2vh 2vw;
 	  display: flex;
 	  align-items: center;
 	  justify-content: space-evenly;
@@ -595,7 +607,7 @@
       const gameWidth = game.clientWidth;
       const gameHeight = game.clientHeight;
 
-      obj.style.top = (8 * window.innerHeight / 100 + Math.random() * gameHeight * 0.25) + "px";
+      obj.style.top = (15 * window.innerHeight / 100 + Math.random() * gameHeight * 0.25) + "px";
       obj.style.left = fromLeft ? "0px" : gameWidth + "px";
       obj.dataset.direction = fromLeft ? "right" : "left";
 
