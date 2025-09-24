@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Element Clash</title>
+  <style>
+    /* Base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .screen {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Instruction Screen */
+    #instruction-screen {
+      background: linear-gradient(180deg, #00437d, #000000);
+      color: #fff;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .instruction-screen-buttons {
+      position: fixed;
+      bottom: 10%;
+      left: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .btn {
+      font-size: 5vw;
+      border: none;
+      border-radius: 2vh;
+      height: 45px;
+      width: 100%;
+      backdrop-filter: blur(20px);
+    }
+
+    .primary-btn {
+      background: #ffffff;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .secondary-btn {
+      background: #ffffff20;
+      color: #fff;
+    }
+
+    .instruction-gamecard {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1vw;
+      margin-bottom: 2vh;
+    }
+
+    .instruction-gamecard-gameicon {
+      width: 10vw;
+      max-width: 60px;
+    }
+
+    .instruction-gamecard-gamename {
+      font-size: 7vw;
+      margin: 0;
+    }
+
+    .instruction-game-story {
+      font-size: 4vw;
+      max-width: 90%;
+      margin: 2vh auto;
+      text-align: left;
+    }
+
+    /* Game Screen */
+    #game-screen {
+      align-items: center;
+      text-align: center;
+      display: none;
+      background: #111;
+    }
+
+    .hud-section {
+      height: 10vh;
+      width: 90vw;
+      background: #ffffff20;
+      background-image: linear-gradient(180deg, #ffffff20, #00000040);
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem;
+      position: fixed;
+      top: 5vh;
+    }
+
+    .hud-section p {
+      font-size: 1rem;
+      font-weight: normal;
+      color: #ffffff80;
+    }
+
+    .hud-section span {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    /* Task pill */
+    #system-gen-task {
+      height: 7vh;
+      width: 90vw;
+      border-radius: 2rem;
+      font-size: 1.2rem;
+      position: fixed;
+      top: 18vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: #fff;
+    }
+    .task-generate { background-color: #2ecc71; }
+    .task-destroy { background-color: #e74c3c; }
+
+    #system-gen-card {
+      height: 20vh;
+      width: 30vw;
+      background: #ffffff10;
+      color: #ffffff;
+      border-radius: 1rem;
+      font-size: 1.2rem;
+      position: fixed;
+      top: 27vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #system-gen-card img {
+      height: auto;
+      width: 5rem;
+    }
+
+    #user-reply-card {
+      height: 20vh;
+      width: 30vw;
+      background: #ffffff20;
+      color: #ffffff;
+      border-radius: 1rem;
+      font-size: 1.2rem;
+      position: fixed;
+      top: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+
+    #user-reply-card img {
+      height: auto;
+      width: 5rem;
+    }
+
+    .user-card-pallet {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      height: 20vh;
+      position: fixed;
+      bottom: 5%;
+    }
+
+    .user-card-pallet-btn {
+      height: 12vh;
+      width: 18vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #ffffff20;
+      background-image: linear-gradient(120deg, #ffffff20, #00000040);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .user-card-pallet-btn img {
+      max-width: 3rem;
+      max-height: 3rem;
+      pointer-events: none;
+    }
+
+    /* Result Screen */
+    #result-screen {
+      background: linear-gradient(180deg, #232526, #414345);
+      color: #fff;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      display: none;
+    }
+
+    #result-screen h2 {
+      font-size: 7vw;
+      margin-bottom: 3vh;
+    }
+
+    #result-screen p {
+      font-size: 4.5vw;
+      margin: 1vh 0;
+    }
+
+    #result-screen button {
+      font-size: 5vw;
+      padding: 2vh 4vh;
+      margin: 2vh;
+      border: none;
+      border-radius: 2vh;
+      background: #fff;
+      color: #333;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<section id="instruction-screen" class="screen">
+  <div class="instruction-gamecard">
+    <img class="instruction-gamecard-gameicon" src="game-icon.png" alt="Game Icon" />
+    <h1 class="instruction-gamecard-gamename">Element Clash</h1>
+  </div>
+
+  <p class="instruction-game-story">
+    It is know that one element generates or destructs another element and that's nature. Rules are simple ...
+    <br /><br />
+    Generation Rules:<br />
+    Water nourishes Wood, Wood fuels Fire, Fire produces Earth, Earth bears Metal, Metal collects Water.
+    <br /><br />
+    Destruction Rules:<br />
+    Metal chops Wood, Wood roots into Earth, Earth dams Water, Water extinguishes Fire, and Fire melts Metal.
+    <br /><br />
+    How to play:<br />
+    You have five element cards. A random card will appear with a random instruction "Generate" or "Destroy".
+    You have to tap on the correct card from your table. Less time you take to place your card, more score you get. But! One
+    wrong move and Game Over.<br />Best of Luck! <br><br><br>
+  </p>
+
+  <div class="instruction-screen-buttons">
+    <button class="btn primary-btn" onclick="playGame()">Start</button>
+    <button class="btn secondary-btn" onclick="goBack()">Exit</button>
+  </div>
+</section>
+
+<section id="game-screen" class="screen">
+  <div class="hud-section">
+    <p>Score:<br /> <span id="hud-score">0</span></p>
+    <p>Time left:<br /> <span id="time-left">0.00</span></p>
+    <p>Rounds:<br /> <span id="rounds-played">0</span></p>
+  </div>
+
+  <div id="system-gen-task">Generate</div>
+  <div id="system-gen-card"><img id="system-gen-card-img" src="water.svg" alt=""><span id="system-gen-card-text">Water</span></div>
+  <div id="user-reply-card"><img id="user-reply-card-img" src="blank-card.svg" alt=""><span id="user-reply-card-text">Choose</span></div>
+
+  <div class="user-card-pallet">
+    <button class="user-card-pallet-btn" data-id="water"><img src="water.svg" alt="">Water</button>
+    <button class="user-card-pallet-btn" data-id="wood"><img src="wood.svg" alt="">Wood</button>
+    <button class="user-card-pallet-btn" data-id="fire"><img src="fire.svg" alt="">Fire</button>
+    <button class="user-card-pallet-btn" data-id="earth"><img src="earth.svg" alt="">Earth</button>
+    <button class="user-card-pallet-btn" data-id="metal"><img src="metal.svg" alt="">Metal</button>
+  </div>
+</section>
+
+<section id="result-screen" class="screen">
+  <h2>Game Over</h2>
+  <p>Score: <span id="final-score">0</span></p>
+  <p>Rounds Played: <span id="final-rounds">0</span></p>
+  <button onclick="playGame()">Play Again</button>
+  <button onclick="goBack()">Exit game</button>
+</section>
+
+<!-- Audio (optional files) -->
+<audio id="bgAudio" src="backgroundscore.mp3" loop preload="auto"></audio>
+<audio id="newCardEffect" src="new-card.mp3" preload="auto"></audio>
+<audio id="replyCardEffect" src="reply-card.wav" preload="auto"></audio>
+
+<script>
+const REACTION_WINDOW_MS = 5000;
+let SCORE = 0, ROUNDS = 0;
+let roundTimerInterval = null, roundStartTime = 0, roundActive = false, remainingMs = REACTION_WINDOW_MS;
+const hudScoreEl = document.getElementById('hud-score');
+const timeLeftEl = document.getElementById('time-left');
+const roundsPlayedEl = document.getElementById('rounds-played');
+const finalScoreEl = document.getElementById('final-score');
+const finalRoundsEl = document.getElementById('final-rounds');
+const systemTaskEl = document.getElementById('system-gen-task');
+const systemCardImg = document.getElementById('system-gen-card-img');
+const systemCardText = document.getElementById('system-gen-card-text');
+const userReplyCardImg = document.getElementById('user-reply-card-img');
+const userReplyCardText = document.getElementById('user-reply-card-text');
+const bgAudio = document.getElementById('bgAudio');
+const newCardEffect = document.getElementById('newCardEffect');
+const replyCardEffect = document.getElementById('replyCardEffect');
+
+const rules = {
+  destroy: {water:'earth', wood:'metal', fire:'water', earth:'wood', metal:'fire'},
+  generate: {water:'metal', wood:'water', fire:'wood', earth:'fire', metal:'earth'}
+};
+const elements = ['water','wood','fire','earth','metal'];
+let currentRound = null;
+
+function randChoice(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function setHUD(){hudScoreEl.textContent=SCORE; roundsPlayedEl.textContent=ROUNDS;}
+function formatTimeMs(ms){return (ms/1000).toFixed(2);}
+
+function goBack(){clearRoundTimer(); stopBgAudio(); document.getElementById('instruction-screen').style.display='flex'; document.getElementById('game-screen').style.display='none'; document.getElementById('result-screen').style.display='none';}
+function playGame(){SCORE=0; ROUNDS=0; setHUD(); timeLeftEl.textContent=formatTimeMs(0); document.getElementById('instruction-screen').style.display='none'; document.getElementById('result-screen').style.display='none'; document.getElementById('game-screen').style.display='flex'; startBgAudio(); setTimeout(()=>startRound(),250);}
+function startBgAudio(){try{bgAudio.currentTime=0; bgAudio.play().catch(()=>{});}catch(e){}}
+function stopBgAudio(){try{bgAudio.pause(); bgAudio.currentTime=0;}catch(e){}}
+function clearRoundTimer(){if(roundTimerInterval){clearInterval(roundTimerInterval); roundTimerInterval=null;} roundActive=false;}
+
+function startRound(){
+  clearRoundTimer();
+  const task = Math.random()<0.5?'generate':'destroy';
+  const newCard = randChoice(elements);
+  systemTaskEl.textContent = task.charAt(0).toUpperCase()+task.slice(1);
+  systemTaskEl.className = '';
+  systemTaskEl.classList.add(task==='generate'?'task-generate':'task-destroy');
+  systemCardText.textContent = newCard.charAt(0).toUpperCase()+newCard.slice(1);
+  systemCardImg.src=`${newCard}.svg`; systemCardImg.alt=newCard;
+  userReplyCardText.textContent='Choose';
+  userReplyCardImg.src='blank-card.svg';
+
+  try{ newCardEffect.currentTime=0; newCardEffect.play().catch(()=>{}); }catch(e){}
+
+  remainingMs = REACTION_WINDOW_MS;
+  roundStartTime = performance.now();
+  roundActive = true;
+  timeLeftEl.textContent = formatTimeMs(remainingMs);
+
+  roundTimerInterval = setInterval(()=>{
+    const elapsed = performance.now() - roundStartTime;
+    remainingMs = Math.max(0, REACTION_WINDOW_MS - elapsed);
+    timeLeftEl.textContent = formatTimeMs(remainingMs);
+    if(remainingMs<=0){ clearRoundTimer(); setTimeout(()=>gameEnd('timeout'),60);}
+  },10);
+
+  currentRound = {task,newCard,expectedReply:rules[task][newCard]};
+}
+
+function handlePlayerChoice(choice) {
+  if (!roundActive || !currentRound) return;
+  
+  // Stop the timer immediately
+  clearRoundTimer();
+
+  // Play reply click sound
+  try { replyCardEffect.currentTime = 0; replyCardEffect.play().catch(()=>{}); } catch(e){}
+
+  // Compute reaction time
+  const reactionMs = performance.now() - roundStartTime;
+
+  // determine if correct
+  const correct = choice === currentRound.expectedReply;
+
+  // first, show user selected card
+  userReplyCardText.textContent = choice.charAt(0).toUpperCase() + choice.slice(1);
+  userReplyCardImg.src = choice + '.svg';
+
+  if (!correct) {
+    // wrong choice -> game over after short delay so user sees selection
+    setTimeout(() => gameEnd('wrong'), 1000);
+    return;
+  }
+
+  // correct -> compute score based on reactionMs
+  let awarded = 0;
+  if (reactionMs <= 1000) awarded = 5;
+  else if (reactionMs <= 2000) awarded = 4;
+  else if (reactionMs <= 3000) awarded = 3;
+  else if (reactionMs <= 4000) awarded = 2;
+  else if (reactionMs <= 5000) awarded = 1;
+
+  SCORE += awarded;
+  ROUNDS += 1;
+  setHUD();
+
+  // show correct answer animation briefly
+  setTimeout(() => {
+    const origImg = userReplyCardImg.src; // store selected card
+    userReplyCardImg.src = 'correct-answer.gif';
+
+    setTimeout(() => {
+      // restore blank card for next round
+      userReplyCardImg.src = 'blank-card.svg';
+      userReplyCardText.textContent = 'Choose';
+      startRound();
+    }, 1000); // animation duration
+  }, 1000); // small delay so user sees their selected card
+}
+
+
+document.querySelectorAll('.user-card-pallet-btn').forEach(btn=>{
+  btn.addEventListener('click',(e)=>handlePlayerChoice(btn.getAttribute('data-id')));
+  btn.addEventListener('touchend',(e)=>{ e.preventDefault(); handlePlayerChoice(btn.getAttribute('data-id')); }, {passive:false});
+});
+
+<!-- Prevent Right Click Context Menu -->
+document.addEventListener('contextmenu',function(event){ const target=event.target; if(target.tagName==='INPUT'||target.tagName==='TEXTAREA'||target.isContentEditable){return;} event.preventDefault();});
+
+setHUD();
+
+
+function gameEnd() {
+			document.getElementById("game-screen").style.display = "none";
+			stopBgAudio();
+			document.getElementById("final-score").textContent = SCORE;
+			document.getElementById("final-rounds").textContent = ROUNDS;
+			document.getElementById("result-screen").style.display = "flex";
+		}
+</script>
+</body>
+</html>
