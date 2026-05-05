@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>360 Player Final</title>
+
+<style>
+html,body{
+  margin:0;
+  overflow:hidden;
+  background:#000;
+}
+
+#app{
+  position:fixed;
+  inset:0;
+}
+
+video{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+}
+
+.controls{
+  position:absolute;
+  bottom:20px;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  z-index:10;
+}
+
+button{
+  padding:10px;
+  border-radius:20px;
+  border:none;
+  background:rgba(0,0,0,0.6);
+  color:#fff;
+}
+</style>
+</head>
+
+<body>
+
+<div id="app"></div>
+
+<video id="video" playsinline loop></video>
+
+<div class="controls">
+  <button id="play">▶</button>
+  <button id="gyro">Gyro</button>
+  <button id="file">📂</button>
+</div>
+
+<input type="file" id="fileInput" accept="video/*" hidden>
+
+<script type="module">
+
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js";
+import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/controls/OrbitControls.js";
+import { DeviceOrientationControls } from "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/controls/DeviceOrientationControls.js";
+
+// snackbar
+function showTakSnackbar(msg){ console.log(msg); }
+
+const video = document.getElementById("video");
+const app = document.getElementById("app");
+
+// scene
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight,1,1100);
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(innerWidth, innerHeight);
+app.appendChild(renderer.domElement);
+
+// sphere
+const texture = new THREE.VideoTexture(video);
+const geo = new THREE.SphereGeometry(500,60,40);
+geo.scale(-1,1,1);
+
+const mat = new THREE.MeshBasicMaterial({map:texture});
+scene.add(new THREE.Mesh(geo,mat));
+
+// controls
+const orbit = new OrbitControls(camera, renderer.domElement);
+orbit.enableZoom=false;
+
+const gyro = new DeviceOrientationControls(camera);
+let useGyro=false;
+
+// play
+document.getElementById("play").onclick=()=>{
+  if(video.paused) video.play();
+  else video.pause();
+};
+
+// gyro
+document.getElementById("gyro").onclick=async()=>{
+  if(!useGyro){
+    if(typeof DeviceOrientationEvent.requestPermission==='function'){
+      try{
+        let p = await DeviceOrientationEvent.requestPermission();
+        if(p!=='granted') return;
+      }catch(e){return;}
+    }
+    useGyro=true;
+    showTakSnackbar("Gyro ON");
+  }else{
+    useGyro=false;
+    showTakSnackbar("Gyro OFF");
+  }
+};
+
+// file upload (WORKING)
+const fileInput = document.getElementById("fileInput");
+
+document.getElementById("file").onclick=()=>{
+  fileInput.value="";
+  fileInput.click();
+};
+
+fileInput.onchange=(e)=>{
+  const file = e.target.files[0];
+  if(!file){
+    showTakSnackbar("No file");
+    return;
+  }
+
+  const url = URL.createObjectURL(file);
+
+  video.src = url;
+  video.load();
+
+  video.onloadedmetadata=()=>{
+    const ratio = video.videoWidth/video.videoHeight;
+
+    if(Math.abs(ratio-2)>0.2){
+      showTakSnackbar("Not 360 video");
+    }else{
+      showTakSnackbar("360 video loaded");
+    }
+
+    video.play();
+  };
+};
+
+// render loop
+function animate(){
+  requestAnimationFrame(animate);
+
+  if(useGyro) gyro.update();
+  else orbit.update();
+
+  renderer.render(scene,camera);
+}
+animate();
+
+// resize
+addEventListener("resize",()=>{
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+</script>
+
+</body>
+</html>
